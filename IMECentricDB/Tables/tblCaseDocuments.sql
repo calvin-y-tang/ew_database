@@ -29,6 +29,8 @@
 );
 
 
+
+
 GO 
 
 CREATE TRIGGER tblCaseDocuments_AfterInsert_TRG
@@ -54,4 +56,10 @@ GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseDocuments_MasterCaseNbrType]
     ON [dbo].[tblCaseDocuments]([MasterCaseNbr] ASC, [Type] ASC)
     INCLUDE([CaseNbr], [Document], [Description], [sFilename], [DateAdded], [UserIDAdded], [PublishOnWeb], [DateEdited], [UserIDEdited], [SeqNo], [PublishedTo], [Source], [FileSize], [Pages], [FolderID], [SubFolder], [CaseDocTypeID], [SharedDoc]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseDocuments_SourceDateAdded]
+    ON [dbo].[tblCaseDocuments]([Source] ASC, [DateAdded] ASC)
+    INCLUDE([CaseNbr], [Description], [UserIDAdded], [CaseDocTypeID]);
 
