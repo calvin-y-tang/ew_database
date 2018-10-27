@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>CustomRepositoryDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{21ffa562-51fd-48e1-ab44-56c656658bcb}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>CustomRepositoryDB</RootNamespace>
+    <AssemblyName>CustomRepositoryDB</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Tables\" />
+    <Folder Include="Functions\" />
+    <Folder Include="Stored Procedures\" />
+    <Folder Include="Compare" />
+    <Folder Include="Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\SedgwickCodes.sql" />
+    <Build Include="Tables\SedgwickClaimDataImport.sql" />
+    <Build Include="Tables\SedgwickReferralHeader.sql" />
+    <Build Include="Tables\SedgwickProcessingUnitRecord.sql" />
+    <Build Include="Tables\SedgwickFileHeaderRecord.sql" />
+    <Build Include="Tables\SedgwickClientInformationRecord.sql" />
+    <Build Include="Tables\SedgwickClaimRecord.sql" />
+    <Build Include="Tables\SedgwickMCCAcknowledgement.sql" />
+    <Build Include="Tables\SedgwickServiceRequestQueue.sql" />
+    <Build Include="Tables\SedgwickReferralTrailer.sql" />
+    <Build Include="Tables\SedgwickClaimQueue.sql" />
+    <Build Include="Tables\SedgwickReferralRecord.sql" />
+    <Build Include="Tables\SedgwickFileTrailerRecord.sql" />
+    <Build Include="Tables\SedgwickRSIReferralRecord.sql" />
+    <Build Include="Tables\SedgwickClaimContactInformationRecord.sql" />
+    <Build Include="Tables\SedgwickIMEReferralRecord.sql" />
+    <Build Include="Tables\GeicoAudit.sql" />
+    <Build Include="Tables\GeicoBusinessUnit.sql" />
+    <Build Include="Tables\GeicoCancelExpert.sql" />
+    <Build Include="Tables\GeicoCourtType.sql" />
+    <Build Include="Tables\GeicoCustomer.sql" />
+    <Build Include="Tables\GeicoExpert.sql" />
+    <Build Include="Tables\GeicoRequestContext.sql" />
+    <Build Include="Tables\GeicoScheduleExpert.sql" />
+    <Build Include="Tables\GeicoUser.sql" />
+    <Build Include="Tables\GeicoVenueCounty.sql" />
+    <Build Include="Tables\SedgwickPaymentHeader.sql" />
+    <Build Include="Tables\SedgwickPaymentTrailer.sql" />
+    <Build Include="Tables\SedgwickPaymentDetails.sql" />
+    <Build Include="Functions\strip_special.sql" />
+    <Build Include="Stored Procedures\proc_AddHeaderIDToTables.sql" />
+    <Build Include="Stored Procedures\proc_DeleteClaimInformation.sql" />
+    <Build Include="Stored Procedures\proc_DeleteClientContactInfoInformation.sql" />
+    <Build Include="Stored Procedures\proc_ParseClaimContactInformationRecordsToTable.sql" />
+    <Build Include="Stored Procedures\proc_ParseClaimRecordsToTable.sql" />
+    <Build Include="Stored Procedures\proc_ParseClientInformationRecordsToTable_Insert.sql" />
+    <Build Include="Stored Procedures\proc_ParseClientInformationRecordsToTable_Update.sql" />
+    <Build Include="Stored Procedures\proc_ParseHeaderRecordsToTable.sql" />
+    <Build Include="Stored Procedures\proc_ParseProcessingUnitRecordsToTable_Insert.sql" />
+    <Build Include="Stored Procedures\proc_ParseProcessingUnitRecordsToTable_Update.sql" />
+    <Build Include="Stored Procedures\proc_ParseTrailerRecordsToTable.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimClientInfoRecordsInsert.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimClientInfoRecordsQualify.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimClientInfoRecordsUpdate.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimContactInfoRecords.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimProcessingUnitRecordsInsert.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimProcessingUnitRecordsQualify.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimProcessingUnitRecordsUpdate.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimRecordsCLICheck.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimRecordsPROCheck.sql" />
+    <Build Include="Stored Procedures\proc_Pass2SedgwickClaimRecordsQualify.sql" />
+    <Build Include="Stored Procedures\proc_WriteAcknowledgementRecords.sql" />
+    <Build Include="Stored Procedures\proc_WriteAcknowledgementRecordsPack2to1.sql" />
+    <Build Include="Stored Procedures\proc_WriteAcknowledgementRecordsPack3to2.sql" />
+    <Build Include="Stored Procedures\proc_WriteAcknowledgementRecordsSetDefaultError.sql" />
+    <Build Include="Stored Procedures\proc2_SedgwickClaimMasterStoredProcedure.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compare\CustomRepositoryDB.scmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Data\DataPatching.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="CustomRepositoryDB.refactorlog" />
+  </ItemGroup>
+</Project>

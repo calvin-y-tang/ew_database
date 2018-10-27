@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="3a261172-2bc0-4269-a33a-1247185b78a1" ChangeDateTime="05/02/2016 18:47:00">
+    <Property Name="ElementName" Value="[dbo].[SedgwickClaimRecord_Update_Trigger]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimRecord]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SedgwickClaimRecord_InsertUpdate_Trigger]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="59c940dc-c343-41cf-8654-008e610863ef" ChangeDateTime="05/03/2016 23:17:26">
+    <Property Name="ElementName" Value="[dbo].[Trigger_SedgwickClaimContactInformationRecord]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimContactInformationRecord]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SedgwickClaimContactInformationRecord_InsertUpdate_Trigger]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c100cd9c-f99b-48a3-9f73-b10ec939aa46" ChangeDateTime="05/04/2016 15:18:19">
+    <Property Name="ElementName" Value="[dbo].[Trigger_SedgwickClaimDataImport]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimDataImport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[Trigger_SedgwickClaimDataImport_AfterInsUpd]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="215f5a8c-b713-4dd4-a3ab-5685ca7c1ba1" ChangeDateTime="05/04/2016 15:18:37">
+    <Property Name="ElementName" Value="[dbo].[SedgwickClaimContactInformationRecord_InsertUpdate_Trigger]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimContactInformationRecord]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SedgwickClaimContactInformationRecord_AfterInsUpd_Trigger]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ee1d6a6a-1970-4565-a6c7-b3c92d3ef108" ChangeDateTime="05/04/2016 15:20:12">
+    <Property Name="ElementName" Value="[dbo].[SedgwickClaimRecord_InsertUpdate_Trigger]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimRecord]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SedgwickClaimRecord_InsUpd_Trigger]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5cfee48d-1f66-477b-b775-1927ad36f7e6" ChangeDateTime="05/04/2016 17:36:52">
+    <Property Name="ElementName" Value="[dbo].[SedgwickClaimContactInformationRecord_AfterInsUpd_Trigger]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimContactInformationRecord]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SedgwickClaimContactInformationRecord_InsUpd_Trigger]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7b4481e6-fda0-462a-91db-9436b2d7a9f2" ChangeDateTime="05/04/2016 17:37:08">
+    <Property Name="ElementName" Value="[dbo].[Trigger_SedgwickClaimDataImport_AfterInsUpd]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimDataImport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[Trigger_SedgwickClaimDataImport_InsUpd]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bb2d3044-37ee-4dae-b451-1ed3e95475b8" ChangeDateTime="05/04/2016 17:37:24">
+    <Property Name="ElementName" Value="[dbo].[Trigger_SedgwickClaimDataImport_InsUpd]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[SedgwickClaimDataImport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SedgwickClaimDataImport_InsUpd_Trigger]" />
+  </Operation>
+</Operations>

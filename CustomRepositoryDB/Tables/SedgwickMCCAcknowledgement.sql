@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[SedgwickMCCAcknowledgement] (
+    [Id]                        INT           IDENTITY (1, 1) NOT NULL,
+    [ReferencedRecordType]      CHAR (3)      NOT NULL,
+    [ClientNumber]              INT           NOT NULL,
+    [ClaimNumber]               VARCHAR (18)  NOT NULL,
+    [ShortVendorId]             VARCHAR (8)   NOT NULL,
+    [CMSProcessingOffice]       NUMERIC (3)   NOT NULL,
+    [ClaimUniqueId]             VARCHAR (32)  NOT NULL,
+    [ClaimSystemId]             VARCHAR (32)  NOT NULL,
+    [ReferralUniqueId]          VARCHAR (32)  NULL,
+    [IsRecordLoaded]            CHAR (1)      NULL,
+    [FailureReasonCode1]        VARCHAR (5)   NULL,
+    [FailureReasonDescription1] VARCHAR (512) NULL,
+    [FailureReasonCode2]        VARCHAR (5)   NULL,
+    [FailureReasonDescription2] VARCHAR (512) NULL,
+    [FailureReasonCode3]        VARCHAR (5)   NULL,
+    [FailureReasonDescription3] VARCHAR (512) NULL,
+    [FailureReasonCode4]        VARCHAR (5)   NULL,
+    [FailureReasonDescription4] VARCHAR (512) NULL,
+    [FailureReasonCode5]        VARCHAR (5)   NULL,
+    [FailureReasonDescription5] VARCHAR (512) NULL,
+    [MiscFailureReasonCode]     VARCHAR (5)   NULL,
+    [MiscFailureDescription]    VARCHAR (512) NULL,
+    [SWFileHeaderRecordID]      INT           NOT NULL,
+    [ErrorHasBeenReviewed]      BIT           NOT NULL,
+    CONSTRAINT [PK_SedgwickMCCAcknowledgement] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
