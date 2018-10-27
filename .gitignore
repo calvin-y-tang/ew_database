@@ -8,15 +8,6 @@ IMECentricDB/IMECentricDB.sqlproj.user
 IMECentricDB/IMECentricDev.dsd
 IMECentricDB/IMECentricDev.dsd.autosave
 IMECentricDB/IMECentricDev.~dsd
-IMECentricDB/Releases/2.xx.sql
-IMECentricDB/Releases/After[!!-~]NDB[!!-~]Data[!!-~]Conv.txt
-IMECentricDB/Releases/IMECentricDev.dsd
-IMECentricDB/Releases/IMECentricRelease.dsd
-IMECentricDB/Releases/IMECentricRelease.dsd.autosave
-IMECentricDB/Releases/IMECentricRelease.~dsd
-IMECentricDB/Releases/ReadMe.txt
-IMECentricDB/Releases/cumulativeChanges.sql
-IMECentricDB/Releases/new.sql
 IMECentricDB/abetonLogin.sql
 IMECentricDB/abetonUpdate1.sql
 IMECentricDB/changeColumnName.sql
