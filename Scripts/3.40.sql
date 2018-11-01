@@ -82,6 +82,32 @@ IF @@TRANCOUNT = 0
 
 
 GO
+PRINT N'Altering [dbo].[tblOffice]...';
+
+
+GO
+ALTER TABLE [dbo].[tblOffice]
+    ADD [FeeApprovalDocumentCode] VARCHAR (15) NULL,
+        [FeeQuoteDocumentCode]    VARCHAR (15) NULL,
+        [DoctorQuoteDocumentCode] VARCHAR (15) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
 PRINT N'Creating [dbo].[tblCaseHistory].[IX_tblCaseHistory_CaseNbrFollowUpDate]...';
 
 
