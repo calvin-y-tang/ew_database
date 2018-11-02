@@ -14,6 +14,7 @@
     [UserIDAdded]              VARCHAR (15) NULL,
     [DateEdited]               DATETIME     NULL,
     [UserIDEdited]             VARCHAR (15) NULL,
+    [ServiceCode] INT NULL, 
     CONSTRAINT [PK_tblReferralAssignmentRule] PRIMARY KEY CLUSTERED ([ReferralAssignmentRuleID] ASC)
 );
 
