@@ -17,14 +17,15 @@ AS
 			tblCompany.ParentCompanyID AS ParentCompanyID, 
 			tblCase.QARep AS QARep,
 			tblCase.SchedulerCode AS SchedulerCode, 
-			tblCase.ServiceCode AS ServiceCode
+			tblCase.ServiceCode AS ServiceCode,
+			CaseEnv.DateImported
 	  FROM tblCaseEnvelope AS CaseEnv
 				LEFT OUTER JOIN tblCase ON tblCase.CaseNbr = CaseEnv.CaseNbr 
 				LEFT OUTER JOIN tblClient ON tblClient.ClientCode = tblCase.ClientCode
 				LEFT OUTER JOIN tblCompany ON tblCompany.CompanyCode = tblClient.CompanyCode
-	WHERE CaseEnv.IsCertifiedMail = 1
+	WHERE CaseEnv.IsCertifiedMail = 1 AND CaseEnv.DateImported IS NOT NULL  AND ([AddressedToEntity] = 'EE' OR [AddressedToEntity] = 'AT')
 	GROUP BY CaseEnv.CaseNbr, tblCase.CertMailNbr, tblCase.CertMailNbr2, CaseEnv.DateAcknowledged, 
 		tblCase.OfficeCode, tblCase.CaseType, tblCompany.CompanyCode, tblCase.DoctorCode, 
 		tblCase.DoctorLocation, tblCase.MarketerCode, tblCompany.ParentCompanyID, tblCase.QARep, 
-		tblCase.SchedulerCode, tblCase.ServiceCode
+		tblCase.SchedulerCode, tblCase.ServiceCode, CaseEnv.DateImported
 
