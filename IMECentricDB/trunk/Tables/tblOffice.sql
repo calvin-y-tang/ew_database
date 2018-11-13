@@ -34,6 +34,7 @@
     [FeeApprovalDocumentCode]  VARCHAR (15)     NULL,
     [FeeQuoteDocumentCode]     VARCHAR (15)     NULL,
     [DoctorQuoteDocumentCode]  VARCHAR (15)     NULL,
+	[DPSSystemID]              INT              CONSTRAINT [DF_tblOffice_DPSSystemID] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_tblOffice] PRIMARY KEY CLUSTERED ([OfficeCode] ASC)
 );
 
