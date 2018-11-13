@@ -21,6 +21,7 @@
     [Locked]          BIT              CONSTRAINT [DF_tblCaseHistory_Locked] DEFAULT ((0)) NOT NULL,
     [ConversationLog] BIT              CONSTRAINT [DF_tblCaseHistory_ConversationLog] DEFAULT ((0)) NOT NULL,
     [FollowUpDate]    DATETIME         NULL,
+    [ExceptionAlert]  BIT              CONSTRAINT [DF_tblCaseHistory_ExceptionAlert] DEFAULT ((0)) NOT NULL, 
     CONSTRAINT [PK_tblCaseHistory] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 

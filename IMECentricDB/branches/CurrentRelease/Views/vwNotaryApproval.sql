@@ -23,6 +23,7 @@ SELECT C.CaseNbr,
 	   C.ServiceCode ,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
 	   C.NotaryRequired,
+	   CASE WHEN C.NotarySent = 1 THEN 'Y' ELSE 'N' END AS NotarySent,
 	   C.NotaryRequiredCheckedDate
  FROM tblCase AS C
  INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr

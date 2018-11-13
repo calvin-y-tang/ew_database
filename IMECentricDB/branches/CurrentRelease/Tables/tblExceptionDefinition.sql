@@ -28,6 +28,9 @@ CREATE TABLE [dbo].[tblExceptionDefinition] (
     [UserIDEdited]     VARCHAR (50)  NULL,
     [UseBillingEntity] BIT           CONSTRAINT [DF_tblExceptionDefinition_UseBillingEntity] DEFAULT ((0)) NOT NULL,
     [AllOffice]        BIT           CONSTRAINT [DF_tblExceptionDefinition_AllOffice] DEFAULT ((0)) NOT NULL,
+    [CreateCHAlert]    BIT           CONSTRAINT [DF_tblExceptionDefinition_CreateCHAlert] DEFAULT ((0)) NOT NULL,
+    [CHEventDesc]      VARCHAR(50)    NULL, 
+    [CHOtherInfo]      VARCHAR(3000)  NULL, 
     CONSTRAINT [PK_tblExceptionDefinition] PRIMARY KEY CLUSTERED ([ExceptionDefID] ASC)
 );
 

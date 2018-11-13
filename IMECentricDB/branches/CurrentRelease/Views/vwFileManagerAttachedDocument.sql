@@ -27,6 +27,7 @@ SELECT C.CaseNbr,
 	   CD.DateAdded AS DateAttached,
 	   CD.Source,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
+	   Q.StatusDesc,
 	   CDT.Description AS DocType
  FROM tblCase AS C
  INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
@@ -35,6 +36,7 @@ SELECT C.CaseNbr,
  INNER JOIN tblServices AS SE ON SE.ServiceCode = C.ServiceCode
  INNER JOIN tblCaseDocuments AS CD ON CD.CaseNbr = C.CaseNbr
  INNER JOIN tblCaseDocType AS CDT On CDT.CaseDocTypeID = CD.CaseDocTypeID
+ INNER JOIN tblQueues AS Q ON Q.StatusCode=C.Status
  LEFT OUTER JOIN tblDoctor AS DR ON DR.DoctorCode = C.DoctorCode
  LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
  LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
