@@ -1046,7 +1046,6 @@
     <Build Include="Views\vwFileManagerAttachedDocument.sql" />
     <Build Include="Views\vwRptProgressiveUpcomingAppt.sql" />
     <Build Include="Stored Procedures\proc_ExamineeUpdatePrimaryAddress.sql" />
-    <Build Include="Functions\fnReturnValueFromKeyInString.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
