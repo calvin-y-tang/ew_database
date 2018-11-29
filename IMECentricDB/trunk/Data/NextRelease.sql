@@ -24,4 +24,8 @@ UPDATE [IMECentricMaster].[dbo].[GPInvoice]
        GPInvoice.DocumentNo = CAST(AH.DocumentNbr AS VARCHAR(15))
        AND GPInvoice.GPFacilityID = EWfac.GPFacility
 
+---Issue 7809 Progressive - Add link in email for report
+INSERT INTO tblMessageToken (Name,Description) 
+VALUES ('@ViewDocumentURL@','') 
+
 
