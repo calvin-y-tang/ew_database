@@ -1052,6 +1052,8 @@
     <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_QueryData.sql" />
     <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt.sql" />
     <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_PatchData.sql" />
+    <Build Include="Tables\tblWebActionLink.sql" />
+    <Build Include="Tables\tblWebActionLinkItem.sql" />    
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
