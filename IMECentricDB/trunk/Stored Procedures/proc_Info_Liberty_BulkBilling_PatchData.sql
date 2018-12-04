@@ -47,4 +47,4 @@ UPDATE ui SET ui.ClaimantConfirmationDateTime = lc.ContactedDateTime, ui.Claiman
 -- return the main table
 SELECT * 
   FROM ##tmp_LibertyInvoices
-ORDER BY InvoiceNbr
+ORDER BY InvoiceNo

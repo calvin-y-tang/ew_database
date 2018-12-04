@@ -31,7 +31,10 @@ SELECT
   AH.HeaderID,
   AH.EWFacilityID,
   AH.CaseDocID,
+  AH.CaseApptID,
   EWF.GPFacility + '-' + cast(AH.DocumentNbr as VarChar(15)) as InvoiceNo,
+  EWF.FedTaxID,
+  isnull(EWF.RemitAddress, EWF.Address) as "VendorMailingAddress",
   cast(AH.DocumentNbr as varchar(15)) as DocumentNo,
   AH.DocumentDate as InvoiceDate,
   cast(C.CaseNbr as varchar(15)) as CaseNbr,
@@ -39,6 +42,7 @@ SELECT
   CO.CompanyCode as CompanyID,
   CO.IntName as CompanyInt,
   CO.ExtName as CompanyExt,
+  EWF.FacilityName "VendorName",
   ISNULL(CLI.FirstName, '') + ' ' + ISNULL(CLI.LastName, '') as ClientName,
   AH.ClaimNbr as ClaimNumber,
   C.DateAdded,
@@ -46,12 +50,19 @@ SELECT
   C.DateReceived,
   C.Jurisdiction,
   isnull(E.FirstName, '') + ' ' + isnull(E.LastName, '') as "ClaimantName",
+  E.State as "ClaimantState",    
   CA.ApptTime as AppointmentDate,
+  apts.Name as AppointmentStatus,
   case when isnull(D.LastName, '') = '' then isnull(D.FirstName, '') else D.LastName +', ' + isnull(D.FirstName, '') end as ProviderName,
+  isnull(d.LastName, '') as ProviderLastName,
+  isnull(d.FirstName, '') as ProviderFirstName,
+  C.SReqSpecialty as RequestedSpecialty,
   isnull(CA.SpecialtyCode, C.DoctorSpecialty) as DoctorSpecialty,
   AH.DocumentTotalUS as "Charge",
   CD.Param as "CustomerDataParam",
   CD2.Param as "InvCustomerDataParam", 
+  CONVERT(VARCHAR(64), NULL) as "iCaseReferralType",
+  CONVERT(VARCHAR(64), NULL) as "iCaseICMServiceType",
   CONVERT(VARCHAR(64), NULL) as "iCaseNbr",
   CONVERT(VARCHAR(64), NULL) as "iCaseCompanyMarket",
   CONVERT(VARCHAR(16), NULL) as "iCaseDateSubmitted",
@@ -72,8 +83,15 @@ SELECT
   CONVERT(INT, NULL) as ClaimantCallAttempts,
   CONVERT(DATETIME, NULL) as AttyConfirmationDateTime,
   CONVERT(VARCHAR(32), NULL) as AttyConfirmationStatus,
-  CONVERT(INT, NULL) as AttyCallAttempts
-
+  CONVERT(INT, NULL) as AttyCallAttempts,
+  CONVERT(VARCHAR(12), NULL) AS ExpenseCode,
+  BL.Name as "LineOfBusiness",
+  (isnull([FeeAmount],0) + isnull([No Show],0) + isnull([Late Canceled],0) + isnull([PeerReview],0) + isnull([Addendum], 0)) as ExamFee,
+  isnull([Diag], 0) as RadiololgyFee,
+  (isnull([Interpret],0) + isnull([Trans],0) + isnull([BillReview],0) + isnull([Legal],0) + isnull([Processing],0) + isnull([Nurse],0)
+	+ isnull([PhoneConf],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
+	+ isnull([Rehab],0)	+ isnull([AddReview],0) + isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other
+INTO ##tmp_LibertyInvoices
 FROM tblAcctHeader as AH
 	INNER JOIN tblCase as C on AH.CaseNbr = C.CaseNbr
 	INNER JOIN tblClient as CLI on AH.ClientCode = CLI.ClientCode
@@ -87,8 +105,57 @@ FROM tblAcctHeader as AH
 	LEFT OUTER JOIN tblOffice as O on C.OfficeCode = O.OfficeCode
 	LEFT OUTER JOIN tblEWFacility as EWF on AH.EWFacilityID = EWF.EWFacilityID
     LEFT OUTER JOIN tblCaseAppt as CA on isnull(AH.CaseApptID, C.CaseApptID) = CA.CaseApptID
+	LEFT OUTER JOIN tblApptStatus as apts on CA.ApptStatusID = apts.ApptStatusID
 	LEFT OUTER JOIN tblCustomerData as CD on (C.CaseNbr = CD.TableKey AND CD.TableType = 'tblCase' AND CD.CustomerName = 'Liberty Mutual')
 	LEFT OUTER JOIN tblCustomerData as CD2 on (AH.HeaderID = CD2.TableKey AND CD2.TableType = 'tblAcctHeader' AND CD2.CustomerName = 'Liberty Mutual')
+	LEFT OUTER JOIN
+(
+  select Pvt.*
+  from (
+    select
+      AD.HeaderID,
+      isnull(case when EWFC.Mapping5 = 'FeeAmount' and AH.ApptStatusID in (51,102) then 'Late Canceled'
+                  when EWFC.Mapping5 = 'FeeAmount' and AH.ApptStatusID = 101 then 'No Show'
+                  else EWFC.Mapping5 end, 'Other') as FeeColumn,
+      AD.ExtendedAmount	
+    from tblCase as C
+    inner join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'
+    inner join tblAcctDetail as AD on AH.HeaderID = AD.HeaderID
+    inner join tblProduct as P on P.ProdCode = AD.ProdCode
+    inner join tblCaseType as CT on C.CaseType = CT.Code
+    inner join tblFRCategory as FRC on C.CaseType = FRC.CaseType and AD.ProdCode = FRC.ProductCode
+    inner join tblEWFlashCategory as EWFC on FRC.EWFlashCategoryID = EWFC.EWFlashCategoryID
+    left outer join tblApptStatus as A on A.ApptStatusID = AH.ApptStatusID
+  ) as tmp
+  pivot
+  (
+    sum(ExtendedAmount) --aggregrate function that give the value for the columns from FeeColumn
+    for FeeColumn in (  --list out the values in FeeColumn that need to be a column
+      [FeeAmount],
+      [No Show],
+      [Late Canceled],
+      [Interpret],
+      [Trans],
+      [Diag],
+      [BillReview],
+      [PeerReview],
+      [Addendum],
+      [Legal],
+      [Processing],
+      [Nurse],
+      [PhoneConf],
+      [MSA],
+      [Clinical],
+      [Tech],
+      [Medicare],
+      [OPO],
+      [Rehab],
+      [AddReview],
+      [AdminFee],
+      [FacFee],
+      [Other])
+  ) as Pvt
+) as FT on FT.HeaderID = AH.HeaderID
 where AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate
       AND AH.DocumentType = 'IN' 
       AND AH.DocumentStatus = 'Final' 
