@@ -31,7 +31,7 @@ SELECT
   AH.HeaderID,
   AH.EWFacilityID,
   AH.CaseDocID,
-  AH.CaseApptID,
+  ISNULL(AH.CaseApptID, C.CaseApptID) as CaseApptID,
   EWF.GPFacility + '-' + cast(AH.DocumentNbr as VarChar(15)) as InvoiceNo,
   EWF.FedTaxID,
   isnull(EWF.RemitAddress, EWF.Address) as "VendorMailingAddress",
