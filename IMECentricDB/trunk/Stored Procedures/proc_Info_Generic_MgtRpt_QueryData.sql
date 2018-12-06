@@ -99,7 +99,7 @@ SELECT
   isnull(CA.DateReceived, C.DateReceived) as DateReceived,
   CA.DateAdded as ApptMadeDate,
   C.OrigApptTime as OrigAppt,
-  inv.CaseApptID,
+  ISNULL(inv.CaseApptID, c.CaseApptID) as CaseApptID,
   CA.ApptTime as [ApptDate],
   C.RptFinalizedDate,
   C.RptSentDate,
