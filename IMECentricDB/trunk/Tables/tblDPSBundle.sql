@@ -30,6 +30,7 @@
     [WorkBundleDesc] VARCHAR(30) NULL, 
     [ExtDocumentID] VARCHAR(100) NULL, 
     [DPSPriorityID] INT NULL, 
+    [DPSSystemID] INT CONSTRAINT [DF_tblDPSBundle_DPSSystemID] DEFAULT ((0)) NOT NULL, 
     CONSTRAINT [PK_tblDPSBundle] PRIMARY KEY CLUSTERED ([DPSBundleID] ASC)
 );
 
