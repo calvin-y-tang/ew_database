@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE spDoctorSearch
+﻿CREATE PROCEDURE [dbo].[spDoctorSearch]
 (
 	@SessionID AS VARCHAR(50) = NULL,
 
@@ -31,7 +31,10 @@
 	@CompanyCode AS INT = NULL,
 	@ParentCompanyID AS INT = NULL,
 	@EWBusLineID AS INT = NULL,
-	@EWServiceTypeID AS INT = NULL
+	@EWServiceTypeID AS INT = NULL,
+	
+	@FirstName AS VARCHAR(50) = NULL,
+	@LastName AS VARCHAR(50) = NULL
 )
 AS
 BEGIN
@@ -129,6 +132,11 @@ FROM
 	IF ISNULL(@Degree,'')<>''
 		SET @strWhere = @strWhere + ' AND @_Degree = DR.Credentials'
 
+	IF ISNULL(@FirstName,'')<>''
+		SET @strWhere = @strWhere + ' AND DR.FirstName LIKE @_FirstName'
+	IF ISNULL(@LastName,'')<>''
+		SET @strWhere = @strWhere + ' AND DR.LastName LIKE @_LastName'
+
 	IF ISNULL(@RequirePracticingDoctors,0)=1
 		SET @strWhere = @strWhere + ' AND DR.PracticingDoctor = 1'
 	IF ISNULL(@RequireLicencedInExamState,0)=1
@@ -196,7 +204,10 @@ FROM
 			@_ParentCompanyID INT,	
 			@_CompanyCode INT,		
 			@_ClientCode INT,			
-			@_Proximity INT',
+			@_Proximity INT,
+			@_FirstName VARCHAR(50),
+			@_LastName VARCHAR(50)
+			',
 			@_tmpSessionID = @tmpSessionID,
 			@_geoEE = @geoEE,
 			@_distanceConv = @distanceConv,
@@ -220,8 +231,10 @@ FROM
 			@_OfficeCode = @OfficeCode,
 			@_ParentCompanyID = @ParentCompanyID,
 			@_CompanyCode = @CompanyCode,
-			@_ClientCode = @ClientCode,	
-			@_Proximity = @Proximity
+			@_ClientCode = @ClientCode,
+			@_Proximity = @Proximity,
+			@_FirstName = @FirstName,
+			@_LastName = @LastName
 	SET @returnValue = @@ROWCOUNT
 
 
@@ -279,11 +292,11 @@ FROM
 	UPDATE DSR 
 		SET DSR.DoctorRank = DR.DoctorRank1
 		FROM tblDoctorSearchResult AS DSR
-	       --INNER JOIN ranking AS R ON R.PrimaryKey = DSR.PrimaryKey
 		   INNER JOIN (SELECT PrimaryKey, DENSE_RANK() OVER (ORDER BY DisplayScore DESC, DoctorCode) AS DoctorRank1
 		                 FROM tblDoctorSearchResult
 					  WHERE SessionID = @tmpSessionID) AS DR ON DR.PrimaryKey = DSR.PrimaryKey
 		WHERE DSR.SessionID=@tmpSessionID
+
 
 	-- Recalculate doctor ranking so that the same doctor has the same ranking
      UPDATE DSR 
@@ -294,11 +307,12 @@ FROM
                                     WHERE SessionID = @tmpSessionID) AS T1 ON t1.PrimaryKey = DSR.PrimaryKey
            WHERE DSR.SessionID = @tmpSessionID
 
+
 	-- The ranking created above has gaps in numbering - take gaps out.
 	UPDATE DSR 
 		SET DSR.DoctorRank = DR.DRk1
 		FROM tblDoctorSearchResult AS DSR
-				INNER JOIN (SELECT PrimaryKey, DENSE_RANK() OVER (ORDER BY DoctorRank) AS DRk1 FROM tblDoctorSearchResult
+		   INNER JOIN (SELECT PrimaryKey, DENSE_RANK() OVER (ORDER BY DoctorRank) AS DRk1 FROM tblDoctorSearchResult
 		WHERE SessionID = @tmpSessionID) AS DR ON DR.PrimaryKey = DSR.PrimaryKey
 
 
