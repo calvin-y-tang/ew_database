@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [proc_LoadCaseSearchProgressive] 
 (
 	@ClaimNbr varchar(50),
+	@ClaimNbrExt varchar(50),
 	@LastName varchar(50),
 	@CompanyCode int
 )
@@ -20,6 +21,11 @@ BEGIN
 		BEGIN
 			SET @StrSQL = @StrSQL + 'AND (tblCase.ClaimNbr LIKE ''' + @modulo + @ClaimNbr + @modulo + ''') '
 		END 
+		
+		IF LEN(@ClaimNbrExt) > 0
+		BEGIN
+			SET @StrSQL = @StrSQL + 'AND (tblCase.ClaimNbrExt LIKE ''' + @modulo + @ClaimNbrExt + @modulo + ''') '
+		END 
 
 		IF LEN(@LastName) > 0
 		BEGIN
@@ -38,4 +44,3 @@ BEGIN
 
 	RETURN @Err
 END
-GO
