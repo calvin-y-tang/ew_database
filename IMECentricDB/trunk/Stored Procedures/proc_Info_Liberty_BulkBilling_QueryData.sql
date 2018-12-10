@@ -89,7 +89,7 @@ SELECT
   (isnull([FeeAmount],0) + isnull([No Show],0) + isnull([Late Canceled],0) + isnull([PeerReview],0) + isnull([Addendum], 0)) as ExamFee,
   isnull([Diag], 0) as RadiololgyFee,
   (isnull([Interpret],0) + isnull([Trans],0) + isnull([BillReview],0) + isnull([Legal],0) + isnull([Processing],0) + isnull([Nurse],0)
-	+ isnull([PhoneConf],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
+	+ isnull(ft.[Phone],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
 	+ isnull([Rehab],0)	+ isnull([AddReview],0) + isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other
 INTO ##tmp_LibertyInvoices
 FROM tblAcctHeader as AH
@@ -143,7 +143,7 @@ FROM tblAcctHeader as AH
       [Legal],
       [Processing],
       [Nurse],
-      [PhoneConf],
+      [Phone],
       [MSA],
       [Clinical],
       [Tech],
