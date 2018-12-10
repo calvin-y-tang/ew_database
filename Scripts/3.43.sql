@@ -46,4 +46,3 @@ PRINT N'Update complete.';
 
 
 GO
-
