@@ -1,38 +1,38 @@
-﻿
-
-CREATE PROCEDURE [proc_CaseProblem_Insert]
+﻿CREATE PROCEDURE [proc_CaseProblem_Insert]
 (
- @casenbr int,
- @problemcode int,
- @dateadded datetime = NULL,
- @useridadded varchar(15) = NULL
+	@casenbr int,
+	@problemcode int,
+	@problemareacode int = NULL,
+	@dateadded datetime = NULL,
+	@useridadded varchar(15) = NULL
 )
 AS
 BEGIN
 
- SET NOCOUNT OFF
- DECLARE @Err int
+	SET NOCOUNT OFF
+	DECLARE @Err int
 
- INSERT
- INTO [tblcaseproblem]
- (
-  [casenbr],
-  [problemcode],
-  [dateadded],
-  [useridadded]
- )
- VALUES
- (
-  @casenbr,
-  @problemcode,
-  @dateadded,
-  @useridadded
- )
+	INSERT
+	INTO [tblcaseproblem]
+	(
+		[casenbr],
+		[problemcode],
+		[problemareacode],
+		[dateadded],
+		[useridadded]
+	)
+	VALUES
+	(
+		@casenbr,
+		@problemcode,
+		@problemareacode,
+		@dateadded,
+		@useridadded
+	)
 
- SET @Err = @@Error
+	SET @Err = @@Error
 
 
- RETURN @Err
+	RETURN @Err
 END
-
-
+GO
