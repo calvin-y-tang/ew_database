@@ -81,6 +81,8 @@ CREATE TABLE [dbo].[tblDocument] (
     [IsEnvelopeReady]               BIT             CONSTRAINT [DF_tblDocument_IsEnvelopeReady] DEFAULT ((0)) NOT NULL,
     [NotifyTo]						VARCHAR(50)		NULL, 
     [ExcludeFromPortalWidget]		VARCHAR(50)		NULL, 
+	[EmailDocAsLink]                BIT             CONSTRAINT [DF_tblDocument_EmailDocAsLink] DEFAULT ((0)) NOT NULL,
+	[DaysEmailLinkValid]            INT             NULL,
     CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 

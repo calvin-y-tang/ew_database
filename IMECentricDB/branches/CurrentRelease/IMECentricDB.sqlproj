@@ -1046,6 +1046,17 @@
     <Build Include="Views\vwFileManagerAttachedDocument.sql" />
     <Build Include="Views\vwRptProgressiveUpcomingAppt.sql" />
     <Build Include="Stored Procedures\proc_ExamineeUpdatePrimaryAddress.sql" />
+    <Build Include="Stored Procedures\proc_Info_Liberty_BulkBilling.sql" />
+    <Build Include="Stored Procedures\proc_Info_Liberty_BulkBilling_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Liberty_BulkBilling_PatchData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt.sql" />
+    <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_PatchData.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_LoadByCaseNbr.sql" />
+    <Build Include="Tables\tblWebActionLink.sql" />
+    <Build Include="Tables\tblWebActionLinkItem.sql" />
+    <Build Include="Stored Procedures\proc_GetDocumentShareByGuid.sql" />
+    <Build Include="Stored Procedures\proc_GetOfficeFacilityInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />

@@ -88,7 +88,7 @@
     [UserCacheMin]             INT              NULL, 
     [SettingVersion]           INT              CONSTRAINT [DF_tblControl_SettingVersion] DEFAULT ((1)) NOT NULL, 
 	[DASecurityProfileID]      INT              NULL,
-
+	[DefaultWebCompanyID]      INT              NULL,
     CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC)
 );
 
