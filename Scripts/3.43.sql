@@ -1209,6 +1209,14 @@ IF @@TRANCOUNT = 0
 GO
 PRINT N'Creating [dbo].[proc_Info_Liberty_BulkBilling_PatchData]...';
 
+--IF EXISTS (
+--        SELECT type_desc, type
+--        FROM sys.procedures WITH(NOLOCK)
+--        WHERE NAME = 'proc_Info_Liberty_BulkBilling_PatchData'
+--            AND type = 'P'
+--      )
+--     DROP PROCEDURE [dbo].[proc_Info_Liberty_BulkBilling_PatchData]
+--GO
 
 GO
 CREATE PROCEDURE [dbo].[proc_Info_Liberty_BulkBilling_PatchData]
@@ -1303,6 +1311,14 @@ IF @@TRANCOUNT = 0
 GO
 PRINT N'Creating [dbo].[proc_Info_Liberty_BulkBilling_QueryData]...';
 
+--IF EXISTS (
+--        SELECT type_desc, type
+--        FROM sys.procedures WITH(NOLOCK)
+--        WHERE NAME = 'proc_Info_Liberty_BulkBilling_QueryData'
+--            AND type = 'P'
+--      )
+--     DROP PROCEDURE [dbo].[proc_Info_Liberty_BulkBilling_QueryData]
+--GO
 
 GO
 CREATE PROCEDURE [dbo].[proc_Info_Liberty_BulkBilling_QueryData]
@@ -1553,6 +1569,14 @@ IF @@TRANCOUNT = 0
 GO
 PRINT N'Creating [dbo].[proc_Info_Liberty_BulkBilling]...';
 
+--IF EXISTS (
+--        SELECT type_desc, type
+--        FROM sys.procedures WITH(NOLOCK)
+--        WHERE NAME = 'proc_Info_Liberty_BulkBilling'
+--            AND type = 'P'
+--      )
+--     DROP PROCEDURE [dbo].[proc_Info_Liberty_BulkBilling]
+--GO
 
 GO
 CREATE PROCEDURE [dbo].[proc_Info_Liberty_BulkBilling]
