@@ -1057,6 +1057,7 @@
     <Build Include="Tables\tblWebActionLinkItem.sql" />
     <Build Include="Stored Procedures\proc_GetDocumentShareByGuid.sql" />
     <Build Include="Stored Procedures\proc_GetOfficeFacilityInfo.sql" />
+    <Build Include="Stored Procedures\proc_CancelCase.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
