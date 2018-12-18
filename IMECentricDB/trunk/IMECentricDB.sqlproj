@@ -1058,6 +1058,7 @@
     <Build Include="Stored Procedures\proc_GetDocumentShareByGuid.sql" />
     <Build Include="Stored Procedures\proc_GetOfficeFacilityInfo.sql" />
     <Build Include="Stored Procedures\proc_CancelCase.sql" />
+    <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
