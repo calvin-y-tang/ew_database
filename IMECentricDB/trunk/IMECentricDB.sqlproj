@@ -1059,6 +1059,7 @@
     <Build Include="Stored Procedures\proc_GetOfficeFacilityInfo.sql" />
     <Build Include="Stored Procedures\proc_CancelCase.sql" />
     <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
+ 	<Build Include="Functions\fnGetBusinessDays.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
