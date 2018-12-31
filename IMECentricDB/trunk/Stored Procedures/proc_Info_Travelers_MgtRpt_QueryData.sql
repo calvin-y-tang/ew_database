@@ -63,11 +63,11 @@ SELECT
 		WHEN ISNULL(C.RequestedDoc, '') <> '' THEN 'Yes'
 		WHEN ISNULL(C.RequestedDoc, '') = '' THEN 'No'
 	END DoctorRequested,
+	CONVERT(DATETIME, NULL) as ReportDateViewed,
 	CONVERT(INT, NULL) ReferralToScheduledBusDays,
 	CONVERT(INT, NULL) AS ReferralToMedRecsRecvdCalDays,
-	TATScheduledToExam as ScheduledToApptCalDays,
-	TATAwaitingSchedulingToRptSent as ApptToReportSentCalDays, 
-	CONVERT(DATETIME, NULL) as ReportDateViewed,
+	CONVERT(INT, NULL) as ScheduledToApptCalDays,
+	CONVERT(INT, NULL) as ApptToReportSentCalDays, 	
     CONVERT(INT, NULL) AS ReferralReportReceviedCalDays
 INTO ##tmp_TravelersInvoices
 FROM tblAcctHeader AS AH

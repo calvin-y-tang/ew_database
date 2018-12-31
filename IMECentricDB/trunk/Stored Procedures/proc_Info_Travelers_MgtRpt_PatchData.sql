@@ -34,31 +34,23 @@ AS
 					) as tbl
 			WHERE tbl.ROWNUM = 1) AS docs ON ti.CaseNbr = docs.CaseNbr	 
 
-	print 'update TAT values'
+	print 'calculate all Turn-Around-Time Values'
 	UPDATE ti SET ti.ReferralToScheduledBusDays = [dbo].[fnGetBusinessDays](ti.ReferralDate, ti.ScheduledDate, 1)
-	  FROM ##tmp_TravelersInvoices as ti
+	  FROM ##tmp_TravelersInvoices as ti  
 
-    print 'calc date of referral to receipt of report'
-	UPDATE ##tmp_TravelersInvoices  SET ReferralReportReceviedCalDays = (SELECT (DATEDIFF(dd, ReferralDate, ReportDateViewed) + 1)
-			-(DATEDIFF(wk, ReferralDate, ReportDateViewed) * 2)
-			-(CASE WHEN DATENAME(dw, ReferralDate) = 'Sunday' THEN 1 ELSE 0 END)
-			-(CASE WHEN DATENAME(dw, ReportDateViewed) = 'Saturday' THEN 1 ELSE 0 END) - 1) 
-			-(SELECT Count(*) FROM tblNonWorkDays
-				WHERE NonWorkDay between ReferralDate and ReportDateViewed)
-     WHERE (ReportDateViewed IS NOT NULL)
-
-
-	print 'calc date of the referral to records received by vendor'
-	UPDATE ##tmp_TravelersInvoices  SET ReferralToMedRecsRecvdCalDays = (SELECT (DATEDIFF(dd, ReferralDate, MedicalRecordsReceived) + 1)
-			-(DATEDIFF(wk, ReferralDate, MedicalRecordsReceived) * 2)
-			-(CASE WHEN DATENAME(dw, ReferralDate) = 'Sunday' THEN 1 ELSE 0 END)
-			-(CASE WHEN DATENAME(dw, MedicalRecordsReceived) = 'Saturday' THEN 1 ELSE 0 END) - 1) 
-			-(SELECT Count(*) FROM tblNonWorkDays
-				WHERE NonWorkDay between ReferralDate and MedicalRecordsReceived)
-      WHERE (MedicalRecordsReceived IS NOT NULL)
-
+	UPDATE ti SET 
+				ti.ReferralToMedRecsRecvdCalDays = DATEDIFF(DAY, ti.ReferralDate, ti.MedicalRecordsReceived),
+				ti.ScheduledToApptCalDays = DATEDIFF(DAY, ti.ScheduledDate, ti.ApptDate),
+				ti.ApptToReportSentCalDays = DATEDIFF(DAY, ti.ApptDate, ti.ReportSent),
+				ti.ReferralReportReceviedCalDays = DATEDIFF(DAY, ti.ReferralDate, ti.ReportDateViewed)
+	  FROM ##tmp_TravelersInvoices as ti  
+	
 	print 'remove scheduled date for NON-IME Services'
 	UPDATE ##tmp_TravelersInvoices SET ScheduledDate = NULL WHERE ProductName <> 'IME'	  
+
+	print 'update rescheduled date'
+	UPDATE ti SET ti.RescheduledApptDate = (SELECT TOP 1 ca.DateAdded from tblCaseAppt as ca WHERE ca.CaseNbr = ti.CaseNbr ORDER BY ca.CaseApptID DESC)
+	  FROM ##tmp_TravelersInvoices as ti  
 
     print 'Return results'
     SELECT *
