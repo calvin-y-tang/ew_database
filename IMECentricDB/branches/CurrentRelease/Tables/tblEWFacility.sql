@@ -39,6 +39,7 @@
     [DateDR]                    DATETIME      NULL,
     [EWServiceTypeID]           INT           NULL,
     [AltDBID]                   INT           NULL,
+    [ReportDBID]				INT			  NULL, 
     CONSTRAINT [PK_tblEWFacility] PRIMARY KEY CLUSTERED ([EWFacilityID] ASC)
 );
 

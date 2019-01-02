@@ -1053,10 +1053,18 @@
     <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt.sql" />
     <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_PatchData.sql" />
     <Build Include="Stored Procedures\proc_RelatedParty_LoadByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_Info_Travelers_MgtRpt.sql" />
+    <Build Include="Stored Procedures\proc_Info_Travelers_MgtRpt_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Travelers_MgtRpt_PatchData.sql" />
     <Build Include="Tables\tblWebActionLink.sql" />
     <Build Include="Tables\tblWebActionLinkItem.sql" />
     <Build Include="Stored Procedures\proc_GetDocumentShareByGuid.sql" />
     <Build Include="Stored Procedures\proc_GetOfficeFacilityInfo.sql" />
+    <Build Include="Tables\tblParamPropertyGroup.sql" />
+    <Build Include="Tables\tblParamProperty.sql" />
+    <Build Include="Stored Procedures\proc_CancelCase.sql" />
+    <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
+    <Build Include="Functions\fnGetBusinessDays.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
