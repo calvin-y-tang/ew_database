@@ -1064,7 +1064,7 @@
     <Build Include="Tables\tblParamProperty.sql" />
     <Build Include="Stored Procedures\proc_CancelCase.sql" />
     <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
- 	<Build Include="Functions\fnGetBusinessDays.sql" />
+    <Build Include="Functions\fnGetBusinessDays.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
@@ -1072,6 +1072,7 @@
     <None Include="Compare\IMECentricDevelopment.scmp" />
     <None Include="Snapshots\CustomRepository.dacpac" />
     <None Include="Compare\DefaultCompareOptions.scmp" />
+    <None Include="Data\7993 - Allstate Client Load File.csv" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\110\SqlSchemas\master.dacpac">
