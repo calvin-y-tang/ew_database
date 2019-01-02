@@ -1,8 +1,3 @@
----Issue 7809 Progressive - Add link in email for report
-INSERT INTO tblMessageToken (Name,Description) 
-VALUES ('@ViewDocumentURL@','') 
-GO
-
 -- ISSUE 8047 & 7933 Allstte changes for Case and Client Forms
 --	1. Update tblEvent 
 UPDATE tblEvent SET Category = 'Client' WHERE EventID = 3001
@@ -59,46 +54,3 @@ INSERT INTO tblParamProperty(ParamPropertyGroupID, LabelText, FieldName, Require
 VALUES
 	(@iPKeyValue, 'Involved ID', 'InvolvedID', 0, NULL, '2018-12-10 00:00:00.000', 'JPais')
 GO
-
--- 4. populate new ParamProperty tables
-	CREATE TABLE tmpAllstateClientImport
-	(
-		UserName VARCHAR(20) NOT NULL,    -- tblClient.EmployeeNumber
-		Title VARCHAR(50) NOT NULL,       -- tblClient.Title
-		Department VARCHAR(100) NOT NULL, -- tblCustomerData
-		MCO VARCHAR(100) NOT NULL,        -- tblCustomerData
-		CSA VARCHAR(100) NOT NULL,        -- tblCustomerData
-		ClientCode INTEGER NOT NULL       -- Used to join with tblClient
-	)
-	GO
-
-	-- load import data file
-	-- LOAD FILE IS AT: \\dev4\Users\Jose.Pais\__TEMP\7993 - Allstate Client Load File.csv
-	BULK INSERT tmpAllStateClientImport 
-	FROM '<FULLY QUALIFIED PATH TO LOAD FILE PLACEHOLDER'
-	WITH (FieldTerminator=',', RowTerminator = '\n', KEEPNULLS)
-	GO
-
-	-- update tblClient
-	UPDATE tblClient
-		SET EmployeeNumber = CLImp.UserName,
-			Title = CLImp.Title
-		FROM tblClient
-			INNER JOIN tmpAllstateClientImport AS CLImp ON CLImp.ClientCode = tblClient.ClientCode
-	GO
-
-	-- Update/create tblCustomerData 
-	INSERT INTO tblCustomerData (Version, TableType, TableKey, Param, CustomerName)
-	SELECT 
-		1, 
-		'tblClient', 
-		tmpAllstateClientImport.ClientCode, 
-		'Department="' + LTRIM(RTRIM(Department)) + '";MCO="' + LTRIM(RTRIM(MCO)) + '";CSA="'+LTRIM(RTRIM(CSA)) + '"' AS Param,
-		'Allstate'
-	FROM tmpAllstateClientImport
-			INNER JOIN tblClient ON tblClient.ClientCode = tmpAllstateClientImport.ClientCode
-	GO
-
-	DROP TABLE tmpAllstateClientImport
-
-
