@@ -25,7 +25,13 @@ SELECT
 	C.CaseNbr,
 	C.ExtCaseNbr,
 	CASE WHEN ISNULL(CL.LASTNAME, '') = '' THEN ISNULL(CL.FIRSTNAME, '') ELSE CL.LASTNAME + ', ' + ISNULL(CL.FIRSTNAME, '') END AS ReferralSource,
-	BL.Name as LineOfBusiness,
+	CASE BL.EWBusLineID
+		WHEN 1 THEN 'Bodily Injury'
+		WHEN 2 THEN 'No Fault'
+		WHEN 3 THEN 'Workers Compensation'
+		WHEN 5 THEN 'Bodily Injury'
+		ELSE BL.Name
+	END as LineOfBusiness,
 	CO.IntName as ClientSite,
 	C.ClaimNbr,	
 	CASE 
@@ -39,7 +45,7 @@ SELECT
     C.AwaitingScheduling as ReferralDate,
 	ISNULL(CA.DateAdded, CA.DateReceived) as ScheduledDate,	
 	C.DateMedsRecd as MedicalRecordsReceived,
-	C.OrigApptTime as OrigAppt,
+	CONVERT(DATETIME, NULL) as OrigAppt,
 	CONVERT(DATETIME, NULL) AS RescheduledApptDate,
 	CA.ApptTime as ApptDate,
 	C.RptSentDate as ReportSent,
@@ -68,7 +74,9 @@ SELECT
 	CONVERT(INT, NULL) AS ReferralToMedRecsRecvdCalDays,
 	CONVERT(INT, NULL) as ScheduledToApptCalDays,
 	CONVERT(INT, NULL) as ApptToReportSentCalDays, 	
-    CONVERT(INT, NULL) AS ReferralReportReceviedCalDays
+    CONVERT(INT, NULL) AS ReferralReportReceviedCalDays,
+	ISNULL(e.LastName, '') + ', ' + ISNULL(e.FirstName, '') as ExamineeName,
+	c.RptFinalizedDate as ReportFinalizedDate
 INTO ##tmp_TravelersInvoices
 FROM tblAcctHeader AS AH
 	LEFT OUTER JOIN tblCase as C on ah.CaseNbr = C.CaseNbr
