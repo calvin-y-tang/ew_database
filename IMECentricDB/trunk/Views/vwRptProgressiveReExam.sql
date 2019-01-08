@@ -15,6 +15,7 @@ SELECT
  C.DateReceived,
  C.DateOfInjury,
  C.ApptDate,
+ CAGRP.OrigApptDate,
  LC.ReExamNoticePrintedDate AS DateIMENotice,
  LC.RptFinalizedDate AS OriginalIMERptFinalizedDate,
 
@@ -32,6 +33,7 @@ SELECT
  INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
  LEFT OUTER JOIN tblCase AS LC ON C.PreviousCaseNbr = LC.CaseNbr
  LEFT OUTER JOIN tblLocation AS L ON C.DoctorLocation=L.LocationCode
+ LEFT OUTER JOIN (SELECT CaseNbr, MIN(ApptTime) AS OrigApptDate FROM tblCaseAppt GROUP BY CaseNbr) CAGRP ON C.CaseNbr = CAGRP.CaseNbr
  WHERE 1=1
  AND S.EWServiceTypeID=1
  AND C.IsReExam=1
