@@ -41,16 +41,11 @@ AS
 	UPDATE ti SET 
 				ti.ReferralToMedRecsRecvdCalDays = DATEDIFF(DAY, ti.ReferralDate, ti.MedicalRecordsReceived),
 				ti.ScheduledToApptCalDays = DATEDIFF(DAY, ti.ScheduledDate, ti.ApptDate),
-				ti.ApptToReportSentCalDays = DATEDIFF(DAY, ti.ApptDate, ti.ReportSent),
-				ti.ReferralReportReceviedCalDays = DATEDIFF(DAY, ti.ReferralDate, ti.ReportDateViewed)
+				ti.ApptToReportSentCalDays = DATEDIFF(DAY, ti.ApptDate, ti.ReportSent)				
 	  FROM ##tmp_TravelersInvoices as ti  
 	
 	print 'remove scheduled date for NON-IME Services'
 	UPDATE ##tmp_TravelersInvoices SET ScheduledDate = NULL WHERE ProductName <> 'IME'	  
-
-	print 'update rescheduled date'
-	UPDATE ti SET ti.RescheduledApptDate = (SELECT TOP 1 ca.DateAdded from tblCaseAppt as ca WHERE ca.CaseNbr = ti.CaseNbr ORDER BY ca.CaseApptID DESC)
-	  FROM ##tmp_TravelersInvoices as ti  
 
     print 'Return results'
     SELECT *
