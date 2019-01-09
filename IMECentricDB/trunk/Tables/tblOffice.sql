@@ -35,7 +35,8 @@
     [FeeQuoteDocumentCode]     VARCHAR (15)     NULL,
     [DoctorQuoteDocumentCode]  VARCHAR (15)     NULL,
 	[DPSSystemID]              INT              CONSTRAINT [DF_tblOffice_DPSSystemID] DEFAULT ((0)) NOT NULL,
-    [DPSFolderID]        INT              NULL,
+    [DPSFolderID]        INT                    NULL,
+    [UnselectedDataCarryOverNewCase] BIT		CONSTRAINT [DF_tblOffice_UnselectedDataCarryOverNewCase] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_tblOffice] PRIMARY KEY CLUSTERED ([OfficeCode] ASC)
 );
 
