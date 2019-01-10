@@ -1,0 +1,6 @@
+-- Issue 7842 - New override setting that allows Inactive doctors to be scheduled
+--		Just here for reference as it being created. it only needs to be added/created
+--		when the override is needed.
+--INSERT INTO tblSetting(Name, Value)
+--VALUES('CanSchedInactiveDoctor', 'True')
+--GO 
