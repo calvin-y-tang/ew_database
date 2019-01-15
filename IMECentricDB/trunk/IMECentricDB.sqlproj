@@ -1067,6 +1067,7 @@
     <Build Include="Functions\fnGetBusinessDays.sql" />
     <Build Include="Views\vwRptProgressivePeerBills.sql" />
     <Build Include="Functions\fnReturnValueFromKeyInString.sql" />
+    <Build Include="Tables\tblCustomerMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />

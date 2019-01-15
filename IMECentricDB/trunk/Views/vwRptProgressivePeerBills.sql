@@ -1,4 +1,4 @@
-﻿CREATE [dbo].[vwRptProgressivePeerBills]
+﻿CREATE VIEW vwRptProgressivePeerBills
 AS
 SELECT
  CPB.CaseNbr,
@@ -16,7 +16,7 @@ SELECT
  CPB.BillNumber,
  ProviderAttorney = 
   CASE
-	WHEN REPLACE([IMECentricEW].[dbo].fnReturnValueFromKeyInString(Param, 'ProviderAttorney'), '"', '') = 'Yes' THEN 'Y'
+	WHEN REPLACE([dbo].fnReturnValueFromKeyInString(Param, 'ProviderAttorney'), '"', '') = 'Yes' THEN 'Y'
 	ELSE 'N'
   END,  
 
