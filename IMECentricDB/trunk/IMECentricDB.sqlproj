@@ -1068,7 +1068,7 @@
     <Build Include="Views\vwRptProgressivePeerBills.sql" />
     <Build Include="Functions\fnReturnValueFromKeyInString.sql" />
     <Build Include="Tables\tblCustomerMapping.sql" />
-    <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive_1.sql" />
+    <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
