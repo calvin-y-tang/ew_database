@@ -1069,6 +1069,8 @@
     <Build Include="Functions\fnReturnValueFromKeyInString.sql" />
     <Build Include="Tables\tblCustomerMapping.sql" />
     <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
+    <Build Include="Functions\fnParseKeyValueStringForKey_1.sql" />
+    <Build Include="Functions\fnGetParamValue.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
