@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.vwDPSCases
 AS
-    SELECT DISTINCT
+    SELECT 
         C.CaseNbr,
         C.ExtCaseNbr,
         B.DPSBundleID,
@@ -23,9 +23,11 @@ AS
         D.DoctorCode,
         Com.CompanyCode,
         C.CaseType,
-        E.ChartNbr
+        E.ChartNbr,
+		S.Name AS Status
     FROM
         tblDPSBundle AS B
+	LEFT OUTER JOIN tblDPSStatus AS S ON S.DPSStatusID = B.DPSStatusID
     LEFT OUTER JOIN tblCase AS C ON B.CaseNbr=C.CaseNbr
     LEFT OUTER JOIN tblExaminee AS E ON C.ChartNbr=E.ChartNbr
     LEFT OUTER JOIN tblDoctor AS D ON C.DoctorCode=D.DoctorCode
