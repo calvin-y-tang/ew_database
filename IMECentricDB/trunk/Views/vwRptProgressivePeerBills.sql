@@ -6,7 +6,7 @@ SELECT
 	C.InvoiceAmt,
 	CPB.ProviderName,
 	CPB.ProviderZip,
-	-- TODO: need to know where to pull provider region from
+	CM.MappingValue AS Region,
 	CPB.ServiceDate,
 	CPB.ServiceEndDate,
 	CPB.ServiceRendered,
@@ -29,5 +29,6 @@ SELECT
 		 INNER JOIN tblCase AS C ON CPB.CaseNbr = C.CaseNbr
 		 INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
 		 LEFT OUTER JOIN tblCustomerData AS CD ON CD.TableKey = CPB.CaseNbr AND CD.TableType = 'tblCase' AND CD.CustomerName = 'Progressive PeerReview'
- WHERE 
+		 LEFT OUTER JOIN tblCustomerMapping AS CM ON CM.TableType = 'tblZipCode' AND CAST(CM.TableKey AS VARCHAR) = CPB.ProviderZip AND CM.EntityType='PC' AND CM.EntityID=39
+WHERE 
 	1=1
