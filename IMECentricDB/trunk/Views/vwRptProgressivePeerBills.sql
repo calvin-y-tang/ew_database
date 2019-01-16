@@ -2,7 +2,7 @@
 AS
 SELECT
 	CPB.CaseNbr,
-	CPB.DateBillReceived AS DateSentToClient,
+	C.RptFinalizedDate AS DateSentToClient,
 	C.InvoiceAmt,
 	CPB.ProviderName,
 	CPB.ProviderZip,
@@ -22,7 +22,7 @@ SELECT
 
 	CL.CompanyCode,
 	-- TODO: Need to verify that this is the correct date to use (it is in turn used to build WHERE CLAUSE)
-	dbo.fnDateValue(CPB.DateBillReceived) AS FilterDate
+	dbo.fnDateValue(C.RptFinalizedDate) AS FilterDate
 
  FROM 
 	tblCasePeerBill AS CPB
