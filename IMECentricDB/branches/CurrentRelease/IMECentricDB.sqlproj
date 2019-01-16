@@ -1065,6 +1065,7 @@
     <Build Include="Stored Procedures\proc_CancelCase.sql" />
     <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
     <Build Include="Functions\fnGetBusinessDays.sql" />
+    <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
