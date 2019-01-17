@@ -144,6 +144,11 @@ PRINT N'Creating [dbo].[proc_CheckForExamineeDupeProgressive]...';
 
 
 GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'proc_CheckForExamineeDupeProgressive')
+DROP PROCEDURE proc_CheckForExamineeDupeProgressive
+GO
+
 CREATE PROCEDURE [proc_CheckForExamineeDupeProgressive]
 (
 	@FirstName varchar(50),
