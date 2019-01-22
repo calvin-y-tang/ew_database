@@ -67,7 +67,7 @@ SELECT
   CONVERT(VARCHAR(64), NULL) AS "iCaseIMERequestAs",
   CONVERT(VARCHAR(64), NULL) AS "iCaseServiceType",
   CONVERT(BIT, NULL) as "NotiCaseReferral", 
-  CONVERT(VARCHAR(128), NULL) AS CTPCodes,
+  CONVERT(VARCHAR(128), NULL) AS CPTCodes,
   CONVERT(INT, NULL) AS "Count", 
   CONVERT(VARCHAR(10), NULL) AS "Time",
   CONVERT(DATETIME, NULL) as ClaimantConfirmationDateTime,
