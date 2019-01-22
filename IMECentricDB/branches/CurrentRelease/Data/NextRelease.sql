@@ -1,3 +1,4 @@
+/*
 TRUNCATE TABLE tblDPSPriority
 TRUNCATE TABLE tblDPSSortModel
 TRUNCATE TABLE tblDPSStatus
@@ -24,3 +25,4 @@ INSERT INTO [dbo].[tblDPSStatus] ([DPSStatusID], [Name]) VALUES (80, 'Complete')
 INSERT INTO [dbo].[tblDPSStatus] ([DPSStatusID], [Name]) VALUES (85, 'Canceled (Pending)')
 INSERT INTO [dbo].[tblDPSStatus] ([DPSStatusID], [Name]) VALUES (90, 'Canceled')||||||| .r14829
 GO
+*/
