@@ -76,10 +76,10 @@ SELECT ad.HeaderId, ad.CPTCode
 	WHERE (ad.CPTCode IS NOT NULL) AND (LEN(RTRIM(LTRIM(ad.CPTCode))) > 0) 
 
 
-UPDATE li SET li.CPTCodes = STUFF((SELECT '; ' + CPTCode FROM #tmp_CPTCodeList as cl
-		WHERE cl.HeaderID = li.HeaderID      
+UPDATE libi SET libi.CPTCodes = STUFF((SELECT '; ' + CPTCode FROM #tmp_CPTCodeList as cl
+		WHERE cl.HeaderID = libi.HeaderID      
     FOR XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '')
- FROM ##tmpLibertyInvoices
+ FROM ##tmp_LibertyInvoices as libi
 
 -- load other desc values into tmp table
 print 'load other description values to tmp table ...'
