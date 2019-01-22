@@ -19,12 +19,6 @@ SET @xml = CAST('<X>' + REPLACE(@ewFacilityIdList, @delimiter, '</X><X>') + '</X
 
 print 'Facility ID List: ' + @ewFacilityIdList;
 
-WITH AcctDetailsCTE AS 
-(select ad.HeaderId, ad.CPTCode 
-	from tblAcctDetail as ad 
-	where (ad.CPTCode IS NOT NULL) 
-	  and (LEN(RTRIM(LTRIM(ad.CPTCode))) > 0) 
-) 
 SELECT
   EWF.DBID as DBID,
   cast('Database' as varchar(15)) as DB,
@@ -73,9 +67,7 @@ SELECT
   CONVERT(VARCHAR(64), NULL) AS "iCaseIMERequestAs",
   CONVERT(VARCHAR(64), NULL) AS "iCaseServiceType",
   CONVERT(BIT, NULL) as "NotiCaseReferral", 
-  STUFF((SELECT '; ' + CPTCode FROM AcctDetailsCTE 
-    WHERE AcctDetailsCTE.HeaderID = AH.HeaderID      
-    FOR XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '') as CPTCodes, 
+  CONVERT(VARCHAR(128), NULL) AS CTPCodes,
   CONVERT(INT, NULL) AS "Count", 
   CONVERT(VARCHAR(10), NULL) AS "Time",
   CONVERT(DATETIME, NULL) as ClaimantConfirmationDateTime,
@@ -86,11 +78,14 @@ SELECT
   CONVERT(INT, NULL) as AttyCallAttempts,
   CONVERT(VARCHAR(12), NULL) AS ExpenseCode,
   BL.Name as "LineOfBusiness",
-  (isnull([FeeAmount],0) + isnull([No Show],0) + isnull([Late Canceled],0) + isnull([PeerReview],0) + isnull([Addendum], 0)) as ExamFee,
+  (isnull([FeeAmount],0) + isnull([No Show],0) + isnull([Late Canceled],0) + isnull([PeerReview],0) + isnull([Addendum], 0)) as ExamFee,  
   isnull([Diag], 0) as RadiololgyFee,
+  -- note: if you add/remove categories from the "other" list below, make sure you update the other service description list in patch data
   (isnull([Interpret],0) + isnull([Trans],0) + isnull([BillReview],0) + isnull([Legal],0) + isnull([Processing],0) + isnull([Nurse],0)
 	+ isnull(ft.[Phone],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
-	+ isnull([Rehab],0)	+ isnull([AddReview],0) + isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other
+	+ isnull([Rehab],0)	+ isnull([AddReview],0) + isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other,
+  ST.Name as ServiceDescription,
+  CONVERT(VARCHAR(4096), NULL) as OtherServiceDescription
 INTO ##tmp_LibertyInvoices
 FROM tblAcctHeader as AH
 	INNER JOIN tblCase as C on AH.CaseNbr = C.CaseNbr
