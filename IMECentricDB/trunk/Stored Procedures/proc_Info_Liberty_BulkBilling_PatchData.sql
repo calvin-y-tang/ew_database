@@ -75,10 +75,11 @@ SELECT ad.HeaderId, ad.CPTCode
 		inner join tblAcctDetail as ad on li.HeaderID = ad.HeaderID
 	WHERE (ad.CPTCode IS NOT NULL) AND (LEN(RTRIM(LTRIM(ad.CPTCode))) > 0) 
 
-UPDATE ui SET ui.CTPCodes = STUFF((SELECT '; ' + CPTCode FROM #tmp_CPTCodeList as cl
-		WHERE cl.HeaderID = ui.HeaderID      
-    FOR XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '')  
-FROM ##tmp_LibertyInvoices as ui
+
+UPDATE li SET li.CPTCodes = STUFF((SELECT '; ' + CPTCode FROM #tmp_CPTCodeList as cl
+		WHERE cl.HeaderID = li.HeaderID      
+    FOR XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '')
+ FROM ##tmpLibertyInvoices
 
 -- load other desc values into tmp table
 print 'load other description values to tmp table ...'
