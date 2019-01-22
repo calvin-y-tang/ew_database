@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[tblEWFolderDef] (
+    [FolderID]              INT           NOT NULL,
+    [Name]                  VARCHAR (50)  NULL,
+    [FolderType]            INT           NOT NULL,
+    [PathName]              VARCHAR (260) NULL,
+    [SortBy]                INT           NULL,
+    [SortOrder]             INT           NULL,
+    [FunctionCode]          VARCHAR (30)  NULL,
+    [FunctionDesc]          VARCHAR (50)  NULL,
+    [InfoSecurityTokenID]   INT           NULL,
+    [MoveSource]            BIT           NULL,
+    [MoveTarget]            BIT           NULL,
+    [FolderGroup]           VARCHAR (15)  NULL,
+    [GroupCode]             VARCHAR (15)  NULL,
+    [GroupDesc]             VARCHAR (50)  NULL,
+    [ArchiveType]           INT           NULL,
+    [ArchiveAge]            INT           NULL,
+    [ArchiveFolder]         VARCHAR (260) NULL,
+    [AutoCreate]            BIT           NULL,
+    [AddFilesEnabled]       BIT           NULL,
+    [AddFilesAcceptFolder]  BIT           NULL,
+    [AddFilesCopyOperation] INT           NULL,
+    CONSTRAINT [PK_tblEWFolderDef] PRIMARY KEY CLUSTERED ([FolderID] ASC)
+);
+
