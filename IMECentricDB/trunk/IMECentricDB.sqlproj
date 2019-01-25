@@ -1071,6 +1071,7 @@
     <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
     <Build Include="Functions\fnParseKeyValueStringForKey_1.sql" />
     <Build Include="Functions\fnGetParamValue.sql" />
+    <Build Include="Stored Procedures\proc_CreateCustomerFeeSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
