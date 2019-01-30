@@ -31,41 +31,45 @@ SELECT *
 		WHERE tbl.ROWNUM = 1) AS docs ON pmr.CaseNbr = docs.CaseNbr
 
 print 'Get first no show appt date and time'
-UPDATE pmr SET pmr.FirstNoShow = apt.ApptTime
+UPDATE pmr SET pmr.FirstNoShow = apt.ApptTime, pmr.FirstNoShowAmount = apt.TotalBilled
   FROM ##tmpProgessiveMgtRpt as pmr
 	INNER JOIN (
-SELECT *
-		FROM (SELECT ROW_NUMBER() OVER (PARTITION BY CaseNbr ORDER BY CaseApptID ASC) as ROWNUM, ApptTime, CaseNbr 
-				FROM tblCaseAppt as ca
-				WHERE ca.CaseNbr IN (Select CaseNbr FROM ##tmpProgessiveMgtRpt)
-				  and ca.ApptStatusID = 101
-				) as tbl
-		WHERE tbl.ROWNUM = 1 ) AS apt ON pmr.CaseNbr = apt.CaseNbr
+		SELECT SUM(ah.DocumentTotalUS) as TotalBilled, ah.CaseApptID, ApptTime, CaseNbr
+				FROM (SELECT ROW_NUMBER() OVER (PARTITION BY ca.CaseNbr ORDER BY ca.CaseApptID ASC) as ROWNUM, ca.ApptTime, ca.CaseApptID
+						FROM tblCaseAppt as ca				
+						WHERE ca.CaseNbr IN (select CaseNbr from ##tmpProgessiveMgtRpt) and (ca.ApptStatusID = 101)
+						) as tbl
+				  LEFT OUTER JOIN tblAcctHeader as AH on tbl.CaseApptID = ah.CaseApptID AND AH.DocumentType = 'IN'
+				WHERE tbl.ROWNUM = 1
+		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
 
 
 print 'Get second no show appt date and time'
-UPDATE pmr SET pmr.SecondNoShow = apt.ApptTime
+UPDATE pmr SET pmr.SecondNoShow = apt.ApptTime, pmr.SecondNoShowAmount = apt.TotalBilled
   FROM ##tmpProgessiveMgtRpt as pmr
 	INNER JOIN (
-SELECT *
-		FROM (SELECT ROW_NUMBER() OVER (PARTITION BY CaseNbr ORDER BY CaseApptID ASC) as ROWNUM, ApptTime, CaseNbr 
-				FROM tblCaseAppt as ca
-				WHERE ca.CaseNbr IN (Select CaseNbr FROM ##tmpProgessiveMgtRpt)
-				  and ca.ApptStatusID = 101
-				) as tbl
-		WHERE tbl.ROWNUM = 2 ) AS apt ON pmr.CaseNbr = apt.CaseNbr
+		SELECT SUM(ah.DocumentTotalUS) as TotalBilled, ah.CaseApptID, ApptTime, CaseNbr
+				FROM (SELECT ROW_NUMBER() OVER (PARTITION BY ca.CaseNbr ORDER BY ca.CaseApptID ASC) as ROWNUM, ca.ApptTime, ca.CaseApptID
+						FROM tblCaseAppt as ca				
+						WHERE ca.CaseNbr IN (select CaseNbr from ##tmpProgessiveMgtRpt) and (ca.ApptStatusID = 101)
+						) as tbl
+				  LEFT OUTER JOIN tblAcctHeader as AH on tbl.CaseApptID = ah.CaseApptID AND AH.DocumentType = 'IN'
+				WHERE tbl.ROWNUM = 2
+		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
 
 print 'Get third no show appt date and time'
-UPDATE pmr SET pmr.ThirdNoShow = apt.ApptTime
-  FROM ##tmpProgessiveMgtRpt as pmr
+UPDATE pmr SET pmr.ThirdNoShow = apt.ApptTime, pmr.ThirdNoShowAmount = apt.TotalBilled
+    FROM ##tmpProgessiveMgtRpt as pmr
 	INNER JOIN (
-SELECT *
-		FROM (SELECT ROW_NUMBER() OVER (PARTITION BY CaseNbr ORDER BY CaseApptID ASC) as ROWNUM, ApptTime, CaseNbr 
-				FROM tblCaseAppt as ca
-				WHERE ca.CaseNbr IN (Select CaseNbr FROM ##tmpProgessiveMgtRpt)
-				  and ca.ApptStatusID = 101
-				) as tbl
-		WHERE tbl.ROWNUM = 3 ) AS apt ON pmr.CaseNbr = apt.CaseNbr
+		SELECT SUM(ah.DocumentTotalUS) as TotalBilled, ah.CaseApptID, ApptTime, CaseNbr
+				FROM (SELECT ROW_NUMBER() OVER (PARTITION BY ca.CaseNbr ORDER BY ca.CaseApptID ASC) as ROWNUM, ca.ApptTime, ca.CaseApptID
+						FROM tblCaseAppt as ca				
+						WHERE ca.CaseNbr IN (select CaseNbr from ##tmpProgessiveMgtRpt) and (ca.ApptStatusID = 101)
+						) as tbl
+				  LEFT OUTER JOIN tblAcctHeader as AH on tbl.CaseApptID = ah.CaseApptID AND AH.DocumentType = 'IN'
+				WHERE tbl.ROWNUM = 3
+		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
+
 
 print 'Return final result set'
 SELECT *
