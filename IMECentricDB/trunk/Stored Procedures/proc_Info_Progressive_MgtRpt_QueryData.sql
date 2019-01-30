@@ -148,9 +148,13 @@ SELECT
   CONVERT(VARCHAR(4096), NULL) AS SLAExceptions,
   AH.HeaderID,
   CONVERT(DATETIME, NULL) AS "FirstNoShow",
+  CONVERT(MONEY, NULL) AS FirstNoShowAmount,
   CONVERT(DATETIME, NULL) AS "SecondNoShow",
+  CONVERT(MONEY, NULL) AS SecondNoShowAmount,
   CONVERT(DATETIME, NULL) AS "ThirdNoShow",
-  CONVERT(DATETIME, NULL) AS "ReportRetrievalDate"
+  CONVERT(MONEY, NULL) AS ThirdNoShowAmount,
+  CONVERT(DATETIME, NULL) AS "ReportRetrievalDate",
+ AHCA.DateAdded as ScheduledDate
 INTO ##tmpProgessiveMgtRpt
 FROM tblCase as C
 left outer join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'
