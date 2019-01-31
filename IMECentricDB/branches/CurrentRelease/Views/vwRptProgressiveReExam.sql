@@ -15,8 +15,9 @@ SELECT
  C.DateReceived,
  C.DateOfInjury,
  C.ApptDate,
+ C.OrigApptTime AS OrigApptDate,
  LC.ReExamNoticePrintedDate AS DateIMENotice,
- LC.RptFinalizedDate AS OriginalIMERptFinalizedDate,
+ LC.RptFinalizedDate AS OriginalIMERptFinalizedDate, 
 
  IIF(C.IsReExam=1, 'Yes', 'No') AS [Re-Exam],
  IIF(C.IsAutoReExam=1, 'Yes', 'No') AS [AutoRe-Exam],

@@ -29,6 +29,7 @@ CREATE TABLE [dbo].[tblWebUser] (
 	[QuietTimeEnd]			 DATETIME	   NULL,
 	[ShowFinancialInfo]      BIT           CONSTRAINT [DF_tblWebUser_ShowFinancialInfo] DEFAULT ((0)) NOT NULL,
 	[PasswordSalt]           VARCHAR(36)   CONSTRAINT [DF_tblWebUser_PasswordSalt] DEFAULT (NEWID()) NOT NULL,
+    [ShowOpenBlockTimeAppts] BIT		   CONSTRAINT [DF_tblWebUser_ShowOpenBlockTimeAppts] DEFAULT ((0)) NOT NULL, 
     CONSTRAINT [PK_tblWebUser] PRIMARY KEY CLUSTERED ([WebUserID] ASC) WITH (FILLFACTOR = 90)
 );
 

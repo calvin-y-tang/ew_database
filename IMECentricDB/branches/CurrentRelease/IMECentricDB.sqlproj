@@ -1065,7 +1065,12 @@
     <Build Include="Stored Procedures\proc_CancelCase.sql" />
     <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
     <Build Include="Functions\fnGetBusinessDays.sql" />
+    <Build Include="Views\vwRptProgressivePeerBills.sql" />
+    <Build Include="Tables\tblCustomerMapping.sql" />
     <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
+    <Build Include="Functions\fnParseKeyValueStringForKey.sql" />
+    <Build Include="Functions\fnGetParamValue.sql" />
+    <Build Include="Stored Procedures\proc_CreateCustomerFeeSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
