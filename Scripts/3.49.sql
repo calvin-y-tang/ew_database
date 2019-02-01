@@ -629,7 +629,7 @@ GO
 
 
 GO
-ALTER PROCEDURE [dbo].[proc_Info_Progressive_MgtRpt_PatchData]
+CREATE PROCEDURE [dbo].[proc_Info_Progressive_MgtRpt_PatchData]
 AS
 
 print 'Retrieve the SLA reason'
