@@ -1071,6 +1071,7 @@
     <Build Include="Functions\fnParseKeyValueStringForKey.sql" />
     <Build Include="Functions\fnGetParamValue.sql" />
     <Build Include="Stored Procedures\proc_CreateCustomerFeeSchedule.sql" />
+    <Build Include="Tables\tblExceptionDefCaseType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
