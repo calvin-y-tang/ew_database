@@ -17,7 +17,8 @@ SELECT
  C.DateOfInjury,
 
  FZ.Name AS FeeZone,
- (SELECT TOP 1 Description FROM tblCaseDocuments AS CD WHERE CD.CaseNbr=C.CaseNbr AND Source='FileMgr' AND Description LIKE '%EFF%' ORDER BY SeqNo DESC) AS LastEff,
+ (SELECT TOP 1 Description FROM tblCaseDocuments AS CD WHERE (CD.CaseNbr=C.CaseNbr OR (CD.MasterCaseNbr=C.MasterCaseNbr AND CD.SharedDoc=1)) 
+     AND Description LIKE '%EFF%' ORDER BY SeqNo DESC) AS LastEff,
 
  CL.CompanyCode,
  dbo.fnDateValue(C.DateReceived) AS FilterDate
