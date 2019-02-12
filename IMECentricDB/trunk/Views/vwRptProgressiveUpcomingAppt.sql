@@ -12,7 +12,7 @@ SELECT
 
  C.DateReceived,
  C.ApptDate,
- (SELECT TOP 1 Description FROM tblCaseDocuments AS CD WHERE CD.CaseNbr=C.CaseNbr AND Source='FileMgr' AND Description LIKE '%EFF%' ORDER BY SeqNo DESC) AS LastEff,
+ (SELECT TOP 1 Description FROM tblCaseDocuments AS CD WHERE CD.CaseNbr=C.CaseNbr AND Source='FileMgr' AND Description LIKE '% EFF[ .]%' ORDER BY SeqNo DESC) AS LastEff,
 
  CL.CompanyCode,
 
