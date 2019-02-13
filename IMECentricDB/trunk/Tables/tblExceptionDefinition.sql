@@ -31,6 +31,7 @@ CREATE TABLE [dbo].[tblExceptionDefinition] (
     [CreateCHAlert]    BIT           CONSTRAINT [DF_tblExceptionDefinition_CreateCHAlert] DEFAULT ((0)) NOT NULL,
     [CHEventDesc]      VARCHAR(50)    NULL, 
     [CHOtherInfo]      VARCHAR(3000)  NULL, 
+	[AllEWServiceType] BIT           CONSTRAINT [DF_tblExceptionDefinition_AllEWServiceType]  DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_tblExceptionDefinition] PRIMARY KEY CLUSTERED ([ExceptionDefID] ASC)
 );
 

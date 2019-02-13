@@ -1072,6 +1072,8 @@
     <Build Include="Functions\fnGetParamValue.sql" />
     <Build Include="Stored Procedures\proc_CreateCustomerFeeSchedule.sql" />
     <Build Include="Tables\tblExceptionDefCaseType.sql" />
+    <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
+    <Build Include="Tables\tblExceptionDefService.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
