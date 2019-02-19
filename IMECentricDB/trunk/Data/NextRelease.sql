@@ -12,5 +12,23 @@ VALUES('DistRepReqCoverSheet', 'Report', 'Coversheet Required when distributing 
 SELECT @iBusRuleID = @@IDENTITY
 INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
 VALUES('CO', 76626, 2, 1, @iBusRuleID, GetDate(), 'Admin', GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
 
+-- Issue 7995 - add new entries to tblCodes to source the PreAuth & WorkCompCaseType combo boxes on case form
+INSERT INTO tblCodes(Category, SubCategory, Value)
+VALUES ('PreAuthorization', 'CA', '1st Attempt'), 
+	   ('PreAuthorization', 'CA', '2nd Attempt'),
+	   ('PreAuthorization', 'CA', '3rd Attempt'),
+	   ('PreAuthorization', 'CA', 'No Response'),
+	   ('PreAuthorization', 'CA', 'Authorized'),
+	   ('PreAuthorization', 'CA', 'Denied'),
+	   ('PreAuthorization', 'CA', 'Acknowledged')
+GO
+INSERT INTO tblCodes(Category, SubCategory, Value)
+VALUES ('WorkCompCaseType', 'CA', 'D-QME'), 
+       ('WorkCompCaseType', 'CA', 'A-QME'), 
+	   ('WorkCompCaseType', 'CA', 'PU-QME'), 
+	   ('WorkCompCaseType', 'CA', 'RP-QME'), 
+	   ('WorkCompCaseType', 'CA', 'ADR')
+GO
 
