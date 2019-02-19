@@ -1074,6 +1074,7 @@
     <Build Include="Tables\tblExceptionDefCaseType.sql" />
     <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
     <Build Include="Tables\tblExceptionDefService.sql" />
+    <Build Include="Tables\tblInvoiceEQuoteFormatFormRule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
