@@ -12,6 +12,11 @@ BEGIN
     SET NOCOUNT ON;
     DECLARE @Err INT;
 
+	IF (@CaseTypeCode = -1)
+		SET @CaseTypeCode = 0;
+	IF (@ServiceCode = -1)
+		SET @ServiceCode = 0;
+
     SELECT  ED.* ,
             ISNULL(C.CaseNbr, -1) AS CaseNbr ,
             CL.ClientCode ,
