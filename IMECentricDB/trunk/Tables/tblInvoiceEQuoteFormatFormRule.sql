@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[tblInvoiceEQuoteFormatFormRule](
 	[InvoiceEQuoteFormatFormRuleID] [int] IDENTITY(1,1) NOT NULL,
-	[Priority]						[int]			NOT NULL,
+	[ProcessOrder]					[int]			NOT NULL,
 	[CompanyCode]					[int]			NOT NULL,
 	[CaseType]						[int]			NULL,
 	[Jurisdiction]					[varchar](2)	NULL,
