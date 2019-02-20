@@ -8,6 +8,8 @@
 	[eQuoteDocument]				[varchar] (15)	NOT NULL,
 	[eQuoteRequiredWhenScheduled]	[bit]			NOT NULL,
 	[Exclude]						[bit]			NOT NULL,
+	[QuoteType]						[int]			NOT NULL,
+	[ParentCompanyID]				[int]			NOT NULL,
  CONSTRAINT [PK_tblInvoiceEQuoteFormatFormRule] PRIMARY KEY CLUSTERED 
 (
 	[InvoiceEQuoteFormatFormRuleID] ASC
