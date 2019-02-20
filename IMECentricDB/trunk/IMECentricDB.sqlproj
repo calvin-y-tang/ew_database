@@ -1075,6 +1075,7 @@
     <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
     <Build Include="Tables\tblExceptionDefService.sql" />
     <Build Include="Tables\tblInvoiceEQuoteFormatFormRule.sql" />
+    <Build Include="Stored Procedures\proc_GetProgressiveClientCodeByName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
