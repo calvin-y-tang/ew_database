@@ -4,8 +4,8 @@ CREATE TABLE [dbo].[tblExceptionDefinition] (
     [Entity]           VARCHAR (10)  NOT NULL,
     [IMECentricCode]   INT           NULL,
     [ExceptionID]      INT           NOT NULL,
-    [CaseTypeCode]     INT           CONSTRAINT [DF_tblExceptionDefinition_CaseTypeCode] DEFAULT ((0)) NULL,
-    [ServiceCode]      INT           CONSTRAINT [DF_tblExceptionDefinition_ServiceCode] DEFAULT ((0)) NULL,
+    [CaseTypeCode]     INT           CONSTRAINT [DF_tblExceptionDefinition_CaseTypeCode] DEFAULT ((-1)) NULL,
+    [ServiceCode]      INT           CONSTRAINT [DF_tblExceptionDefinition_ServiceCode] DEFAULT ((-1)) NULL,
     [StatusCode]       INT           CONSTRAINT [DF_tblExceptionDefinition_StatusCode] DEFAULT ((-1)) NULL,
     [StatusCodeValue]  INT           NULL,
     [DisplayMessage]   BIT           CONSTRAINT [DF_tblExceptionDefinition_DisplayMessage] DEFAULT ((0)) NOT NULL,
@@ -31,7 +31,9 @@ CREATE TABLE [dbo].[tblExceptionDefinition] (
     [CreateCHAlert]    BIT           CONSTRAINT [DF_tblExceptionDefinition_CreateCHAlert] DEFAULT ((0)) NOT NULL,
     [CHEventDesc]      VARCHAR(50)    NULL, 
     [CHOtherInfo]      VARCHAR(3000)  NULL, 
-	[AllEWServiceType] BIT           CONSTRAINT [DF_tblExceptionDefinition_AllEWServiceType]  DEFAULT ((0)) NOT NULL,
+	[AllEWServiceType] BIT           CONSTRAINT [DF_tblExceptionDefinition_AllEWServiceType]  DEFAULT ((1)) NOT NULL,
+	[AllCaseType]	   BIT           CONSTRAINT [DF_tblExceptionDefinition_AllCaseType]       DEFAULT ((1)) NOT NULL,
+	[AllServiceType]   BIT           CONSTRAINT [DF_tblExceptionDefinition_AllServiceType]    DEFAULT ((1)) NOT NULL,
     CONSTRAINT [PK_tblExceptionDefinition] PRIMARY KEY CLUSTERED ([ExceptionDefID] ASC)
 );
 
