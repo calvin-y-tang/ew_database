@@ -33,7 +33,7 @@ CREATE TABLE [dbo].[tblExceptionDefinition] (
     [CHOtherInfo]      VARCHAR(3000)  NULL, 
 	[AllEWServiceType] BIT           CONSTRAINT [DF_tblExceptionDefinition_AllEWServiceType]  DEFAULT ((1)) NOT NULL,
 	[AllCaseType]	   BIT           CONSTRAINT [DF_tblExceptionDefinition_AllCaseType]       DEFAULT ((1)) NOT NULL,
-	[AllServiceType]   BIT           CONSTRAINT [DF_tblExceptionDefinition_AllServiceType]    DEFAULT ((1)) NOT NULL,
+	[AllService]   BIT           CONSTRAINT [DF_tblExceptionDefinition_AllServiceType]    DEFAULT ((1)) NOT NULL,
     CONSTRAINT [PK_tblExceptionDefinition] PRIMARY KEY CLUSTERED ([ExceptionDefID] ASC)
 );
 

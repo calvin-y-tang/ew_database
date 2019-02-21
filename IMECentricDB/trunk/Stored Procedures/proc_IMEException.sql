@@ -12,11 +12,6 @@ BEGIN
     SET NOCOUNT ON;
     DECLARE @Err INT;
 
-	IF (@CaseTypeCode = -1)
-		SET @CaseTypeCode = 0;
-	IF (@ServiceCode = -1)
-		SET @ServiceCode = 0;
-
     SELECT  ED.* ,
             ISNULL(C.CaseNbr, -1) AS CaseNbr ,
             CL.ClientCode ,
@@ -84,23 +79,24 @@ BEGIN
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = C.OfficeCode )
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = @OfficeCode )
                 )
-            AND ( ED.CaseTypeCode = 1
+            AND ( ED.AllCaseType = 1
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = C.CaseType )
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = @CaseTypeCode )
                 )
             AND 
-					(( ED.ServiceCode = 1
-						OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = C.ServiceCode )
-						OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = @ServiceCode )
-					)
-				OR  ( ED.AllEWServiceType = 1
-						OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
-											 INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
-											 WHERE tS.ServiceCode = C.ServiceCode )
-						OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
-											 INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
-											 WHERE tS.ServiceCode = @ServiceCode )
-					))
+				( ED.AllService = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = @ServiceCode )
+				)
+			AND
+				( ED.AllEWServiceType = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = @ServiceCode )
+				)
             AND ( ( ED.StatusCode = -1
                     AND ( ED.ExceptionID <> 18
                             OR ISNULL(ED.StatusCodeValue, 1) = @EnterLeave
