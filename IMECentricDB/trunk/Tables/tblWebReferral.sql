@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[tblWebReferral](
 	[WebReferralID] [int] IDENTITY(1,1) NOT NULL,
 	[JSONModel] [text] NULL,
+	[ReferralHTML] [text] NULL,
 	[CaseNbr] [int] NULL,
 	[ClaimNbr] [varchar](50) NULL,
 	[ClaimNbrExt] [varchar](50) NULL,
