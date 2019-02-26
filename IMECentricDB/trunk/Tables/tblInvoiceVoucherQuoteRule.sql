@@ -1,16 +1,24 @@
 ﻿CREATE TABLE [dbo].[tblInvoiceVoucherQuoteRule](
-	[InvoiceVoucherQuoteRuleID]     [int] IDENTITY(1,1) NOT NULL,
-	[ProcessOrder]					[int]			NOT NULL,
-	[CompanyCode]					[int]			NOT NULL,
-	[CaseType]						[int]			NULL,
-	[Jurisdiction]					[varchar](2)	NULL,
-	[EWServiceTypeID]				[int]			NULL,
-	[QuoteDocument]				    [varchar] (15)	NOT NULL,
-	[eQuoteRequiredWhenScheduled]	[bit]			NOT NULL,
-	[Exclude]						[bit]			NOT NULL,
-	[QuoteType]						[int]			NOT NULL,
-	[ParentCompanyID]				[int]			NOT NULL,
-	[Handling]                      [varchar] (20)  NOT NULL,
+	[InvoiceVoucherQuoteRuleID]     int IDENTITY(1,1) NOT NULL,
+	[ProcessOrder]					int			NOT NULL,
+	[CompanyCode]					int			NOT NULL,
+	[CaseType]						int			NULL,
+	[Jurisdiction]					varchar(2)	NULL,
+	[EWServiceTypeID]				int			NULL,
+	[QuoteDocument]				    varchar(15)	NOT NULL,
+	[eQuoteRequiredWhenScheduled]	bit			NOT NULL,
+	[Exclude]						bit			NOT NULL,
+	[QuoteType]						int			NOT NULL,
+	[ParentCompanyID]				int			NOT NULL,
+	[Handling]                      varchar(20) NOT NULL,
+	[DateAdded]				        datetime   	NULL,
+	[UserIDAdded]				    varchar(15)	NULL,
+	[DateEdited]				    datetime   	NULL,
+	[UserIDEdited]				    varchar(15)	NULL,
+
+
+
+
  CONSTRAINT [PK_tblInvoiceEQuoteFormatFormRule] PRIMARY KEY CLUSTERED 
 (
 	[InvoiceVoucherQuoteRuleID] ASC
