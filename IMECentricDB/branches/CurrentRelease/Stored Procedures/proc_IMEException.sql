@@ -79,12 +79,24 @@ BEGIN
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = C.OfficeCode )
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = @OfficeCode )
                 )
-            AND ( ED.CaseTypeCode = -1
-                    OR ED.CaseTypeCode = @CaseTypeCode
+            AND ( ED.AllCaseType = 1
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = C.CaseType )
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = @CaseTypeCode )
                 )
-            AND ( ED.ServiceCode = -1
-                    OR ED.ServiceCode = @ServiceCode
-                )
+            AND 
+				( ED.AllService = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = @ServiceCode )
+				)
+			AND
+				( ED.AllEWServiceType = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = @ServiceCode )
+				)
             AND ( ( ED.StatusCode = -1
                     AND ( ED.ExceptionID <> 18
                             OR ISNULL(ED.StatusCodeValue, 1) = @EnterLeave

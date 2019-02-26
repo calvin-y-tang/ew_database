@@ -18,6 +18,9 @@ SELECT
 
  FZ.Name AS FeeZone,
 
+ (SELECT TOP 1 Description FROM tblCaseDocuments AS CD WHERE (CD.CaseNbr=C.CaseNbr OR (CD.MasterCaseNbr=C.MasterCaseNbr AND CD.SharedDoc=1)) 
+     AND Description LIKE '% EFF[ .]%' ORDER BY SeqNo DESC) AS LastEff,
+
  CL.CompanyCode,
  dbo.fnDateValue(C.DateReceived) AS FilterDate
 
@@ -30,4 +33,3 @@ SELECT
  LEFT OUTER JOIN tblEWFeeZone AS FZ ON FZ.EWFeeZoneID = C.EWFeeZoneID
  LEFT OUTER JOIN tblLocation AS L ON C.DoctorLocation=L.LocationCode
  WHERE 1=1
- AND S.EWServiceTypeID=1
