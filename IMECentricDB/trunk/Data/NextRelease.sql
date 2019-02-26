@@ -32,3 +32,13 @@ VALUES ('WorkCompCaseType', 'CA', 'D-QME'),
 	   ('WorkCompCaseType', 'CA', 'ADR')
 GO
 
+-- Issue 7109 - copies CaseType and ServiceCode values to child tables
+  INSERT INTO [dbo].tblExceptionDefCaseType (ExceptionDefID, CaseTypeCode)
+	SELECT ExceptionDefID, CaseTypeCode FROM [dbo].tblExceptionDefinition
+	WHERE CaseTypeCode <> -1
+
+  INSERT INTO [dbo].tblExceptionDefService (ExceptionDefID, ServiceCode)
+	SELECT ExceptionDefID, ServiceCode FROM [dbo].tblExceptionDefinition
+	WHERE ServiceCode <> -1
+
+
