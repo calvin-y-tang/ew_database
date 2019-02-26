@@ -1074,9 +1074,7 @@
     <Build Include="Tables\tblExceptionDefCaseType.sql" />
     <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
     <Build Include="Tables\tblExceptionDefService.sql" />
-    <Build Include="Tables\tblInvoiceVoucherQuoteRule.sql" />
     <Build Include="Stored Procedures\proc_GetProgressiveClientCodeByName.sql" />
-    <Build Include="Stored Procedures\spGetInvoiceVoucherQuoteRules.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
