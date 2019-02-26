@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[tblCase] (
+﻿CREATE TABLE [dbo].[tblCase] (
     [CaseNbr]                        INT              IDENTITY (1000, 1) NOT NULL,
     [ChartNbr]                       INT              NULL,
     [DoctorLocation]                 VARCHAR (10)     NULL,
@@ -252,13 +252,15 @@ CREATE TABLE [dbo].[tblCase] (
     [DoctorScheduledRank]            INT              NULL,
     [ScheduleMethod]                 INT              NULL,
     [AddlClaimNbrs]                  VARCHAR (50)     NULL,
-	[NotarySent]					 BIT              CONSTRAINT [DF_tblCase_NotarySent] DEFAULT ((0)) NOT NULL,
-	[PreAuthorization]               VARCHAR(20)      NULL,
-	[WorkCompCaseType]               VARCHAR(20)      NULL,
+    [NotarySent]                     BIT              CONSTRAINT [DF_tblCase_NotarySent] DEFAULT ((0)) NOT NULL,
+    [PreAuthorization]               VARCHAR (30)     NULL,
+    [WorkCompCaseType]               VARCHAR (30)     NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
 );
+
+
 
 
 
