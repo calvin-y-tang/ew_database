@@ -1079,6 +1079,8 @@
     <Build Include="Tables\tblAcctQuoteFee.sql" />
     <Build Include="Tables\tblQuoteFeeConfig.sql" />
     <Build Include="Tables\tblQuoteHandling.sql" />
+    <Build Include="Functions\fnIsAddressComplete.sql" />
+    <Build Include="Views\vwCaseDocMailEntities.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
