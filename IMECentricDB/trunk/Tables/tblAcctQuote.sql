@@ -30,6 +30,7 @@
     [UserIDAdded]          VARCHAR (15)  NOT NULL,
     [DateEdited]           DATETIME      NULL,
     [UserIDEdited]         VARCHAR (15)  NULL,
+	[QuoteHandlingID]      INT           NULL, 
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 
