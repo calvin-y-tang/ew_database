@@ -35,9 +35,9 @@ AS
 
 			CASE WHEN ISNULL(FRemit.RemitAddress,'')='' THEN FRemit.Address ELSE FRemit.RemitAddress END AS BillingProviderAddress ,
 			CASE WHEN ISNULL(FRemit.RemitAddress,'')='' THEN
-			 ISNULL(FRemit.City, '') + ', ' + ISNULL(FRemit.State, '') + ' ' + ISNULL(FRemit.Zip, '')
+			 ISNULL(FRemit.City, '') + ', ' + ISNULL(UPPER(FRemit.State), '') + ' ' + ISNULL(FRemit.Zip, '')
 			ELSE
-			  ISNULL(FRemit.RemitCity, '') + ', ' + ISNULL(FRemit.RemitState, '') + ' ' + ISNULL(FRemit.RemitZip, '')
+			  ISNULL(FRemit.RemitCity, '') + ', ' + ISNULL(UPPER(FRemit.RemitState), '') + ' ' + ISNULL(FRemit.RemitZip, '')
 			END AS BillingProviderCityStateZip ,
 
 			CO.ExtName AS InvCoExtName,
@@ -45,12 +45,12 @@ AS
 			CL.BillAddr1 AS InvClBillAddr1,
             CL.BillAddr2 AS InvClBillAddr2,
             CL.BillCity AS InvClBillCity ,
-            CL.BillState AS InvClBillState ,
+            UPPER(CL.BillState) AS InvClBillState ,
             CL.BillZip AS InvClBillZip ,
             CL.Addr1 AS InvClAddr1 ,
             CL.Addr2 AS InvClAddr2 ,
             CL.City AS InvClCity ,
-            CL.State AS InvClState ,
+            UPPER(CL.State) AS InvClState ,
             CL.Zip AS InvClZip ,
 			
 			B.BlankValueLong AS Payor

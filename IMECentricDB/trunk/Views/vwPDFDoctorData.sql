@@ -14,7 +14,7 @@ AS
             
 			Addr1 AS DoctorCorrespAddr1 ,
             Addr2 AS DoctorCorrespAddr2 ,
-            City + ', ' + State + '  ' + Zip AS DoctorCorrespCityStateZip ,
+            City + ', ' + UPPER(State) + '  ' + Zip AS DoctorCorrespCityStateZip ,
 
 			B.BlankValueLong AS DoctorCorrespFullAddress ,
 
