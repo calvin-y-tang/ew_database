@@ -69,7 +69,6 @@
     [DistributionNotes]          VARCHAR(MAX)     NULL, 
 	[AutoPrintInvoice]           BIT              CONSTRAINT [DF_tblCompany_AutoPrintInvoice] DEFAULT ((1)) NOT NULL,
     [PortalVersion]				INT NULL, 
-    [CountryID]				    INT NULL, 
     CONSTRAINT [PK_tblCompany] PRIMARY KEY CLUSTERED ([CompanyCode] ASC) WITH (FILLFACTOR = 90)
 );
 
