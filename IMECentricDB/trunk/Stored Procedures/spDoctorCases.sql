@@ -1,7 +1,7 @@
 ﻿CREATE PROC spDoctorCases
     @doctorCode AS INTEGER
 AS 
-    SELECT TOP 100 PERCENT
+    SELECT
             tblCase.CaseNbr ,
 			tblCase.ExtCaseNbr,
             tblExaminee.lastname + ', ' + tblExaminee.firstname AS ExamineeName ,
@@ -27,5 +27,4 @@ AS
             OR tblCase.PanelNbr IN ( SELECT PanelNbr
                                      FROM   tblCasePanel
                                      WHERE  DoctorCode = @doctorCode )
-    ORDER BY tblCase.apptdate DESC
 
