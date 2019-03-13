@@ -1081,6 +1081,7 @@
     <Build Include="Tables\tblQuoteHandling.sql" />
     <Build Include="Functions\fnIsAddressComplete.sql" />
     <Build Include="Views\vwCaseDocMailEntities.sql" />
+    <Build Include="Tables\tblWorkstation.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
