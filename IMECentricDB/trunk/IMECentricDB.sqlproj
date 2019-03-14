@@ -1082,6 +1082,7 @@
     <Build Include="Functions\fnIsAddressComplete.sql" />
     <Build Include="Views\vwCaseDocMailEntities.sql" />
     <Build Include="Tables\tblWorkstation.sql" />
+    <Build Include="Tables\tblCompanyBulkBilling.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
