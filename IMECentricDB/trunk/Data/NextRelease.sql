@@ -83,3 +83,14 @@ INSERT INTO tblCodes(Category, SubCategory, Value) VALUES
 ('WorkCompCaseType', 'CA', 'RR-S')
 GO
 
+-- set the BulkBillingID in the Account Header table for all invoices. 
+-- when a 3rd-party biller is on the case, we use that client/company
+-- over client/company assigned to the case
+UPDATE AH SET AH.BulkBillingID = CO.BulkBillingID
+  FROM tblAcctHeader as AH
+	INNER JOIN tblCase as C on AH.CaseNbr = C.CaseNbr
+	INNER JOIN tblClient as CL on ISNULL(C.BillClientCode, C.ClientCode) = CL.ClientCode
+	INNER JOIN tblCompany as CO on CL.CompanyCode = CO.CompanyCode
+WHERE AH.DocumentType = 'IN'
+
+	
