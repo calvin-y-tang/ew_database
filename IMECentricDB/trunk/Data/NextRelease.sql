@@ -93,4 +93,8 @@ UPDATE AH SET AH.BulkBillingID = CO.BulkBillingID
 	INNER JOIN tblCompany as CO on CL.CompanyCode = CO.CompanyCode
 WHERE AH.DocumentType = 'IN'
 
-	
+-- Issue 8067 - new entry in tblSetting to control feature rollout
+-- default is to deploy with feature turned off
+INSERT INTO tblSetting (Name, Value)
+VALUES('AllowDistDocToEnvelope', '')
+GO	
