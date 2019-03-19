@@ -13,11 +13,11 @@
     [EWBusLineID]             INT          NULL,
     [EWServiceTypeID]         INT          NULL,
     [Jurisdiction]            VARCHAR (5)  NULL,
-    [Param1]                  VARCHAR (20) NULL,
-    [Param2]                  VARCHAR (20) NULL,
-    [Param3]                  VARCHAR (20) NULL,
-    [Param4]                  VARCHAR (20) NULL,
-    [Param5]                  VARCHAR (20) NULL,
+    [Param1]                  VARCHAR (50) NULL,
+    [Param2]                  VARCHAR (50) NULL,
+    [Param3]                  VARCHAR (50) NULL,
+    [Param4]                  VARCHAR (50) NULL,
+    [Param5]                  VARCHAR (50) NULL,
     CONSTRAINT [PK_tblBusinessRuleCondition] PRIMARY KEY CLUSTERED ([BusinessRuleConditionID] ASC)
 );
 
