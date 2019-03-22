@@ -19,6 +19,7 @@ CREATE TABLE [dbo].[tblEWParentCompany] (
     [RequireFeeZoneNYFL]             BIT NULL, 
     [Param]                          VARCHAR(1024) NULL, 
 	[EWNetworkID]                    INT NULL,
+	[CountryID]                    INT NULL,
     CONSTRAINT [PK_tblEWParentCompany] PRIMARY KEY CLUSTERED ([ParentCompanyID] ASC)
 );
 

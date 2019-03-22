@@ -19,6 +19,7 @@
 	[DateEdited] [datetime] NULL,
 	[UserIdEdited] [varchar](50) NULL,
 	[Specialty] [varchar](200) NULL,
+	[ReferralStatus] [varchar](50)
  CONSTRAINT [PK_tblWebReferral] PRIMARY KEY CLUSTERED 
 (
 	[WebReferralID] ASC

@@ -6,9 +6,9 @@ AS
             Addr1 AS ServiceLocationAddr1 ,
             Addr2 AS ServiceLocationAddr2 ,
             City AS ServiceLocationCity ,
-            State AS ServiceLocationState ,
+            UPPER(State) AS ServiceLocationState ,
             Zip AS ServiceLocationZip ,
-            City + ', ' + State + '  ' + Zip AS ServiceLocationCityStateZip ,
+            City + ', ' + UPPER(State) + '  ' + Zip AS ServiceLocationCityStateZip ,
 
 			B.BlankValueLong AS ServiceLocationFullAddress ,
 			B.BlankValueLong AS ServiceLocationAddress ,

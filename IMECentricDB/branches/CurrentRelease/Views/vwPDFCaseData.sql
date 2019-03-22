@@ -82,7 +82,7 @@ AS
 
             CL.Addr1 AS ClientAddr1 ,
             CL.Addr2 AS ClientAddr2 ,
-            CL.City + ', ' + CL.State + '  ' + CL.Zip AS ClientCityStateZip ,
+            CL.City + ', ' + UPPER(CL.State) + '  ' + CL.Zip AS ClientCityStateZip ,
             B.BlankValue AS ClientFullAddress ,
             CL.Phone1 + ' ' + ISNULL(CL.Phone1ext, ' ') AS ClientPhone , --Need Extension?
             CL.Fax AS ClientFax ,
@@ -103,9 +103,9 @@ AS
 
             EE.Addr1 AS ExamineeAddr1 ,
             EE.Addr2 AS ExamineeAddr2 ,
-            EE.City + ', ' + EE.State + '  ' + EE.Zip AS ExamineeCityStateZip ,
+            EE.City + ', ' + UPPER(EE.State) + '  ' + EE.Zip AS ExamineeCityStateZip ,
             EE.City AS ExamineeCity ,
-            EE.State AS ExamineeState ,
+            UPPER(EE.State) AS ExamineeState ,
             EE.Zip AS ExamineeZip ,
 			B.BlankValue AS ExamineeAddress ,
 			B.BlankValue AS ExamineeFullAddress ,
@@ -148,7 +148,7 @@ AS
 
 			(Case ISNULL(C.EmployerID , 0)
               WHEN 0
-              THEN EE.EmployerState  
+              THEN UPPER(EE.EmployerState)  
 			  ELSE EA.State  
 			  END) AS EmployerState,  
 
@@ -193,7 +193,7 @@ AS
             
             EE.TreatingPhysicianAddr1 ,
             EE.TreatingPhysicianCity ,
-            EE.TreatingPhysicianState ,
+            UPPER(EE.TreatingPhysicianState) AS TreatingPhysicianState ,
             EE.TreatingPhysicianZip ,
 			B.BlankValue AS TreatingPhysicianFullAddress ,
 
@@ -212,7 +212,7 @@ AS
             ISNULL(PA.FirstName,'') + ' ' + ISNULL(PA.LastName,'') AS PAttorneyName ,
             PA.Address1 AS PAttorneyAddr1 ,
             PA.Address2 AS PAttorneyAddr2 ,
-            PA.City + ', ' + PA.State + '  ' + PA.Zip AS PAttorneyCityStateZip ,
+            PA.City + ', ' + UPPER(PA.State) + '  ' + PA.Zip AS PAttorneyCityStateZip ,
 			B.BlankValue AS PAttorneyFullAddress ,
 
             PA.Phone + ' ' + ISNULL(PA.Phoneextension, '') AS PAttorneyPhone , --Need Extension?
@@ -230,7 +230,7 @@ AS
 
 			F.LegalName AS CaseEWFacilityLegalName ,
 			F.Address AS CaseEWFacilityAddress ,
-            F.City + ', ' + F.State + '  ' + F.Zip AS CaseEWFacilityCityStateZip ,
+            F.City + ', ' + UPPER(F.State) + '  ' + F.Zip AS CaseEWFacilityCityStateZip ,
 			F.Phone AS CaseEWFacilityPhone ,
 			F.Fax AS CaseEWFacilityFax ,
 

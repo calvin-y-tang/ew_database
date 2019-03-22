@@ -1075,6 +1075,14 @@
     <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
     <Build Include="Tables\tblExceptionDefService.sql" />
     <Build Include="Stored Procedures\proc_GetProgressiveClientCodeByName.sql" />
+    <Build Include="Tables\tblQuoteRule.sql" />
+    <Build Include="Tables\tblAcctQuoteFee.sql" />
+    <Build Include="Tables\tblQuoteFeeConfig.sql" />
+    <Build Include="Tables\tblQuoteHandling.sql" />
+    <Build Include="Functions\fnIsAddressComplete.sql" />
+    <Build Include="Views\vwCaseDocMailEntities.sql" />
+    <Build Include="Tables\tblWorkstation.sql" />
+    <Build Include="Tables\tblCompanyBulkBilling.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
