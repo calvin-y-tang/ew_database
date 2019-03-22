@@ -52,6 +52,9 @@ VALUES('@ClientAddr1@'),
 	  ('@QuoteIndexingChartPrepUnit@')
 GO
 
+INSERT INTO tblMessageToken (Name)
+VALUES('@EmailLinkExpDate@')
+GO
 
 DELETE FROM tblCodes WHERE Category='WorkCompCaseType' AND SubCategory='CA'
 GO
