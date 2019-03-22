@@ -105,3 +105,5 @@ INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, Proces
 VALUES('PC', 46, 2, 1, @iBusRuleID, GetDate(), 'Admin', GetDate(), 'Admin', null, null, null, null, 'MCCUTPAOffices@Sentry.com', null, null, null, null)
 GO
 
+UPDATE tblDoctor SET DICOMHandlingPreference=2 WHERE ViewDICOMOnWebPortal=1
+GO
