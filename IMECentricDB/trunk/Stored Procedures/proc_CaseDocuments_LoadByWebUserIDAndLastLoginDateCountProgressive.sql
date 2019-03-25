@@ -17,4 +17,4 @@ SELECT DISTINCT COUNT(tblCaseDocuments.seqno)
 		AND (tblPublishOnWeb.UserType = @UserType)
 		AND (ISNULL(tblPublishOnWeb.Viewed, 0) = 0)
 		AND (tblPublishOnWeb.UseWidget = 1)
-		AND (tblCase.Status NOT IN (8,9))
+
