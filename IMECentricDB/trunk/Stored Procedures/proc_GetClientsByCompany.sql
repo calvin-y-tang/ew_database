@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [proc_GetProgressiveClients]
+﻿CREATE PROCEDURE [proc_GetClientsByCompany]
 
 @CompanyCode int
 

@@ -1041,7 +1041,7 @@
     <Build Include="Stored Procedures\proc_ExamineeAddress_Insert.sql" />
     <Build Include="Stored Procedures\proc_Client_LoadByParentCompany.sql" />
     <Build Include="Stored Procedures\proc_ProblemArea_LoadByProblemCode.sql" />
-    <Build Include="Stored Procedures\proc_GetProgressiveClients.sql" />
+    <Build Include="Stored Procedures\proc_GetClientsByCompany.sql" />
     <Build Include="Views\vwCaseReports.sql" />
     <Build Include="Views\vwFileManagerAttachedDocument.sql" />
     <Build Include="Views\vwRptProgressiveUpcomingAppt.sql" />
