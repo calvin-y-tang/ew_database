@@ -11,10 +11,10 @@ DECLARE @Err int
 		tblWebQueues.statuscode,
 		tblCase.casenbr,
 		tblCase.ExtCaseNbr,
-		tblCase.DoctorName AS provider,
-		CONVERT(varchar(20), tblCase.ApptDate, 101) + ' ' + RIGHT(CONVERT(VARCHAR, tblCase.ApptTime),7)  ApptDate,
+		ISNULL(tblCase.DoctorName,'') AS provider,
+		ISNULL(CONVERT(varchar(20), tblCase.ApptDate, 101) + ' ' + RIGHT(CONVERT(VARCHAR, tblCase.ApptTime),7),'')  ApptDate,
 		tblCase.chartnbr,
-		tblCase.doctorspecialty as Specialty,
+		ISNULL(tblCase.doctorspecialty,'') as Specialty,
 		tblServices.shortdesc AS service,
 		tblExaminee.lastname + ', ' + tblExaminee.firstname AS examineename,
 		tblExaminee.lastname,
@@ -24,8 +24,11 @@ DECLARE @Err int
 		tblWebQueues.statuscode,
 		tblCase.claimnbr,
 		tblWebUserAccount.WebUserID,
-		ISNULL(NULLIF(tblCase.sinternalcasenbr,''),tblCase.casenbr) AS webcontrolnbr
+		ISNULL(NULLIF(tblCase.sinternalcasenbr,''),tblCase.casenbr) AS webcontrolnbr,
+		ISNULL(tblEWTransDept.FolderPath,'') TransFolderPath
 		FROM tblCase
+		INNER JOIN tblOffice ON tblCase.OfficeCode = tblOffice.OfficeCode
+		LEFT JOIN tblEWTransDept on tblOffice.EWTransDeptID = tblEWTransDept.EWTransDeptID
 		INNER JOIN tblQueues ON tblCase.status = tblQueues.statuscode
 		INNER JOIN tblServices ON tblCase.servicecode = tblServices.servicecode
 		INNER JOIN tblWebQueues ON tblQueues.WebStatusCode = tblWebQueues.statuscode
