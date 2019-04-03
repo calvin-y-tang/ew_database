@@ -5,7 +5,8 @@
     @ServiceCode INT ,
     @StatusCode INT ,
     @EnterLeave INT ,
-    @CaseNbr INT
+    @CaseNbr INT, 
+	@SLARuleDetailID INT
 AS
 BEGIN
 
@@ -32,6 +33,8 @@ BEGIN
             LEFT OUTER JOIN tblCompany AS BCO ON BCO.CompanyCode = BCL.CompanyCode
 			LEFT OUTER JOIN tblEmployer AS ER ON ER.EmployerID = C.EmployerID
 			LEFT OUTER JOIN tblEWParentEmployer AS PE ON PE.EWParentEmployerID = ER.EWParentEmployerID
+			LEFT OUTER JOIN tblSLARule AS  SLA ON SLA.SLARuleID = C.SLARuleID 
+			LEFT OUTER JOIN tblSLARuleDetail AS SLADET ON SLADET.SLARuleID = SLA.SLARuleID 
     WHERE   ED.Status = 'Active' AND ED.ExceptionID = @ExceptionID
 			AND
 			( ED.Entity = 'CS'
@@ -106,6 +109,13 @@ BEGIN
                         AND ED.StatusCodeValue = @EnterLeave
                         )
                 )
+			AND 
+				( ED.AllSLARuleDetail = 1
+					OR SLADET.SLARuleDetailID IN (SELECT SLARuleDetailID 
+					                                FROM tblExceptionDefSLARuleDetail 
+												   WHERE SLARuleDetailID = @SLARuleDetailID 
+												     AND ExceptionDefID = ED.ExceptionDefID)
+				)
 
     SET @Err = @@Error;
 
