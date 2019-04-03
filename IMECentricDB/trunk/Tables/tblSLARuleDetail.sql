@@ -9,6 +9,7 @@
     [UserIDAdded]            VARCHAR (15) NULL,
     [DateEdited]             DATETIME     NULL,
     [UserIDEdited]           VARCHAR (15) NULL,
+    [ExceptionDefIDTmp]	     INT          NULL, 
     CONSTRAINT [PK_tblSLARuleDetail] PRIMARY KEY CLUSTERED ([SLARuleDetailID] ASC)
 );
 
