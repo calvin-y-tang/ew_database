@@ -1083,6 +1083,7 @@
     <Build Include="Views\vwCaseDocMailEntities.sql" />
     <Build Include="Tables\tblWorkstation.sql" />
     <Build Include="Tables\tblCompanyBulkBilling.sql" />
+    <Build Include="Tables\tblExceptionDefSLARuleDetail.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
