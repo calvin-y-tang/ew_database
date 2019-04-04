@@ -2521,7 +2521,7 @@ UPDATE tblQuoteStatus
  WHERE QuoteStatusID IN (1, 2, 3, 6)
  GO
 UPDATE tblQuoteStatus 
-   SET QuoteHandlingID = 1 
+   SET QuoteHandlingID = 2 
  WHERE QuoteStatusID IN (4, 5)
 GO
 
