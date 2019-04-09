@@ -9,6 +9,9 @@
 	[IMECentricCode] [int] NULL,
 	[UserType] [char](2) NULL,
 	[NotificationSent] [bit] NULL,
+	[DateNotificationSent] [smalldatetime] NULL,
+	[DateAdded] [smalldatetime] NULL,
+	[UserIDAdded] [varchar](50) NULL,
  CONSTRAINT [PK_tblCaseContactRequest] PRIMARY KEY CLUSTERED 
 (
 	[CaseContactReqID] ASC
