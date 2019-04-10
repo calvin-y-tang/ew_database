@@ -1084,6 +1084,7 @@
     <Build Include="Tables\tblWorkstation.sql" />
     <Build Include="Tables\tblCompanyBulkBilling.sql" />
     <Build Include="Tables\tblExceptionDefSLARuleDetail.sql" />
+    <Build Include="Tables\tblStorage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
