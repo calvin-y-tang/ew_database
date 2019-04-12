@@ -39,4 +39,9 @@ UPDATE ah
 WHERE ah.DocumentType = 'IN'
 GO 
 
-
+--	DEV NOTE: i am putting this in here but will leave it commented out since we are unsure as to when 
+--		this feature needs to be enabled.
+-- Issue 11015 - new business rule condition to display Zurich custom tab on Case form
+--INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+--VALUES('PC', 60, 2, 1, 7, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Zurich', NULL, NULL, NULL, NULL)
+--GO
