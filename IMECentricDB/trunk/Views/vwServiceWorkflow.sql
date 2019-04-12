@@ -37,7 +37,8 @@ AS
         O.Status AS OfficeStatus,
 		WF.UsePeerBill,
 		S.ProdCode, 
-		CT.EWBusLineID
+		CT.EWBusLineID, 
+		S.EWServiceTypeID
     FROM
         tblServiceWorkflow AS WF
     INNER JOIN tblCaseType AS CT ON WF.CaseType=CT.Code
