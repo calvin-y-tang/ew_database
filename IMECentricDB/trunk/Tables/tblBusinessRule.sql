@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[tblBusinessRule] (
-    [BusinessRuleID]   INT           IDENTITY (1, 1) NOT NULL,
+    [BusinessRuleID]   INT           NOT NULL,
     [Name]             VARCHAR (35)  NULL,
     [Category]         VARCHAR (20)  NULL,
     [Descrip]          VARCHAR (150) NULL,
