@@ -6,7 +6,8 @@
 
 AS
 
-SELECT DISTINCT tblCaseHistory.*, claimnbr, tblExaminee.firstname + ' ' + tblExaminee.lastname AS examineename
+SELECT DISTINCT tblCaseHistory.*, claimnbr, tblExaminee.firstname + ' ' + tblExaminee.lastname AS examineename,
+	tblCaseHistory.EventDesc AS EventName, tblCaseHistory.UserID AS ByUser
 	FROM tblCaseHistory
 	INNER JOIN tblCase ON tblCaseHistory.casenbr = tblCase.Casenbr
 	INNER JOIN tblExaminee ON tblCase.chartnbr = tblExaminee.chartnbr
