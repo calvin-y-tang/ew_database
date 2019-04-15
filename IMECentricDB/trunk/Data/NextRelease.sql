@@ -45,3 +45,34 @@ GO
 --INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
 --VALUES('PC', 60, 2, 1, 7, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Zurich', NULL, NULL, NULL, NULL)
 --GO
+
+
+--Issue 11044 (subtask of 11008) Zurich IMECentric and Bulk Billing Changes - data patch
+ INSERT INTO tblCustomerData ([Version], TableType, TableKey, [Param], CustomerName)
+  SELECT 
+    1, 
+	'tblCase', 
+    C.CaseNbr, 
+	CASE
+	  WHEN CT.EWBusLineID = 3 AND S.EWServiceTypeID IN (2,3) THEN 'PayKind="37PCS";'
+	  WHEN CT.EWBusLineID = 3 THEN 'PayKind="30IME";'
+	  ELSE 'PayKind="37IME";'
+	END AS [Param],
+    'Zurich'
+  FROM tblCase AS C
+  INNER JOIN tblCaseType AS CT ON C.CaseType = CT.Code
+  INNER JOIN tblServices AS S ON C.ServiceCode = S.ServiceCode
+  INNER JOIN tblClient AS CL ON C.ClientCode = CL.ClientCode
+  INNER JOIN tblClient AS CLB ON C.BillClientCode = CLB.ClientCode
+  INNER JOIN tblCompany AS CO ON CL.CompanyCode = CO.CompanyCode
+  INNER JOIN tblCompany AS CO2 ON CLB.CompanyCode = CO2.CompanyCode
+  INNER JOIN tblEWParentCompany AS COP ON CO.ParentCompanyID = COP.ParentCompanyID
+  INNER JOIN tblEWParentCompany AS COP2 ON CO2.ParentCompanyID = COP2.ParentCompanyID
+  WHERE 
+    CO.ParentCompanyID = 60 
+	OR CO2.ParentCompanyID = 60
+    AND (C.Status NOT IN (8,9) 
+	     OR (C.Status IN (8,9) 
+		     AND ([DateCompleted] >= '2018-01-01' 
+			      OR [DateCanceled] >= '2018-01-01')))
+
