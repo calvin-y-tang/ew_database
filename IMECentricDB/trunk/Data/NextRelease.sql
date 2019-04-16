@@ -75,4 +75,37 @@ GO
 	     OR (C.Status IN (8,9) 
 		     AND ([DateCompleted] >= '2018-01-01' 
 			      OR [DateCanceled] >= '2018-01-01')))
+GO 
+
+-- Issue 11046 - add new business rule to set visibility of amt fields for an invoice
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES(101, 'ShowInvoiceAmtFields', 'Accounting', 'Set Invoice Amt Field visibility', 1, 1801, 0, 'ShowRetailAmt', 'ShowDiscountAmt', NULL, NULL, NULL, 0)
+GO 
+-- business rule condition for pre-existing functionality for ESIS to show both Retail and Discount amt fields
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES('PC', 2, 2, 1, 101, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'True', 'True', NULL, NULL, NULL)
+GO
+-- new business rule condition for new Zurich requirements
+-- DEV NOTE: going to leave this commented out so that we can disable this until ready to implement feature
+-- INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+-- VALUES('PC', 60, 2, 1, 101, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'True', 'False', NULL, NULL, NULL)
+-- GO
+
+-- Issue 11046 - add new business rule to calculate retail amount value
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES(102, 'CalcInvRetailAmt', 'Accounting', 'Caculate Retail Amount for Invoice Line Item', 1, 1801, 0, 'MarkupAmt', NULL, NULL, NULL, NULL, 0)
+GO 
+-- new business rule condition for new Zurich requirements
+-- DEV NOTE: going to leave this commented out so that we can disable this until ready to implement feature
+--INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+--VALUES('PC', 60, 2, 1, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', '0', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 1, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'TX', '0', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 1, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'MN', '0', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 1, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'GA', '0', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 1, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'WA', '0', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 2, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 1, NULL, '75', NULL, NULL, NULL, NULL), 
+--	  ('PC', 60, 2, 2, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 2, NULL, '75', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 2, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 3, NULL, '75', NULL, NULL, NULL, NULL),
+--	  ('PC', 60, 2, 2, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 4, NULL, '75', NULL, NULL, NULL, NULL)
+GO
 
