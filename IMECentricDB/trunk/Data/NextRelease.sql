@@ -63,11 +63,11 @@ GO
   INNER JOIN tblCaseType AS CT ON C.CaseType = CT.Code
   INNER JOIN tblServices AS S ON C.ServiceCode = S.ServiceCode
   INNER JOIN tblClient AS CL ON C.ClientCode = CL.ClientCode
-  INNER JOIN tblClient AS CLB ON C.BillClientCode = CLB.ClientCode
+  LEFT JOIN tblClient AS CLB ON C.BillClientCode = CLB.ClientCode
   INNER JOIN tblCompany AS CO ON CL.CompanyCode = CO.CompanyCode
-  INNER JOIN tblCompany AS CO2 ON CLB.CompanyCode = CO2.CompanyCode
+  LEFT JOIN tblCompany AS CO2 ON CLB.CompanyCode = CO2.CompanyCode
   INNER JOIN tblEWParentCompany AS COP ON CO.ParentCompanyID = COP.ParentCompanyID
-  INNER JOIN tblEWParentCompany AS COP2 ON CO2.ParentCompanyID = COP2.ParentCompanyID
+  LEFT JOIN tblEWParentCompany AS COP2 ON CO2.ParentCompanyID = COP2.ParentCompanyID
   WHERE 
     CO.ParentCompanyID = 60 
 	OR CO2.ParentCompanyID = 60
