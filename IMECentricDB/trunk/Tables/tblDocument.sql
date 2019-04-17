@@ -84,6 +84,10 @@ CREATE TABLE [dbo].[tblDocument] (
 	[EmailDocAsLink]                BIT             CONSTRAINT [DF_tblDocument_EmailDocAsLink] DEFAULT ((0)) NOT NULL,
 	[DaysEmailLinkValid]            INT             NULL,
 	[FunctionCode]                  VARCHAR(30)     NULL,
+    [CMSBox12]                      VARCHAR(30)     NULL, 
+    [CMSBox12Date]                  VARCHAR(30)     NULL, 
+    [CMSBox13]                      VARCHAR(30)     NULL, 
+    [CMSBox14Qual]                  VARCHAR(30)     NULL, 
     CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 
