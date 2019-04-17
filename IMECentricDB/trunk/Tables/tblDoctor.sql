@@ -105,6 +105,7 @@
     [ReceiveMedRecsElectronically] BIT          NULL,
     [ViewDICOMOnWebPortal]         BIT          NULL,
     [DICOMHandlingPreference]      INT          NULL,
+    [EWParentDocID]				   INT			NULL, 
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 
