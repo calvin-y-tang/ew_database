@@ -108,8 +108,8 @@ AS
 			B.BlankValue AS CMSBox24JNPILine6 ,								--doc override
 
 			B.BlankValue AS CMSBox25,
+			B.BlankValue AS CMSBox26,										--inv override
 			B.BlankValue AS CMSBox27Yes ,									--doc override
-
 
 			B.BlankValueLong AS CMSBox31Line1 ,								--doc and inv override
 			B.BlankValue AS CMSBox31Line2 ,									--doc and inv override
