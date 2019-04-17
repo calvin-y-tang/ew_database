@@ -68,6 +68,12 @@ AS
 			B.BlankValue AS CMSBox10bState ,								--doc override
 			B.BlankValue AS CMSBox10cNo ,									--doc override
 
+			B.BlankValue AS CMSBox11,                                       --doc override
+			B.BlankValue AS CMSBox12,                                       --doc override
+			B.BlankValue AS CMSBox12Date,                                   --doc override
+			B.BlankValue AS CMSBox13,                                       --doc override
+			B.BlankValue AS CMSBox14Qual,									--doc override
+
 			B.BlankValue AS CMSBox17Qual,									--doc override
 			B.BlankValue AS CMSBox17 ,										--doc override
 			B.BlankValue AS CMSBox17a ,										--doc override
@@ -116,8 +122,7 @@ AS
 			B.BlankValue AS CMSBox33Line3 ,									--doc override
 			B.BlankValue AS CMSBox33AreaCode,								--doc override
 			B.BlankValue AS CMSBox33PhoneNumber,							--doc override
-			B.BlankValue AS CMSBox33a ,										--doc override
-			B.BlankValue AS CMSBox33b, 										--doc and inv override
-			B.BlankValue AS CMSBox11                                        --doc override
+			B.BlankValue AS CMSBox33a,										--doc override
+			B.BlankValue AS CMSBox33b 										--doc and inv override
 
 	FROM	tblBlank AS B
