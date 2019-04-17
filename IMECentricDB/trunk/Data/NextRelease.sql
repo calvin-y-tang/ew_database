@@ -109,3 +109,37 @@ GO
 --	  ('PC', 60, 2, 2, 102, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 4, NULL, '75', NULL, NULL, NULL, NULL)
 GO
 
+
+
+
+
+DELETE FROM tblCodes WHERE Category='WorkCompCaseType' AND SubCategory='CA'
+GO
+INSERT INTO tblCodes(Category, SubCategory, Value) VALUES 
+('WorkCompCaseType', 'CA', 'AME'), 
+('WorkCompCaseType', 'CA', 'AME-R'), 
+('WorkCompCaseType', 'CA', 'AME-S'), 
+('WorkCompCaseType', 'CA', 'A-QME'), 
+('WorkCompCaseType', 'CA', 'CONSULT'), 
+('WorkCompCaseType', 'CA', 'DCD'), 
+('WorkCompCaseType', 'CA', 'D-QME'), 
+('WorkCompCaseType', 'CA', 'FCE'), 
+('WorkCompCaseType', 'CA', 'IME'), 
+('WorkCompCaseType', 'CA', 'IME-S'), 
+('WorkCompCaseType', 'CA', 'IME-ADR'), 
+('WorkCompCaseType', 'CA', 'IME-LSH'), 
+('WorkCompCaseType', 'CA', 'IME-SIBTF'), 
+('WorkCompCaseType', 'CA', 'IME-SIBTF-S'), 
+('WorkCompCaseType', 'CA', 'QME'), 
+('WorkCompCaseType', 'CA', 'QME-R'), 
+('WorkCompCaseType', 'CA', 'QME-S'), 
+('WorkCompCaseType', 'CA', 'P/U-QME'), 
+('WorkCompCaseType', 'CA', 'P/U-QME-R'), 
+('WorkCompCaseType', 'CA', 'P/U-QME-S'), 
+('WorkCompCaseType', 'CA', 'R-PQME'), 
+('WorkCompCaseType', 'CA', 'R-PQME-R'), 
+('WorkCompCaseType', 'CA', 'R-PQME-S'),
+('WorkCompCaseType', 'CA', 'RR'), 
+('WorkCompCaseType', 'CA', 'RR-S')
+GO
+
