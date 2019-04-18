@@ -89,6 +89,7 @@ CREATE TABLE [dbo].[tblDocument] (
     [CMSBox13]                      VARCHAR(30)     NULL, 
     [CMSBox14Qual]                  VARCHAR(30)     NULL, 
     [CMSBox26]                      VARCHAR(30)     NULL, 
+    [CMSLineItemAmtType]            VARCHAR(30)     NULL, 
     CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 
