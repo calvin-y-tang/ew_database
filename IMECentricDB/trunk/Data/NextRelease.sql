@@ -143,15 +143,14 @@ GO
 
 
 -- Issue 11045 - business rules per comments on the issue.  ii will like Jose above, comment these out until ready
-
--- INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
---VALUES(120, 'DetermineInvFormat', 'Accounting', 'Zurich Bulk Billing Invoice Format', 1, 1806, 0, 'Invoice Format Key', NULL, NULL, NULL, NULL, 0)
-
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES(120, 'DetermineInvFormat', 'Accounting', 'Zurich Bulk Billing Invoice Format', 1, 1806, 0, 'Invoice Format Key', NULL, NULL, NULL, NULL, 0)
+GO
 ----  Parent Company
 --INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
---VALUES('PC', 60, 2, 2, 120, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'CMS1500', NULL, NULL, NULL, NULL)
-
+--VALUES('PC', 60, 2, 2, 120, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'CMSZurich', NULL, NULL, NULL, NULL)
+--GO
 ----  Jurisdiction
 --INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
 --VALUES('PC', 60, 2, 1, 120, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, 'CA', NULL, NULL, NULL, NULL, NULL)
-
+--GO
