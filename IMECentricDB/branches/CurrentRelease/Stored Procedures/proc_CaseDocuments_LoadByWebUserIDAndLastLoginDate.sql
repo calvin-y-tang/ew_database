@@ -7,7 +7,8 @@
 AS
 
 SELECT DISTINCT tblCaseDocuments.*, claimnbr, tblExaminee.firstname + ' ' + tblExaminee.lastname AS examineename,
-	tblPublishOnWeb.PublishasPDF, tblCaseDocType.Description AS doctypedesc
+	tblPublishOnWeb.PublishasPDF, tblCaseDocType.Description AS doctypedesc, RTRIM(CAST(tblCase.ExtCaseNbr AS VARCHAR(20))) AS ExtCaseNbr, 
+	tblExaminee.firstname + ' ' + tblExaminee.lastname AS examinee, tblCaseDocuments.sFileName FileName, RTRIM(CAST(tblCaseDocuments.DateAdded AS VARCHAR(20))) Date
 	FROM tblCaseDocuments
 		INNER JOIN tblCase ON tblCaseDocuments.casenbr = tblCase.Casenbr
 		INNER JOIN tblExaminee ON tblCase.chartnbr = tblExaminee.chartnbr

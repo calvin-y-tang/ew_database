@@ -16,6 +16,3 @@ SELECT DISTINCT tblCaseHistory.*, claimnbr, tblExaminee.firstname + ' ' + tblExa
 		AND (tblPublishOnWeb.UserCode = @UserCode)
 		AND (tblPublishOnWeb.UserType = @UserType)
 		AND (ISNULL(tblPublishOnWeb.Viewed, 0) = 0)
-		AND (tblCase.Status NOT IN (8,9))
-
-

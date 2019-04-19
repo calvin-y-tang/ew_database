@@ -40,6 +40,8 @@ BEGIN
 			AND tblWebUserAccount.WebUserID = @WebUserID
 		AND (tblCase.ClaimNbr = @ClaimNbr OR tblCase.ChartNbr = @ChartNbr)
 		AND (tblCase.CaseNbr <> @CaseNbr)
+		AND (ClaimNbr IS NOT NULL) 
+		AND	(ClaimNbr <> '')
 
 
 	SET @Err = @@Error

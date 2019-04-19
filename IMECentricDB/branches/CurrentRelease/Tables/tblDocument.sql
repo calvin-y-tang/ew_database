@@ -83,6 +83,14 @@ CREATE TABLE [dbo].[tblDocument] (
     [ExcludeFromPortalWidget]		VARCHAR(50)		NULL, 
 	[EmailDocAsLink]                BIT             CONSTRAINT [DF_tblDocument_EmailDocAsLink] DEFAULT ((0)) NOT NULL,
 	[DaysEmailLinkValid]            INT             NULL,
+	[FunctionCode]                  VARCHAR(30)     NULL,
+    [CMSBox12]                      VARCHAR(30)     NULL, 
+    [CMSBox12Date]                  VARCHAR(30)     NULL, 
+    [CMSBox13]                      VARCHAR(30)     NULL, 
+    [CMSBox14Qual]                  VARCHAR(30)     NULL, 
+    [CMSBox26]                      VARCHAR(30)     NULL, 
+    [CMSLineItemAmtType]            VARCHAR(30)     NULL, 
+	[ShowProductDescOnClaimForm]	INT				CONSTRAINT [DF_tblDocument_ShowProductDescOnClaimForm] DEFAULT ((0)) NOT NULL
     CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 

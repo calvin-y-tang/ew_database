@@ -1041,7 +1041,7 @@
     <Build Include="Stored Procedures\proc_ExamineeAddress_Insert.sql" />
     <Build Include="Stored Procedures\proc_Client_LoadByParentCompany.sql" />
     <Build Include="Stored Procedures\proc_ProblemArea_LoadByProblemCode.sql" />
-    <Build Include="Stored Procedures\proc_GetProgressiveClients.sql" />
+    <Build Include="Stored Procedures\proc_GetClientsByCompany.sql" />
     <Build Include="Views\vwCaseReports.sql" />
     <Build Include="Views\vwFileManagerAttachedDocument.sql" />
     <Build Include="Views\vwRptProgressiveUpcomingAppt.sql" />
@@ -1070,7 +1070,6 @@
     <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
     <Build Include="Functions\fnParseKeyValueStringForKey.sql" />
     <Build Include="Functions\fnGetParamValue.sql" />
-    <Build Include="Stored Procedures\proc_CreateCustomerFeeSchedule.sql" />
     <Build Include="Tables\tblExceptionDefCaseType.sql" />
     <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
     <Build Include="Tables\tblExceptionDefService.sql" />
@@ -1082,7 +1081,9 @@
     <Build Include="Functions\fnIsAddressComplete.sql" />
     <Build Include="Views\vwCaseDocMailEntities.sql" />
     <Build Include="Tables\tblWorkstation.sql" />
-    <Build Include="Tables\tblCompanyBulkBilling.sql" />
+    <Build Include="Tables\tblExceptionDefSLARuleDetail.sql" />
+    <Build Include="Tables\tblStorage.sql" />
+    <Build Include="Tables\tblConfiguration.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
@@ -1090,6 +1091,7 @@
     <None Include="Compare\IMECentricDevelopment.scmp" />
     <None Include="Snapshots\CustomRepository.dacpac" />
     <None Include="Compare\DefaultCompareOptions.scmp" />
+    <None Include="Data\OneTime.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\110\SqlSchemas\master.dacpac">

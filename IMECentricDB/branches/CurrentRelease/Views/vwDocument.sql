@@ -464,12 +464,14 @@ AS
 
             tblTranscription.TransCompany,                          
 			
-			dbo.tblCase.DateOfInjury2 AS DOI2, 
-			dbo.tblCase.DateOfInjury3 AS DOI3, 
-			dbo.tblCase.DateOfInjury4 AS DOI4,
-			dbo.tblCase.InsuringCompany as InsuringCompany,
-			dbo.tblCase.CaseCaption, 
-			dbo.tblCase.LitigationNotes
+			tblCase.DateOfInjury2 AS DOI2, 
+			tblCase.DateOfInjury3 AS DOI3, 
+			tblCase.DateOfInjury4 AS DOI4,
+			tblCase.InsuringCompany as InsuringCompany,
+			tblCase.CaseCaption, 
+			tblCase.LitigationNotes, 
+			tblCase.BillClientCode
+
     FROM    tblCase
             INNER JOIN tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
             INNER JOIN tblOffice ON tblOffice.officeCode = tblCase.officeCode
