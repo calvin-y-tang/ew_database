@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[tblFeeDetailAbeton] (
+    [FeeCode]         INT          NOT NULL,
+    [OfficeCode]      INT          NOT NULL,
+    [CaseType]        INT          NOT NULL,
+    [ProdCode]        INT          NOT NULL,
+    [fee]             MONEY        NULL,
+    [latecancelfee]   MONEY        NULL,
+    [noshowfee]       MONEY        NULL,
+    [DateAdded]       DATETIME     NULL,
+    [UserIDAdded]     VARCHAR (20) NULL,
+    [DateEdited]      DATETIME     NULL,
+    [UserIDEdited]    VARCHAR (20) NULL,
+    [drfee]           MONEY        NULL,
+    [drlatecancelfee] MONEY        NULL,
+    [drnoshowfee]     MONEY        NULL,
+    [canceldays]      INT          NULL,
+    [feeplus]         MONEY        NULL,
+    [MinFee]          MONEY        NULL,
+    [Rounding]        INT          NULL,
+    [RoundOn]         BIT          CONSTRAINT [DF_tblFeeDetailAbeton_RoundOn] DEFAULT ((0)) NULL,
+    [Divisor]         FLOAT (53)   NULL,
+    [RevenueAcct]     VARCHAR (50) NULL,
+    [ExpenseAcct]     VARCHAR (50) NULL,
+    [Dept]            VARCHAR (50) NULL,
+    [flatfee]         MONEY        NULL,
+    CONSTRAINT [PK_tblFeeDetailAbeton] PRIMARY KEY CLUSTERED ([FeeCode] ASC, [OfficeCode] ASC, [CaseType] ASC, [ProdCode] ASC)
+);
+
