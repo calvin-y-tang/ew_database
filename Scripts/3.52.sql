@@ -2413,8 +2413,8 @@ PRINT N'Update complete.';
 GO
 
 -- -Issue 10022 - add new Exception trigger
-INSERT INTO tblExceptionList (Description, Status, DateAdded, UserIDAdded, DateEdited, UserIDEdited)
-VALUES('SLA Violation', 'Active', GETDATE(), 'Admin', GETDATE(), 'Admin')
+INSERT INTO tblExceptionList (ExceptionID, Description, Status, DateAdded, UserIDAdded, DateEdited, UserIDEdited)
+VALUES(30, 'SLA Violation', 'Active', GETDATE(), 'Admin', GETDATE(), 'Admin')
 GO
 
 -- Issue 10048 - no longer using field ExceptionAlert.  Replacing with AlertType.  Set the values
