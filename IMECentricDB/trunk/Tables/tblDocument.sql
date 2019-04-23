@@ -90,6 +90,7 @@ CREATE TABLE [dbo].[tblDocument] (
     [CMSBox14Qual]                  VARCHAR(30)     NULL, 
     [CMSBox26]                      VARCHAR(30)     NULL, 
     [CMSLineItemAmtType]            VARCHAR(30)     NULL, 
+	[CMSBox6Other]                  VARCHAR(30)     NULL, 
 	[ShowProductDescOnClaimForm]	INT				CONSTRAINT [DF_tblDocument_ShowProductDescOnClaimForm] DEFAULT ((0)) NOT NULL
     CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );

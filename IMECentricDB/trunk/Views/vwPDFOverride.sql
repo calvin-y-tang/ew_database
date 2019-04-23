@@ -56,6 +56,7 @@ AS
 
 			B.BlankValue AS CMSBox1a ,										--doc override
 			B.BlankValue AS CMSBox4 ,										--doc and inv override
+			B.BlankValue AS CMSBox6Other ,									--doc override
 			B.BlankValue AS CMSBox7Address ,								--doc override
 			B.BlankValue AS CMSBox7City ,									--doc override
 			B.BlankValue AS CMSBox7State ,									--doc override
