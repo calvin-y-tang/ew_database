@@ -13,18 +13,57 @@ BEGIN
     SET NOCOUNT ON;
     DECLARE @Err INT;
 
-    SELECT  ED.* ,
-            ISNULL(C.CaseNbr, -1) AS CaseNbr ,
-            CL.ClientCode ,
-            CO.ParentCompanyID ,
-            CL.CompanyCode ,
-            C.DoctorCode ,
-            C.PlaintiffAttorneyCode ,
-            C.DefenseAttorneyCode ,
-            C.DefParaLegal ,
-            BCL.ClientCode AS BillClientCode ,
-            BCO.ParentCompanyID AS BillParentCompanyID ,
-            BCL.CompanyCode AS BillCompanyCode
+	-- DEV NOTE: Changes this to be a SELECT DISTINCT when the SLA tables were added to this.
+	--	the problem is with tblSLARuleDetail because that will have multiple items items for each SLA Rule.
+	--	Just need to keep this point in mind when making any future changes to this stored procedure.
+
+    SELECT  DISTINCT 
+		ED.ExceptionDefID, 
+		ED.Description, 
+		ED.Entity, 
+		ED.IMECentricCode,
+		ED.ExceptionID, 
+		ED.CaseTypeCode, 
+		ED.ServiceCode, 
+		ED.StatusCodeValue, 
+		ED.DisplayMessage, 
+		ED.RequireComment, 
+		ED.EmailMessage,
+		ED.EditEMail, 
+		ED.GenerateDocument, 
+		CAST(ED.Message AS VARCHAR(MAX)) AS Message, 
+		ED.EmailScheduler, 
+		ED.EmailQA, 
+		ED.EmailOther, 
+		ED.EmailSubject, 
+		CAST(ED.EmailText AS VARCHAR(MAX)) AS EmailText, 
+		ED.Document1, 
+		ED.Document2, 
+		ED.Status,
+		ED.DateAdded, 
+		ED.UserIDAdded, 
+		ED.DateEdited, 
+		ED.UserIDEdited, 
+		ED.UseBillingEntity, 
+		ED.AllOffice, 
+		ED.CreateCHAlert,
+		ED.CHEventDesc,
+		ED.ChOtherInfo,
+		ED.AllEWServiceType, 
+		ED.AllCaseType, 
+		ED.AllService, 
+		ED.AllSLARuleDetail,
+		ISNULL(C.CaseNbr, -1) AS CaseNbr ,
+		CL.ClientCode ,
+		CO.ParentCompanyID ,
+		CL.CompanyCode ,
+		C.DoctorCode ,
+		C.PlaintiffAttorneyCode ,
+		C.DefenseAttorneyCode ,
+		C.DefParaLegal ,
+		BCL.ClientCode AS BillClientCode ,
+		BCO.ParentCompanyID AS BillParentCompanyID ,
+		BCL.CompanyCode AS BillCompanyCode
     FROM    tblExceptionDefinition AS ED
             LEFT OUTER JOIN tblCase AS C ON C.CaseNbr = @CaseNbr
             LEFT OUTER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
