@@ -89,6 +89,7 @@
     [SettingVersion]           INT              CONSTRAINT [DF_tblControl_SettingVersion] DEFAULT ((1)) NOT NULL, 
 	[DASecurityProfileID]      INT              NULL,
 	[DefaultWebCompanyID]      INT              NULL,
+	[Dir7zip]                  VARCHAR (70)     NULL,
     CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC)
 );
 
