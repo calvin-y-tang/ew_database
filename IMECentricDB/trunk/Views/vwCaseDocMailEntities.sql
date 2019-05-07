@@ -20,7 +20,7 @@ AS
 		FROM tblCase 
 				INNER JOIN tblClient ON tblClient.ClientCode = tblCase.BillClientCode
 	UNION
-		-- Examinee
+		-- Examinee (primary/current address)
 		SELECT
 			tblCase.CaseNbr, 
 			'EE' AS EntityType, tblCase.ChartNbr AS EntityID, 
@@ -29,6 +29,17 @@ AS
 			dbo.fnIsAddressComplete(Addr1, Addr2, City, State, Zip) AS AddrMsg
 		FROM tblCase 
 				INNER JOIN tblExaminee ON tblExaminee.ChartNbr = tblCase.ChartNbr
+	UNION
+		-- Secondary Examinee Addresses
+		SELECT
+			tblCase.CaseNbr, 
+			'EEA' AS EntityType, EEAddr.ExamineeAddressID AS EntityID, 
+			tblExaminee.firstName + ' ' + tblExaminee.lastName AS EntityName,
+			EEAddr.Addr1, EEAddr.Addr2, EEAddr.City, EEAddr.State, EEAddr.Zip, 
+			dbo.fnIsAddressComplete(EEAddr.Addr1, EEAddr.Addr2, EEAddr.City, EEAddr.State, EEAddr.Zip) AS AddrMsg
+		FROM tblCase 
+				INNER JOIN tblExaminee ON tblExaminee.ChartNbr = tblCase.ChartNbr
+				INNER JOIN tblExamineeAddresses AS EEAddr ON EEAddr.ChartNbr = tblCase.ChartNbr
 	UNION
 		-- Doctor (Normal Appt)
 		SELECT 
@@ -55,7 +66,8 @@ AS
 		SELECT 
 			tblCase.CaseNbr, 
 			'PAT' as EntityType, tblCase.PlaintiffAttorneyCode AS EntityID, 
-			ISNULL(Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			--ISNULL(Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
 			Address1, Address2, City, State, Zip,
 			dbo.fnIsAddressComplete(Address1, Address2, City, State, Zip) AS AddrMsg
 		FROM tblCase 
@@ -65,11 +77,22 @@ AS
 		SELECT 
 			tblCase.CaseNbr, 
 			'DAT' as EntityType, tblCase.DefenseAttorneyCode AS EntityID, 
-			ISNULL(Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			--ISNULL(Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
 			Address1, Address2, City, State, Zip, 
 			dbo.fnIsAddressComplete(Address1, Address2, City, State, Zip) AS AddrMsg
 		FROM tblCase 
 				INNER JOIN tblCCAddress AS Attrny ON Attrny.ccCode = tblCase.DefenseAttorneyCode
+	UNION
+		-- Paralegal
+		SELECT 
+			tblCase.CaseNbr, 
+			'LAT' as EntityType, tblCase.DefParaLegal AS EntityID, 
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			Address1, Address2, City, State, Zip, 
+			dbo.fnIsAddressComplete(Address1, Address2, City, State, Zip) AS AddrMsg
+		FROM tblCase 
+				INNER JOIN tblCCAddress AS Attrny ON Attrny.ccCode = tblCase.DefParaLegal
 	UNION
 		-- Treating Physician
 		SELECT 
