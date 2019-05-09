@@ -74,8 +74,8 @@ AS
 		SELECT 
 			tblCase.CaseNbr, 
 			'PAT' as EntityType, tblCase.PlaintiffAttorneyCode AS EntityID, 
-			Attrny.firstName + ' ' + Attrny.lastName AS EntityName,
-			Attrny.Company AS Company,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.Company, '') AS Company,
 			Address1, Address2, City, State, Zip,
 			dbo.fnIsAddressComplete(Address1, Address2, City, State, Zip) AS AddrMsg
 		FROM tblCase 
@@ -85,8 +85,8 @@ AS
 		SELECT 
 			tblCase.CaseNbr, 
 			'DAT' as EntityType, tblCase.DefenseAttorneyCode AS EntityID, 
-			Attrny.firstName + ' ' + Attrny.lastName AS EntityName,
-			Attrny.Company AS Company,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.Company, '') AS Company,
 			Address1, Address2, City, State, Zip, 
 			dbo.fnIsAddressComplete(Address1, Address2, City, State, Zip) AS AddrMsg
 		FROM tblCase 
@@ -96,8 +96,8 @@ AS
 		SELECT 
 			tblCase.CaseNbr, 
 			'LAT' as EntityType, tblCase.DefParaLegal AS EntityID, 
-			Attrny.firstName + ' ' + Attrny.lastName AS EntityName,
-			Attrny.Company AS Company,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.firstName + ' ' + Attrny.lastName, Attrny.Company) AS EntityName,
+			IIF(LEN(RTRIM(LTRIM(Attrny.firstName)) + RTRIM(LTRIM(Attrny.lastName))) > 0, Attrny.Company, '') AS Company,
 			Address1, Address2, City, State, Zip, 
 			dbo.fnIsAddressComplete(Address1, Address2, City, State, Zip) AS AddrMsg
 		FROM tblCase 
@@ -133,8 +133,8 @@ AS
 		SELECT 
 			tblCase.CaseNbr, 
 			'CC' as EntityType, tblCCAddress.ccCode AS EntityID, 
-			tblCCAddress.firstName + ' ' + tblCCAddress.lastName AS EntityName,
-			tblCCAddress.Company AS Company,
+			IIF(LEN(RTRIM(LTRIM(tblCCAddress.firstName)) + RTRIM(LTRIM(tblCCAddress.lastName))) > 0, tblCCAddress.firstName + ' ' + tblCCAddress.lastName, tblCCAddress.Company) AS EntityName,
+			IIF(LEN(RTRIM(LTRIM(tblCCAddress.firstName)) + RTRIM(LTRIM(tblCCAddress.lastName))) > 0, tblCCAddress.Company, '') AS Company,
 			tblCCAddress.Address1, tblCCAddress.Address2, tblCCAddress.City, tblCCAddress.State, tblCCAddress.Zip,
 			dbo.fnIsAddressComplete(tblCCAddress.Address1, tblCCAddress.Address2, tblCCAddress.City, tblCCAddress.State, tblCCAddress.Zip) AS AddrMsg
 		FROM tblCase 
