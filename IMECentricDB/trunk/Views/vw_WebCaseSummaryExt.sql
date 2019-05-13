@@ -46,6 +46,7 @@ SELECT
 	tblExaminee.phone1,
 	tblExaminee.phone2,
 	tblExaminee.mobilephone,
+	tblExaminee.workphone,
 	tblExaminee.SSN,
 	tblExaminee.sex,
 	tblExaminee.DOB,
@@ -178,6 +179,9 @@ SELECT
 	tblClient.email AS ClientEmail,
 	tblClient.fax AS ClientFax,
 	tblClient.notes AS ClientOffice,
+	tblClient.Addr1 + ' ' + tblClient.Addr1 AS ClientAddress,
+	tblClient.Phone1Ext AS ClientExt,
+	
 
 	--defense attorney
 	cc1.cccode,
