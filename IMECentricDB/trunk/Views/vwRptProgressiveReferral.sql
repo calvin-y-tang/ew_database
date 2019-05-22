@@ -2,7 +2,7 @@
 AS
 SELECT
  C.CaseNbr,
- C.ClaimNbr,
+ CASE WHEN ISNULL(C.ClaimNbrExt,'') <> '' THEN C.ClaimNbr + '.' + C.ClaimNbrExt ELSE C.ClaimNbr END AS ClaimNumber,
  CT.Description AS CaseType,
  S.Description AS Service,
  Q.StatusDesc AS CaseStatus,

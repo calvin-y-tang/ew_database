@@ -3,7 +3,7 @@ CREATE VIEW [dbo].[vwRptProgressiveRptWebLog]
 AS
 SELECT
 C.CaseNbr,
-C.ClaimNbr,
+CASE WHEN ISNULL(C.ClaimNbrExt,'') <> '' THEN C.ClaimNbr + '.' + C.ClaimNbrExt ELSE C.ClaimNbr END AS ClaimNumber,
 EE.firstName + ' ' + EE.lastName AS Examinee,
 CDT.Description AS DocType,
 CD.Description AS DocDescrip,
