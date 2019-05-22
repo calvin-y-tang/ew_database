@@ -2,7 +2,7 @@
 AS
 SELECT
  C.CaseNbr,
- C.ClaimNbr,
+ CASE WHEN ISNULL(C.ClaimNbrExt,'') <> '' THEN C.ClaimNbr + '.' + C.ClaimNbrExt ELSE C.ClaimNbr END AS ClaimNumber,
  CT.Description AS CaseType,
  S.Description AS Service,
  Q.StatusDesc AS CaseStatus,
@@ -11,7 +11,7 @@ SELECT
  ISNULL(CL.LastName,'') + ', ' + ISNULL(CL.FirstName,'') AS ClientName,
  IIF(C.PlaintiffAttorneyCode IS NOT NULL, PA.Company, '') AS AttorneyCompany,
  IIF(C.PlaintiffAttorneyCode IS NOT NULL, RTRIM(LTRIM(ISNULL(PA.FirstName,'') + ' ' + ISNULL(PA.LastName,''))), '') AS AttorneyName,
- C.DoctorName,
+ ISNULL(C.DoctorName, (ISNULL(D.FirstName,'') + ' ' + ISNULL(D.MiddleInitial,'') + ' ' + ISNULL(D.LastName,''))) AS DoctorName,
  C.DoctorSpecialty,
  L.County,
  L.State,
@@ -20,8 +20,6 @@ SELECT
  C.DateOfInjury,
  C.OrigApptTime,
  C.DateCanceled,
- C.RptFinalizedDate,
- C.RptSentDate,
 
  AH.DocumentNbr AS InvoiceNbr,
  AH.DocumentTotal AS InvoiceAmt,
@@ -42,6 +40,12 @@ SELECT
  LEFT OUTER JOIN tblLocation AS L ON C.DoctorLocation=L.LocationCode
  LEFT OUTER JOIN tblCCAddress AS PA ON C.PlaintiffAttorneyCode = PA.ccCode
  LEFT OUTER JOIN tblAcctHeader AS AH ON AH.CaseNbr = C.CaseNbr AND AH.DocumentType='IN'
+ LEFT OUTER JOIN 
+  (SELECT * FROM (SELECT CaseApptID, CaseNbr, DoctorCode,
+   RANK() OVER(PARTITION BY CaseNbr ORDER BY CaseApptID DESC) AS MaxCaseApptID
+  FROM tblCaseAppt) AS CA3 WHERE CA3.MaxCaseApptID = 1)
+  AS CA2 ON C.CaseNbr = CA2.CaseNbr
+ LEFT OUTER JOIN tblDoctor AS D ON CA2.DoctorCode = D.DoctorCode
  LEFT OUTER JOIN
  (SELECT CA.CaseNbr,
   COUNT(CA.CaseApptID) AS ApptCount,
