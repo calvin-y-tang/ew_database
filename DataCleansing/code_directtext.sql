@@ -41,7 +41,7 @@ begin
 			VAR_KEYCOLNAME, 
 			'VAR_REPLACEMENTVALUE' as val 
 		from VAR_DBINSTANCE.dbo.VAR_TABLENAME with (nolock)
-		where coalesce(VAR_COLNAME, '') <> 'VAR_REPLACEMENTVALUE'
+		where coalesce(convert(varchar(max), VAR_COLNAME), '') <> 'VAR_REPLACEMENTVALUE'
 	)
 	update VAR_DBINSTANCE.dbo.VAR_TABLENAME 
 		set VAR_COLNAME = x.val

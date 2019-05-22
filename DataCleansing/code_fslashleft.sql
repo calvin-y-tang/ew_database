@@ -54,7 +54,7 @@ begin
 		from VAR_DBINSTANCE.dbo.VAR_TABLENAME with (nolock)
 		where VAR_COLNAME is not null 
 			and ltrim(rtrim(VAR_COLNAME)) <> ''
-			and VAR_COLNAME not like ('VAR_REPLACEMENTVALUE\%')
+			and VAR_COLNAME not like ('VAR_REPLACEMENTVALUE%')
 	)
 	update VAR_DBINSTANCE.dbo.VAR_TABLENAME 
 		set VAR_COLNAME = x.val
