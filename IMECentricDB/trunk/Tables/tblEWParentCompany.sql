@@ -24,6 +24,7 @@ CREATE TABLE [dbo].[tblEWParentCompany] (
     [UserIDAdded]                    VARCHAR(15) NULL, 
     [DateEdited]                     DATETIME    NULL, 
     [UserIDEdited]                   VARCHAR(15) NULL,
+	[DICOMHandlingPreference]        INT         NULL,
     CONSTRAINT [PK_tblEWParentCompany] PRIMARY KEY CLUSTERED ([ParentCompanyID] ASC)
 );
 
