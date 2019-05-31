@@ -8,3 +8,6 @@ GO
 
 
 --
+-- Issue 11086 - data patch for new IsNew column - set all values to 0
+UPDATE tblCase SET IsNew = 0 WHERE 1=1
+
