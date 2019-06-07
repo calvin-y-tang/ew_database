@@ -19,7 +19,12 @@ CREATE TABLE [dbo].[tblEWParentCompany] (
     [RequireFeeZoneNYFL]             BIT NULL, 
     [Param]                          VARCHAR(1024) NULL, 
 	[EWNetworkID]                    INT NULL,
-	[CountryID]                    INT NULL,
+	[CountryID]                      INT NULL,
+	[DateAdded]                      DATETIME    NULL, 
+    [UserIDAdded]                    VARCHAR(15) NULL, 
+    [DateEdited]                     DATETIME    NULL, 
+    [UserIDEdited]                   VARCHAR(15) NULL,
+	[DICOMHandlingPreference]        INT         NULL,
     CONSTRAINT [PK_tblEWParentCompany] PRIMARY KEY CLUSTERED ([ParentCompanyID] ASC)
 );
 

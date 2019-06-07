@@ -57,7 +57,7 @@ SELECT
 	NULL as "TotalDays",
 	IIF(ISNULL(C.TATServiceLifeCycle, '') <> '', C.TATServiceLifeCycle - @serviceVarianceValue, 0) as "ServiceVariance",
 	CONVERT(CHAR(8), NULL) as "JurisTAT",
-	CAST(ISNULL(NW.EWNetworkID, '0') AS CHAR(2)) as "InOutNetwork",
+	CAST(ISNULL(NW.EWNetworkID, '0') AS CHAR(8)) as "InOutNetwork",
 	ISNULL(LI.ExamFee, '') as "ExamFee",
 	ISNULL(AH.DocumentTotal, '') as "InvoiceFee",
 	CONVERT(VARCHAR(300), NULL) as PrimaryException,

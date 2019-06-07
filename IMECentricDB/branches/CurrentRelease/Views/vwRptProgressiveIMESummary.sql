@@ -2,7 +2,7 @@
 AS
 SELECT
  C.CaseNbr,
- C.ClaimNbr,
+ CASE WHEN ISNULL(C.ClaimNbrExt,'') <> '' THEN C.ClaimNbr + '.' + C.ClaimNbrExt ELSE C.ClaimNbr END AS ClaimNumber,
 
  ISNULL(EE.LastName, '') + ', ' + ISNULL(EE.FirstName, '') AS ExamineeName,
  ISNULL(CL.LastName, '') +', ' + ISNULL(CL.FirstName, '') AS ClientName,
