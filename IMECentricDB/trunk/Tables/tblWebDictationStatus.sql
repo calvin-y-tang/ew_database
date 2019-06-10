@@ -10,7 +10,7 @@
 	[UserIDEdited] [varchar](50) NULL,
 	[DateEdited] [smalldatetime] NULL,
 	[DictationCompleteDate] [smalldatetime] NULL,
- [Duration] TIME NULL, 
+ [Duration] INT NULL, 
     CONSTRAINT [PK_tblWebDictationStatus] PRIMARY KEY CLUSTERED 
 (
 	[DictationStatusID] ASC
