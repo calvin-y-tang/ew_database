@@ -1,4 +1,5 @@
-﻿
+﻿--S37
+
 -- Issue 11085 - new columns to add to IMECentricMaster for EWParentCompany 
 ALTER TABLE EWParentCompany ADD 
 	[DateAdded] DATETIME NULL, 
@@ -17,4 +18,9 @@ GO
 ALTER TABLE EWParentCompany ADD 
 	[DICOMHandlingPreference] INT NULL
 GO
+
+
+
+
+--S38
 

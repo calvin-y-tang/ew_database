@@ -10,7 +10,8 @@
 	[UserIDEdited] [varchar](50) NULL,
 	[DateEdited] [smalldatetime] NULL,
 	[DictationCompleteDate] [smalldatetime] NULL,
- CONSTRAINT [PK_tblWebDictationStatus] PRIMARY KEY CLUSTERED 
+ [Duration] INT NULL, 
+    CONSTRAINT [PK_tblWebDictationStatus] PRIMARY KEY CLUSTERED 
 (
 	[DictationStatusID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
