@@ -55,6 +55,7 @@ insert into DCAction (actionid, actionname, scriptfilename) values
 ,(15, 'ClaimNbr Generate', 'code_claimnbr_generate') 
 ,(16, 'Date Injury Generate', 'code_dateinjury_generate')  
 ,(17, 'Date Birth Generate', 'code_datebirth_generate') 
+,(18, 'Direct Text Replace Non Null ONLY', 'code_directtextnonnullonly') 
 ;
 
 
@@ -75,7 +76,7 @@ insert into DCTableFieldAction (tablename, keycolname, colname, replacevalue, ac
 ,('tblCase', 'CaseNbr', 'CertMailNbr2', '2345678901234567890123', 1)
 ,('tblCase', 'CaseNbr', 'CourtIndexNbr', '12345', 1)
 ,('tblCase', 'CaseNbr', 'CaseCaption', 'A vs. B', 1)
-,('tblCase', 'CaseNbr', 'AddlClaimNbrs', '22222,33333', 1)
+,('tblCase', 'CaseNbr', 'AddlClaimNbrs', '22222,33333', 18)
 ,('tblCase', 'CaseNbr', null, null, 13)
 ,('tblCaseContactRequest', 'CaseContactReqID', 'Phone', '(111) 222-3333', 1)
 ,('tblCaseContactRequest', 'CaseContactReqID', 'Message', 'This is a contact message', 1)
@@ -144,7 +145,7 @@ insert into DCTableFieldAction (tablename, keycolname, colname, replacevalue, ac
 ,('tblExaminee', 'ChartNbr', 'Addr1', '55 Center St.', 1)
 ,('tblExaminee', 'ChartNbr', 'Phone1', '(123) 456-7890', 1)
 ,('tblExaminee', 'ChartNbr', 'Phone2', '(123) 456-7890', 1)
-,('tblExaminee', 'ChartNbr', 'SSN', 'ABCXXXXXXXXX', 1)
+,('tblExaminee', 'ChartNbr', 'SSN', '123-45-6789', 1)
 ,('tblExaminee', 'ChartNbr', 'DOB', null, 17)
 ,('tblExaminee', 'ChartNbr', 'Note', 'These are Examinee Notes', 1)
 ,('tblExaminee', 'ChartNbr', 'Insured', 'Insured Party Name', 1)
