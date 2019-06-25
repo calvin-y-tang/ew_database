@@ -37,5 +37,5 @@ SELECT C.CaseNbr,
  LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
  LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
  LEFT OUTER JOIN tblLocation AS LO ON LO.LocationCode = C.DoctorLocation
- WHERE C.DrMedRecsDueDate IS NOT NULL
+ WHERE C.DrMedRecsDueDate IS NOT NULL AND C.Status IN (2, 150, 162, 276, 1078, 1079)
 GO
