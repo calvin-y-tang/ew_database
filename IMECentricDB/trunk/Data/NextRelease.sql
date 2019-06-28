@@ -6,3 +6,10 @@ VALUES(31, 'Generate Quote Document', 'Active', '2019-06-21 09:28:00.000', 'Admi
 GO 
 
 
+-- Issue 11142 - Network Fee Schedule Calculation Method (switch between "new" and "old" fee schedule tables)
+INSERT INTO tblSetting(Name, Value)
+VALUES('NetworkFeeSchedCalcMethod', '1')
+GO
+
+
+
