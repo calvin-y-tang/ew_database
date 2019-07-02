@@ -11,5 +11,8 @@ INSERT INTO tblSetting(Name, Value)
 VALUES('NetworkFeeSchedCalcMethod', '1')
 GO
 
+-- Issue 10243 - add new status queue form to list of forms available for choosing
+  INSERT INTO [tblQueueForms] ([FormName], [Description])
+  VALUES ('frmStatusMedRecsDue', 'Form with Medical Records Due Date')
 
 
