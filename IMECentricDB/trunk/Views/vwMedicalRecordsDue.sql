@@ -20,13 +20,19 @@ SELECT C.CaseNbr,
        C.OfficeCode,
 	   C.CaseType,
 	   C.ServiceCode,
-	   C.ForecastDate,
 	   C.ExternalDueDate,
+	   C.DateMedsRecd,
 	   C.DrMedRecsDueDate,
 	   C.InternalDueDate,
+	   C.DrChartSelect,
+	   C.DateDrChart,
+	   C.DateEdited,
+       C.UserIDEdited,
+	   C.LastStatusChg,
        DATEDIFF(DAY, GETDATE(), C.DrMedRecsDueDate) AS DaysTillDue,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
-	   Q.StatusDesc
+	   Q.StatusDesc,
+	   Q.FunctionCode
  FROM tblCase AS C
  INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
  INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
@@ -37,5 +43,4 @@ SELECT C.CaseNbr,
  LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
  LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
  LEFT OUTER JOIN tblLocation AS LO ON LO.LocationCode = C.DoctorLocation
- WHERE C.DrMedRecsDueDate IS NOT NULL AND Q.DisplayOrder BETWEEN 1500 AND 2990
 GO
