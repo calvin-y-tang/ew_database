@@ -20,7 +20,7 @@ GO
 
 ----  *******  Setting BusinessRuleID to 12 – if changed, need to change below
 --INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
---VALUES(12, ' MIAutoAuthorization', ' Appointment', ' For MI auto cases, doctor must have a valid MIAutoAuth document on file', 1, 1101, 0, ' MIAutoAuth Doc Type', NULL, NULL, NULL, NULL, 0)
+--VALUES(12, 'ValidDrDocForSched', 'Appointment', 'Doctor must have the valid document on file when scheduling appointments', 1, 1101, 0, 'Document Type ID', NULL, NULL, NULL, NULL, 0)
 
 ----  Jurisdiction & EWBusLineID = 1 (Liability)
 --INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
