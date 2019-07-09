@@ -11,7 +11,7 @@
 	[EmailAddress] [varchar](100) NULL,
 	[Specialty] [varchar](50) NULL,
 	[StateLicensed] [nchar](10) NULL,
-	[FeedbackTo] [nchar](10) NULL,
+	[FeedbackTo] VARCHAR(50) NULL,
 	[Notes] [varchar](max) NULL,
 	[NominatedByFullName] [varchar](100) NULL,
 	[NominatedByIMECentricCode] [int] NULL,

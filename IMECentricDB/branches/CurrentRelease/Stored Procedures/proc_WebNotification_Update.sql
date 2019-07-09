@@ -13,7 +13,7 @@
 	@WebUserEmailAddress varchar(200) = NULL,
 	@ToEmailAddress varchar(200) = NULL,
 	@FromEmailAddress varchar(200) = NULL,
-	@NotificationSubject varchar(100) = NULL,
+	@NotificationSubject varchar(1000) = NULL,
 	@NotificationDetail varchar(MAX) = NULL,
 	@ErrorMessage varchar(500) = NULL,
 	@DateAdded smalldatetime = NULL,

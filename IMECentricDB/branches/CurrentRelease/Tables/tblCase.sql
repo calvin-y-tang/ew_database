@@ -256,6 +256,7 @@
     [PreAuthorization]               VARCHAR (30)     NULL,
     [WorkCompCaseType]               VARCHAR (30)     NULL,
 	[IsNew]							 BIT              CONSTRAINT [DF_tblCase_IsNew] DEFAULT ((1)) NOT NULL,
+	[DrMedRecsDueDate]				 DATETIME		  NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])

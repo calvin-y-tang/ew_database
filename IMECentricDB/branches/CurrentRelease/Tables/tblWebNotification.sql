@@ -12,7 +12,7 @@
 	[WebUserEmailAddress]		VARCHAR (200) NULL,
 	[ToEmailAddress]			VARCHAR (200) NULL,
 	[FromEmailAddress]			VARCHAR (200) NULL,
-	[NotificationSubject]		VARCHAR (100) NULL,
+	[NotificationSubject]		VARCHAR (1000) NULL,
 	[NotificationDetail]		VARCHAR (max) NULL,
 	[ErrorMessage]				VARCHAR (500) NULL,
 	[DateAdded]					SMALLDATETIME NULL,
