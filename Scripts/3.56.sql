@@ -85,6 +85,7 @@ PRINT N'Creating [dbo].[vwMedicalRecordsDue]...';
 
 GO
 
+
 CREATE VIEW [dbo].[vwMedicalRecordsDue]
 AS
 SELECT C.CaseNbr,
@@ -116,6 +117,7 @@ SELECT C.CaseNbr,
        C.UserIDEdited,
 	   C.LastStatusChg,
        DATEDIFF(DAY, GETDATE(), C.DrMedRecsDueDate) AS DaysTillDue,
+       DATEDIFF(day, C.LastStatuschg, GETDATE()) AS IQ ,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
 	   Q.StatusDesc,
 	   Q.FunctionCode
@@ -130,6 +132,7 @@ SELECT C.CaseNbr,
  LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
  LEFT OUTER JOIN tblLocation AS LO ON LO.LocationCode = C.DoctorLocation
 GO
+
 IF @@ERROR <> 0
    AND @@TRANCOUNT > 0
     BEGIN
