@@ -1,6 +1,7 @@
 CREATE TABLE [dbo].[tblStorageRetentionRule](
 	[StorageRetentionRuleID] [int] IDENTITY(1,1) NOT NULL,
 	[ProcessOrder] [int] NOT NULL,
+	[DeleteDays] [int] NOT NULL,
 	[Jurisdiction] [varchar](2) NULL,
 	[OfficeCode] [int] NULL,
 	[ParentCompanyID] [int] NULL,
