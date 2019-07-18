@@ -1091,6 +1091,7 @@
     <Build Include="Tables\tblFSDetail.sql" />
     <Build Include="Tables\tblFSHeader.sql" />
     <Build Include="Tables\tblFSEntity.sql" />
+    <Build Include="Tables\tblStorageRetentionRule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
