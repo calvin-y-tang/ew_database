@@ -1092,6 +1092,7 @@
     <Build Include="Tables\tblFSHeader.sql" />
     <Build Include="Tables\tblFSEntity.sql" />
     <Build Include="Tables\tblStorageRetentionRule.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralHistoryByClaimAndCompany.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
