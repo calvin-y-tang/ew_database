@@ -26,6 +26,7 @@
     [ApproveViaFax]        BIT           CONSTRAINT [DF_tblAcctOuote_ApproveViaFax] DEFAULT ((0)) NULL,
     [DateClientApproved]   DATETIME      NULL,
     [ApprovedByClientName] VARCHAR (100) NULL,
+    [ApprovedAmount]       MONEY         NULL,
     [DateAdded]            DATETIME      NOT NULL,
     [UserIDAdded]          VARCHAR (15)  NOT NULL,
     [DateEdited]           DATETIME      NULL,
