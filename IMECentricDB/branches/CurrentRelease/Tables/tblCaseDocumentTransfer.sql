@@ -15,5 +15,7 @@
     [TransferDateTime]       DATETIME NULL, 
     [StatusCode]             VARCHAR(12) NULL, 
     [StatusMessage]          VARCHAR(2048) NULL ,
+    [TransmitFileName] VARCHAR(255) NULL, 
+    [DocumentControlNumber] VARCHAR(128) NULL, 
     CONSTRAINT [PK_tblCaseDocumentTransfer] PRIMARY KEY CLUSTERED ([CaseDocumentTransferID] ASC)
 );
