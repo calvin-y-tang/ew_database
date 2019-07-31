@@ -25,12 +25,13 @@
     [ApproveViaPhone]      BIT           CONSTRAINT [DF_tblAcctOuote_ApproveViaPhone] DEFAULT ((0)) NULL,
     [ApproveViaFax]        BIT           CONSTRAINT [DF_tblAcctOuote_ApproveViaFax] DEFAULT ((0)) NULL,
     [DateClientApproved]   DATETIME      NULL,
-    [ApprovedByClientName] VARCHAR (100) NULL,
+    [ApprovedByClientName] VARCHAR (100) NULL,    
     [DateAdded]            DATETIME      NOT NULL,
     [UserIDAdded]          VARCHAR (15)  NOT NULL,
     [DateEdited]           DATETIME      NULL,
     [UserIDEdited]         VARCHAR (15)  NULL,
 	[QuoteHandlingID]      INT           NULL, 
+	[ApprovedAmt]       MONEY         NULL,
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 

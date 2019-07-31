@@ -30,6 +30,7 @@ SELECT C.CaseNbr,
        C.UserIDEdited,
 	   C.LastStatusChg,
        DATEDIFF(DAY, GETDATE(), C.DrMedRecsDueDate) AS DaysTillDue,
+       DATEDIFF(day, C.LastStatuschg, GETDATE()) AS IQ ,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
 	   Q.StatusDesc,
 	   Q.FunctionCode

@@ -1086,6 +1086,8 @@
     <Build Include="Tables\tblConfiguration.sql" />
     <Build Include="Stored Procedures\proc_PublishOnWeb_LoadByTableKeyTableTypeNoUserCode.sql" />
     <Build Include="Views\vwMedicalRecordsDue.sql" />
+    <Build Include="Tables\tblStorageRetentionRule.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralHistoryByClaimAndCompany.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
