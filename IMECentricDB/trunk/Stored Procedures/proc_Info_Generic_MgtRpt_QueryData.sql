@@ -48,7 +48,8 @@ SELECT
   EWCT.Name as CompanyType,
   CL.ClientCode as ClientID,
   case when isnull(CL.LastName, '') = '' then isnull(CL.FirstName, '') else CL.LastName+', '+isnull(CL.FirstName, '') end as Client,
-  D.DoctorCode as DoctorID,
+  D.DoctorCode as DoctorID, 
+  D.Zip as DoctorZip,
   CASE 
   WHEN c.PanelNbr IS NOT NULL THEN c.DoctorName 
   ELSE case when isnull(D.LastName, '') = '' then isnull(D.FirstName, '') else D.LastName+', '+isnull(D.FirstName, '') end
@@ -110,18 +111,18 @@ SELECT
     when 5 then C.DateMedsRecd
   end as DateMedsReceived,
   C.OCF25Date,
-c.TATAwaitingScheduling,  
-c.TATEnteredToAcknowledged,
-c.TATEnteredToMRRReceived,
-c.TATEnteredToScheduled,
-c.TATExamToClientNotified,
-c.TATExamToRptReceived,
-c.TATQACompleteToRptSent,
-c.TATReport, 
-c.TATRptReceivedToQAComplete,
-c.TATRptSentToInvoiced,
-c.TATScheduledToExam,
-c.TATServiceLifeCycle, 
+  c.TATAwaitingScheduling,  
+  c.TATEnteredToAcknowledged,
+  c.TATEnteredToMRRReceived,
+  c.TATEnteredToScheduled,
+  c.TATExamToClientNotified,
+  c.TATExamToRptReceived,
+  c.TATQACompleteToRptSent,
+  c.TATReport, 
+  c.TATRptReceivedToQAComplete,
+  c.TATRptSentToInvoiced,
+  c.TATScheduledToExam,
+  c.TATServiceLifeCycle, 
   C.DateAdded as CaseDateAdded,
   Inv.CaseDocID,
   case
@@ -182,7 +183,9 @@ c.TATServiceLifeCycle,
   CONVERT(MONEY, NULL) AS   FeeDetailTranslate,
   CONVERT(MONEY, NULL) AS   FeeDetailAdminFee,
   CONVERT(MONEY, NULL) AS   FeeDetailFacFee,
-  CONVERT(MONEY, NULL) AS   FeeDetailOther
+  CONVERT(MONEY, NULL) AS   FeeDetailOther,
+  ISNULL(C.InsuringCompany, '') as InsuringCompany,
+  ISNULL(C.Priority, 'Normal') AS CasePriority
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
