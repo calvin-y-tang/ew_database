@@ -55,8 +55,12 @@ insert into tblTATCalculationGroupDetail (TATCalculationGroupID, TATCalculationM
 	,(4, 19, 15)
 ;
 
-
-
+--// insert some new values into tblCodes IMEC-11210
+insert into tblCodes values ('WALI CAC', 'ServiceCode', 170)
+insert into tblCodes values ('WALI CAC', 'ServiceCode', 180)
+insert into tblCodes values ('WALI CAC', 'ServiceCode', 190)
+insert into tblCodes values ('WALI CAC', 'ServiceCode', 200)
+insert into tblCodes values ('WALI CAC', 'ServiceCode', 210)
 
 
 
