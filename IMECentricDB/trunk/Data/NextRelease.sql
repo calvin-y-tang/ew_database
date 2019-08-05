@@ -64,6 +64,11 @@ insert into tblCodes values ('WALI CAC', 'ServiceCode', 210)
 
 
 
+-- Insert security tokens for Issue 11186 (sub issues of 11168).  Used for DICOM Storage retention rules 
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded) Values('StorRetRuleSet', 'Storage Retention Rule - Set', getdate())
+GO
+INSERT INTO tblGroupFunction VALUES ('8-CorpAdmin', 'StorRetRuleSet')
+GO
 
 
 
