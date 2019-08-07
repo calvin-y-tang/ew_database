@@ -519,6 +519,8 @@ PRINT N'Update complete.';
 
 GO
 
+
+
 --// add new data fields values for IMEC-11200 (Create TAT fields and setup calculations in IMEC)
 insert into tblDataField (DataFieldID, TableName, FieldName, Descrip) values
 (117, 'tblCase', 'TATDateLossToApptDate', '')
@@ -575,6 +577,13 @@ insert into tblTATCalculationGroupDetail (TATCalculationGroupID, TATCalculationM
 	,(4, 19, 15)
 ;
 
+
+--// add new retention rule records to user security
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded) Values('StorRetRuleSet', 'Storage Retention Rule - Set', getdate())
+GO
+
+INSERT INTO tblGroupFunction VALUES ('8-CorpAdmin', 'StorRetRuleSet')
+GO
 
 
 
