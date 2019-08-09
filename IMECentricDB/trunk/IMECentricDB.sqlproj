@@ -1093,6 +1093,7 @@
     <Build Include="Tables\tblFSEntity.sql" />
     <Build Include="Tables\tblStorageRetentionRule.sql" />
     <Build Include="Stored Procedures\proc_GetReferralHistoryByClaimAndCompany.sql" />
+    <Build Include="Tables\tblWebPortalVersionRule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
