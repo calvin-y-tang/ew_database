@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[tblWebPortalVersionRule](
 	[WebPortalVersionRule] [int] IDENTITY(1,1) NOT NULL,
 	[ProcessOrder] [int] NOT NULL,
-	[UserType] [varchar](2) NOT NULL,
+	[UserType] [varchar](2) NULL,
 	[WebUserID] [int] NULL,
 	[CompanyCode] [int] NULL,
 	[ParentCompanyID] [int] NULL,
