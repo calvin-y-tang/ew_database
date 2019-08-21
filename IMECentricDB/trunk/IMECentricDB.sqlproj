@@ -1094,6 +1094,8 @@
     <Build Include="Tables\tblStorageRetentionRule.sql" />
     <Build Include="Stored Procedures\proc_GetReferralHistoryByClaimAndCompany.sql" />
     <Build Include="Tables\tblWebPortalVersionRule.sql" />
+    <Build Include="Tables\tblFSHeaderSetup.sql" />
+    <Build Include="Tables\tblFSDetailSetup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
