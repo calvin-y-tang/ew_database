@@ -11,3 +11,8 @@ GO
 --INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
 --VALUES('CO', 6741, 2, 1, 104, '2019-08-12', 'Admin', '2019-08-12', 'Admin', NULL, NULL, NULL, NULL, '000808', NULL, '525', NULL, 'ClaimEmployerOverride')
 --GO
+
+
+--Add a setting to tblSetting - a value to turn on the portal web version rule – UseWebPortalVersionRules
+INSERT INTO tblSetting (Name, Value) VALUES ('UseWebPortalVersionRules', 'True')
+
