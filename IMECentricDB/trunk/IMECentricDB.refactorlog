@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="b47faced-f957-4a40-b0d2-aba9a81b12b3" ChangeDateTime="08/22/2019 14:33:26">
+    <Property Name="ElementName" Value="[dbo].[tblCaseDocuments].[FirstViewedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCaseDocuments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FirstViewedOnWebBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fad01c95-4836-44e2-b717-179e24df8e8c" ChangeDateTime="08/22/2019 14:33:39">
+    <Property Name="ElementName" Value="[dbo].[tblCaseDocuments].[FirstViewedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCaseDocuments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FirstViewedOnWebDate" />
+  </Operation>
+</Operations>

@@ -25,8 +25,8 @@
     [ReportApproved] BIT              NULL,
     [SharedDoc]      BIT              CONSTRAINT [DF_tblCaseDocuments_SharedDoc] DEFAULT ((0)) NOT NULL,
     [MasterCaseNbr]  INT              NULL,
-    [FirstViewedBy] VARCHAR(50) NULL, 
-    [FirstViewedDate] SMALLDATETIME NULL, 
+    [FirstViewedOnWebBy] VARCHAR(100) NULL, 
+    [FirstViewedOnWebDate] SMALLDATETIME NULL, 
     CONSTRAINT [PK_tblCaseDocuments] PRIMARY KEY CLUSTERED ([SeqNo] ASC)
 );
 
