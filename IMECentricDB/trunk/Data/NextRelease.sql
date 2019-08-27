@@ -16,3 +16,8 @@ GO
 --Add a setting to tblSetting - a value to turn on the portal web version rule – UseWebPortalVersionRules
 INSERT INTO tblSetting (Name, Value) VALUES ('UseWebPortalVersionRules', 'True')
 
+-- Issue 11243 data patch
+  UPDATE tblDPSBundle SET DPSBundleTypeID = 1
+  UPDATE tblDPSBundle SET CombinedDPSBundleID = DPSBundleID
+
+
