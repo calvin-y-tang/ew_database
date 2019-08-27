@@ -80,6 +80,7 @@ CREATE TABLE [dbo].[tblClient] (
     [SpecialReqNotes]          TEXT             NULL,
     [DistributionNotes]        VARCHAR(MAX)     NULL, 
     [EmployeeNumber]           VARCHAR(20)      NULL, 
+	[FirstCaseNbr]             INT              NULL, 
     CONSTRAINT [PK_tblClient] PRIMARY KEY CLUSTERED ([ClientCode] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_tblClient_tblCompany] FOREIGN KEY ([CompanyCode]) REFERENCES [dbo].[tblCompany] ([CompanyCode])
 );
