@@ -1096,6 +1096,10 @@
     <Build Include="Tables\tblWebPortalVersionRule.sql" />
     <Build Include="Tables\tblFSHeaderSetup.sql" />
     <Build Include="Tables\tblFSDetailSetup.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_Header.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_Detail.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />    
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
