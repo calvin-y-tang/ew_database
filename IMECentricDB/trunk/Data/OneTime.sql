@@ -43,3 +43,27 @@ INSERT INTO ConfSMSMessage (DBID, SMSType, Message, DateAdded, DateEdited, UserI
 
 
 GO
+
+
+--// EWIS schedule job entry for Client First Case: IMEC-11177
+insert into ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, EndDate, RunTimeStart, RunTimeEnd, Param, GroupNo, SeqNo)
+values (
+	'Client First Case',
+	'RunSQL',
+	'D',
+	1,
+	'0111110',
+	'1900-01-01 23:45:00',
+	'2019-08-30 00:00:00',
+	null,
+	'2019-08-30 22:30:00',
+	null,
+	'SQLFile=C:\EWIntegrationServer\SQLScripts\Client_FirstCaseNbr_Update.sql;DBType=23;AlwaysEmailLog=True',
+	null,
+	null
+)
+GO
+
+
+
+
