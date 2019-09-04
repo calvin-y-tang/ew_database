@@ -4,6 +4,7 @@ AS
         C.CaseNbr,
         C.ExtCaseNbr,
         B.DPSBundleID,
+		B.CombinedDPSBundleID,
         DATEDIFF(d, B.DateEdited, GETDATE()) AS IQ,
         E.FirstName+' '+E.LastName AS ExamineeName,
         Com.IntName AS CompanyName,
