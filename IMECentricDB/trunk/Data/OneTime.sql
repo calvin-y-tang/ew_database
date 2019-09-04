@@ -65,5 +65,14 @@ values (
 GO
 
 
+UPDATE DPSJobFile SET JobTrackingID=SUBSTRING(JobID, CHARINDEX('-', JobID, 7)+1, LEN(JobID)-CHARINDEX('-', JobID, 7)), JobType='Original' WHERE SourceID=1
 
+GO
+
+
+
+
+--Issue 11118 - Add a setting to tblSetting to hide the Cancel DPS Bundle button.  Doug L says they are ready for this functionality yet
+INSERT INTO tblSetting (Name, Value) VALUES ('DPSCancelBundleSendFile', 'True')
+GO
 

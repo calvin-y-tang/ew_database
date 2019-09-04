@@ -23,6 +23,4 @@ INSERT INTO tblSetting (Name, Value) VALUES ('UseWebPortalVersionRules', 'True')
 
 
 
---Issue 11118 - Add a setting to tblSetting to hide the Cancel DPS Bundle button.  Doug L says they are ready for this functionality yet
-INSERT INTO tblSetting (Name, Value) VALUES ('HideCancelDPSBundleButton', 'True')
 
