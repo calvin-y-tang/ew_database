@@ -4,6 +4,14 @@ AS
         C.CaseNbr,
         C.ExtCaseNbr,
         B.DPSBundleID,
+		B.CombinedDPSBundleID,
+		CASE
+			WHEN B.DPSBundleTypeID = 1 THEN 'Original'
+			WHEN B.DPSBundleTypeID = 2 THEN 'Rework'
+			WHEN B.DPSBundleTypeID = 3 THEN 'Review'
+		ELSE
+			'Unknown'
+		END AS DPSBundleType,
         DATEDIFF(d, B.DateEdited, GETDATE()) AS IQ,
         E.FirstName+' '+E.LastName AS ExamineeName,
         Com.IntName AS CompanyName,

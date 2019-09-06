@@ -3,7 +3,7 @@
 	[FSDetailID]    INT IDENTITY (1, 1) NOT NULL,
 	[FSHeaderID]    INT         NOT NULL,
 	[ProcessOrder]  INT         NOT NULL, 
-	[FeeUnit]       VARCHAR(25) NOT NULL,
+	[FeeUnit]       INT         NOT NULL,
 	[FeeAmt]        MONEY       NOT NULL,
 	[NSFeeAmt1]     MONEY       NULL,
 	[NSFeeAmt2]     MONEY       NULL,

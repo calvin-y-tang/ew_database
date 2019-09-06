@@ -31,6 +31,9 @@
     [ExtDocumentID] VARCHAR(100) NULL, 
     [DPSPriorityID] INT NULL, 
     [DPSSystemID] INT CONSTRAINT [DF_tblDPSBundle_DPSSystemID] DEFAULT ((0)) NOT NULL, 
+	[DPSBundleTypeID]     INT			NULL,
+	[CaseData]			  VARCHAR(MAX)	NULL,
+	[CancelReason]        VARCHAR(100)  NULL,
     CONSTRAINT [PK_tblDPSBundle] PRIMARY KEY CLUSTERED ([DPSBundleID] ASC)
 );
 

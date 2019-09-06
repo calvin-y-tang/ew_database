@@ -4,6 +4,9 @@
     [ExtPriorityCode] VARCHAR (25) NULL,
     [DueDateMethod]   INT          NULL,
     [DueDateHours]    INT          NULL,
+    [CancelPriority]  BIT          NULL,
     CONSTRAINT [PK_tblDPSPriority] PRIMARY KEY CLUSTERED ([DPSPriorityID] ASC)
 );
+
+
 
