@@ -65,7 +65,7 @@ values (
 GO
 
 
-UPDATE DPSJobFile SET JobTrackingID=SUBSTRING(JobID, CHARINDEX('-', JobID, 7)+1, LEN(JobID)-CHARINDEX('-', JobID, 7)), JobType='Original' WHERE SourceID=1
+UPDATE DPSJobFile SET JobTrackingID=SUBSTRING(JobID, CHARINDEX('-', JobID, 7)+1, LEN(JobID)-CHARINDEX('-', JobID, 7)), JobType='Process' WHERE SourceID=1
 
 GO
 
