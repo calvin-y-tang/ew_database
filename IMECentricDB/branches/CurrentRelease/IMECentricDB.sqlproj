@@ -1086,8 +1086,11 @@
     <Build Include="Tables\tblConfiguration.sql" />
     <Build Include="Stored Procedures\proc_PublishOnWeb_LoadByTableKeyTableTypeNoUserCode.sql" />
     <Build Include="Views\vwMedicalRecordsDue.sql" />
-    <Build Include="Tables\tblStorageRetentionRule.sql" />
-    <Build Include="Stored Procedures\proc_GetReferralHistoryByClaimAndCompany.sql" />
+    <Build Include="Tables\tblFSGroup.sql" />
+    <Build Include="Tables\tblFSDetailCondition.sql" />
+    <Build Include="Tables\tblFSDetail.sql" />
+    <Build Include="Tables\tblFSHeader.sql" />
+    <Build Include="Tables\tblFSEntity.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
