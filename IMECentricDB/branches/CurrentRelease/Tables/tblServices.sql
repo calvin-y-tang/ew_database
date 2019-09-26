@@ -25,6 +25,7 @@
     [ReExamServiceCode]     INT           NULL,
     [UseDrPortalCalendar]	BIT			  CONSTRAINT [DF_tblServices_UseDrPortalCalendar] DEFAULT ((0)) NOT NULL,
 	[ProdCode]              INT           NULL,
+	[IsCommissionable]      BIT           NULL,
     CONSTRAINT [PK_tblServices] PRIMARY KEY CLUSTERED ([ServiceCode] ASC)
 );
 

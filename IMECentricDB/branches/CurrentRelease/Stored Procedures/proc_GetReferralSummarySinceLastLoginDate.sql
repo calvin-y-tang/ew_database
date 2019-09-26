@@ -26,7 +26,7 @@ BEGIN
 		tblCaseType.Description AS CaseType,
 		tblWebQueuesV2.Description AS WebQueueStatusDesc,
 		CAST(tblCase.DateAdded AS VARCHAR(20)) AS SavedDateTime,
-		tblClient.LastName + ', ', tblClient.FirstName AS ClientName,
+		tblClient.LastName + ', ' + tblClient.FirstName AS ClientName,
 		ISNULL(NULLIF(tblCase.sinternalcasenbr,''),tblCase.casenbr) AS webcontrolnbr
 			FROM tblCase
 			INNER JOIN tblServices ON tblCase.servicecode = tblServices.servicecode
