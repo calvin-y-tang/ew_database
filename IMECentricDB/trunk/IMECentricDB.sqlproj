@@ -1099,7 +1099,8 @@
     <Build Include="Stored Procedures\spFeeSched_SyncTableData.sql" />
     <Build Include="Stored Procedures\spFeeSched_SyncTableData_Header.sql" />
     <Build Include="Stored Procedures\spFeeSched_SyncTableData_Detail.sql" />
-    <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />    
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />
+    <Build Include="Views\vwRptDoctorSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
