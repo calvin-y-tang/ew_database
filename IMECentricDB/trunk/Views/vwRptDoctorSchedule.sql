@@ -6,48 +6,29 @@ AS
             CAST(CAST(CA.ApptTime AS DATE) AS DATETIME) AS Date,
             CA.ApptTime AS StartTime, 
 
-            --'' AS Description ,
-
-            ApptS.Name  AS Status,
-
             C.CaseNbr , 
 			C.ExtCaseNbr , 
-            --C.ClaimNbr ,
-            --C.WCBNbr ,
             CAST(C.SpecialInstructions AS VARCHAR(1000)) AS SpecialInstructions ,
             C.PhotoRqd ,
             C.PanelNbr ,
-            C.DoctorName AS Paneldesc ,
-            --NULL AS Panelnote ,
-            C.OfficeCode,
+            C.DoctorName AS PanelDesc,
+            C.OfficeCode AS CaseOfficeCode,
 
             CASE WHEN C.InterpreterRequired = 1 THEN 'Interpreter'
                  ELSE ''
-            END AS Interpreter ,
-			--CASE WHEN C.LanguageID > 0 THEN LG.Description
-			--	ELSE ''
-			--END AS [Language],
-
-            --CASE WHEN C.CaseNbr IS NULL
-            --     THEN 'CaseNbr1desc'
-            --     ELSE NULL
-            --END AS ScheduleDescription ,
+            END AS Interpreter,
 
             CT.ShortDesc AS CaseTypeDesc ,
-			--CT.EWBusLineID, 
             S.Description AS Servicedesc ,
-            --S.ShortDesc ,
 
             EE.FirstName + ' ' + EE.LastName AS ExamineeName ,
-            --EE.Sex ,
 
-            --CO.IntName AS CompanyIntName ,
             CO.ExtName AS Company ,
 
             CL.FirstName + ' ' + CL.LastName AS ClientName ,
             CL.Phone1 AS ClientPhone ,
 
-			LO.OfficeCode as LocationOffice,
+			LO.OfficeCode as LocationOfficeCode,
             L.Location,
 			L.Addr1,
             L.Addr2,
@@ -58,14 +39,10 @@ AS
             L.Fax AS LocationFax ,
 
             EWF.LegalName AS CompanyName ,
-            --EWF.Fax ,
 
             ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName
 
-			--1 AS Duration
-
     FROM    tblCaseAppt AS CA
-				INNER JOIN tblApptStatus AS ApptS ON ApptS.ApptStatusID = CA.ApptStatusID
 
 				INNER JOIN tblCase AS C ON CA.CaseApptID = C.CaseApptID
 				INNER JOIN tblExaminee AS EE on C.ChartNbr = EE.ChartNbr
@@ -73,7 +50,6 @@ AS
 				INNER JOIN tblCompany AS CO on CL.CompanyCode = CO.CompanyCode
 				INNER JOIN tblCaseType AS CT on C.CaseType = CT.Code		
 				INNER JOIN tblServices AS S on C.ServiceCode = S.ServiceCode 
-				LEFT JOIN tblLanguage AS LG on LG.LanguageID = C.LanguageID
 
 				INNER JOIN tblOffice AS O ON C.OfficeCode = O.OfficeCode
 				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
