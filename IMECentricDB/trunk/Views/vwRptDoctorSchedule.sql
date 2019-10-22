@@ -85,5 +85,7 @@ AS
 				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
 				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
 
+	WHERE CA.ApptStatusID IN (10,100,101,102)
+
 
 
