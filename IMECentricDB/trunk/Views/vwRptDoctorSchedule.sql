@@ -53,21 +53,20 @@ AS
             tblCompany.IntName AS CompanyIntName ,
 			tblLocationOffice.OfficeCode as LocationOffice 
     FROM    tblCaseAppt 
-				INNER JOIN tblDoctor ON tblCaseAppt.DoctorCode = tblDoctor.DoctorCode	
-				inner join tblLocation on tblCaseAppt.LocationCode = tblLocation.LocationCode
+				LEFT JOIN tblCase ON tblCaseAppt.CaseApptID = tblCase.CaseApptID
+				LEFT JOIN tblCaseApptPanel ON tblCaseApptPanel.CaseApptID = tblCase.CaseApptID
+				INNER JOIN tblDoctor ON tblDoctor.DoctorCode = ISNULL(tblCaseAppt.DoctorCode, tblCaseApptPanel.DoctorCode)
+				INNER JOIN tblLocation on tblCaseAppt.LocationCode = tblLocation.LocationCode
 				INNER JOIN tblDoctorOffice ON tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
 				INNER JOIN tblLocationOffice ON tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode
 				LEFT JOIN tblApptStatus ON tblApptStatus.ApptStatusID = tblCaseAppt.ApptStatusID
-				left outer join tblCase
-					inner join tblClient on tblCase.ClientCode = tblClient.ClientCode
-					inner join tblCompany on tblClient.CompanyCode = tblCompany.CompanyCode
-					inner join tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
-					inner join tblEWFacility on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
-					inner join tblServices on tblCase.ServiceCode = tblServices.ServiceCode 
-					inner join tblExaminee on tblCase.ChartNbr = tblExaminee.ChartNbr
-					inner join tblCaseType on tblCase.CaseType = tblCaseType.Code		
-					left outer join tblLanguage on tblLanguage.LanguageID = tblcase.LanguageID			
-					LEFT OUTER JOIN tblCaseApptPanel ON tblCaseApptPanel.CaseApptID = tblCase.CaseApptID
-				ON tblCaseAppt.CaseApptID = ISNULL(tblCaseApptPanel.CaseApptID, tblCase.CaseApptID)
+				INNER JOIN tblClient on tblCase.ClientCode = tblClient.ClientCode
+				INNER JOIN tblCompany on tblClient.CompanyCode = tblCompany.CompanyCode
+				INNER JOIN tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
+				INNER JOIN tblEWFacility on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
+				INNER JOIN tblServices on tblCase.ServiceCode = tblServices.ServiceCode 
+				INNER JOIN tblExaminee on tblCase.ChartNbr = tblExaminee.ChartNbr
+				INNER JOIN tblCaseType on tblCase.CaseType = tblCaseType.Code		
+				LEFT JOIN tblLanguage on tblLanguage.LanguageID = tblcase.LanguageID	
 
 
