@@ -65,20 +65,25 @@ AS
 			--1 AS Duration
 
     FROM    tblCaseAppt AS CA
-				LEFT JOIN tblCase AS C ON CA.CaseApptID = C.CaseApptID
+				INNER JOIN tblApptStatus AS ApptS ON ApptS.ApptStatusID = CA.ApptStatusID
+
+				INNER JOIN tblCase AS C ON CA.CaseApptID = C.CaseApptID
+				INNER JOIN tblExaminee AS EE on C.ChartNbr = EE.ChartNbr
+				INNER JOIN tblClient AS CL ON C.ClientCode = CL.ClientCode
+				INNER JOIN tblCompany AS CO on CL.CompanyCode = CO.CompanyCode
+				INNER JOIN tblCaseType AS CT on C.CaseType = CT.Code		
+				INNER JOIN tblServices AS S on C.ServiceCode = S.ServiceCode 
+				LEFT JOIN tblLanguage AS LG on LG.LanguageID = C.LanguageID
+
+				INNER JOIN tblOffice AS O ON C.OfficeCode = O.OfficeCode
+				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
+
 				LEFT JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = C.CaseApptID
 				INNER JOIN tblDoctor AS DR ON DR.DoctorCode = ISNULL(CA.DoctorCode, CAP.DoctorCode)
 				INNER JOIN tblLocation AS L ON CA.LocationCode = L.LocationCode
+
 				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
 				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
-				LEFT JOIN tblApptStatus AS ApptS ON ApptS.ApptStatusID = CA.ApptStatusID
-				INNER JOIN tblClient AS CL ON C.ClientCode = CL.ClientCode
-				INNER JOIN tblCompany AS CO on CL.CompanyCode = CO.CompanyCode
-				INNER JOIN tblOffice AS O ON C.OfficeCode = O.OfficeCode
-				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
-				INNER JOIN tblServices AS S on C.ServiceCode = S.ServiceCode 
-				INNER JOIN tblExaminee AS EE on C.ChartNbr = EE.ChartNbr
-				INNER JOIN tblCaseType AS CT on C.CaseType = CT.Code		
-				LEFT JOIN tblLanguage AS LG on LG.LanguageID = C.LanguageID	
+
 
 
