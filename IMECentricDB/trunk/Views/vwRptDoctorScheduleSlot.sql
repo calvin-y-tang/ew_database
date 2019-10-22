@@ -37,7 +37,9 @@ AS
 
             EWF.LegalName AS CompanyName ,
 
-            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName
+            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName,
+
+			'' AS Problem
 
     FROM    tblDoctorSchedule AS CA
 
