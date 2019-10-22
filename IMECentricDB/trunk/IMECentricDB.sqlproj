@@ -1101,6 +1101,7 @@
     <Build Include="Stored Procedures\spFeeSched_SyncTableData_Detail.sql" />
     <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />
     <Build Include="Views\vwRptDoctorSchedule.sql" />
+    <Build Include="Views\vwRptDoctorScheduleSlot.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
@@ -1121,8 +1122,5 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseVariableLiteralValue>CustomRepository</DatabaseVariableLiteralValue>
     </ArtifactReference>
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="IMECentricDB.refactorlog" />
   </ItemGroup>
 </Project>
