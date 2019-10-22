@@ -1,47 +1,47 @@
 ﻿CREATE VIEW vwRptDoctorSchedule
 AS
-     SELECT CA.CaseApptID AS SchedCode,
+     SELECT CA.CaseApptID AS RecID,
             CA.DoctorCode ,            
 			CA.LocationCode ,
             CAST(CAST(CA.ApptTime AS DATE) AS DATETIME) AS Date,
             CA.ApptTime AS StartTime, 
 
-            '' AS Description ,
+            --'' AS Description ,
 
             ApptS.Name  AS Status,
 
             C.CaseNbr , 
 			C.ExtCaseNbr , 
-            C.ClaimNbr ,
-            C.WCBNbr ,
+            --C.ClaimNbr ,
+            --C.WCBNbr ,
             CAST(C.SpecialInstructions AS VARCHAR(1000)) AS SpecialInstructions ,
             C.PhotoRqd ,
             C.PanelNbr ,
             C.DoctorName AS Paneldesc ,
-            NULL AS Panelnote ,
+            --NULL AS Panelnote ,
             C.OfficeCode,
 
             CASE WHEN C.InterpreterRequired = 1 THEN 'Interpreter'
                  ELSE ''
             END AS Interpreter ,
-			CASE WHEN C.LanguageID > 0 THEN LG.Description
-				ELSE ''
-			END AS [Language],
+			--CASE WHEN C.LanguageID > 0 THEN LG.Description
+			--	ELSE ''
+			--END AS [Language],
 
-            CASE WHEN C.CaseNbr IS NULL
-                 THEN 'CaseNbr1desc'
-                 ELSE NULL
-            END AS ScheduleDescription ,
+            --CASE WHEN C.CaseNbr IS NULL
+            --     THEN 'CaseNbr1desc'
+            --     ELSE NULL
+            --END AS ScheduleDescription ,
 
             CT.ShortDesc AS CaseTypeDesc ,
-			CT.EWBusLineID, 
+			--CT.EWBusLineID, 
             S.Description AS Servicedesc ,
-            S.ShortDesc ,
+            --S.ShortDesc ,
 
             EE.FirstName + ' ' + EE.LastName AS ExamineeName ,
-            EE.Sex ,
+            --EE.Sex ,
 
-            CO.IntName AS CompanyIntName ,
+            --CO.IntName AS CompanyIntName ,
             CO.ExtName AS Company ,
 
             CL.FirstName + ' ' + CL.LastName AS ClientName ,
@@ -54,16 +54,16 @@ AS
             L.City,
             L.State,
             L.Zip,
-            L.Phone AS DoctorPhone ,
-            L.Fax AS DoctorFax ,
+            L.Phone AS LocationPhone ,
+            L.Fax AS LocationFax ,
 
             EWF.LegalName AS CompanyName ,
-            EWF.Fax ,
+            --EWF.Fax ,
 
-            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', '
-            + ISNULL(DR.Credentials, '') AS DoctorName ,
+            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName
 
-            1 AS Duration
+			--1 AS Duration
+
     FROM    tblCaseAppt AS CA
 				LEFT JOIN tblCase AS C ON CA.CaseApptID = C.CaseApptID
 				LEFT JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = C.CaseApptID
