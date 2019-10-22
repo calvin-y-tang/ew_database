@@ -18,10 +18,9 @@ AS
                  ELSE ''
             END AS Interpreter,
 
-            CT.ShortDesc AS CaseTypeDesc ,
-            S.Description AS Servicedesc ,
+            EE.FirstName + ' ' + EE.LastName AS ScheduleDesc1,
 
-            EE.FirstName + ' ' + EE.LastName AS ExamineeName ,
+			ISNULL(CT.ShortDesc, '') + ' / ' + ISNULL(S.Description, '') AS ScheduleDesc2,
 
             CO.ExtName AS Company ,
 
