@@ -2,13 +2,13 @@
 -- Issue 4744 - JAP - added DoctorOffice column to result set
 CREATE VIEW vwRptDaySheet
 AS
-     select tblDoctorSchedule.SchedCode ,
-		  tblDoctorSchedule.LocationCode ,
-            tblDoctorSchedule.date,
-            tblDoctorSchedule.StartTime, 
-            tblDoctorSchedule.Description ,
-            tblDoctorSchedule.Status ,
-            tblDoctorSchedule.DoctorCode ,            
+     select tblCaseAppt.CaseApptID AS SchedCode ,
+		  tblCaseAppt.LocationCode ,
+            CAST(CAST(tblCaseAppt.ApptTime AS DATE) AS DATETIME) AS date,
+            tblCaseAppt.ApptTime AS StartTime, 
+            '' AS Description ,
+            tblApptStatus.Name  AS Status,
+            tblCaseAppt.DoctorCode ,            
             tblCase.CaseNbr , 
 		  tblCase.ExtCaseNbr , 
             tblCompany.ExtName AS Company ,
@@ -38,7 +38,7 @@ AS
             NULL AS Panelnote ,
             tblCase.OfficeCode,
             CASE WHEN tblCase.CaseNbr IS NULL
-                 THEN tblDoctorSchedule.CaseNbr1desc
+                 THEN 'CaseNbr1desc'
                  ELSE NULL
             END AS ScheduleDescription ,
             tblServices.ShortDesc ,
@@ -51,7 +51,7 @@ AS
 			  THEN tblLanguage.Description
 			  ELSE ''
 		  END AS [Language],
-            tblDoctorSchedule.Duration ,
+            1 AS Duration ,
             tblCompany.IntName AS CompanyIntName ,
             CASE WHEN ( SELECT TOP 1
                                 Type
@@ -64,19 +64,21 @@ AS
             END AS films , 
 		  tblLocationOffice.OfficeCode as LocationOffice, 
 		  tblDoctorOffice.OfficeCode as DoctorOffice
-    FROM    tblDoctorSchedule 
-				INNER JOIN tblDoctor ON tblDoctorSchedule.DoctorCode = tblDoctor.DoctorCode	
-				inner join tblLocation on tblDoctorSchedule.LocationCode = tblLocation.LocationCode
+    FROM    tblCaseAppt 
+				LEFT JOIN tblCase ON tblCaseAppt.CaseApptID = tblCase.CaseApptID
+				LEFT JOIN tblCaseApptPanel ON tblCaseApptPanel.CaseApptID = tblCase.CaseApptID
+				INNER JOIN tblDoctor ON tblDoctor.DoctorCode = ISNULL(tblCaseAppt.DoctorCode, tblCaseApptPanel.DoctorCode)
+				INNER JOIN tblLocation on tblCaseAppt.LocationCode = tblLocation.LocationCode
 				INNER JOIN tblDoctorOffice ON tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
 				INNER JOIN tblLocationOffice ON tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode
-				left outer join tblCase
-					inner join tblClient on tblCase.ClientCode = tblClient.ClientCode
-					inner join tblCompany on tblClient.CompanyCode = tblCompany.CompanyCode
-					inner join tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
-					inner join tblEWFacility on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
-					inner join tblServices on tblCase.ServiceCode = tblServices.ServiceCode 
-					inner join tblExaminee on tblCase.ChartNbr = tblExaminee.ChartNbr
-					inner join tblCaseType on tblCase.CaseType = tblCaseType.Code		
-					left outer join tblLanguage on tblLanguage.LanguageID = tblcase.LanguageID			
-					LEFT OUTER JOIN tblCasePanel ON tblCasePanel.PanelNbr = tblCase.PanelNbr
-				ON tblDoctorSchedule.SchedCode = ISNULL(tblCasePanel.SchedCode, tblCase.SchedCode)
+				LEFT JOIN tblApptStatus ON tblApptStatus.ApptStatusID = tblCaseAppt.ApptStatusID
+				INNER JOIN tblClient on tblCase.ClientCode = tblClient.ClientCode
+				INNER JOIN tblCompany on tblClient.CompanyCode = tblCompany.CompanyCode
+				INNER JOIN tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
+				INNER JOIN tblEWFacility on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
+				INNER JOIN tblServices on tblCase.ServiceCode = tblServices.ServiceCode 
+				INNER JOIN tblExaminee on tblCase.ChartNbr = tblExaminee.ChartNbr
+				INNER JOIN tblCaseType on tblCase.CaseType = tblCaseType.Code		
+				LEFT JOIN tblLanguage on tblLanguage.LanguageID = tblcase.LanguageID	
+				WHERE tblApptStatus.ApptStatusID IN (10,100,101,102)
+
