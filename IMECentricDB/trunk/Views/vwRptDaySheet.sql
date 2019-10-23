@@ -8,6 +8,7 @@ AS
 			CA.LocationCode ,
             CAST(CAST(CA.ApptTime AS DATE) AS DATETIME) AS Date,
             CA.ApptTime AS StartTime, 
+            APS.Name  AS Status,
 
             C.CaseNbr , 
 			C.ExtCaseNbr , 
@@ -80,5 +81,6 @@ AS
 				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
 				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
 				LEFT JOIN tblLanguage AS LA ON LA.LanguageID = C.LanguageID	
-				WHERE CA.ApptStatusID IN (10,100,101,102)
+				LEFT JOIN tblApptStatus AS APS ON APS.ApptStatusID = CA.ApptStatusID
+				WHERE CA.ApptStatusID = 10
 
