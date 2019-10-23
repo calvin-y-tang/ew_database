@@ -2,85 +2,81 @@
 -- Issue 4744 - JAP - added DoctorOffice column to result set
 CREATE VIEW vwRptDaySheet
 AS
-
-     SELECT CA.CaseApptID AS RecID,  -- SchedCode
-            CA.DoctorCode ,            
-			CA.LocationCode ,
-            CAST(CAST(CA.ApptTime AS DATE) AS DATETIME) AS Date,
-            CA.ApptTime AS StartTime, 
-            APS.Name  AS Status,
-
-            C.CaseNbr , 
-			C.ExtCaseNbr , 
-            CAST(C.SpecialInstructions AS VARCHAR(1000)) AS SpecialInstructions ,
-            C.PhotoRqd ,
-            C.PanelNbr ,
-            C.DoctorName AS PanelDesc,
-            C.OfficeCode AS CaseOfficeCode,
-
-            CASE WHEN C.InterpreterRequired = 1 THEN 'Interpreter'
+     select tblDoctorSchedule.SchedCode ,
+		  tblDoctorSchedule.LocationCode ,
+            tblDoctorSchedule.date,
+            tblDoctorSchedule.StartTime, 
+            tblDoctorSchedule.Description ,
+            tblDoctorSchedule.Status ,
+            tblDoctorSchedule.DoctorCode ,            
+            tblCase.CaseNbr , 
+		  tblCase.ExtCaseNbr , 
+            tblCompany.ExtName AS Company ,
+            tblExaminee.FirstName + ' ' + tblExaminee.LastName AS ExamineeName ,
+            tblExaminee.Sex ,
+            tblLocation.Location,
+		  tblLocation.Addr1,
+            tblLocation.Addr2,
+            tblLocation.City,
+            tblLocation.State,
+            tblLocation.Zip,
+            tblEWFacility.LegalName AS CompanyName ,
+            ISNULL(tblDoctor.FirstName, '') + ' ' + ISNULL(tblDoctor.LastName, '') + ', ' + ISNULL(tblDoctor.Credentials, '') AS DoctorName ,
+            tblCase.ClaimNbr ,
+            tblClient.FirstName + ' ' + tblClient.LastName AS ClientName ,
+            tblCaseType.Description AS Casetypedesc ,
+		  tblCaseType.EWBusLineID, 
+            tblServices.Description AS Servicedesc ,
+            CAST(tblCase.SpecialInstructions AS VARCHAR(1000)) AS specialinstructions ,
+            tblCase.WCBNbr ,
+            tblLocation.Phone AS DoctorPhone ,
+            tblLocation.Fax AS DoctorFax ,
+            tblCase.PhotoRqd ,
+            tblClient.Phone1 AS ClientPhone ,
+            tblCase.DoctorName AS Paneldesc ,
+            tblCase.PanelNbr ,
+            NULL AS Panelnote ,
+            tblCase.OfficeCode,
+            CASE WHEN tblCase.CaseNbr IS NULL
+                 THEN tblDoctorSchedule.CaseNbr1desc
+                 ELSE NULL
+            END AS ScheduleDescription ,
+            tblServices.ShortDesc ,
+            tblEWFacility.Fax ,
+            CASE WHEN tblCase.InterpreterRequired = 1 
+			  THEN 'Interpreter'
                  ELSE ''
-            END AS Interpreter,
-
-            CT.Description AS Casetypedesc ,
-
-            EE.FirstName + ' ' + EE.LastName AS ExamineeName ,
-
-            CO.ExtName AS Company ,
-
-            CL.FirstName + ' ' + CL.LastName AS ClientName ,
-            CL.Phone1 AS ClientPhone ,
-
-			LO.OfficeCode as LocationOffice,
-            L.Location,
-			L.Addr1,
-            L.Addr2,
-            L.City,
-            L.State,
-            L.Zip,
-            L.Phone AS DoctorPhone ,
-            L.Fax AS DoctorFax ,
-
-            EWF.LegalName AS CompanyName ,
-
-            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName ,
-		    DRO.OfficeCode as DoctorOffice,
-
+            END AS Interpreter ,
+		  CASE WHEN tblCase.LanguageID > 0 
+			  THEN tblLanguage.Description
+			  ELSE ''
+		  END AS [Language],
+            tblDoctorSchedule.Duration ,
+            tblCompany.IntName AS CompanyIntName ,
             CASE WHEN ( SELECT TOP 1
                                 Type
                         FROM    tblRecordHistory
                         WHERE   Type = 'F'
-                                AND CaseNbr = C.CaseNbr
+                                AND CaseNbr = tblCase.CaseNbr
                       ) = 'F' 
 			  THEN 'Films'
                  ELSE ''
             END AS films , 
-
-            S.ShortDesc ,
-
-		    CASE WHEN C.LanguageID > 0 
-			  THEN LA.Description
-			  ELSE ''
-		    END AS [Language]
-
-    FROM    tblCaseAppt AS CA
-				INNER JOIN tblCase AS C ON CA.CaseApptID = C.CaseApptID
-				INNER JOIN tblExaminee AS EE on C.ChartNbr = EE.ChartNbr
-				INNER JOIN tblClient AS CL ON C.ClientCode = CL.ClientCode
-				INNER JOIN tblCompany AS CO on CL.CompanyCode = CO.CompanyCode
-				INNER JOIN tblCaseType AS CT on C.CaseType = CT.Code		
-				INNER JOIN tblServices AS S on C.ServiceCode = S.ServiceCode 
-
-				INNER JOIN tblOffice AS O ON C.OfficeCode = O.OfficeCode
-				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
-
-				LEFT JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = C.CaseApptID
-				INNER JOIN tblDoctor AS DR ON DR.DoctorCode = ISNULL(CA.DoctorCode, CAP.DoctorCode)
-				INNER JOIN tblLocation AS L ON CA.LocationCode = L.LocationCode
-
-				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
-				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
-				LEFT JOIN tblLanguage AS LA ON LA.LanguageID = C.LanguageID	
-				LEFT JOIN tblApptStatus AS APS ON APS.ApptStatusID = CA.ApptStatusID
-				WHERE CA.ApptStatusID = 10
-
+		  tblLocationOffice.OfficeCode as LocationOffice, 
+		  tblDoctorOffice.OfficeCode as DoctorOffice
+    FROM    tblDoctorSchedule 
+				INNER JOIN tblDoctor ON tblDoctorSchedule.DoctorCode = tblDoctor.DoctorCode	
+				inner join tblLocation on tblDoctorSchedule.LocationCode = tblLocation.LocationCode
+				INNER JOIN tblDoctorOffice ON tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
+				INNER JOIN tblLocationOffice ON tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode
+				left outer join tblCase
+					inner join tblClient on tblCase.ClientCode = tblClient.ClientCode
+					inner join tblCompany on tblClient.CompanyCode = tblCompany.CompanyCode
+					inner join tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
+					inner join tblEWFacility on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
+					inner join tblServices on tblCase.ServiceCode = tblServices.ServiceCode 
+					inner join tblExaminee on tblCase.ChartNbr = tblExaminee.ChartNbr
+					inner join tblCaseType on tblCase.CaseType = tblCaseType.Code		
+					left outer join tblLanguage on tblLanguage.LanguageID = tblcase.LanguageID			
+					LEFT OUTER JOIN tblCasePanel ON tblCasePanel.PanelNbr = tblCase.PanelNbr
+				ON tblDoctorSchedule.SchedCode = ISNULL(tblCasePanel.SchedCode, tblCase.SchedCode)
