@@ -1,4 +1,9 @@
 
+-- Issue 10169 - add column to tblCase - not sure if this is needed here since I changed the table in this project
+  ALTER TABLE tblCase ADD RptQADraftDate DATETIME NULL
+  ALTER TABLE tblCase ADD TATQADraftToQAComplete INT NULL
+
+
 -- Issue 10169 data changes - adds data fields to use for TAT
   INSERT INTO tblDataField (DataFieldID, TableName, FieldName, Descrip) VALUES
   (214, 'tblCase', 'RptQADraftDate', 'Report QA Draft Date'),
