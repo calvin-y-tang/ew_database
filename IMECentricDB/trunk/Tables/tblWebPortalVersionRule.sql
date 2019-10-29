@@ -11,5 +11,6 @@ CREATE TABLE [dbo].[tblWebPortalVersionRule](
 	[UserIDAdded] [varchar](15) NULL,
 	[DateEdited] [datetime] NULL,
 	[UserIDEdited] [varchar](15) NULL,
+	[AllowScheduling] [bit] CONSTRAINT [DF_tblWebPortalVersionRule_AllowScheduling] DEFAULT (0) NULL,
  CONSTRAINT [PK_tblWebPortalVersionRule] PRIMARY KEY CLUSTERED ([WebPortalVersionRule] ASC)
 );
