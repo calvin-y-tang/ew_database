@@ -29,4 +29,41 @@
   INSERT INTO tblTATCalculationGroupDetail (TATCalculationGroupID, TATCalculationMethodID, DisplayOrder) VALUES
   (1, 20, 8)
 
+-- ======================================================================================================
+-- Issue 11262 
+		-- 7. add new queue for web reserved appointments
+		INSERT INTO tblQueueForms VALUES ('frmStatusWbRsvdAppts', 'Form for Web Rerserved Appointments')
 
+		SET IDENTITY_INSERT tblQueues ON
+		GO
+		INSERT INTO tblQueues (StatusCode, StatusDesc, Type, ShortDesc, DisplayOrder, 
+			FormToOpen, DateAdded, DateEdited, UserIDAdded, UserIDEdited, 
+			Status, SubType, FunctionCode, WebStatusCode, NotifyScheduler, 
+			NotifyQARep, NotifyIMECompany, WebGUID, AllowToAwaitingScheduling, IsConfirmation, 
+			WebStatusCodeV2, AwaitingReptDictation, AwaitingReptApproval, DoNotAllowManualChange)
+		VALUES(34, 'Web Reserved Appointment', 'System', 'WbRsvdAppt', 50, 
+			   'frmStatusWbRsvdAppts', GETDATE(), NULL, 'TLyde', NULL,
+			   'Active', 'Case', 'None', NULL, 0,
+			   0, 1, NULL, NULL, 0, 
+			   NULL, Null, NULL, 1)
+		GO
+		SET IDENTITY_INSERT tblQueues OFF
+
+		-- 9. Set the new column on tblControl equl to the new key primary key
+		 UPDATE tblControl SET ApptRequestStatusCode = 34 WHERE InstallID = 1
+
+		-- 11.	Patch Svc WF data – anything that has a source StatusCode 10, create a new row but use the new tblQueues 
+		-- primary key as the source StatusCode.  This should involve two tables: tblServiceWorkflowQueue and tblServiceWorkflowQueueDocument
+		  INSERT INTO tblServiceWorkflowQueue (ServiceWorkflowID, DateAdded, DateEdited, UserIDAdded, UserIDEdited, QueueOrder, StatusCode, NextStatus, CreateVoucher, CreateInvoice)
+		  (SELECT ServiceWorkflowID, GETDATE(), NULL, 'TLyde', NULL, QueueOrder, 34, NextStatus, CreateVoucher, CreateInvoice FROM tblServiceWorkflowQueue WHERE StatusCode = 10)
+
+		  INSERT INTO tblServiceWorkflowQueueDocument 
+	  (ServiceWorkflowQueueID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, Document,
+       Attachment, ProcessOrder, PrintCopies, EmailDoctor, EmailAttorney, EmailClient, FaxDoctor, FaxAttorney, FaxClient,
+       PublishOnWeb, PublishedTo, EnvelopeAOrder, EnvelopeBOrder, EnvelopeCOrder, EnvelopeDOrder, CombineDocs)
+	(SELECT 68783, GETDATE(), 'TLyde', NULL, NULL, Document,
+       Attachment, ProcessOrder, PrintCopies, EmailDoctor, EmailAttorney, EmailClient, FaxDoctor, FaxAttorney, FaxClient,
+       PublishOnWeb, PublishedTo, EnvelopeAOrder, EnvelopeBOrder, EnvelopeCOrder, EnvelopeDOrder, CombineDocs
+	   FROM tblServiceWorkflowQueueDocument
+       WHERE ServiceWorkflowQueueID IN (SELECT ServiceWorkflowQueueID FROM tblServiceWorkflowQueue WHERE StatusCode = 10))
+-- ======================================================================================================
