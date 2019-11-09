@@ -448,7 +448,7 @@ AS
 
             tblState.StateName AS Jurisdiction ,
 
-            tblDoctorSchedule.duration AS ApptDuration ,
+            tblCaseAppt.duration AS ApptDuration ,
 
             tblProviderType.description AS DoctorProviderType ,
 
@@ -482,7 +482,7 @@ AS
 
             LEFT OUTER JOIN tblDoctor ON tblCase.DoctorCode = tblDoctor.DoctorCode
             LEFT OUTER JOIN tblLocation ON tblCase.DoctorLocation = tblLocation.LocationCode
-            LEFT OUTER JOIN tblDoctorSchedule ON tblCase.schedCode = tblDoctorSchedule.schedCode
+            LEFT OUTER JOIN tblCaseAppt ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
             LEFT OUTER JOIN tblDoctorLocation ON tblCase.DoctorLocation = tblDoctorLocation.LocationCode
                                                  AND tblCase.DoctorCode = tblDoctorLocation.DoctorCode
 
