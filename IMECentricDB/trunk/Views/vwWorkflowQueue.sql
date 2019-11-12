@@ -24,6 +24,7 @@ AS
         Q.DisplayOrder,
         Q.StatusDesc AS QueueDesc,
         Q.ShortDesc,
+		Q.DoNotAllowManualChange,
         WFQD.DocCount
     FROM
         tblServiceWorkflowQueue AS WFQ
