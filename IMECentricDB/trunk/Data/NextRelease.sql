@@ -67,3 +67,6 @@
 	   FROM tblServiceWorkflowQueueDocument
        WHERE ServiceWorkflowQueueID IN (SELECT ServiceWorkflowQueueID FROM tblServiceWorkflowQueue WHERE StatusCode = 10))
 -- ======================================================================================================
+
+-- Issue 11326 Data Patch - A new column -AllowScheduling- was added to tblWebUser.  Sets default values to 0
+	UPDATE tblWebUser SET AllowScheduling = 0 
