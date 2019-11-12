@@ -1103,6 +1103,9 @@
     <Build Include="Views\vwRptDoctorSchedule.sql" />
     <Build Include="Views\vwRptDoctorScheduleSlot.sql" />
     <Build Include="Views\vwRptDaySheetNew.sql" />
+    <Build Include="Views\vwCaseWebReservedAppts.sql" />
+    <Build Include="Tables\tblCaseApptRequest.sql" />
+    <Build Include="Tables\tblCaseApptRequestStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
