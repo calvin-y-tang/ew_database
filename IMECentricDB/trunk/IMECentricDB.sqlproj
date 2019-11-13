@@ -837,8 +837,8 @@
     <Build Include="Tables\tblServiceWorkflowQueueDocument.sql" />
     <Build Include="Tables\tblServiceWorkflowQueue.sql" />
     <Build Include="Tables\tblServiceWorkflow.sql" />
-    <Build Include="Views\vwWorkflowQueueDocument.sql" />
-    <Build Include="Views\vwWorkflowQueue.sql" />
+    <Build Include="Views\vwServiceWorkflowQueueDocument.sql" />
+    <Build Include="Views\vwServiceWorkflowQueue.sql" />
     <Build Include="Stored Procedures\proc_CaseHistory_LoadByWebUserIDAndLastLoginDateCount.sql" />
     <Build Include="Stored Procedures\proc_CaseDocuments_LoadByWebUserIDAndLastLoginDateCount.sql" />
     <Build Include="Stored Procedures\proc_GetReferralSummarySinceLastLoginDateCount.sql" />
