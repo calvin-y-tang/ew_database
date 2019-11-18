@@ -127,3 +127,10 @@
 
 -- Issue 11326 Data Patch - A new column -AllowScheduling- was added to tblWebUser.  Sets default values to 0
 	UPDATE tblWebUser SET AllowScheduling = 0 
+
+
+-- Issue 11291 - Appt Duration data patch
+  UPDATE tblCaseAppt SET tblCaseAppt.Duration = DS.Duration
+  FROM (SELECT Duration, CaseNbr1, DoctorCode, LocationCode FROM tblDoctorSchedule) DS
+  WHERE DS.CaseNbr1 = tblCaseAppt.CaseNbr AND DS.DoctorCode = tblCaseAppt.DoctorCode AND DS.LocationCode = tblCaseAppt.LocationCode AND DS.Duration > 0
+
