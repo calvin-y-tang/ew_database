@@ -91,6 +91,7 @@
 	[DefaultWebCompanyID]      INT              NULL,
 	[Dir7zip]                  VARCHAR (70)     NULL,
 	[ApptRequestStatusCode]	   INT              NULL,
+	[DoctorReasonID]           INT              NULL,
     CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC)
 );
 
