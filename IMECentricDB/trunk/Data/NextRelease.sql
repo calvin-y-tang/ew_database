@@ -54,7 +54,7 @@
 		SET IDENTITY_INSERT tblQueues OFF
 
 		-- 9. Set the new column on tblControl equl to the new key primary key
-		 UPDATE tblControl SET ApptRequestStatusCode = 34 WHERE InstallID = 1
+		 UPDATE tblControl SET ApptRequestStatusCode = 34, ApptRequestDoctorReasonID = 4 WHERE InstallID = 1
 
 	-- 11.	Patch Svc WF data – anything that has a source StatusCode 3, create a new row but use the new tblQueues 
 		-- primary key as the source StatusCode.  This should involve two tables: tblServiceWorkflowQueue and tblServiceWorkflowQueueDocument
@@ -134,7 +134,11 @@
 
 
 -- Issue 11291 - Appt Duration data patch
-  UPDATE tblCaseAppt SET tblCaseAppt.Duration = DS.Duration
-  FROM (SELECT Duration, CaseNbr1, DoctorCode, LocationCode FROM tblDoctorSchedule) DS
-  WHERE DS.CaseNbr1 = tblCaseAppt.CaseNbr AND DS.DoctorCode = tblCaseAppt.DoctorCode AND DS.LocationCode = tblCaseAppt.LocationCode AND DS.Duration > 0
+UPDATE CA SET CA.Duration=DS.Duration
+ FROM tblCaseAppt AS CA
+ INNER JOIN tblCase AS C ON C.CaseApptID = CA.CaseApptID
+ INNER JOIN tblDoctorSchedule AS DS ON DS.SchedCode = C.SchedCode
+
+UPDATE tblCaseAppt SET Duration=1 WHERE Duration IS NULL
+
 
