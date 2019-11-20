@@ -90,6 +90,8 @@
 	[DASecurityProfileID]      INT              NULL,
 	[DefaultWebCompanyID]      INT              NULL,
 	[Dir7zip]                  VARCHAR (70)     NULL,
+	[ApptRequestStatusCode]	   INT              NULL,
+	[ApptRequestDoctorReasonID]           INT              NULL,
     CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC)
 );
 

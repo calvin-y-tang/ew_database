@@ -22,6 +22,7 @@
 	[WebStatusCodeV2]             INT              NULL,
     [AwaitingReptDictation] BIT NULL, 
     [AwaitingReptApproval] BIT NULL, 
+	[DoNotAllowManualChange]   BIT               NULL,
     CONSTRAINT [PK_tblQueues] PRIMARY KEY CLUSTERED ([StatusCode] ASC)
 );
 

@@ -23,7 +23,7 @@ AS
         tblLocation.Zip,
         tblLocation.Phone,
         tblLocation.Fax,
-        tblDoctorSchedule.Duration,
+        tblCaseAppt.Duration,
         tblCase.Status,
         tblProviderType.Description AS DoctorProviderType
     FROM
@@ -32,5 +32,5 @@ AS
     LEFT OUTER JOIN tblDoctor ON tblCase.DoctorCode=tblDoctor.DoctorCode
     LEFT OUTER JOIN tblLocation ON tblCase.DoctorLocation=tblLocation.LocationCode
     LEFT OUTER JOIN tblProviderType ON tblDoctor.ProvTypeCode=tblProviderType.ProvTypeCode
-    LEFT OUTER JOIN tblDoctorSchedule ON tblCase.SchedCode=tblDoctorSchedule.SchedCode
+    LEFT OUTER JOIN tblCaseAppt ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
     LEFT OUTER JOIN tblSpecialty ON tblCase.DoctorSpecialty=tblSpecialty.SpecialtyCode

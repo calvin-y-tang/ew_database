@@ -837,8 +837,8 @@
     <Build Include="Tables\tblServiceWorkflowQueueDocument.sql" />
     <Build Include="Tables\tblServiceWorkflowQueue.sql" />
     <Build Include="Tables\tblServiceWorkflow.sql" />
-    <Build Include="Views\vwWorkflowQueueDocument.sql" />
-    <Build Include="Views\vwWorkflowQueue.sql" />
+    <Build Include="Views\vwServiceWorkflowQueueDocument.sql" />
+    <Build Include="Views\vwServiceWorkflowQueue.sql" />
     <Build Include="Stored Procedures\proc_CaseHistory_LoadByWebUserIDAndLastLoginDateCount.sql" />
     <Build Include="Stored Procedures\proc_CaseDocuments_LoadByWebUserIDAndLastLoginDateCount.sql" />
     <Build Include="Stored Procedures\proc_GetReferralSummarySinceLastLoginDateCount.sql" />
@@ -1099,7 +1099,16 @@
     <Build Include="Stored Procedures\spFeeSched_SyncTableData.sql" />
     <Build Include="Stored Procedures\spFeeSched_SyncTableData_Header.sql" />
     <Build Include="Stored Procedures\spFeeSched_SyncTableData_Detail.sql" />
-    <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />    
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />
+    <Build Include="Views\vwRptDoctorSchedule.sql" />
+    <Build Include="Views\vwRptDoctorScheduleSlot.sql" />
+    <Build Include="Views\vwRptDaySheetNew.sql" />
+    <Build Include="Views\vwCaseWebReservedAppts.sql" />
+    <Build Include="Tables\tblCaseApptRequest.sql" />
+    <Build Include="Tables\tblCaseApptRequestStatus.sql" />
+    <Build Include="Tables\tblDoctorBlockTimeSlotStatus.sql" />
+    <Build Include="Tables\tblDoctorBlockTimeDay.sql" />
+    <Build Include="Tables\tblDoctorBlockTimeSlot.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
