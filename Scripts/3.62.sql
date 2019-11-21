@@ -1975,6 +1975,7 @@ UPDATE CA SET CA.Duration=DS.Duration
 
 UPDATE tblCaseAppt SET Duration=1 WHERE Duration IS NULL
 
-
 GO
 
+UPDATE tblWebPortalVersionRule SET AllowScheduling = 0
+GO
