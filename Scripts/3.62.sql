@@ -9,31 +9,7 @@ SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 GO
 BEGIN TRANSACTION
 GO
-PRINT N'Altering [dbo].[tblCase]...';
 
-
-GO
-ALTER TABLE [dbo].[tblCase]
-    ADD [RptQADraftDate]         DATETIME NULL,
-        [TATQADraftToQAComplete] INT      NULL;
-
-
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
-
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
-
-
-GO
 PRINT N'Altering [dbo].[tblCaseAppt]...';
 
 
