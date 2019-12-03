@@ -27,7 +27,8 @@
     [AwaitingScheduling]      DATETIME      NULL,
     [DoctorScheduledRank]     INT           NULL,
     [ScheduleMethod]          INT           NULL,
-	[Duration]                INT           NULL,
+    [Duration]                INT           NULL,
+    [DoctorBlockTimeSlotID]   INT           NULL,
     CONSTRAINT [PK_tblCaseAppt] PRIMARY KEY CLUSTERED ([CaseApptID] ASC)
 );
 
