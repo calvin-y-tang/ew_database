@@ -2162,8 +2162,9 @@ GO
 --  (214, 'tblCase', 'RptQADraftDate', 'Report QA Draft Date'),
 --  (120, 'tblCase', 'TATQADraftToQAComplete', '')
 
-  INSERT INTO tblTATCalculationMethod (TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend) VALUES
-(20, 214, 204, 'Day', 120, 0)
+-- Already exists in all databases
+--  INSERT INTO tblTATCalculationMethod (TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend) VALUES
+--(20, 214, 204, 'Day', 120, 0)
 
 
   UPDATE tblTATCalculationGroupDetail SET DisplayOrder = 7 WHERE TATCalculationMethodID = 2 AND TATCalculationGroupID = 1
