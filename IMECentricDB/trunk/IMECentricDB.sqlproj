@@ -1118,6 +1118,7 @@
     <None Include="Snapshots\CustomRepository.dacpac" />
     <None Include="Compare\DefaultCompareOptions.scmp" />
     <None Include="Data\OneTime.sql" />
+    <None Include="Data\FutureRelease.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\110\SqlSchemas\master.dacpac">
