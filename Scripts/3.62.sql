@@ -10,31 +10,7 @@ SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 GO
 BEGIN TRANSACTION
 GO
-PRINT N'Altering [dbo].[tblCase]...';
 
-
-GO
-ALTER TABLE [dbo].[tblCase]
-    ADD [RptQADraftDate]         DATETIME NULL,
-        [TATQADraftToQAComplete] INT      NULL;
-
-
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
-
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
-
-
-GO
 PRINT N'Altering [dbo].[tblCaseAppt]...';
 
 
@@ -2180,13 +2156,11 @@ PRINT N'Update complete.';
 
 
 GO
-ALTER TABLE tblCase ADD RptQADraftDate DATETIME NULL
-ALTER TABLE tblCase ADD TATQADraftToQAComplete INT NULL
-GO
 
-  INSERT INTO tblDataField (DataFieldID, TableName, FieldName, Descrip) VALUES
-  (214, 'tblCase', 'RptQADraftDate', 'Report QA Draft Date'),
-  (120, 'tblCase', 'TATQADraftToQAComplete', '')
+-- Already exists in all databases
+--  INSERT INTO tblDataField (DataFieldID, TableName, FieldName, Descrip) VALUES
+--  (214, 'tblCase', 'RptQADraftDate', 'Report QA Draft Date'),
+--  (120, 'tblCase', 'TATQADraftToQAComplete', '')
 
   INSERT INTO tblTATCalculationMethod (TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend) VALUES
 (20, 214, 204, 'Day', 120, 0)
@@ -2202,8 +2176,9 @@ GO
   UPDATE tblTATCalculationGroupDetail SET DisplayOrder = 15 WHERE TATCalculationMethodID = 18 AND TATCalculationGroupID = 1
   UPDATE tblTATCalculationGroupDetail SET DisplayOrder = 16 WHERE TATCalculationMethodID = 19 AND TATCalculationGroupID = 1
 
-  INSERT INTO tblTATCalculationGroupDetail (TATCalculationGroupID, TATCalculationMethodID, DisplayOrder) VALUES
-  (1, 20, 8)
+-- Already exists in all databases
+--  INSERT INTO tblTATCalculationGroupDetail (TATCalculationGroupID, TATCalculationMethodID, DisplayOrder) VALUES
+--  (1, 20, 8)
 
 
 INSERT INTO tblQueueForms VALUES ('frmStatusWbRsvdAppts', 'Form for Web Rerserved Appointments')
