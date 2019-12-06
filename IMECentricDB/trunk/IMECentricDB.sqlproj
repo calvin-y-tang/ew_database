@@ -1110,6 +1110,8 @@
     <Build Include="Tables\tblDoctorBlockTimeDay.sql" />
     <Build Include="Tables\tblDoctorBlockTimeSlot.sql" />
     <Build Include="Stored Procedures\proc_Doctor_GetDaySheetData.sql" />
+    <Build Include="Views\vwDrSchedGetBlockTimeAppts.sql" />
+    <Build Include="Views\vwDrSchedGetNonBlockTimeAppt.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
