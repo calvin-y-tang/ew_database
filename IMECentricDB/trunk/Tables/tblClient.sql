@@ -79,7 +79,7 @@ CREATE TABLE [dbo].[tblClient] (
     [CreateCvrLtr]             BIT              CONSTRAINT [DF_tblClient_CreateCvrLtr] DEFAULT ((0)) NOT NULL,
     [SpecialReqNotes]          TEXT             NULL,
     [DistributionNotes]        VARCHAR(MAX)     NULL, 
-    [EmployeeNumber]           VARCHAR(20)      NULL, 
+    [EmployeeNumber]           VARCHAR(255)      NULL, 
 	[FirstCaseNbr]             INT              NULL,
 	[CRMPrimaryEmail]		   VARCHAR(255)     NULL,	
     [InputSourceID]			   INT		        CONSTRAINT [DF_tblClient_InputSourceID] DEFAULT ((1)) NOT NULL,
