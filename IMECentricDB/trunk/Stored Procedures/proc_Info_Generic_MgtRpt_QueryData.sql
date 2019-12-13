@@ -44,6 +44,9 @@ SELECT
   CO.CompanyCode as CompanyID,
   CO.IntName as CompanyInt,
   CO.ExtName as CompanyExt,
+  COM.IntName as CaseCompanyInt,
+  COM.ExtName as CaseCompanyExt,
+  case when isnull(CLI.LastName, '') = '' then isnull(CLI.FirstName, '') else CLI.LastName+', '+isnull(CLI.FirstName, '') end as CaseClient,
   CO.State as CompanyState,
   EWCT.Name as CompanyType,
   CL.ClientCode as ClientID,
@@ -190,8 +193,10 @@ INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
 left outer join tblEmployer as EM on C.EmployerID = EM.EmployerID
-left outer join tblClient as CL on Inv.ClientCode = CL.ClientCode
-left outer join tblCompany as CO on Inv.CompanyCode = CO.CompanyCode
+left outer join tblClient as CL on Inv.ClientCode = CL.ClientCode		-- invoice client (billing client)
+left outer join tblCompany as CO on Inv.CompanyCode = CO.CompanyCode	-- invoice company (billing company)
+left outer join tblClient as CLI on C.ClientCode = CLI.ClientCode		-- case client
+left outer join tblCompany as COM on CLI.CompanyCode = COM.CompanyCode	-- case company
 left outer join tblEWCompanyType as EWCT on CO.EWCompanyTypeID = EWCT.EWCompanyTypeID
 left outer join tblDoctor as D on Inv.DrOpCode = D.DoctorCode
 left outer join tblExaminee as E on C.ChartNbr = E.ChartNbr
