@@ -82,7 +82,7 @@ CREATE TABLE [dbo].[tblClient] (
     [EmployeeNumber]           VARCHAR(255)      NULL, 
 	[FirstCaseNbr]             INT              NULL,
 	[CRMPrimaryEmail]		   VARCHAR(255)     NULL,	
-    [InputSourceID]			   INT		        CONSTRAINT [DF_tblClient_InputSourceID] DEFAULT ((1)) NOT NULL,
+    [InputSourceID]			   INT		        NOT NULL,
     CONSTRAINT [PK_tblClient] PRIMARY KEY CLUSTERED ([ClientCode] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_tblClient_tblCompany] FOREIGN KEY ([CompanyCode]) REFERENCES [dbo].[tblCompany] ([CompanyCode])
 );
