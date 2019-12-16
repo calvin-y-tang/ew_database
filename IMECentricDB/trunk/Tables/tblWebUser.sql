@@ -31,7 +31,7 @@ CREATE TABLE [dbo].[tblWebUser] (
 	[PasswordSalt]           VARCHAR(36)   CONSTRAINT [DF_tblWebUser_PasswordSalt] DEFAULT (NEWID()) NOT NULL,
     [ShowOpenBlockTimeAppts] BIT		   CONSTRAINT [DF_tblWebUser_ShowOpenBlockTimeAppts] DEFAULT ((0)) NOT NULL, 
 	[AllowScheduling]        BIT           CONSTRAINT [DF_tblWebUser_AllowScheduling] DEFAULT ((0)) NULL,
-	[InputSourceID]			 INT		   CONSTRAINT [DF_tblWebUser_InputSourceID] DEFAULT ((1)) NOT NULL,
+	[InputSourceID]			 INT		   NOT NULL,
     CONSTRAINT [PK_tblWebUser] PRIMARY KEY CLUSTERED ([WebUserID] ASC) WITH (FILLFACTOR = 90)
 );
 
