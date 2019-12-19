@@ -153,14 +153,7 @@ begin
 			
 				----// all offices
 				(
-					3 = (case when @alloffices = 1 then 3 else 0 end) 
-					and LocationOffice = @office 
-					and DoctorOffice = @office
-					and (
-						(1 = (case when @usenewdata = 1 then 0 else 1 end) and (LocationCode in (select distinct LocationCode from #daysheetdata x where LocationOffice = @office and DoctorOffice = @office and OfficeCode = @office)))
-						or
-						(1 = (case when @usenewdata = 1 then 1 else 0 end) and (LocationCode in (select distinct LocationCode from #daysheetdatanew x where  LocationOffice = @office and DoctorOffice = @office and OfficeCode = @office)))
-					)						
+					3 = (case when @alloffices = 1 then 3 else 0 end) 						
 				)
 		)
 
