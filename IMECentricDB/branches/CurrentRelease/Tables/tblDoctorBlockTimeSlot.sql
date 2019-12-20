@@ -5,7 +5,7 @@
     [StartTime]                   DATETIME     NOT NULL,
     [Duration]                    INT          NULL,
     [DisplayOrder]                INT          NULL,
-    [HoldDescription]             VARCHAR (50) NULL,
+    [HoldDescription]             VARCHAR (70) NULL,
     [CaseApptRequestID]           INT          NULL,
     [CaseApptID]                  INT          NULL,
     [DateAdded]                   DATETIME     NULL,
