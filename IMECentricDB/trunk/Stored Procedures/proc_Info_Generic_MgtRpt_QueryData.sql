@@ -188,7 +188,8 @@ SELECT
   CONVERT(MONEY, NULL) AS   FeeDetailFacFee,
   CONVERT(MONEY, NULL) AS   FeeDetailOther,
   ISNULL(C.InsuringCompany, '') as InsuringCompany,
-  ISNULL(C.Priority, 'Normal') AS CasePriority
+  ISNULL(C.Priority, 'Normal') AS CasePriority,
+  CONVERT(DATE, C.AwaitingScheduling) as DateAwaitingScheduling
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
