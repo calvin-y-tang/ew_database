@@ -1310,4 +1310,10 @@ SET IDENTITY_INSERT [dbo].[tblDPSPriority] OFF
 
 GO
 
+INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] ,[Name]) VALUES (0, 'Draft')
+INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] ,[Name]) VALUES (10, 'Open')
+INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] ,[Name]) VALUES (21, 'Reserved')
+INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] ,[Name]) VALUES (22, 'Hold')
+INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] ,[Name]) VALUES (30, 'Scheduled')
+GO
 
