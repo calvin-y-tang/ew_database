@@ -66,7 +66,7 @@ ALTER TABLE [dbo].[tblClient] ALTER COLUMN [EmployeeNumber] VARCHAR (255) NULL;
 
 GO
 ALTER TABLE [dbo].[tblClient]
-    ADD [InputSourceID] INT NOT NULL;
+    ADD [InputSourceID] INT NULL;
 
 
 GO
@@ -137,7 +137,7 @@ PRINT N'Altering [dbo].[tblWebUser]...';
 
 GO
 ALTER TABLE [dbo].[tblWebUser]
-    ADD [InputSourceID] INT NOT NULL;
+    ADD [InputSourceID] INT NULL;
 
 
 GO
@@ -1245,6 +1245,7 @@ IF @@TRANCOUNT = 0
 
 GO
 
+
 IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
 GO
 IF @@TRANCOUNT>0 BEGIN
@@ -1259,6 +1260,43 @@ PRINT N'Update complete.';
 
 
 GO
+
+
+-- Workaround.  Had to set InputSource to NUL initially
+--Fill values with 1
+--Then we will set column to Not Null
+--tblClient and tblWebUser
+Update tblClient
+set InputSourceID = 1
+where 1 = 1
+
+GO
+
+Update tblWebUser
+set InputSourceID = 1
+where 1 = 1
+
+GO
+
+
+ALTER TABLE
+  tblClient
+ALTER COLUMN
+  InputSourceID
+    INT NOT NULL;
+
+GO
+
+
+
+ALTER TABLE
+  tblWebUser
+ALTER COLUMN
+  InputSourceID
+    INT NOT NULL;
+
+GO
+
 --Issue 11389 - Changes to ext priority code for mi-Support
 
 DELETE FROM tblDPSPriority
@@ -1271,4 +1309,5 @@ INSERT INTO [dbo].[tblDPSPriority] ([DPSPriorityID], [Name], [ExtPriorityCode], 
 SET IDENTITY_INSERT [dbo].[tblDPSPriority] OFF
 
 GO
+
 
