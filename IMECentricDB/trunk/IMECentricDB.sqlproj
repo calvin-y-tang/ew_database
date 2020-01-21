@@ -1116,6 +1116,7 @@
     <Build Include="Views\vwDrSchedGetNonBlockTimeAppt.sql" />
     <Build Include="Tables\tblAutoProvisionLog.sql" />
     <Build Include="Views\vwAutoProvisions.sql" />
+    <Build Include="Tables\tblElectronicMessage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
