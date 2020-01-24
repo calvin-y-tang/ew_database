@@ -12,3 +12,8 @@ GO
 insert into tblMessageToken (Name, Description)
 values ('@ExamineeLastName@',''), ('@ExamineeFirstName@',''), ('@ExamineeMiddleInitial@','')
 GO
+
+
+-- Issue 11184 (Enhance EDI queue functionality to allow users to remove sent invoices) - adding security token
+INSERT INTO tblUserFunction VALUES ('EDIManualAck', 'EDI - Manually Acknowledge Sent Invoices', '2020-01-14')
+
