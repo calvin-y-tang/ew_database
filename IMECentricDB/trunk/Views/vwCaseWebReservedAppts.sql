@@ -25,6 +25,7 @@ AS
 
             DBTD.ScheduleDate ,
             DBTD.DoctorCode ,
+			DBTS.StartTime,
             DBTD.LocationCode AS doctorLocation,
             tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName, ' ') AS DoctorName ,
 
