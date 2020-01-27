@@ -8,7 +8,7 @@
     [Selected]       BIT            CONSTRAINT [DF_tblDoctorSearchResult_Selected] DEFAULT ((0)) NOT NULL,
     [Proximity]      FLOAT (53)     NULL,
     [SpecialtyCodes] VARCHAR (300)  NULL,
-    [AvgMargin]      DECIMAL (8, 2) CONSTRAINT [DF_tblDoctorSearchResult_AvgMargin] DEFAULT ((0)) NOT NULL,
+    [AvgMargin]      DECIMAL (8, 2) CONSTRAINT [DF_tblDoctorSearchResult_AvgMargin] DEFAULT ((100)) NOT NULL,
     [CaseCount]      INT            CONSTRAINT [DF_tblDoctorSearchResult_CaseCount] DEFAULT ((0)) NOT NULL,
 	[DisplayScore]   Numeric(35,13) NULL,
 	[DoctorRank]     bigint         Null,

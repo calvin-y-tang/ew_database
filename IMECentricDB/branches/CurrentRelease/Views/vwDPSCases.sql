@@ -31,6 +31,8 @@ AS
         D.DoctorCode,
         Com.CompanyCode,
         C.CaseType,
+		C.Status AS CaseStatus,
+		Q.StatusDesc,
         E.ChartNbr,
 		S.Name AS Status
     FROM
@@ -40,4 +42,5 @@ AS
     LEFT OUTER JOIN tblExaminee AS E ON C.ChartNbr=E.ChartNbr
     LEFT OUTER JOIN tblDoctor AS D ON C.DoctorCode=D.DoctorCode
     LEFT OUTER JOIN tblClient AS CL ON CL.ClientCode=C.ClientCode
-    LEFT OUTER JOIN tblCompany AS Com ON Com.CompanyCode=CL.CompanyCode
+    LEFT OUTER JOIN tblCompany AS Com ON Com.CompanyCode=CL.CompanyCode	
+	LEFT OUTER JOIN tblQueues AS Q ON C.Status = Q.StatusCode
