@@ -207,9 +207,6 @@ VALUES(109, 'ClientGenDocsToAddtlEmail', 'Case', 'When sending docs to client cc
 GO
 
 
-INSERT INTO tblUserFunction VALUES ('AckNewPortalAcct', 'Acknowledge - New Portal Accts Auto Provision', '2019-12-12')
-GO
-
 insert into tblMessageToken (Name, Description)
 values ('@ExamineeLastName@',''), ('@ExamineeFirstName@',''), ('@ExamineeMiddleInitial@','')
 GO
