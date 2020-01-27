@@ -1317,3 +1317,5 @@ INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] 
 INSERT INTO [dbo].[tblDoctorBlockTimeSlotStatus] ([DoctorBlockTimeSlotStatusID] ,[Name]) VALUES (30, 'Scheduled')
 GO
 
+INSERT INTO tblUserFunction VALUES ('AckNewPortalAcct', 'Acknowledge - New Portal Accts Auto Provision', '2019-12-12')
+GO
