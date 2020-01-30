@@ -8,13 +8,19 @@
     [BitValue1]      BIT           NULL,
     [IntValue2]      INT           NULL,
     [VarCharValue1]  VARCHAR (100) NULL,
-    [IntValue3]      INT           NULL, 
-    [DateTimeValue1] DATETIME      NULL, 
-    [VarCharValue2]  VARCHAR(100)  NULL, 
+    [IntValue3]      INT           NULL,
+    [DateTimeValue1] DATETIME      NULL,
+    [VarCharValue2]  VARCHAR (100) NULL,
     [BitValue2]      BIT           NULL,
-    [VarCharValue3]  VARCHAR(100)  NULL, 
+    [VarCharValue3]  VARCHAR (100) NULL,
+    [TextValue1]     VARCHAR (MAX) NULL,
+    [TextValue2]     VARCHAR (MAX) NULL,
+    [TextValue3]     VARCHAR (MAX) NULL,
+    [TextValue4]     VARCHAR (MAX) NULL,
     CONSTRAINT [PK_tblTempData] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
+
+
 
 
 
