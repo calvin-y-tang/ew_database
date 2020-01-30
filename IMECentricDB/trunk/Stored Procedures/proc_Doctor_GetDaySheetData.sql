@@ -85,9 +85,15 @@ begin
 			tblDoctorSchedule.StartTime as ApptDateTime,
 			stuff(replace(right(convert(varchar(19), tblDoctorSchedule.StartTime, 0), 7), ' ', '0'), 6, 0, ' ') as ApptTime,		
 			ISNULL(tblDoctor.FirstName, '') + ' ' + ISNULL(tblDoctor.LastName, '') + ', ' + ISNULL(tblDoctor.Credentials, '') as DoctorName,		
-			(case when ltrim(rtrim(tblDoctor.EmailAddr)) <> '' then ltrim(rtrim(tblDoctor.EmailAddr)) else null end) as DoctorEmail,		
+			(case 
+				when ltrim(rtrim(isnull(tblDoctor.DaysheetEmailAddr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetEmailAddr)) 
+				when ltrim(rtrim(tblDoctor.EmailAddr)) <> '' then ltrim(rtrim(tblDoctor.EmailAddr)) 
+				else null end) as DoctorEmail,		
 			tblLocation.Phone as LocationPhone,
-			tblLocation.Fax as LocationFax,
+			(case 
+				when ltrim(rtrim(isnull(tblDoctor.DaysheetFaxNbr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetFaxNbr)) 
+				when ltrim(rtrim(isnull(tblLocation.Fax, ''))) <> '' then ltrim(rtrim(tblLocation.Fax)) 
+				else null end) as LocationFax,
 			tblLocation.ContactLast,
 			tblLocation.ContactFirst,
 			tblLocation.ExtName as LocationExtName,
