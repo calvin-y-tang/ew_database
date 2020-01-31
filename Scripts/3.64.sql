@@ -214,3 +214,35 @@ GO
 
 -- Issue 11184 (Enhance EDI queue functionality to allow users to remove sent invoices) - adding security token
 INSERT INTO tblUserFunction VALUES ('EDIManualAck', 'EDI - Manually Acknowledge Sent Invoices', '2020-01-14')
+GO
+
+
+
+--Remove certain old Do Not Use reasons if they exist
+delete from tblCodes 
+WHERE Category = 'DNU' and Value like 'Doctor Reason%';
+GO
+
+
+-- Insert the new Do Not Use reasons
+insert into tblCodes (Category, SubCategory, Value) 
+values
+('DNU','Reason','Deceased')
+,('DNU','Reason','Retired/No Longer Active Practice')
+,('DNU','Reason','No Longer Performing IME''s/Peers')
+,('DNU','Reason','Works Exclusively for Competitor')
+,('DNU','Reason','Credentialing Reason (for Cause)')
+,('DNU','Reason','Non-Compliant with Credentialing Requests')
+,('DNU','Reason','Excessive Fees')
+,('DNU','Reason','Difficulty Scheduling')
+,('DNU','Reason','Delayed Dictation/Report Delivery')
+,('DNU','Reason','Subpar Reports')
+,('DNU','Reason','Duplicate Profile')
+,('DNU','Reason','Error in Entering Profile')
+,('DNU','Reason','Inactivity for Extended Period')
+,('DNU','Reason','Only License Held Is Expired')
+,('DNU','Reason','Other (provide narrative detail)')
+,('DNU','Reason','Unknown (provide narrative detail)')
+GO
+
+
