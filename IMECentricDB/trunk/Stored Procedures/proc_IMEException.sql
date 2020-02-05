@@ -13,8 +13,8 @@ BEGIN
     SET NOCOUNT ON;
     DECLARE @Err INT;
 
-	-- DEV NOTE: Changes this to be a SELECT DISTINCT when the SLA tables were added to this.
-	--	the problem is with tblSLARuleDetail because that will have multiple items items for each SLA Rule.
+	-- DEV NOTE: Changed this to be a SELECT DISTINCT when the SLA tables were added to this.
+	--	the problem is with tblSLARuleDetail because that will have multiple items for each SLA Rule.
 	--	Just need to keep this point in mind when making any future changes to this stored procedure.
 
     SELECT  DISTINCT 
@@ -77,7 +77,8 @@ BEGIN
     WHERE   ED.Status = 'Active' AND ED.ExceptionID = @ExceptionID
 			AND
 			(
-				( ED.Entity = 'CA' AND C.CaseNbr = @CaseNbr
+				( ED.Entity = 'CA' 
+					AND C.CaseNbr IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
 				)
 				OR
 				( ED.Entity = 'CS'
