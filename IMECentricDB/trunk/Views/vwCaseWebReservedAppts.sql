@@ -22,7 +22,7 @@ AS
             tblCase.OfficeCode ,
             DATEDIFF(day, tblCase.LastStatuschg, GETDATE()) AS IQ ,
             tblCase.LastStatusChg ,
-
+			DBTS.StartTime,
             DBTD.ScheduleDate ,
             DBTD.DoctorCode ,
             DBTD.LocationCode AS doctorLocation,
