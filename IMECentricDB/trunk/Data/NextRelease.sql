@@ -11,4 +11,10 @@ INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCo
 INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'QA', '4')
 INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Scheduling', '5')
 INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Other', '6')
+GO 
+
+-- Issue 11469 - create new security token
+INSERT INTO tblUserFunction(FunctionCode, FunctionCode, DateAdded)
+VALUES ('CSExcept','Case Exception - Add/Edit/Delete','2020-02-11')
+GO
 
