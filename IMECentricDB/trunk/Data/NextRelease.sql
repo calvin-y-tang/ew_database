@@ -14,7 +14,7 @@ INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCo
 GO 
 
 -- Issue 11469 - create new security token
-INSERT INTO tblUserFunction(FunctionCode, FunctionCode, DateAdded)
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
 VALUES ('CSExcept','Case Exception - Add/Edit/Delete','2020-02-11')
 GO
 
