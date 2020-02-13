@@ -27,6 +27,7 @@ AS
             DBTD.DoctorCode ,
             DBTD.LocationCode AS doctorLocation,
             tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName, ' ') AS DoctorName ,
+			ApptReq.CaseApptRequestStatusID,
 
             tblqueues.FunctionCode ,
             tblCase.Casetype ,
