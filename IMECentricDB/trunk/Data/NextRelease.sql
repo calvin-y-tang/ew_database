@@ -18,3 +18,7 @@ INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
 VALUES ('CSExcept','Case Exception - Add/Edit/Delete','2020-02-11')
 GO
 
+-- Issue 11156 - Making company inactive, add new user function for company status change
+insert into tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+values ('CompanyStatusChange', 'Company - Status Change', getdate())
+;

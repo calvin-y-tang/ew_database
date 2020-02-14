@@ -70,6 +70,8 @@
 	[AutoPrintInvoice]           BIT              CONSTRAINT [DF_tblCompany_AutoPrintInvoice] DEFAULT ((1)) NOT NULL,
     [PortalVersion]              INT              NULL, 
 	[DICOMHandlingPreference]    INT              NULL,
+    [DateInactivated]            DATETIME         NULL,
+    [UserInactivated]            VARCHAR (20)     NULL,
     CONSTRAINT [PK_tblCompany] PRIMARY KEY CLUSTERED ([CompanyCode] ASC) WITH (FILLFACTOR = 90)
 );
 
