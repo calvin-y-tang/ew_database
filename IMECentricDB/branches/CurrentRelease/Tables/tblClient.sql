@@ -79,10 +79,12 @@ CREATE TABLE [dbo].[tblClient] (
     [CreateCvrLtr]             BIT              CONSTRAINT [DF_tblClient_CreateCvrLtr] DEFAULT ((0)) NOT NULL,
     [SpecialReqNotes]          TEXT             NULL,
     [DistributionNotes]        VARCHAR(MAX)     NULL, 
-    [EmployeeNumber]           VARCHAR(255)      NULL, 
+    [EmployeeNumber]           VARCHAR(255)     NULL, 
 	[FirstCaseNbr]             INT              NULL,
 	[CRMPrimaryEmail]		   VARCHAR(255)     NULL,	
     [InputSourceID]			   INT		        NOT NULL,
+    [DateInactivated]          DATETIME         NULL,
+    [UserInactivated]          VARCHAR (20)     NULL,
     CONSTRAINT [PK_tblClient] PRIMARY KEY CLUSTERED ([ClientCode] ASC) WITH (FILLFACTOR = 90),
     CONSTRAINT [FK_tblClient_tblCompany] FOREIGN KEY ([CompanyCode]) REFERENCES [dbo].[tblCompany] ([CompanyCode])
 );

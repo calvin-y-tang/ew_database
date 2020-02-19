@@ -22,11 +22,12 @@ AS
             tblCase.OfficeCode ,
             DATEDIFF(day, tblCase.LastStatuschg, GETDATE()) AS IQ ,
             tblCase.LastStatusChg ,
-
+			DBTS.StartTime,
             DBTD.ScheduleDate ,
             DBTD.DoctorCode ,
             DBTD.LocationCode AS doctorLocation,
             tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName, ' ') AS DoctorName ,
+			ApptReq.CaseApptRequestStatusID,
 
             tblqueues.FunctionCode ,
             tblCase.Casetype ,

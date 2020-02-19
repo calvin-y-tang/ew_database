@@ -13,8 +13,8 @@ BEGIN
     SET NOCOUNT ON;
     DECLARE @Err INT;
 
-	-- DEV NOTE: Changes this to be a SELECT DISTINCT when the SLA tables were added to this.
-	--	the problem is with tblSLARuleDetail because that will have multiple items items for each SLA Rule.
+	-- DEV NOTE: Changed this to be a SELECT DISTINCT when the SLA tables were added to this.
+	--	the problem is with tblSLARuleDetail because that will have multiple items for each SLA Rule.
 	--	Just need to keep this point in mind when making any future changes to this stored procedure.
 
     SELECT  DISTINCT 
@@ -76,47 +76,53 @@ BEGIN
 			LEFT OUTER JOIN tblSLARuleDetail AS SLADET ON SLADET.SLARuleID = SLA.SLARuleID 
     WHERE   ED.Status = 'Active' AND ED.ExceptionID = @ExceptionID
 			AND
-			( ED.Entity = 'CS'
-                OR ( ED.Entity = 'PC'
-                    AND ( CO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                            AND ISNULL(ED.UseBillingEntity, 0) = 0
-                        
-                    OR  BCO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                        AND ISNULL(ED.UseBillingEntity, 0) = 1
-                        )
-                    )
-                OR ( ED.Entity = 'CO'
-                    AND ( CL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                            AND ISNULL(ED.UseBillingEntity, 0) = 0
-                        
-                    OR  BCL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                        AND ISNULL(ED.UseBillingEntity, 0) = 1
-                        )
-                    )
-                OR ( ED.Entity = 'CL'
-                    AND ( CL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                            AND ISNULL(ED.UseBillingEntity, 0) = 0
-                       
-                    OR  BCL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                        AND ISNULL(ED.UseBillingEntity, 0) = 1
-                        )
-                    )
-                OR ( ED.Entity = 'DR'
-                    AND ( C.DoctorCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
-                    )
-                OR ( ED.Entity = 'AT'
-                    AND ( C.PlaintiffAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                    
-					OR C.DefenseAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-                        )
-                    )
-                OR ( ED.Entity = 'PE'
-                    AND ( ER.EWParentEmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
-                    )
-                OR ( ED.Entity = 'ER'
-                    AND ( C.EmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
-                    )
-            )
+			(
+				( ED.Entity = 'CA' 
+					AND C.CaseNbr IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+				)
+				OR
+				( ED.Entity = 'CS'
+	                OR ( ED.Entity = 'PC'
+	                    AND ( CO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                        
+	                    OR  BCO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        )
+	                    )
+	                OR ( ED.Entity = 'CO'
+	                    AND ( CL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                        
+	                    OR  BCL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        )
+	                    )
+	                OR ( ED.Entity = 'CL'
+	                    AND ( CL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                       
+	                    OR  BCL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        )
+	                    )
+	                OR ( ED.Entity = 'DR'
+	        			AND ( C.DoctorCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	                OR ( ED.Entity = 'AT'
+	                    AND ( C.PlaintiffAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                    
+						OR C.DefenseAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        )
+	                    )
+	                OR ( ED.Entity = 'PE'
+	                    AND ( ER.EWParentEmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	                OR ( ED.Entity = 'ER'
+	                    AND ( C.EmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	            )
+			)
             AND ( ED.AllOffice = 1
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = C.OfficeCode )
 				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = @OfficeCode )

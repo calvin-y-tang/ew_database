@@ -8,7 +8,7 @@
 	[To] 			VARCHAR(200) 	NOT NULL, 
 	[CC] 			VARCHAR(200) 	NOT NULL, 
 	[BCC] 			VARCHAR(200) 	NOT NULL, 
-	[RecordType] 	VARCHAR (20) 	NULL,
+	[RecordType] 	VARCHAR (50) 	NULL,
     CONSTRAINT [PK_tblElectronicMessage] PRIMARY KEY CLUSTERED ([MessageID] ASC)
 );
 

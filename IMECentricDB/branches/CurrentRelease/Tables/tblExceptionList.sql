@@ -6,6 +6,7 @@
     [UserIDAdded]  VARCHAR (50)  NULL,
     [DateEdited]   DATETIME      NULL,
     [UserIDEdited] VARCHAR (50)  NULL,
+    [Type]         VARCHAR (15)  NULL,
     CONSTRAINT [PK_tblExceptionList] PRIMARY KEY CLUSTERED ([ExceptionID] ASC)
 );
 

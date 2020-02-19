@@ -1,20 +1,24 @@
-delete from tblBusinessRule WHERE BusinessRuleID in (109,110,111)
-INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
-VALUES(109, 'ClientGenDocsToAddtlEmail', 'Case', 'When sending docs to client cc/bcc additional email addresses', 1, 1201, 0, 'AttachOption', 'CCEmailAddress', 'BccEmailAddress', NULL, NULL, 0),
-      (110, 'ClientDistDocsToAddtlEmail', 'Case', 'When distribute docs to client cc/bcc additional email addresses', 1, 1202, 0, 'AttachOption', 'CCEmailAddress', 'BccEmailAddress', NULL, NULL, 0),
-	  (111, 'ClientDistRptToAddtlEmail', 'Case', 'When distribute rpts to client cc/bcc additional email addresses', 1, 1320, 0, 'AttachOption', 'CCEmailAddress', 'BccEmailAddress', NULL, NULL, 0), 
-	  (108, 'MatchClaimNbrToEmployer1', 'Case', 'Ensure that selected Employer is Valid for Claim Nbr', 1, 1016, 0, 'ClaimNbrStartsWith', 'ClaimNbrEndsWith', 'AllowedEmployerID', NULL, 'OverrideToken', 0)
+-- Issue 11469 - patch existing exception triggers to set "Type" value for "Case"
+UPDATE tblExceptionList SET [Type] = 'Case' WHERE ExceptionID IN (1,2,3,5,6,10,11,12,13,14,15,16,17,18,19,20,22,25,26,27,28,29,30,31)
 GO
 
 
-INSERT INTO tblUserFunction VALUES ('AckNewPortalAcct', 'Acknowledge - New Portal Accts Auto Provision', '2019-12-12')
+-- Issue 11439 - add rows to tblCodes to add in office contact department types and values to be used in cboDepartment combo box for office Contacts
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Accounting', '1')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Bill Review', '7')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Customer Service', '2')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Medical Records', '3')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'QA', '4')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Scheduling', '5')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Other', '6')
+GO 
+
+-- Issue 11469 - create new security token
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('CSExcept','Case Exception - Add/Edit/Delete','2020-02-11')
 GO
 
-insert into tblMessageToken (Name, Description)
-values ('@ExamineeLastName@',''), ('@ExamineeFirstName@',''), ('@ExamineeMiddleInitial@','')
-GO
-
-
--- Issue 11184 (Enhance EDI queue functionality to allow users to remove sent invoices) - adding security token
-INSERT INTO tblUserFunction VALUES ('EDIManualAck', 'EDI - Manually Acknowledge Sent Invoices', '2020-01-14')
-
+-- Issue 11156 - Making company inactive, add new user function for company status change
+insert into tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+values ('CompanyStatusChange', 'Company - Status Change', getdate())
+;

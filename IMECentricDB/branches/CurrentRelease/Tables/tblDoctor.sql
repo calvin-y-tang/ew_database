@@ -106,6 +106,8 @@
     [ViewDICOMOnWebPortal]         BIT          NULL,
     [DICOMHandlingPreference]      INT          NULL,
     [EWParentDocID]				   INT			NULL, 
+    [DaysheetEmailAddr]            VARCHAR (150) NULL,
+    [DaysheetFaxNbr]               VARCHAR (15) NULL,
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 
