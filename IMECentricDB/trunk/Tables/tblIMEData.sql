@@ -53,6 +53,7 @@
     [FeeScheduleSetting]            INT           CONSTRAINT [DF_tblIMEData_FeeScheduleSetting] DEFAULT ((1)) NOT NULL,
     [FeeCalcMethod]                 INT           NULL,
 	[PrmptForClientChngAssocCases]	BIT			  CONSTRAINT [DF_tblIMEData_PrmptForClientChngAssocCases] DEFAULT ((0)) NOT NULL,
+	[DaySheetDocument]              VARCHAR (15)  NULL,
     CONSTRAINT [PK_tblIMEData] PRIMARY KEY CLUSTERED ([IMECode] ASC)
 );
 
