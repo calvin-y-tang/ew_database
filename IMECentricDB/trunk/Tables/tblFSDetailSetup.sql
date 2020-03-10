@@ -20,6 +20,8 @@
     [Product]         VARCHAR (MAX) NULL,
     [FeeZone]         VARCHAR (MAX) NULL,
     [Specialty]       VARCHAR (MAX) NULL,
+	[Doctor]		  VARCHAR (MAX) NULL,
+	[ExamLocation]    VARCHAR (MAX) NULL,
     CONSTRAINT [PK_tblFSDetailSetup] PRIMARY KEY CLUSTERED ([FSDetailSetupID] ASC)
 );
 
