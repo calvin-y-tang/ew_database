@@ -14,6 +14,7 @@ BEGIN
 	DECLARE @sUserIDAdded VARCHAR(30)
 	DECLARE @dDateEdit DATETIME 
 	DECLARE @sUserIDEdit VARCHAR(30)
+	DECLARE @sEntityType CHAR(2)
 
 	-- initialize our HeaderID to NULL to protect against "bad stuff"
 	SET @iHeaderID = NULL 
@@ -22,7 +23,7 @@ BEGIN
 	SELECT @iGroupID = FSGroupID, @iHeaderID = FSHeaderID, @sFSName = FeeScheduleName, 
 	       @sDocType = DocumentType, @dStartDate = StartDate, @dEndDate = EndDate, 
 		  @dDateAdded = DateAdded, @sUserIDAdded = UserIDAdded, 
-		  @dDateEdit = DateEdited, @sUserIDEdit = UserIDEdited
+		  @dDateEdit = DateEdited, @sUserIDEdit = UserIDEdited, @sEntityType = EntityType
 	  FROM tblFSHeaderSetup
 	 WHERE FSHeaderSetupID = @iSetupID
 	
@@ -37,8 +38,8 @@ BEGIN
 	IF @iGroupID IS NULL 
 	BEGIN 
 		-- need to create new tblFSGroup item
-		INSERT INTO tblFSGroup (FeeScheduleName, DocumentType, DateAdded, UserIDAdded)
-		VALUES(@sFSName, @sDocType, @dDateAdded, @sUserIDAdded)
+		INSERT INTO tblFSGroup (FeeScheduleName, DocumentType, DateAdded, UserIDAdded, EntityType)
+		VALUES(@sFSName, @sDocType, @dDateAdded, @sUserIDAdded, @sEntityType)
 		SET @iGroupID = @@IDENTITY
 		IF @iGroupID IS NOT NULL AND @iGroupID > 0
 		BEGIN 
@@ -61,7 +62,8 @@ BEGIN
 		   SET FeeScheduleName = @sFSName, 
 			  DocumentType = @sDocType, 
 			  DateEdited = @dDateEdit,
-			  UserIDEdited = @sUserIDEdit
+			  UserIDEdited = @sUserIDEdit,
+			  EntityType = @sEntityType
 		 WHERE FSGroupID = @iGroupID 
 	END
 	-- ensure that Fee Sched Name is the same for all entries belonging to same group.
@@ -102,4 +104,3 @@ BEGIN
 	END 
 	
 END
-
