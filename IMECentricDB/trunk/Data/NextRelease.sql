@@ -21,4 +21,7 @@ GO
 -- Issue 11156 - Making company inactive, add new user function for company status change
 insert into tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
 values ('CompanyStatusChange', 'Company - Status Change', getdate())
+
+INSERT INTO tblSetting (Name, Value) VALUES ('UseNewFeeSchedulingMenuItems', 'True')
+GO
 ;
