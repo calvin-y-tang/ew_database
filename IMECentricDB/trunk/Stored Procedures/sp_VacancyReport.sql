@@ -7,7 +7,6 @@ AS
 		  will be the one that has had the most cases assigned to it.
 	*/
 
-
 	-- get case count for doc/loc combination. the office will then be the default office. 
 	WITH CTE_DocLocOffCounts AS
 	(
@@ -26,29 +25,24 @@ AS
 		 D.DoctorCode, D.LocationCode, D.ScheduleDate, 
      
 		 -- grab default office & Case Count
-		 (SELECT Cnts.OfficeCode 
-			FROM CTE_DocLocOffCounts AS Cnts 
-		   WHERE Cnts.DoctorCode = D.DoctorCode 
-				 AND Cnts.LocationCode = D.LocationCode 
-				 AND DefaultOffice = 1) AS DefaultOfficeCode,
-
-		 (SELECT Cnts.CaseCount 
-			FROM CTE_DocLocOffCounts AS Cnts 
-		   WHERE Cnts.DoctorCode = D.DoctorCode 
-				 AND Cnts.LocationCode = D.LocationCode 
-				 AND DefaultOffice = 1) AS DefaultOfficeCaseCount,
+		 Cnts.OfficeCode AS DefaultOfficeCode,
+		 Cnts.CaseCount AS DefaultOfficeCaseCount,
      
 		 -- set an indicator so we know what "status" to count the slot as being in
 		 IIF(S.DoctorBlockTimeSlotStatusID = 10, 1, 0) AS OpenSlot,
 		 IIF(S.DoctorBlockTimeSlotStatusID = 30, 1, 0) AS CurrentlyScheduleSlot,
 		 IIF(S.DoctorBlockTimeSlotStatusID = 21, 1, 0) AS ReservedSlot,
 		 IIF(S.DoctorBlockTimeSlotStatusID = 22, 1, 0) AS HoldSlot,
-		 IIF((SELECT COUNT(*) FROM tblCaseAppt AS AnyCA WHERE AnyCA.DoctorBlockTimeSlotID = S.DoctorBlockTimeSlotID) > 1, 1, 0) AS HasEverScheduled
+		 IIF(AnyCA.CaseApptID IS NULL OR AnyCA.CaseApptID = 0, 0, 1) AS HasEverScheduled
 	INTO 
 		 #TempVacancyRpt
 	FROM 
 		 tblDoctorBlockTimeSlot AS S
 			  INNER JOIN tblDoctorBlockTimeDay AS D ON D.DoctorBlockTimeDayID = S.DoctorBlockTimeDayID
+			  LEFT OUTER JOIN CTE_DocLocOffCounts AS Cnts ON Cnts.DoctorCode = D.DoctorCode 
+			                                             AND Cnts.LocationCode = D.LocationCode 
+														 AND Cnts.DefaultOffice = 1
+			  LEFT OUTER JOIN tblCaseAppt AS AnyCA ON AnyCA.DoctorBlockTimeSlotID = S.DoctorBlockTimeSlotID
 	WHERE 
 			 D.Active = 1
 		 AND (
