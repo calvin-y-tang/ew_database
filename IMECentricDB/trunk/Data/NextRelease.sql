@@ -38,3 +38,8 @@ INSERT INTO [dbo].[tblTATCalculationMethodEvent] ([TATCalculationMethodID], [Eve
 INSERT INTO [dbo].[tblTATCalculationMethodEvent] ([TATCalculationMethodID], [EventID]) VALUES (15, 1101)
 INSERT INTO [dbo].[tblTATCalculationMethodEvent] ([TATCalculationMethodID], [EventID]) VALUES (16, 1320)
 GO
+
+-- Issue 11509 - set default invoicing and vouchering fee schedule versions
+  update tblOffice set [FSInvoiceSetting] = 1 where [FSInvoiceSetting] is null
+  update tblOffice set [FSVoucherSetting] = 1 where [FSVoucherSetting] is null
+
