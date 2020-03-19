@@ -12,15 +12,17 @@ BEGIN
 	DECLARE @sSpecialty VARCHAR(MAX)
 	DECLARE @sSvcType VARCHAR(MAX)
 	DECLARE @sService VARCHAR(MAX)
+	DECLARE @sDoctor VARCHAR(MAX)
+	DECLARE @sExamLocation VARCHAR(MAX)
 	
 	-- get a list of Detail Items that make up this Header and process them
 	DECLARE curDetailSetup CURSOR FOR
 		SELECT FSDetailSetupID, FSDetailID, 
-			  BusLine,  ServiceType, Service, Product, FeeZone, Specialty
+			  BusLine,  ServiceType, Service, Product, FeeZone, Specialty, Doctor, ExamLocation
 		  FROM tblFSDetailSetup 
 		 WHERE FSHeaderSetupID = @iHdrSetupID
 	OPEN curDetailSetup
-	FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty
+	FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
 	WHILE @@FETCH_STATUS = 0
 	BEGIN 
 		-- update or insert item? 
@@ -93,9 +95,20 @@ BEGIN
 				@iDetailID, 
 				'tblSpecialty', 
 				@sSpecialty
+
+		EXEC spFeeSched_SyncTableData_DetailCondition
+				@iDetailID, 
+				'tblDoctor', 
+				@sDoctor
+		
+		EXEC spFeeSched_SyncTableData_DetailCondition
+				@iDetailID, 
+				'tblLocation', 
+				@sExamLocation
+		
 		
 		-- process next row
-		FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty
+		FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
 	END
 	CLOSE curDetailSetup
 	DEALLOCATE curDetailSetup
@@ -115,5 +128,6 @@ BEGIN
 	   AND tblFSDetailSetup.FSDetailID IS NULL
 	
 	RETURN
+
 
 END

@@ -2,7 +2,7 @@
     [FSHeaderSetupID] INT          IDENTITY (1, 1) NOT NULL,
     [FSGroupID]       INT          NULL,
     [FSHeaderID]      INT          NULL,
-    [FeeScheduleName] VARCHAR (30) NULL,
+    [FeeScheduleName] VARCHAR (50) NULL,
     [DocumentType]    VARCHAR (2)  NULL,
     [EntityType]      VARCHAR (2)  NULL,
     [StartDate]       DATETIME     NULL,

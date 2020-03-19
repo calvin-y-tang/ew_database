@@ -1,6 +1,10 @@
 ﻿ 
  CREATE VIEW vwDoctorScheduleSummary
-AS  
+AS
+	-- DEV NOTE: the result set of this view needs to match (data type & column names) 
+	--		vwDoctorBlockTimeScheduleSummary. These 2 views are conditionally used within the same IMEC code
+	--		 and; therefore, need to be in "sync".
+
    SELECT  tblDoctor.LastName ,
             tblDoctor.FirstName ,
             tblLocation.Location ,

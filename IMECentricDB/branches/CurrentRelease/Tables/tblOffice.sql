@@ -37,6 +37,9 @@
 	[DPSSystemID]              INT              CONSTRAINT [DF_tblOffice_DPSSystemID] DEFAULT ((0)) NOT NULL,
     [DPSFolderID]        INT                    NULL,
     [DataHandlingForDupSubCase] INT		CONSTRAINT [DF_tblOffice_DataHandlingForDupSubCase] DEFAULT ((1)) NOT NULL,
+	[FSInvoiceSetting]         INT              NULL,
+	[FSVoucherSetting]         INT              NULL,
+    [DaySheetDocument]         VARCHAR (15)     NULL,
     CONSTRAINT [PK_tblOffice] PRIMARY KEY CLUSTERED ([OfficeCode] ASC)
 );
 

@@ -6,7 +6,7 @@
     [UserIDAdded]           VARCHAR (15)    NULL,
     [DateEdited]            DATETIME        NULL,
     [UserIDEdited]          VARCHAR (15)    NULL,
-    [Message]               NVARCHAR (1000) NULL,
+    [Message]               NVARCHAR (2048) NULL,
     [ConfirmationSystemID]  INT           CONSTRAINT [DF_tblConfirmationMessage_ConfirmationSystemID] DEFAULT ((1)) NOT NULL,
     [MasterExtMessageID]    VARCHAR (30)  NULL,
     [ExtLanguageKey]        VARCHAR (10)  NULL,
