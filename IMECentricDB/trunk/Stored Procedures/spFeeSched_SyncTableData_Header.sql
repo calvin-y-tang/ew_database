@@ -6,7 +6,7 @@ BEGIN
 	
 	-- FSHeaderSetup variables 
 	DECLARE @iGroupID INTEGER 
-	DECLARE @sFSName VARCHAR(30)
+	DECLARE @sFSName VARCHAR(50)
 	DECLARE @sDocType VARCHAR(2)
 	DECLARE @dStartDate DATETIME
 	DECLARE @dEndDate DATETIME 
