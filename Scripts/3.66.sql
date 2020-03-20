@@ -89,8 +89,28 @@ ALTER TABLE [dbo].[tblFSGroup] ALTER COLUMN [FeeScheduleName] VARCHAR (50) NOT N
 
 
 GO
+-- Workaroung for the following statement adding a NOT NULL column:
+--ALTER TABLE [dbo].[tblFSGroup]
+--    ADD [EntityType] CHAR (2) NOT NULL;
+
 ALTER TABLE [dbo].[tblFSGroup]
-    ADD [EntityType] CHAR (2) NOT NULL;
+    ADD [EntityType] CHAR (2) NULL;
+
+GO
+
+--Enter an empty string
+Update tblFSGroup
+set EntityType = ''
+where 1 = 1
+
+GO
+
+--Set the column to NOT NULL like we wanted it to be
+ALTER TABLE
+  tblFSGroup
+ALTER COLUMN
+  EntityType 
+     CHAR (2) NOT NULL;
 
 
 GO
