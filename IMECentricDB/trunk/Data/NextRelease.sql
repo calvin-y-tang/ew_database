@@ -43,3 +43,31 @@ GO
   update tblOffice set [FSInvoiceSetting] = 1 where [FSInvoiceSetting] is null
   update tblOffice set [FSVoucherSetting] = 1 where [FSVoucherSetting] is null
 
+
+  -- Issue 11122 - add fee schedule security tokens
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('ViewFeeScheduleCompany','Fee Schedule (Company) - View','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('ViewFeeScheduleOffice','Fee Schedule (Office) - View','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('AddFeeSchedOffice','Fee Schedule (Office) - Add','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('AddFeeSchedCompany','Fee Schedule (Company) - Add','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('DeleteFeeSchedCompany','Fee Schedule (Company) - Delete','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('DeleteFeeSchedOffice','Fee Schedule (Office) - Delete','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('EditFeeSchedCompany','Fee Schedule (Company) - Edit','2020-03-20')
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('EditFeeSchedOffice','Fee Schedule (Office) - Edit','2020-03-20')
+
+Go
+
