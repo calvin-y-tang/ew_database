@@ -23,7 +23,8 @@ AS
 		cs.Name AS StatusDescription,
 		d.FirstName + ' ' + d.LastName AS 'Doctor Name',
 		l.Location AS 'Exam Location',		
-		CONVERT(date, cb.DateBatchPrepared) AS SentDate
+		CONVERT(date, cb.DateBatchPrepared) AS SentDate,
+		c.Employer
 	FROM tblconfirmationlist AS cl
 	LEFT OUTER JOIN tblconfirmationresult AS cr ON cr.confirmationresultid = cl.confirmationresultid
 	INNER JOIN tblcaseappt AS ca ON ca.caseapptid = cl.CaseApptID
