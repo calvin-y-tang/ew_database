@@ -7,5 +7,6 @@
 	[DateEdited] DATETIME NULL,
 	[UserIDEdited] VARCHAR(15) NULL,
     [PreferenceValue]    BIT          NOT NULL,
+	[UserType]			VARCHAR(2)	NULL,
 	CONSTRAINT [PK_tblNotifyPreference] PRIMARY KEY CLUSTERED ([NotifyPreferenceID] ASC)
 )
