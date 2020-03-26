@@ -71,3 +71,14 @@ VALUES ('EditFeeSchedOffice','Fee Schedule (Office) - Edit','2020-03-20')
 
 Go
 
+
+-- Issue 11547 - Add Secondary Email for V2 Client Portal Notifications
+  UPDATE NP SET NP.UserType = WU.UserType 
+  from tblNotifyPreference AS NP INNER JOIN tblWebUser AS WU ON NP.WebUserID = WU.WebUserID
+
+  INSERT INTO tblNotifyPreference (WebUserID, NotifyEventID, NotifyMethodID, PreferenceValue, UserType)
+  SELECT WebUserID, NotifyEventID, NotifyMethodID, PreferenceValue, 'SD' FROM tblNotifyPreference
+  WHERE UserType = 'CL'
+
+GO
+
