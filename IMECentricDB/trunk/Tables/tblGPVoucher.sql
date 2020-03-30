@@ -6,4 +6,7 @@
     [VoHeaderID] INT      NOT NULL,
     CONSTRAINT [PK_tblGPVoucher] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
+GO
 
+CREATE NONCLUSTERED INDEX [IX_tblGPVoucher_VoHeaderID] ON [dbo].[tblGPVoucher] (VoHeaderID)
+GO

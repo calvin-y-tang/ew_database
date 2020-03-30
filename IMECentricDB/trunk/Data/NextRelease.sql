@@ -82,3 +82,11 @@ Go
 
 GO
 
+
+
+
+
+insert into tbluserfunction (functioncode, functiondesc)
+ select 'EditApptCancelReason', 'Appointment - Edit Cancel Reason'
+ where not exists (select functionCode from tblUserFunction where functionCode='EditApptCancelReason')
+GO
