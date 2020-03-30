@@ -73,12 +73,58 @@ Go
 
 
 -- Issue 11547 - Add Secondary Email for V2 Client Portal Notifications
-  UPDATE NP SET NP.UserType = WU.UserType 
-  from tblNotifyPreference AS NP INNER JOIN tblWebUser AS WU ON NP.WebUserID = WU.WebUserID
+INSERT INTO tblNotifyAudience
+(
+    NotifyEventID,
+    NotifyMethodID,
+    UserType,
+    ActionType,
+    DateAdded,
+    UserIDAdded,
+    DateEdited,
+    UserIDEdited,
+    DefaultPreferenceValue,
+    TableType
+)
+SELECT
+NotifyEventID,
+NotifyMethodID,
+'SD',
+ActionType,
+DateAdded,
+UserIDAdded,
+DateEdited,
+UserIDEdited,
+0,
+TableType
+FROM tblNotifyAudience
+WHERE UserType='CL'
+GO
 
-  INSERT INTO tblNotifyPreference (WebUserID, NotifyEventID, NotifyMethodID, PreferenceValue, UserType)
-  SELECT WebUserID, NotifyEventID, NotifyMethodID, PreferenceValue, 'SD' FROM tblNotifyPreference
-  WHERE UserType = 'CL'
+UPDATE NP SET NP.UserType = WU.UserType 
+from tblNotifyPreference AS NP INNER JOIN tblWebUser AS WU ON NP.WebUserID = WU.WebUserID
+
+INSERT INTO tblNotifyPreference
+  (
+      WebUserID,
+      NotifyEventID,
+      NotifyMethodID,
+      DateEdited,
+      UserIDEdited,
+      PreferenceValue,
+      UserType
+  )
+  SELECT DISTINCT
+  NP.WebUserID,
+  NA.NotifyEventID,
+  NA.NotifyMethodID,
+  GETDATE(),
+  'System',
+  NA.DefaultPreferenceValue,
+  NA.UserType
+  FROM tblNotifyPreference AS NP
+  INNER JOIN tblNotifyAudience AS NA ON NA.UserType = 'SD'
+  WHERE NP.UserType = 'CL'
 
 GO
 
