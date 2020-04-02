@@ -47,6 +47,16 @@ BEGIN
 			INNER JOIN tblCase ON tblCase.CaseNbr = inserted.CaseNbr 
 	 WHERE tblCaseDocuments.SeqNo = inserted.SeqNo
 
+	 -- create corresponding entry in tblOCRDocument 
+      INSERT INTO tblOCRDocument 
+          (CaseDocID, OCRStatusID, DateAdded, UserIDAdded, Source)
+      SELECT NewDoc.SeqNo, 
+             10, -- New
+             GETDATE(), 
+             NewDoc.UserIDAdded, 
+             'InsertTrigger'
+        FROM inserted AS NewDoc
+
 END
 
 GO
