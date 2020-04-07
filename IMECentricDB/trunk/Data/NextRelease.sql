@@ -118,3 +118,6 @@ UPDATE tblSLARuleDetail SET TATCalculationMethodID=21 WHERE TATCalculationMethod
 UPDATE tblTATCalculationMethodEvent SET TATCalculationMethodID=21 WHERE TATCalculationMethodID=7
 GO
 
+
+UPDATE tblCase SET OrigApptMadeDate=(SELECT TOP 1 DateAdded FROM tblCaseAppt WHERE tblCaseAppt.CaseNbr=tblCase.CaseNbr ORDER BY CaseApptID DESC)
+GO
