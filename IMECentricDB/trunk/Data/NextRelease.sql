@@ -25,6 +25,7 @@ UserIDEdited,
 TableType
 FROM tblNotifyAudience
 WHERE UserType='CL'
+and NotifyMethodID=2
 GO
 
 UPDATE NP SET NP.UserType = WU.UserType 
