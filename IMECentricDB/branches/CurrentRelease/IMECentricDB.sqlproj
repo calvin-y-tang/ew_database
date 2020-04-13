@@ -1119,6 +1119,7 @@
     <Build Include="Tables\tblElectronicMessage.sql" />
     <Build Include="Stored Procedures\sp_VacancyReport.sql" />
     <Build Include="Views\vwDoctorBlockTimeScheduleSummary.sql" />
+    <Build Include="Tables\tblOCRDocument.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
