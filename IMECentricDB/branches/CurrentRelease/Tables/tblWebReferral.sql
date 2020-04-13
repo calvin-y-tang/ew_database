@@ -24,6 +24,12 @@
 (
 	[WebReferralID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY], 
-    [DoctorBlockTimeSlotID] INT NULL
+    [DoctorBlockTimeSlotID] INT NULL, 
+    [DPSDueDate] DATETIME NULL, 
+    [SortModelID] INT NULL, 
+    [DPSDeliverWebPortal] BIT NULL, 
+    [DPSDeliverEmailLink] BIT NULL, 
+    [DPSDeliverOther] BIT NULL, 
+    [DPSSpecialInstructions] VARCHAR(500) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO

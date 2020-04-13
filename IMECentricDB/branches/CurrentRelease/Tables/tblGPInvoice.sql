@@ -8,3 +8,8 @@
     CONSTRAINT [PK_tblGPInvoice] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
+
+GO
+
+CREATE NONCLUSTERED INDEX [IX_tblGPInvoice_InvHeaderID] ON [dbo].[tblGPInvoice] (InvHeaderID)
+GO
