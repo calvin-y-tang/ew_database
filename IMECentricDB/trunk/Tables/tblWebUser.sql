@@ -32,6 +32,7 @@ CREATE TABLE [dbo].[tblWebUser] (
     [ShowOpenBlockTimeAppts] BIT		   CONSTRAINT [DF_tblWebUser_ShowOpenBlockTimeAppts] DEFAULT ((0)) NOT NULL, 
 	[AllowScheduling]        BIT           CONSTRAINT [DF_tblWebUser_AllowScheduling] DEFAULT ((0)) NULL,
 	[InputSourceID]			 INT		   NOT NULL,
+	[AllowMedIndex]          BIT           CONSTRAINT [DF_tblWebUser_AllowMedIndex] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_tblWebUser] PRIMARY KEY CLUSTERED ([WebUserID] ASC) WITH (FILLFACTOR = 90)
 );
 
