@@ -88,3 +88,10 @@ GO
 
 UPDATE tblCase SET OrigApptMadeDate=(SELECT TOP 1 DateAdded FROM tblCaseAppt WHERE tblCaseAppt.CaseNbr=tblCase.CaseNbr ORDER BY CaseApptID DESC)
 GO
+
+
+
+-- Issue 11595 Data Patch for Making Portal Fields Reqd/Optional by Web Users
+  UPDATE tblCompany Set AllowMedIndex = 0, AllowScheduling = 0
+  UPDATE tblWebUser Set AllowMedIndex = 0
+  UPDATE tblEWParentCompany Set AllowMedIndex = 0, AllowScheduling = 0
