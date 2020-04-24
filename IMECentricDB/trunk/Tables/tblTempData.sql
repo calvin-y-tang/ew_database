@@ -17,6 +17,7 @@
     [TextValue2]     VARCHAR (MAX) NULL,
     [TextValue3]     VARCHAR (MAX) NULL,
     [TextValue4]     VARCHAR (MAX) NULL,
+	[MoneyValue1]    MONEY         NULL,
     CONSTRAINT [PK_tblTempData] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
