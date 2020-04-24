@@ -122,3 +122,12 @@ GO
 -- Issue 11604 - new form for new queue Prepay Tracker
   INSERT INTO tblQueueForms VALUES ('frmStatusAutoPrepay', ' Form for Auto Prepay')
   GO
+
+
+-- Issue 11603 - Data Patch new tblDoctor.Prepayment column
+-- if prepaid = true then prepayment = manual (2)
+-- if prepaid = false then prepayment = none (1)
+UPDATE tblDoctor 
+   SET prepayment = IIF(prepaid = 1, 2, 1)
+GO
+
