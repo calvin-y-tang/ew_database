@@ -71,22 +71,35 @@ BEGIN
      --   we want to do an insert in the OCRDoc table when a CaseDoc row 
 	 --		has its CaseDocTypeID modified and it does not already exist 
 	 --		in the OCRDoc table.
-     IF NOT EXISTS (SELECT CaseDocID 
-                      FROM tblOCRDocument 
-                                INNER JOIN inserted AS ins ON ins.SeqNo = CaseDocID)
+
+	 SET NOCOUNT OFF
+
+     DECLARE @iCount AS INT
+     DECLARE @caseDocID AS INT 
+     DECLARE @newCaseDocID AS INT
+     DECLARE @origCaseDocID AS INT 
+     DECLARE @userID AS VARCHAR(20)
+
+     DECLARE curCaseDoc CURSOR FOR
+          SELECT ins.SeqNo, ins.CaseDocTypeID AS NewCaseDocID, del.CaseDocTypeID as OrigCaseDocID, ins.UserIDAdded
+            FROM inserted AS ins
+                      INNER JOIN deleted AS del ON del.SeqNo = ins.SeqNo
+     OPEN curCaseDoc
+     FETCH NEXT FROM curCaseDoc INTO @caseDocID, @newCaseDocID, @origCaseDocID, @userID
+     WHILE @@FETCH_STATUS = 0
      BEGIN
-		 INSERT INTO tblOCRDocument 
-			  (CaseDocID, OCRStatusID, DateAdded, UserIDAdded, Source)
-		  SELECT ins.SeqNo, 
-				 10, -- New
-				 GETDATE(), 
-				 ins.UserIDAdded, 
-				 'UpdateTrigger'
-			FROM inserted AS ins
-					  INNER JOIN deleted AS del ON del.SeqNo = ins.SeqNo 
-		   WHERE ins.CaseDocTypeID <> del.CaseDocTypeID 
-			 AND ins.SeqNo NOT IN (SELECT CaseDocID FROM tblOCRDocument WHERE CaseDocID = ins.SeqNo)
-	END
+          IF @newCaseDocID <> @origCaseDocID
+          BEGIN
+               IF (SELECT COUNT(*) FROM tblOCRDocument WHERE CaseDocID = @caseDocID) = 0
+               BEGIN
+                    INSERT INTO tblOCRDocument (CaseDocID, OCRStatusID, DateAdded, UserIDAdded, Source)
+                                VALUES(@caseDocID, 10, GETDATE(), @userID, 'UpdateTrigger')
+               END
+          END
+          FETCH NEXT FROM curCaseDoc INTO @caseDocID, @newCaseDocID, @origCaseDocID, @userID
+     END
+     CLOSE curCaseDoc
+     DEALLOCATE curCaseDoc
 END
 
 GO
