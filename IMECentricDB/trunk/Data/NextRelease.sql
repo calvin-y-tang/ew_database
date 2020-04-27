@@ -108,7 +108,7 @@ GO
        AwaitingReptApproval, DoNotAllowManualChange
  )
   SELECT
-       35, 'Active Prepayments', Type, 'AutoPP', DisplayOrder, 'frmStatusAutoPrepay', Getdate(), 
+       35, 'Rapid Pay Requests for Doctors', Type, 'AutoPP', DisplayOrder, 'frmStatusAutoPrepay', Getdate(), 
        Status, SubType, FunctionCode, WebStatusCode, NotifyScheduler, NotifyQARep,
        NotifyIMECompany, WebGUID, AllowToAwaitingScheduling, IsConfirmation, WebStatusCodeV2, AwaitingReptDictation,
        AwaitingReptApproval, DoNotAllowManualChange 
