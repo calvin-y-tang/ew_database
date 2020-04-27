@@ -93,6 +93,8 @@ AS
 
 			DCR.Amount,
 			DCR.CheckRequestID,
+			DCR.Comment,
+			DCR.BatchNbr,
 
             CT.Description AS CaseTypeDesc ,
 			CaseQ.StatusDesc AS CaseStatusDesc ,
@@ -119,7 +121,6 @@ AS
             LEFT OUTER JOIN tblExaminee AS EE ON C.chartNbr = EE.chartNbr
             LEFT OUTER JOIN tblApptStatus ON AT.ApptStatusID = tblApptStatus.ApptStatusID
 			INNER JOIN tblDoctorCheckRequest AS DCR ON AT.SeqNO = DCR.AcctingTransID
-    WHERE   ( AT.StatusCode <> 20 ) AND ISNULL(AT.ApptDate, C.ApptDate) >= GETDATE()
-
+    WHERE   ( AT.StatusCode <> 20 ) AND ISNULL(AT.ApptDate, C.ApptDate) >= GETDATE() AND DCR.BatchNbr = -1
 
 
