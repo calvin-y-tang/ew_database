@@ -5,8 +5,11 @@
     [DueDateMethod]   INT          NULL,
     [DueDateHours]    INT          NULL,
     [CancelPriority]  BIT          NULL,
+    [OCRPriority]     INT          NULL,
     CONSTRAINT [PK_tblDPSPriority] PRIMARY KEY CLUSTERED ([DPSPriorityID] ASC)
 );
+
+
 
 
 
