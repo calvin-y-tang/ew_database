@@ -14,8 +14,12 @@
     [BatchNbr]       INT          NULL,
     [ExportDate]     DATETIME     NULL,
     [GPCheckReqNbr]  INT          NULL,
+    [DateEdited]     DATETIME     NULL,
+    [UserIDEdited]   VARCHAR (15) NULL,
     CONSTRAINT [PK_tblDoctorCheckRequest] PRIMARY KEY CLUSTERED ([CheckRequestID] ASC)
 );
+
+
 
 
 

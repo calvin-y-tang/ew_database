@@ -1,4 +1,5 @@
-﻿CREATE VIEW vwCaseSummary
+﻿
+CREATE VIEW [dbo].[vwCaseSummary]
 AS
     SELECT 
             tblCase.CaseNbr ,
@@ -49,7 +50,7 @@ AS
             tblCase.QARep ,
             tblCase.SchedulerCode ,
             DATEDIFF(day, tblCase.LastStatuschg, GETDATE()) AS IQ ,
-			DATEDIFF(day, tblCase.DateEdited, GETDATE()) AS DSE,
+            DATEDIFF(day, tblCase.DateEdited, GETDATE()) AS DSE ,
             tblCase.LastStatusChg ,
             tblCase.PanelNbr ,
             tblCase.CommitDate ,
@@ -90,7 +91,8 @@ AS
 			tblCase.AwaitingScheduling,
 			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID, 
 			tblCase.Jurisdiction, 
-			CaseType.ShortDesc AS CaseTypeDesc 
+			CaseType.ShortDesc AS CaseTypeDesc,
+			tblServices.EWServiceTypeID
     FROM    tblCase
             INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
             INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
