@@ -89,7 +89,8 @@ AS
 			tblCase.AwaitingScheduling,
 			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID, 
 			tblCase.Jurisdiction, 
-			CaseType.ShortDesc AS CaseTypeDesc 
+			CaseType.ShortDesc AS CaseTypeDesc,
+			tblServices.EWServiceTypeID
     FROM    tblCase
             INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
             INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
