@@ -108,6 +108,7 @@
     [EWParentDocID]				   INT			NULL, 
     [DaysheetEmailAddr]            VARCHAR (150) NULL,
     [DaysheetFaxNbr]               VARCHAR (15) NULL,
+	[Prepayment]                   INT          NULL,
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 
