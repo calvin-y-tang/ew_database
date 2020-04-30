@@ -18,7 +18,7 @@ GO
        AwaitingReptApproval, DoNotAllowManualChange
  )
   SELECT
-       35, 'Rapid Pay Requests for Doctors', Type, 'AutoPP', DisplayOrder, 'frmStatusAutoPrepay', Getdate(), 
+       35, 'Rapid Pay Requests for Doctors', Type, 'AutoPP', 250, 'frmStatusAutoPrepay', Getdate(), 
        Status, SubType, FunctionCode, WebStatusCode, NotifyScheduler, NotifyQARep,
        NotifyIMECompany, WebGUID, AllowToAwaitingScheduling, IsConfirmation, WebStatusCodeV2, AwaitingReptDictation,
        AwaitingReptApproval, DoNotAllowManualChange 
@@ -30,7 +30,7 @@ GO
 
 
 -- Issue 11604 - new form for new queue Prepay Tracker
-  INSERT INTO tblQueueForms VALUES ('frmStatusAutoPrepay', ' Form for Auto Prepay')
+  INSERT INTO tblQueueForms VALUES ('frmStatusAutoPrepay', 'Form for Auto Prepay')
   GO
 
 
