@@ -88,3 +88,37 @@ GO
 
 UPDATE tblCase SET OrigApptMadeDate=(SELECT TOP 1 DateAdded FROM tblCaseAppt WHERE tblCaseAppt.CaseNbr=tblCase.CaseNbr ORDER BY CaseApptID DESC)
 GO
+
+
+
+-- Issue 11595 Data Patch for Making Portal Fields Reqd/Optional by Web Users
+  UPDATE tblCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
+  UPDATE tblWebUser Set AllowMedIndex = 0
+  UPDATE tblEWParentCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
+
+
+-- Issue 11604 - new queue for Prepay Tracker
+SET IDENTITY_INSERT tblQueues ON
+GO
+
+  INSERT INTO tblQueues (
+       StatusCode, StatusDesc, Type, ShortDesc, DisplayOrder, FormToOpen, DateAdded, 
+       Status, SubType, FunctionCode, WebStatusCode, NotifyScheduler, NotifyQARep,
+       NotifyIMECompany, WebGUID, AllowToAwaitingScheduling, IsConfirmation, WebStatusCodeV2, AwaitingReptDictation,
+       AwaitingReptApproval, DoNotAllowManualChange
+ )
+  SELECT
+       35, 'Active Prepayments', Type, 'AutoPP', DisplayOrder, 'frmStatusAutoPrepay', Getdate(), 
+       Status, SubType, FunctionCode, WebStatusCode, NotifyScheduler, NotifyQARep,
+       NotifyIMECompany, WebGUID, AllowToAwaitingScheduling, IsConfirmation, WebStatusCodeV2, AwaitingReptDictation,
+       AwaitingReptApproval, DoNotAllowManualChange 
+  FROM tblQueues WHERE StatusCode = 30
+
+GO
+SET IDENTITY_INSERT tblQueues OFF
+GO
+
+
+-- Issue 11604 - new form for new queue Prepay Tracker
+  INSERT INTO tblQueueForms VALUES ('frmStatusAutoPrepay', ' Form for Auto Prepay')
+  GO
