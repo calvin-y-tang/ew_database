@@ -1,6 +1,3 @@
-
-
-
 -- Issue 11595 Data Patch for Making Portal Fields Reqd/Optional by Web Users
   UPDATE tblCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
   UPDATE tblWebUser Set AllowMedIndex = 0
@@ -41,3 +38,9 @@ UPDATE tblDoctor
    SET prepayment = IIF(prepaid = 1, 2, 1)
 GO
 
+
+UPDATE U SET U.OCRPriority=P.RowNbr
+FROM tblDPSPriority AS U
+INNER JOIN
+(SELECT ROW_NUMBER() OVER (ORDER BY DueDateHours) AS RowNbr, DPSPriorityID, Name FROM tblDPSPriority) AS P ON P.DPSPriorityID = U.DPSPriorityID
+GO
