@@ -44,3 +44,11 @@ FROM tblDPSPriority AS U
 INNER JOIN
 (SELECT ROW_NUMBER() OVER (ORDER BY DueDateHours) AS RowNbr, DPSPriorityID, Name FROM tblDPSPriority) AS P ON P.DPSPriorityID = U.DPSPriorityID
 GO
+
+
+INSERT INTO tblUserFunction
+( FunctionCode, FunctionDesc )
+VALUES
+( 'ProcessRapidPay', 'Accounting - Rapid Pay')
+GO
+
