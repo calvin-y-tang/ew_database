@@ -52,3 +52,7 @@ VALUES
 ( 'ProcessRapidPay', 'Accounting - Rapid Pay')
 GO
 
+
+-- Issue 11566 - patch data for OCR priority
+UPDATE tblOCRDocument SET Priority = NULL WHERE  Priority = 0 AND OCRStatusID IN (10, 20, 30, 35)
+
