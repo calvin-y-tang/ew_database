@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW [dbo].[vwCaseSummary]
+﻿CREATE VIEW vwCaseSummary
 AS
     SELECT 
             tblCase.CaseNbr ,
