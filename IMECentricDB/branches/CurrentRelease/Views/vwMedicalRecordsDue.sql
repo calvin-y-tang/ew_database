@@ -31,6 +31,7 @@ SELECT C.CaseNbr,
 	   C.LastStatusChg,
        DATEDIFF(DAY, GETDATE(), C.DrMedRecsDueDate) AS DaysTillDue,
        DATEDIFF(day, C.LastStatuschg, GETDATE()) AS IQ ,
+       DATEDIFF(DAY, c.DateEdited, GETDATE()) AS DSE ,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
 	   Q.StatusDesc,
 	   Q.FunctionCode

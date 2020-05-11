@@ -60,6 +60,36 @@ BEGIN
 END
 
 GO
+
+CREATE TRIGGER [dbo].[tblCaseDocuments_AfterUpdate_TRG]
+	ON [dbo].[tblCaseDocuments] 
+AFTER UPDATE
+AS 
+BEGIN
+     -- DEV NOTE: the inserted table has "new" row (or updated data) while
+     --   the deleted table has the "old" row (or original data). For now, 
+     --   we want to do an insert in the OCRDoc table when a CaseDoc row 
+	 --		has its CaseDocTypeID modified and it does not already exist 
+	 --		in the OCRDoc table.
+     IF NOT EXISTS (SELECT CaseDocID 
+                      FROM tblOCRDocument 
+                                INNER JOIN inserted AS ins ON ins.SeqNo = CaseDocID)
+     BEGIN
+		 INSERT INTO tblOCRDocument 
+			  (CaseDocID, OCRStatusID, DateAdded, UserIDAdded, Source)
+		  SELECT ins.SeqNo, 
+				 10, -- New
+				 GETDATE(), 
+				 ins.UserIDAdded, 
+				 'UpdateTrigger'
+			FROM inserted AS ins
+					  INNER JOIN deleted AS del ON del.SeqNo = ins.SeqNo 
+		   WHERE ins.CaseDocTypeID <> del.CaseDocTypeID 
+			 AND ins.SeqNo NOT IN (SELECT CaseDocID FROM tblOCRDocument WHERE CaseDocID = ins.SeqNo)
+	END
+END
+
+GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseDocuments_CaseNbr]
     ON [dbo].[tblCaseDocuments]([CaseNbr] ASC);
 

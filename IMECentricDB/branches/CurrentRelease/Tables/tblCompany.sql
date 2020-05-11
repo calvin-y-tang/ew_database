@@ -72,6 +72,9 @@
 	[DICOMHandlingPreference]    INT              NULL,
     [DateInactivated]            DATETIME         NULL,
     [UserInactivated]            VARCHAR (20)     NULL,
+	[AllowMedIndex]              BIT              NULL,
+	[ShowFinancialInfo]          BIT              NULL,
+	[AllowScheduling]            BIT              NULL,
     CONSTRAINT [PK_tblCompany] PRIMARY KEY CLUSTERED ([CompanyCode] ASC) WITH (FILLFACTOR = 90)
 );
 

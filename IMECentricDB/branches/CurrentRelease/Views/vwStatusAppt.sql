@@ -42,6 +42,7 @@ AS
             tblCase.SchedulerCode ,
             tblCase.QARep ,
             DATEDIFF(DAY, tblCase.LastStatusChg, GETDATE()) AS IQ ,
+            DATEDIFF(DAY, tblCase.DateEdited, GETDATE()) AS DSE ,
             tblCase.LastStatusChg ,
             CASE WHEN tblCase.PanelNbr IS NULL
                  THEN tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName,
