@@ -14,8 +14,11 @@
     [OriginalFileDateUtc] DATETIME      NULL,
     [OriginalFileSizeKB]  BIGINT        NULL,
     [OCRServer]           VARCHAR (15)  NULL,
-    [Priority]            INT           CONSTRAINT [DF_tblOCRDocument_Priority] DEFAULT ((0)) NULL,
+    [Priority]            INT           NULL,
     [Source]              VARCHAR (20)  NULL,
+    [DateReadyOCR]		  DATETIME      NULL, 
+    [DateSent]            DATETIME      NULL, 
+    [DateReceived]        DATETIME      NULL, 
     CONSTRAINT [PK_tblOCRDocument] PRIMARY KEY CLUSTERED ([OCRDocumentID] ASC)
 );
 
