@@ -1,6 +1,8 @@
 -- Issue 11595 Data Patch for Making Portal Fields Reqd/Optional by Web Users
   UPDATE tblCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
   UPDATE tblWebUser Set AllowMedIndex = 0
+  UPDATE tblWebUser SET AutoPublishNewCases = 0 WHERE UserType = 'DA'
+  UPDATE tblWebUser SET ShowOpenBlockTimeAppts = 0 WHERE UserType NOT IN ('DR')
   UPDATE tblEWParentCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
 
 
