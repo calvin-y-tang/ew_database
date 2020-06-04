@@ -15,3 +15,8 @@ VALUES('PC', 2, 2, 1, 130, GetDate(), 'Admin', NULL, NULL, NULL, 1, 1, NULL, 'cb
 
 GO
 
+
+-- Issue 11654 - add new token for claim number extension only
+INSERT INTO [dbo].[tblMessageToken] ([Name], [Description]) VALUES ('@ClaimNbrExt@ ', '')
+
+
