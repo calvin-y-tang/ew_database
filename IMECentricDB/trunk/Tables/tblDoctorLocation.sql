@@ -10,7 +10,7 @@
     [Correspondence] VARCHAR (1)  NULL,
     [PublishOnWeb]   BIT          CONSTRAINT [DF_tblDoctorLocation_PublishOnWeb] DEFAULT ((0)) NULL,
     [OldKey]         INT          NULL,
-	[Booking]        INT          NULL,
+	[MaxSlotOnWeb]   INT          NULL,
     CONSTRAINT [PK_tblDoctorLocation] PRIMARY KEY CLUSTERED ([LocationCode] ASC, [DoctorCode] ASC)
 );
 
