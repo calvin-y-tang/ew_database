@@ -18,5 +18,14 @@ GO
 
 -- Issue 11654 - add new token for claim number extension only
 INSERT INTO [dbo].[tblMessageToken] ([Name], [Description]) VALUES ('@ClaimNbrExt@ ', '')
+GO
+
+
+UPDATE U SET U.DisplayOrder=SM.RowNbr
+FROM tblDPSSortModel AS U
+INNER JOIN
+(SELECT SortModelID, Description, ROW_NUMBER() OVER (ORDER BY Description) AS RowNbr
+FROM tblDPSSortModel) AS SM ON U.SortModelID = SM.SortModelID
+GO
 
 
