@@ -28,4 +28,35 @@ INNER JOIN
 FROM tblDPSSortModel) AS SM ON U.SortModelID = SM.SortModelID
 GO
 
+-- Issue 11137 - data patch fot acctquotefee to link in prodcode
+     UPDATE AQF
+        SET AQF.QuoteFeeConfigID = QFC.QuoteFeeConfigID
+     FROM tblAcctQuoteFee AS AQF
+               INNER JOIN tblQuoteFeeConfig as QFC ON QFC.FeeValueName = AQF.FeeValueName
+GO 
+
+-- Issue 11137 - data patch for Quote Fees Product Codes
+UPDATE tblQuoteFeeConfig SET ProdCode = 1427 WHERE QuoteFeeConfigID = 5
+GO 
+UPDATE tblQuoteFeeConfig SET ProdCode = 474 WHERE QuoteFeeConfigID = 1
+GO 
+UPDATE tblQuoteFeeConfig SET ProdCode = 722 WHERE QuoteFeeConfigID = 6
+GO 
+UPDATE tblQuoteFeeConfig SET ProdCode = 90 WHERE QuoteFeeConfigID = 7
+GO 
+UPDATE tblQuoteFeeConfig SET ProdCode = 1911 WHERE QuoteFeeConfigID = 2
+GO 
+UPDATE tblQuoteFeeConfig SET ProdCode = 396 WHERE QuoteFeeConfigID = 3
+GO 
+UPDATE tblQuoteFeeConfig SET ProdCode = 1702 WHERE QuoteFeeConfigID = 4
+GO 
+
+-- Issue 11137 - patch tblAcctDetail to set existing row to FeeCodeSource where FeeCode is present
+UPDATE tblAcctDetail SET FeeCodeSource = 1 WHERE FeeCode IS NOT NULL AND FeeCodeSource IS NULL
+GO 
+
+-- Issue 11137 - patch tblAcctHeaderto set existing rows to FeeCodeSource where FeeCode is present
+UPDATE tblAcctHeader SET FeeCodeSource = 1 WHERE FeeCode IS NOT NULL AND FeeCodeSource IS NULL
+GO 
+
 
