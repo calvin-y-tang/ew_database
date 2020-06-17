@@ -21,6 +21,8 @@ AS
             tblCaseTrans.LineItemType ,
             tblCaseTrans.Location ,
             tblCaseTrans.UnitOfMeasureCode,
-			tblCaseTrans.CreateInvoiceVoucher
+			tblCaseTrans.CreateInvoiceVoucher,
+			tblCaseTrans.FeeCode, 
+			tblCaseTrans.FeeCodeSource
     FROM    tblCaseTrans
     WHERE   HeaderID IS NULL
