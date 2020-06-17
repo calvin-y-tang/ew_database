@@ -29,6 +29,7 @@ CREATE TABLE [dbo].[tblAcctDetail] (
     [DetailID]               INT             IDENTITY (1, 1) NOT NULL,
     [HeaderID]               INT             NULL,
     [FeeCode]                INT             NULL,
+	[FeeCodeSource]          INT             NULL,
     CONSTRAINT [PK_tblAcctDetail] PRIMARY KEY CLUSTERED ([DetailID] ASC)
 );
 
