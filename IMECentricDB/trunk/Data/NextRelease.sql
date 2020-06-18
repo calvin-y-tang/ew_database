@@ -55,8 +55,14 @@ GO
 UPDATE tblAcctDetail SET FeeCodeSource = 1 WHERE FeeCode IS NOT NULL AND FeeCodeSource IS NULL
 GO 
 
--- Issue 11137 - patch tblAcctHeaderto set existing rows to FeeCodeSource where FeeCode is present
+-- Issue 11137 - patch tblAcctHeader to set existing rows to FeeCodeSource where FeeCode is present
 UPDATE tblAcctHeader SET FeeCodeSource = 1 WHERE FeeCode IS NOT NULL AND FeeCodeSource IS NULL
 GO 
 
-
+-- Issue 11137 - patch tblAcctQuoteFee to set value for QuoteFeeConfigID
+UPDATE AQ
+   SET AQ.QuoteFeeConfigID = QF.QuoteFeeConfigID
+FROM tblAcctQuoteFee AS AQ
+          INNER JOIN tblQuoteFeeConfig AS QF ON QF.FeeValueName = AQ.FeeValueName
+WHERE AQ.QuoteFeeConfigID IS NULL
+GO
