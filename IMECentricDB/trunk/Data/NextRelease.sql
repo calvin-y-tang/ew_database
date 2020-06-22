@@ -66,3 +66,9 @@ FROM tblAcctQuoteFee AS AQ
           INNER JOIN tblQuoteFeeConfig AS QF ON QF.FeeValueName = AQ.FeeValueName
 WHERE AQ.QuoteFeeConfigID IS NULL
 GO
+
+DELETE FROM [tblCaseApptRequestStatus]
+INSERT INTO [dbo].[tblCaseApptRequestStatus] ([CaseApptRequestStatusID], [Name]) VALUES (0, 'Pending Acceptance')
+INSERT INTO [dbo].[tblCaseApptRequestStatus] ([CaseApptRequestStatusID], [Name]) VALUES (1, 'Accepted')
+INSERT INTO [dbo].[tblCaseApptRequestStatus] ([CaseApptRequestStatusID], [Name]) VALUES (2, 'Rejected')
+GO
