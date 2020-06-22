@@ -6,8 +6,11 @@ SELECT
  CASE WHEN ISNULL(C.ClaimNbrExt,'') <> '' THEN C.ClaimNbr + '.' + C.ClaimNbrExt ELSE C.ClaimNbr END AS ClaimNumber,
  C.AddlClaimNbrs,
  Q.StatusDesc AS CaseStatus,
+ S.Description AS Service,
+ C.DateOfInjury AS DateOfLoss,
 
  ISNULL(EE.LastName,'') + ', ' + ISNULL(EE.FirstName,'') AS ClaimantName,
+ EE.County,
  ISNULL(CL.LastName,'') + ', ' + ISNULL(CL.FirstName,'') AS RepName,
  C.DoctorSpecialty,
 
