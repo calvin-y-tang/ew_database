@@ -1120,6 +1120,8 @@
     <Build Include="Stored Procedures\sp_VacancyReport.sql" />
     <Build Include="Views\vwDoctorBlockTimeScheduleSummary.sql" />
     <Build Include="Tables\tblOCRDocument.sql" />
+    <Build Include="Tables\tblCaseRecRetrieval.sql" />
+    <Build Include="Tables\tblCaseRecRetrievalDocument.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
