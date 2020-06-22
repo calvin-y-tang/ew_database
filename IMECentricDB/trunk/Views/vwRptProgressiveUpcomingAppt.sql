@@ -8,6 +8,7 @@ SELECT
  Q.StatusDesc AS CaseStatus,
 
  ISNULL(EE.LastName,'') + ', ' + ISNULL(EE.FirstName,'') AS ClaimantName,
+ ISNULL(CL.LastName,'') + ', ' + ISNULL(CL.FirstName,'') AS RepName,
  C.DoctorSpecialty,
 
  C.DateReceived,
