@@ -10,12 +10,12 @@ SELECT
  C.DateOfInjury AS DateOfLoss,
 
  ISNULL(EE.LastName,'') + ', ' + ISNULL(EE.FirstName,'') AS ClaimantName,
- EE.County,
  ISNULL(CL.LastName,'') + ', ' + ISNULL(CL.FirstName,'') AS RepName,
  C.DoctorSpecialty,
 
  C.DateReceived,
  C.ApptDate,
+ L.County AS ExamLocationCounty,
  (SELECT TOP 1 Description FROM tblCaseDocuments AS CD WHERE (CD.CaseNbr=C.CaseNbr OR (CD.MasterCaseNbr=C.MasterCaseNbr AND CD.SharedDoc=1)) AND Description LIKE '% EFF[ .]%' ORDER BY SeqNo DESC) AS LastEff,
 
  CL.CompanyCode,
@@ -27,6 +27,7 @@ SELECT
  INNER JOIN tblQueues AS Q ON C.Status = Q.StatusCode
  INNER JOIN tblServices AS S ON S.ServiceCode = C.ServiceCode
  INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
+ LEFT OUTER JOIN tblLocation AS L ON C.DoctorLocation = L.LocationCode
  WHERE 1=1
  AND S.EWServiceTypeID=1
 GO
