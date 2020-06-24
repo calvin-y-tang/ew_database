@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spFeeSched_SyncTableData_Detail]
      @iHdrSetupID INTEGER,
-	@iHeaderID INTEGER 
+	 @iHeaderID INTEGER 
 AS
 BEGIN
 	
@@ -15,6 +15,13 @@ BEGIN
 	DECLARE @sDoctor VARCHAR(MAX)
 	DECLARE @sExamLocation VARCHAR(MAX)
 	
+	-- DEV NOTE: this process will completely rebuild all items in FSDetailCondition for the Detail items
+	--		that are present; therefore, before we do anything we are going dump all Condition items
+	--		that are attached to the detail items for the Header we are processing.
+	DELETE 
+	  FROM tblFSDetailCondition 
+	 WHERE FSDetailID IN (SELECT FSDetailID FROM tblFSDetail WHERE FSHeaderID = @iHeaderID)
+
 	-- get a list of Detail Items that make up this Header and process them
 	DECLARE curDetailSetup CURSOR FOR
 		SELECT FSDetailSetupID, FSDetailID, 
@@ -29,7 +36,7 @@ BEGIN
 		IF @iDetailID IS NULL
 		BEGIN 
 			INSERT INTO tblFSDetail(FSHeaderID, ProcessOrder, FeeUnit, FeeAmt, NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, DateAdded, UserIDAdded)
-				SELECT @iHeaderID, ProcessOrder, FeeUnit, FeeAmt, NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, DateAdded, UserIDAdded
+				SELECT @iHeaderID, ProcessOrder, FeeUnit, ISNULL(FeeAmt, 0), NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, DateAdded, UserIDAdded
 				  FROM tblFSDetailSetup
 				 WHERE FSDetailSetupID = @iDtlSetupID
 			SET @iDetailID = @@IDENTITY 
@@ -52,7 +59,7 @@ BEGIN
 			UPDATE calc
 			   SET ProcessOrder = ui.ProcessOrder, 
 				  FeeUnit = ui.FeeUnit,
-				  FeeAmt = ui.FeeAmt, 
+				  FeeAmt = ISNULL(ui.FeeAmt, 0), 
 				  NSFeeAmt1 = ui.NSFeeAmt1,
 				  NSFeeAmt2 = ui.NSFeeAmt2, 
 				  NSFeeAmt3 = ui.NSFeeAmt3, 
@@ -64,62 +71,77 @@ BEGIN
 					INNER JOIN tblFSDetailSetup AS ui ON ui.FSDetailID = calc.FSDetailID
 			 WHERE calc.FSDetailID = @iDetailID
 		END 
-		
-		-- Process Detail Condition selections
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblEWBusLine', 
-				@sBusLine
-		
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblEWServiceType', 
-				@sSvcType
-		
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblServices', 
-				@sService
-		
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblProduct', 
-				@sProduct
-		
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblEWFeeZone', 
-				@sFeeZone
-		
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblSpecialty', 
-				@sSpecialty
 
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblDoctor', 
-				@sDoctor
-		
-		EXEC spFeeSched_SyncTableData_DetailCondition
-				@iDetailID, 
-				'tblLocation', 
-				@sExamLocation
-		
-		
 		-- process next row
 		FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
 	END
 	CLOSE curDetailSetup
 	DEALLOCATE curDetailSetup
 	
-	-- cleanup DetailCondition table for Detail items no longer part of setup table
-	DELETE tblFSDetailCondition
-	  FROM tblFSDetailCondition
-			INNER JOIN tblFSDetail ON tblFSDetail.FSDetailID = tblFSDetailCondition.FSDetailID 
-			LEFT OUTER JOIN tblFSDetailSetup ON tblFSDetailSetup.FSDetailID = tblFSDetail.FSDetailID
-	 WHERE FSHeaderID = @iHeaderID 
-	   AND tblFSDetailSetup.FSDetailSetupID IS NULL
+	-- Process Detail Condition selections
+	INSERT INTO tblFSDetailCondition(FSDetailID, ConditionTable, ConditionKey)
+		SELECT  FSDetailID, 'tblEWBusLine', BL.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(BusLine, ',') AS BL
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND BL.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblEWServiceType', ST.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(ServiceType, ',') AS ST
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND ST.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblServices', S.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Service, ',') AS S
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND S.value <> -1
+
+		UNION 
+		
+		SELECT  FSDetailID, 'tblProduct', P.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Product, ',') AS P
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND P.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblEWFeeZone', FZ.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(FeeZone, ',') AS FZ
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND FZ.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblSpecialty', SP.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Specialty, ',') AS SP
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND SP.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblDoctor', D.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Doctor, ',') AS D
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND D.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblLocation', L.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(ExamLocation, ',') AS L
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND L.value <> -1
+	
 	-- cleanup Detail table for items no longer part of setup table
 	DELETE tblFSDetail
 	  FROM tblfsDetail 
@@ -128,6 +150,5 @@ BEGIN
 	   AND tblFSDetailSetup.FSDetailID IS NULL
 	
 	RETURN
-
 
 END

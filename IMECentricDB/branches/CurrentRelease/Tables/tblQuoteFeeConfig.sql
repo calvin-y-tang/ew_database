@@ -8,5 +8,6 @@
     [UserIDAdded]      VARCHAR (15)   NOT NULL,
     [DateEdited]       DATETIME       NULL,
     [UserIDEdited]     VARCHAR (15)   NULL,
+	[ProdCode]         INT            NULL, 
 	CONSTRAINT [PK_tblQuoteFeeConfig] PRIMARY KEY CLUSTERED ([QuoteFeeConfigID] ASC)
 )

@@ -22,6 +22,8 @@ CREATE TABLE [dbo].[tblCaseTrans] (
     [UnitOfMeasureCode]    VARCHAR (5)     NULL,
     [CreateInvoiceVoucher] BIT             CONSTRAINT [DF_tblCaseTrans_CreateInvoiceVoucher] DEFAULT ((0)) NULL,
     [HeaderID]             INT             NULL,
+    [FeeCode]              INT             NULL,
+	[FeeCodeSource]        INT             NULL,
     CONSTRAINT [PK_TblCaseTrans] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 
