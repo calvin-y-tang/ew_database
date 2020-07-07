@@ -1,3 +1,9 @@
+/*
+This is one way to move data back from tmp table.
+It seems quicker for table with few indexes,
+and also possible to generate this script by reading table definition from sys tables.
+*/
+
 --Delete CaseDoc before 2020
 --SELECT TOP 1 CaseNbr FROM tblCase WHERE DateAdded>='2020-01-01' ORDER BY CaseNbr
 

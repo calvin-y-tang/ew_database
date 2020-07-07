@@ -1,18 +1,4 @@
-/*
-BACKUP DATABASE DrSchBefore
- TO  DISK = N'G:\Backup\DrSchBefore_Copy.bak'
- WITH NOFORMAT, INIT,
- COPY_ONLY, SKIP, NOREWIND, NOUNLOAD,  STATS = 25
-GO
-
-BACKUP DATABASE DrSchAfter
- TO  DISK = N'G:\Backup\DrSchAfter_Copy.bak'
- WITH NOFORMAT, INIT,
- COPY_ONLY, SKIP, NOREWIND, NOUNLOAD,  STATS = 25
-GO
-*/
-
-
+--Temp and Log data not needed in test databases
 TRUNCATE TABLE tblAuditLog
 TRUNCATE TABLE tblLogUsage
 TRUNCATE TABLE tblUserActivity
@@ -21,12 +7,19 @@ TRUNCATE TABLE tblTempData
 GO
 
 
-
+/*
+--Delete bad tblCase data
 DELETE FROM tblCase WHERE ClientCode IS NULL
+*/
+
+/*
+--Optional to remove orphan case child data
 DELETE FROM tblCaseHistory WHERE CaseNbr NOT in (SELECT CaseNbr FROM tblCase)
 DELETE FROM tblCaseDocuments WHERE CaseNbr NOT in (SELECT CaseNbr FROM tblCase)
 GO
+*/
 
+--Optional to remove orphan case child data
 DELETE FROM tblCaseAppt WHERE CaseNbr NOT in (SELECT CaseNbr FROM tblCase)
 DELETE FROM tblCaseApptPanel WHERE CaseApptID NOT in (SELECT CaseApptID FROM tblCaseAppt)
 DELETE FROM tblCasePanel WHERE PanelNbr NOT in (SELECT PanelNbr FROM tblCase)

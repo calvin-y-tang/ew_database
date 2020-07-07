@@ -1,6 +1,15 @@
+/*
+This is another way to move data from tmp table, but it involves more manual fixes when schema is changed on the table.
+*/
+
+/*
+This script can be skipped if Data Cleansing will run, since that will truncate tblCaseHistory anyway
+*/
+
 --Delete CH before 2020
 --SELECT TOP 1 ID FROM tblCaseHistory WHERE EventDate>='2020-01-01' ORDER BY ID
-SELECT * INTO tmpCaseHistory FROM tblCaseHistory WHERE ID>=22424183
+--SELECT * INTO tmpCaseHistory FROM tblCaseHistory WHERE ID>=22424183
+SELECT * INTO tmpCaseHistory FROM tblCaseHistory WHERE ID=0
 DROP TABLE tblCaseHistory
 EXEC sp_rename 'tmpCaseHistory', 'tblCaseHistory'
 GO
