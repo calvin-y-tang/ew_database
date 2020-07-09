@@ -10,6 +10,7 @@
     [RetrievalStart] DATETIME NULL, 
     [RetrievalEnd] DATETIME NULL, 
     [CaseDocID] INT NULL, 
-    [RetrievalStatusID] INT CONSTRAINT [DF_tblCaseRecRetrievalDocument_RetrievalStatusID] DEFAULT (0) NOT NULL
+    [RetrievalStatusID] INT CONSTRAINT [DF_tblCaseRecRetrievalDocument_RetrievalStatusID] DEFAULT (0) NOT NULL, 
+    [Description] VARCHAR(100) NULL
 
 )
