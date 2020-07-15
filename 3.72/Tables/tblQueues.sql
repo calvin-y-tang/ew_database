@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[tblQueues] (
+    [StatusCode]                INT              IDENTITY (50, 1) NOT NULL,
+    [StatusDesc]                VARCHAR (50)     NULL,
+    [Type]                      VARCHAR (10)     NULL,
+    [ShortDesc]                 VARCHAR (10)     NULL,
+    [DisplayOrder]              INT              NULL,
+    [FormToOpen]                VARCHAR (30)     NULL,
+    [DateAdded]                 DATETIME         NULL,
+    [DateEdited]                DATETIME         NULL,
+    [UserIDAdded]               VARCHAR (20)     NULL,
+    [UserIDEdited]              VARCHAR (20)     NULL,
+    [Status]                    VARCHAR (10)     CONSTRAINT [DF_tblQueues_status] DEFAULT ('Active') NULL,
+    [SubType]                   VARCHAR (10)     CONSTRAINT [DF_tblQueues_subtype] DEFAULT ('Case') NULL,
+    [FunctionCode]              VARCHAR (15)     NULL,
+    [WebStatusCode]             INT              NULL,
+    [NotifyScheduler]           BIT              NULL,
+    [NotifyQARep]               BIT              NULL,
+    [NotifyIMECompany]          BIT              NULL,
+    [WebGUID]                   UNIQUEIDENTIFIER NULL,
+    [AllowToAwaitingScheduling] BIT              NULL,
+    [IsConfirmation]            BIT              CONSTRAINT [DF_tblQueues_IsConfirmation] DEFAULT (0) NOT NULL,
+	[WebStatusCodeV2]             INT              NULL,
+    [AwaitingReptDictation] BIT NULL, 
+    [AwaitingReptApproval] BIT NULL, 
+	[DoNotAllowManualChange]   BIT               NULL,
+    CONSTRAINT [PK_tblQueues] PRIMARY KEY CLUSTERED ([StatusCode] ASC)
+);
+
