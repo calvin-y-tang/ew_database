@@ -1122,6 +1122,7 @@
     <Build Include="Tables\tblOCRDocument.sql" />
     <Build Include="Tables\tblCaseRecRetrieval.sql" />
     <Build Include="Tables\tblCaseRecRetrievalDocument.sql" />
+    <Build Include="Tables\tblDPSResultFileConfig.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
@@ -1143,5 +1144,8 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseVariableLiteralValue>CustomRepository</DatabaseVariableLiteralValue>
     </ArtifactReference>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="IMECentricDB.refactorlog" />
   </ItemGroup>
 </Project>
