@@ -35,8 +35,8 @@ BEGIN
 		-- update or insert item? 
 		IF @iDetailID IS NULL
 		BEGIN 
-			INSERT INTO tblFSDetail(FSHeaderID, ProcessOrder, FeeUnit, FeeAmt, NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, DateAdded, UserIDAdded)
-				SELECT @iHeaderID, ProcessOrder, FeeUnit, ISNULL(FeeAmt, 0), NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, DateAdded, UserIDAdded
+			INSERT INTO tblFSDetail(FSHeaderID, ProcessOrder, FeeUnit, FeeAmt, NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, InchesIncluded, DateAdded, UserIDAdded)
+				SELECT @iHeaderID, ProcessOrder, FeeUnit, ISNULL(FeeAmt, 0), NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, InchesIncluded, DateAdded, UserIDAdded
 				  FROM tblFSDetailSetup
 				 WHERE FSDetailSetupID = @iDtlSetupID
 			SET @iDetailID = @@IDENTITY 
@@ -65,6 +65,7 @@ BEGIN
 				  NSFeeAmt3 = ui.NSFeeAmt3, 
 				  LateCancelAmt = ui.LateCancelAmt, 
 				  CancelDays = ui.CancelDays, 
+				  InchesIncluded = ui.InchesIncluded, 
 				  DateEdited = ui.DateEdited, 
 				  UserIDEdited = ui.UserIDEdited
 			  FROM tblFSDetail AS calc

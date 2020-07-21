@@ -22,6 +22,7 @@
     [Specialty]       VARCHAR (MAX) NULL,
 	[Doctor]		  VARCHAR (MAX) NULL,
 	[ExamLocation]    VARCHAR (MAX) NULL,
+	[InchesIncluded]  DECIMAL (18, 2) CONSTRAINT [DF_tblFSDetailSetup_InchesIncluded] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_tblFSDetailSetup] PRIMARY KEY CLUSTERED ([FSDetailSetupID] ASC)
 );
 
