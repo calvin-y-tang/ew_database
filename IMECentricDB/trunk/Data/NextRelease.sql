@@ -1,8 +1,13 @@
 
--- Issue 11718 - Add business rule for Hartford quotes - BCC email
+-- Issue 11718 - Add business rule and condition for Hartford quotes - BCC email
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES(112, 'HartfordQuoteBCC', 'Case', 'BCC Hartford for all Invoice Quotes generated thru generate docs form', 1, 1201, 0, 'BccEmailAddress', NULL, NULL, NULL, NULL, 0)
+
 INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-VALUES('PC', 30, 2, 1, 109, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 'HartfordQuotes@ExamWorks.com', NULL, NULL)
+VALUES('PC', 30, 2, 1, 112, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 'HartfordQuotes@ExamWorks.com', NULL, NULL, NULL, NULL)
 GO
+
+
 
 -- Issue 11702 - populate new DPSImportConfig table with configuration details
 INSERT INTO tblDPSResultFileConfig (EWServiceTypeID, FileIndex, Description, CombinedFileName, CombineFileSeqNo)
