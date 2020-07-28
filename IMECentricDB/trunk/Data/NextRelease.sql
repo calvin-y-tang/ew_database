@@ -33,3 +33,17 @@ INSERT INTO tblUserFunction
 VALUES ( 'RecRetrieval', 'Record Retrieval' )
 GO
 
+DELETE FROM tblQuoteStatus
+GO
+SET IDENTITY_INSERT [dbo].[tblQuoteStatus] ON
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (1, 'VO', 'Awaiting Quote', 0, '2018-08-05 22:57:31.333', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (2, 'VO', 'Quote Received', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (3, 'VO', 'Cancelled', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (4, 'IN', 'Awaiting Approval', 0, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 2)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (5, 'IN', 'Approved', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 2)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (6, 'IN', 'No Approval Needed', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (7, 'IN', 'Cancelled', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, NULL)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (8, 'IN', 'Awaiting Distribution', 0, '2020-07-09 17:36:32.083', 'Admin', NULL, NULL, 1)
+SET IDENTITY_INSERT [dbo].[tblQuoteStatus] OFF
+
+GO
