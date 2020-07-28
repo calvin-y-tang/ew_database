@@ -11,6 +11,9 @@
     [CaseDocID]              INT           NULL,
     [RetrievalStatusID]      INT           CONSTRAINT [DF_tblCaseRecRetrievalDocument_RetrievalStatusID] DEFAULT ((0)) NOT NULL,
     [Description]            VARCHAR (200) NULL,
+	[LastResponse]           VARCHAR (200) NULL,
+	[Facility]				 VARCHAR (200) NULL,
+	[RecordType]			 VARCHAR (50)  NULL,
     PRIMARY KEY CLUSTERED ([RecRetrievalDocumentID] ASC)
 );
 
