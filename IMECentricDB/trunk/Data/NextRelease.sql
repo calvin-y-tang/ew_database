@@ -24,3 +24,12 @@ VALUES(-1, 1, 'Sorted Document 1', 'MedIndex - Final', 1),
 	  (11, 1, 'MedIndex - Final', '', 0)
 GO
 
+
+INSERT INTO tblUserFunction
+(
+    FunctionCode,
+    FunctionDesc
+)
+VALUES ( 'RecRetrieval', 'Record Retrieval' )
+GO
+
