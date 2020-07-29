@@ -14,6 +14,7 @@
 	[LastResponse]           VARCHAR (200) NULL,
 	[Facility]				 VARCHAR (200) NULL,
 	[RecordType]			 VARCHAR (50)  NULL,
+    [FileVersion] VARCHAR(25) NULL, 
     PRIMARY KEY CLUSTERED ([RecRetrievalDocumentID] ASC)
 );
 
