@@ -14,5 +14,6 @@
     [UserIDAdded]   VARCHAR(30) NOT NULL,
     [DateEdited]    DATETIME    NULL,
     [UserIDEdited]  VARCHAR(30) NULL,
+	[InchesIncluded]  DECIMAL (18, 2) CONSTRAINT [DF_tblFSDetail_InchesIncluded] DEFAULT ((0)) NULL,
 	CONSTRAINT [PK_tblFSDetail] PRIMARY KEY CLUSTERED ([FSDetailID] ASC)
 )

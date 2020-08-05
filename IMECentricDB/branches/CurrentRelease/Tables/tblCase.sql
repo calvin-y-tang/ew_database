@@ -264,6 +264,7 @@
 	[TATQADraftToQAComplete]		 INT 			  NULL,
 	[DoctorBlockTimeSlotID]          INT              NULL,
     [OrigApptMadeDate]				 DATETIME		  NULL, 
+	[RecordRetrievalMethod]         INT               CONSTRAINT [DF_tblCase_RecordRetrievalMethod] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])

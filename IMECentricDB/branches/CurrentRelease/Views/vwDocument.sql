@@ -93,6 +93,12 @@ AS
 
 			(Case ISNULL(tblcase.EmployerID , 0)
               WHEN 0
+              THEN NULL 
+			  ELSE tblEmployerAddress.Address2 
+			  END) AS EmployerAddr2,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
               THEN tblExaminee.EmployerCity  
 			  ELSE tblEmployerAddress.City  
 			  END) AS EmployerCity,  
