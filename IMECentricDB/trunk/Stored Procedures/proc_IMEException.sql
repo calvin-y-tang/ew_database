@@ -53,6 +53,7 @@ BEGIN
 		ED.AllCaseType, 
 		ED.AllService, 
 		ED.AllSLARuleDetail,
+		ED.BillingEntity,
 		ISNULL(C.CaseNbr, -1) AS CaseNbr ,
 		CL.ClientCode ,
 		CO.ParentCompanyID ,
@@ -84,26 +85,26 @@ BEGIN
 				( ED.Entity = 'CS'
 	                OR ( ED.Entity = 'PC'
 	                    AND ( CO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                            AND (ISNULL(ED.BillingEntity, 0) = 1 OR ISNULL(ED.BillingEntity, 0) = 3)
 	                        
 	                    OR  BCO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        AND (ISNULL(ED.BillingEntity, 0) = 2 OR ISNULL(ED.BillingEntity, 0) = 3)
 	                        )
 	                    )
 	                OR ( ED.Entity = 'CO'
 	                    AND ( CL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                            AND (ISNULL(ED.BillingEntity, 0) = 1 OR ISNULL(ED.BillingEntity, 0) = 3)
 	                        
 	                    OR  BCL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        AND (ISNULL(ED.BillingEntity, 0) = 2 OR ISNULL(ED.BillingEntity, 0) = 3)
 	                        )
 	                    )
 	                OR ( ED.Entity = 'CL'
 	                    AND ( CL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                            AND (ISNULL(ED.BillingEntity, 0) = 1 OR ISNULL(ED.BillingEntity, 0) = 3)
 	                       
 	                    OR  BCL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
-	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        AND (ISNULL(ED.BillingEntity, 0) = 2 OR ISNULL(ED.BillingEntity, 0) = 3)
 	                        )
 	                    )
 	                OR ( ED.Entity = 'DR'
