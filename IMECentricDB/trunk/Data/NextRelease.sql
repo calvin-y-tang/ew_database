@@ -23,7 +23,13 @@ GO
 -- Issue 11737 - Allstats VAT Changes - add business rule to change company name on correspondence
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
 VALUES(113, 'AllstatePolicyCompanyName', 'Case', 'Use the Company Name from tblCustomerData based on Allstate referral PolicyCompanyCode', 1, 1201, 0, NULL, NULL, NULL, NULL, NULL, 0)
-
+GO
 INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
 VALUES('PC', 4, 2, 1, 113, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
 
+-- Issue 11742 - create some new Exception Triggers
+INSERT INTO tblExceptionList (ExceptionID, Description, Status, DateAdded, UserIDAdded, Type)
+VALUES(32, 'Create Invoice Quote', 'Active', GetDate(), 'Admin', 'Case'),
+      (33, 'Create Voucher Quote', 'Active', GetDate(), 'Admin', 'Case')
+GO
