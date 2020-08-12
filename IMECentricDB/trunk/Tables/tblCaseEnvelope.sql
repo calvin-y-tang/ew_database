@@ -13,6 +13,7 @@
     [DateAcknowledged]   DATETIME      NULL, 
     [UserIDAcknowledged] VARCHAR(15)   NULL,
 	[ImportFileName]     VARCHAR(255)  NULL,
+	[PageCount]          INT           NULL, 
     CONSTRAINT [PK_tblCaseEnvelope] PRIMARY KEY CLUSTERED ([CaseEnvelopeID] ASC)
 )
 
