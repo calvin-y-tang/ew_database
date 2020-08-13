@@ -1432,6 +1432,41 @@ IF @@TRANCOUNT = 0
 
 GO
 
+--Added late by Gary
+PRINT N'Creating [dbo].[tblWebFileUpload]...';
+
+
+GO
+CREATE TABLE [dbo].[tblWebFileUpload](
+	[WebFileUploadID] [INT] IDENTITY(1,1) NOT NULL,
+	[WebUserID] [INT] NULL,
+	[CaseDocTypeID] [INT] NULL,
+	[FileName] [VARCHAR](255) NULL,
+	[Description] [VARCHAR](1000) NULL,
+	[DateUploaded] [SMALLDATETIME] NULL,
+ CONSTRAINT [PK_tblWebFileUpload] PRIMARY KEY CLUSTERED 
+(
+	[WebFileUploadID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+
 IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
 GO
 IF @@TRANCOUNT>0 BEGIN
