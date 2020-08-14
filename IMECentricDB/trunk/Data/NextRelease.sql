@@ -33,3 +33,14 @@ INSERT INTO tblExceptionList (ExceptionID, Description, Status, DateAdded, UserI
 VALUES(32, 'Create Invoice Quote', 'Active', GetDate(), 'Admin', 'Case'),
       (33, 'Create Voucher Quote', 'Active', GetDate(), 'Admin', 'Case')
 GO
+
+
+-- Issue 11499 - Insert values in tblCodes to be used in specialty matching dictinoary in Allstate ERP EWReferralHub
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'emergencyMedicine;Emergency Medicine')
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'internalMedicine;Internal Medicine')
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'neurologySurgery;Neurological Surgery')
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'neurologyPsychology;Neuropsychology')
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'neurologyRadiology;Neuroradiology')
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'orthopedicSurgery;Orthopaedic Surgery')
+  INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('Allstate ERP', 'Specialty', 'pmr;Pain Medicine - Physical Medicine & Rehabilitation')
+
