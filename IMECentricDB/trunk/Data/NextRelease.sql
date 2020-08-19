@@ -34,4 +34,10 @@ VALUES(32, 'Create Invoice Quote', 'Active', GetDate(), 'Admin', 'Case'),
       (33, 'Create Voucher Quote', 'Active', GetDate(), 'Admin', 'Case')
 GO
 
+-- Issue 11716 - Add DPS Sort models for offices - all sort models for all offices CaseType = 10
+  INSERT INTO tblOfficeDPSSortModel (Officecode, CaseType, SortModelID, UserIDAdded, DateAdded) 
+  SELECT O.OfficeCode, 10, D.SortModelID, 'Admin', GetDate()
+  FROM tblDPSSortModel AS D
+  LEFT JOIN tblOffice AS O On 1=1
+
 
