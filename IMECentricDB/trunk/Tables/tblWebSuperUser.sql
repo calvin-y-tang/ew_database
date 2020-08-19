@@ -4,6 +4,7 @@
 	[EWBusLineID] [int] NULL,
 	[ParentCompanyID] [int] NULL,
 	[CompanyCode] [int] NULL,
+	[SuperUserType] [char](2) NULL,
 	[DateAdded] [smalldatetime] NULL,
 	[UserIDAdded] [varchar](255) NULL,
 	[DateEdited] [smalldatetime] NULL,
