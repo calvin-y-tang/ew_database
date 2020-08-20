@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[tblOfficeDPSSortModel] (
     [DPSOfficeSortModelID] INT          IDENTITY (1, 1) NOT NULL,
     [Officecode]           INT          NOT NULL,
-    [CaseType]             INT          NOT NULL,
+    [CaseType]             INT          NULL,
     [SortModelID]          INT          NOT NULL,
     [UserIDAdded]          VARCHAR (15) NULL,
     [DateAdded]            DATETIME     NULL,
