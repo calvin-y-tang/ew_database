@@ -7,6 +7,6 @@
     [DateAdded]            DATETIME     NULL,
     [UserIDEdited]         VARCHAR (15) NULL,
     [DateEdited]           DATETIME     NULL,
-    CONSTRAINT [PK_tblOfficeDPSSortModel] PRIMARY KEY CLUSTERED ([DPSOfficeSortModelID] ASC)
+	CONSTRAINT [PK_tblOfficeDPSSortModel] PRIMARY KEY CLUSTERED ([SortModelID] ASC, [OfficeCode] ASC)
 );
 
