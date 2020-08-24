@@ -7,6 +7,7 @@
     [DateAdded]            DATETIME     NULL,
     [UserIDEdited]         VARCHAR (15) NULL,
     [DateEdited]           DATETIME     NULL,
-    CONSTRAINT [PK_tblDoctorDPSSortModel] PRIMARY KEY CLUSTERED ([DPSDoctorSortModelID] ASC)
+    CONSTRAINT [PK_tblDoctorDPSSortModel] PRIMARY KEY CLUSTERED ([DoctorCode] ASC, [CaseType] ASC)
+
 );
 
