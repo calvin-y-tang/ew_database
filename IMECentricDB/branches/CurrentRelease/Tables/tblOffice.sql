@@ -41,7 +41,7 @@
     [FSVoucherSetting]          INT              NULL,
     [DaySheetDocument]          VARCHAR (15)     NULL,
     [OCRSystemID]               INT              NULL,
-	[RecordRetrievalMethod]     VARCHAR (15)     NULL,
+	[RecordRetrievalDocument]   VARCHAR (15)     NULL,
     CONSTRAINT [PK_tblOffice] PRIMARY KEY CLUSTERED ([OfficeCode] ASC) WITH (FILLFACTOR = 90)
 );
 

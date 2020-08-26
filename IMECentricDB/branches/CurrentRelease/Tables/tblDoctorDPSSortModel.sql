@@ -10,3 +10,7 @@
     CONSTRAINT [PK_tblDoctorDPSSortModel] PRIMARY KEY CLUSTERED ([DPSDoctorSortModelID] ASC)
 );
 
+
+GO
+
+CREATE UNIQUE INDEX [IX_U_tblDoctorDPSSortModel_DoctorCodeCaseType] ON [dbo].[tblDoctorDPSSortModel] ([DoctorCode], [CaseType])
