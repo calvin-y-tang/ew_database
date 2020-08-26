@@ -74,3 +74,70 @@
 
 
 -- ======================================================================================================
+
+
+
+
+DELETE FROM tblConfiguration WHERE ConfigurationType LIKE 'ABI%'
+INSERT INTO tblConfiguration
+(
+    ConfigurationID,
+    Name,
+    Active,
+    ConfigurationType,
+    DateEdited,
+    UserIDEdited,
+    Param
+)
+VALUES
+(   3,         -- ConfigurationID - int
+    'ABI Referral API',        -- Name - varchar(30)
+    1,      -- Active - bit
+    'ABIReferralAPI',        -- ConfigurationType - varchar(15)
+    GETDATE(), -- DateEdited - datetime
+    'CalvinT',        -- UserIDEdited - varchar(15)
+    'SubscriptionKey=9c1ee6e3f68e4da8841b16596321cf3c;URL=https://abi-dev.azure-api.net/referral'         -- Param - varchar(max)
+    )
+INSERT INTO tblConfiguration
+(
+    ConfigurationID,
+    Name,
+    Active,
+    ConfigurationType,
+    DateEdited,
+    UserIDEdited,
+    Param
+)
+VALUES
+(   4,         -- ConfigurationID - int
+    'ABI Document API',        -- Name - varchar(30)
+    1,      -- Active - bit
+    'ABIDocumentAPI',        -- ConfigurationType - varchar(15)
+    GETDATE(), -- DateEdited - datetime
+    'CalvinT',        -- UserIDEdited - varchar(15)
+    'SubscriptionKey=bb34733564934d109c9b337e9d96ce4f;URL=https://abi-dev.azure-api.net/document'         -- Param - varchar(max)
+    )
+INSERT INTO tblConfiguration
+(
+    ConfigurationID,
+    Name,
+    Active,
+    ConfigurationType,
+    DateEdited,
+    UserIDEdited,
+    Param
+)
+VALUES
+(   5,         -- ConfigurationID - int
+    'ABI User Info',        -- Name - varchar(30)
+    1,      -- Active - bit
+    'ABIUserInfo',        -- ConfigurationType - varchar(15)
+    GETDATE(), -- DateEdited - datetime
+    'CalvinT',        -- UserIDEdited - varchar(15)
+    'PartnerID=ABIDSS;PartnerAccountID=CORPORATE'         -- Param - varchar(max)
+    )
+
+
+
+
+

@@ -1121,6 +1121,10 @@
     <Build Include="Views\vwDoctorBlockTimeScheduleSummary.sql" />
     <Build Include="Tables\tblWebFileUpload.sql" />
     <Build Include="Tables\tblWebSuperUser.sql" />
+    <Build Include="Tables\tblCaseRecRetrieval.sql" />
+    <Build Include="Tables\tblCaseRecRetrievalDocument.sql" />
+    <Build Include="Tables\tblDPSResultFileConfig.sql" />
+    <Build Include="Tables\tblOCRDocument.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
