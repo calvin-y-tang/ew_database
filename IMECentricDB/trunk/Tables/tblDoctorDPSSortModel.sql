@@ -7,7 +7,10 @@
     [DateAdded]            DATETIME     NULL,
     [UserIDEdited]         VARCHAR (15) NULL,
     [DateEdited]           DATETIME     NULL,
-    CONSTRAINT [PK_tblDoctorDPSSortModel] PRIMARY KEY CLUSTERED ([DoctorCode] ASC, [CaseType] ASC)
-
+    CONSTRAINT [PK_tblDoctorDPSSortModel] PRIMARY KEY CLUSTERED ([DPSDoctorSortModelID] ASC)
 );
 
+
+GO
+
+CREATE UNIQUE INDEX [IX_U_tblDoctorDPSSortModel_DoctorCodeCaseType] ON [dbo].[tblDoctorDPSSortModel] ([DoctorCode], [CaseType])
