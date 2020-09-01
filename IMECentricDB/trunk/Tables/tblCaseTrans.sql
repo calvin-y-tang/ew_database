@@ -24,6 +24,8 @@ CREATE TABLE [dbo].[tblCaseTrans] (
     [HeaderID]             INT             NULL,
     [FeeCode]              INT             NULL,
 	[FeeCodeSource]        INT             NULL,
+    [FSDetailID]           INT             NULL,
+	[FeeScheduleName]      VARCHAR(100)    NULL,
     CONSTRAINT [PK_TblCaseTrans] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 
