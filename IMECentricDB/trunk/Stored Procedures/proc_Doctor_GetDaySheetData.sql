@@ -37,19 +37,10 @@ begin
 	--Primary dataset using tblDoctorSchedule the old way into temp table
 	----------------------------------------------------------------------------------------
 	select 
-		x.*, 
-		isnull(cpc.OfficeCode, c.OfficeCode) as OfficeCode, 
-		isnull(cpc.CaseNbr, c.CaseNbr) as CaseNbr, 
-		isnull(cpc.ExtCaseNbr, c.ExtCaseNbr) as ExtCaseNbr
-
-		into #daysheetdata		
-	from (
-
-		select 
 
 			tblCaseAppt.CaseApptID,		
-			tblCaseAppt.DoctorCode,
-			tblCaseAppt.LocationCode,		
+			tblDoctor.DoctorCode,
+			tblLocation.LocationCode,		
 			tblLocation.Location,
 			(rtrim(tblLocation.Addr1 + ' ' + isnull(tblLocation.Addr2, '')) +  ', ' + tblLocation.City + ' ' + tblLocation.State + ' ' + tblLocation.Zip) as DoctorAddress,				
 			CAST(CAST(tblCaseAppt.ApptTime AS DATE) AS DATETIME) as ApptDate,
@@ -70,10 +61,17 @@ begin
 			tblLocation.ExtName as LocationExtName,
 			tblLocationOffice.OfficeCode as LocationOffice, 
 			tblDoctorOffice.OfficeCode as DoctorOffice,
-			tblCaseAppt.CaseNbr as caCaseNbr
+			tblCaseAppt.CaseNbr as caCaseNbr,
+			tblCase.OfficeCode, 
+			tblCase.CaseNbr, 
+			tblCase.ExtCaseNbr
+
+		into #daysheetdata		
 
 		FROM tblCaseAppt with (nolock)
-			inner join tblDoctor with (nolock) on tblCaseAppt.DoctorCode = tblDoctor.DoctorCode	
+		INNER JOIN tblCase WITH (NOLOCK) ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
+		LEFT OUTER JOIN tblCaseApptPanel WITH (NOLOCK) ON tblCaseApptPanel.CaseApptID = tblCaseAppt.CaseApptID
+			inner join tblDoctor with (nolock) on ISNULL(tblCaseApptPanel.DoctorCode, tblCaseAppt.DoctorCode) = tblDoctor.DoctorCode	
 			inner join tblLocation with (nolock) on tblCaseAppt.LocationCode = tblLocation.LocationCode 
 			inner join tblDoctorOffice with (nolock) on tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
 			inner join tblLocationOffice with (nolock) on tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode	
@@ -81,16 +79,9 @@ begin
 		WHERE 					
 			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime <= @toDate)			
 			and tblCaseAppt.ApptStatusID = 10	
-			and tblCaseAppt.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblCaseAppt.DoctorCode))
-			and tblCaseAppt.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblCaseAppt.LocationCode))
+			and tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
+			and tblLocation.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblLocation.LocationCode))
 			
-	) x
-		--left outer join tblCasePanel cp with (nolock) 
-		left outer join tblCaseApptPanel cp with (nolock)
-			join tblCase cpc with (nolock) on cp.CaseApptID = cpc.CaseApptID
-			on cp.CaseApptID = x.CaseApptID and cpc.CaseNbr = x.caCaseNbr
-
-		left outer join tblCase c with (nolock) on c.CaseApptID = x.CaseApptID and c.CaseNbr = x.caCaseNbr
 	;
 
 	----------------------------------------------------------------------------------------
