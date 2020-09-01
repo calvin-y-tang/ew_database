@@ -30,22 +30,36 @@ begin
 		set @userid = '';
 	end
 
-	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
+	if object_id('tempdb..#appts') is not null drop table #appts;   
 
+	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
 
 	----------------------------------------------------------------------------------------
 	--Primary dataset using tblDoctorSchedule the old way into temp table
 	----------------------------------------------------------------------------------------
 	select 
-
+			tblCaseAppt.CaseNbr,
 			tblCaseAppt.CaseApptID,		
-			tblDoctor.DoctorCode,
-			tblLocation.LocationCode,		
-			tblLocation.Location,
-			(rtrim(tblLocation.Addr1 + ' ' + isnull(tblLocation.Addr2, '')) +  ', ' + tblLocation.City + ' ' + tblLocation.State + ' ' + tblLocation.Zip) as DoctorAddress,				
+			ISNULL(tblCaseApptPanel.DoctorCode, tblCaseAppt.DoctorCode) AS DoctorCode,
+			tblCaseAppt.LocationCode,		
 			CAST(CAST(tblCaseAppt.ApptTime AS DATE) AS DATETIME) as ApptDate,
 			tblCaseAppt.ApptTime as ApptDateTime,
-			stuff(replace(right(convert(varchar(19), tblCaseAppt.ApptTime, 0), 7), ' ', '0'), 6, 0, ' ') as ApptTime,		
+			stuff(replace(right(convert(varchar(19), tblCaseAppt.ApptTime, 0), 7), ' ', '0'), 6, 0, ' ') as ApptTime		
+
+		into #appts		
+
+		FROM tblCaseAppt with (nolock)
+		LEFT OUTER JOIN tblCaseApptPanel WITH (NOLOCK) ON tblCaseApptPanel.CaseApptID = tblCaseAppt.CaseApptID
+
+		WHERE 					
+			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime < DATEADD(day,1,@toDate))			
+			and tblCaseAppt.ApptStatusID IN (10, 100,101,102)
+			
+	;
+
+	SELECT #appts.*,
+			tblLocation.Location,
+			(rtrim(tblLocation.Addr1 + ' ' + isnull(tblLocation.Addr2, '')) +  ', ' + tblLocation.City + ' ' + tblLocation.State + ' ' + tblLocation.Zip) as DoctorAddress,				
 			ISNULL(tblDoctor.FirstName, '') + ' ' + ISNULL(tblDoctor.LastName, '') + ', ' + ISNULL(tblDoctor.Credentials, '') as DoctorName,		
 			(case 
 				when ltrim(rtrim(isnull(tblDoctor.DaysheetEmailAddr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetEmailAddr)) 
@@ -61,27 +75,18 @@ begin
 			tblLocation.ExtName as LocationExtName,
 			tblLocationOffice.OfficeCode as LocationOffice, 
 			tblDoctorOffice.OfficeCode as DoctorOffice,
-			tblCaseAppt.CaseNbr as caCaseNbr,
 			tblCase.OfficeCode, 
-			tblCase.CaseNbr, 
 			tblCase.ExtCaseNbr
 
 		into #daysheetdata		
-
-		FROM tblCaseAppt with (nolock)
-		INNER JOIN tblCase WITH (NOLOCK) ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
-		LEFT OUTER JOIN tblCaseApptPanel WITH (NOLOCK) ON tblCaseApptPanel.CaseApptID = tblCaseAppt.CaseApptID
-			inner join tblDoctor with (nolock) on ISNULL(tblCaseApptPanel.DoctorCode, tblCaseAppt.DoctorCode) = tblDoctor.DoctorCode	
-			inner join tblLocation with (nolock) on tblCaseAppt.LocationCode = tblLocation.LocationCode 
+		FROM #appts
+		INNER JOIN tblCase WITH (NOLOCK) ON tblCase.CaseApptID = #appts.CaseApptID
+		inner join tblDoctor with (nolock) on #appts.DoctorCode = tblDoctor.DoctorCode	
+		inner join tblLocation with (nolock) on #appts.LocationCode = tblLocation.LocationCode 
 			inner join tblDoctorOffice with (nolock) on tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
 			inner join tblLocationOffice with (nolock) on tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode	
-
-		WHERE 					
-			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime < DATEADD(day,1,@toDate))			
-			and tblCaseAppt.ApptStatusID IN (10, 100,101,102)
-			and tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
+		WHERE tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
 			and tblLocation.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblLocation.LocationCode))
-			
 	;
 
 	----------------------------------------------------------------------------------------
@@ -159,6 +164,7 @@ begin
 	--Cleanup
 	----------------------------------------------------------------------------------------
 	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
+	if object_id('tempdb..#appts') is not null drop table #appts;   
 
 end
 GO
