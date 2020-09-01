@@ -77,7 +77,7 @@ begin
 			inner join tblLocationOffice with (nolock) on tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode	
 
 		WHERE 					
-			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime <= @toDate)			
+			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime < DATEADD(day,1,@toDate))			
 			and tblCaseAppt.ApptStatusID IN (10, 100,101,102)
 			and tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
 			and tblLocation.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblLocation.LocationCode))
