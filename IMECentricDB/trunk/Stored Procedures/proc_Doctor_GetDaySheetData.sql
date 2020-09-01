@@ -78,7 +78,7 @@ begin
 
 		WHERE 					
 			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime <= @toDate)			
-			and tblCaseAppt.ApptStatusID = 10	
+			and tblCaseAppt.ApptStatusID IN (10, 100,101,102)
 			and tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
 			and tblLocation.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblLocation.LocationCode))
 			
