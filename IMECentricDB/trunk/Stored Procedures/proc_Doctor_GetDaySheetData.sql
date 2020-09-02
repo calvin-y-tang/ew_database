@@ -7,7 +7,6 @@ CREATE proc [dbo].[proc_Doctor_GetDaySheetData]
 	@doctor int,
 	@location int,
 	@alloffices int,
-	@usenewdata int,
 	@userid varchar(15)
 as
 begin
@@ -18,11 +17,6 @@ begin
 	if @alloffices is null or @alloffices < 0
 	begin
 		set @alloffices = -1;
-	end
-
-	if @usenewdata is null or @usenewdata <= 0
-	begin
-		set @usenewdata = -1;
 	end
 
 	if @userid is null 
