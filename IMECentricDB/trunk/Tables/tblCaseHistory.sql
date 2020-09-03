@@ -36,7 +36,7 @@ CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_Type]
 
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_FollowUpDate]
-    ON [dbo].[tblCaseHistory]([FollowUpDate] ASC);
+    ON [dbo].[tblCaseHistory]([FollowUpDate] ASC) INCLUDE ([CaseNbr]);
 
 
 GO
