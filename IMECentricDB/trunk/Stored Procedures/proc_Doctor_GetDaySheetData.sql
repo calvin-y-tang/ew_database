@@ -1,5 +1,4 @@
-
-CREATE proc [dbo].[proc_Doctor_GetDaySheetData]
+﻿CREATE PROC proc_Doctor_GetDaySheetData
 	@fromDate datetime,
 	@toDate datetime,
 	@office int,
@@ -47,7 +46,16 @@ begin
 
 		WHERE 					
 			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime < DATEADD(day,1,@toDate))			
-			and tblCaseAppt.ApptStatusID IN (10, 100,101,102)
+			and tblCaseAppt.ApptStatusID IN (10,
+
+			--This is for backward compatiblity
+			--to include all the no show/show/unable to exam appts.
+			--Suppose they should not be needed on the day sheet report since that is for the doctor office
+			--to know the upcoming appts.
+			100,101,102
+			------------------------------------
+
+			)
 			
 	;
 
@@ -81,6 +89,12 @@ begin
 			inner join tblLocationOffice with (nolock) on tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode	
 		WHERE tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
 			and tblLocation.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblLocation.LocationCode))
+
+			--This is for backward compatiblity
+			--the old report include all the show/noShow appts, except those canceled case
+			--That was done by design, but simply due to the old data structure that it could not tell
+			AND tblCase.Status<>9
+			------------------------------------
 	;
 
 	----------------------------------------------------------------------------------------
