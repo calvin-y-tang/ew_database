@@ -189,7 +189,15 @@ SELECT
   CONVERT(MONEY, NULL) AS   FeeDetailOther,
   ISNULL(C.InsuringCompany, '') as InsuringCompany,
   ISNULL(C.Priority, 'Normal') AS CasePriority,
-  CONVERT(DATE, C.AwaitingScheduling) as DateAwaitingScheduling
+  CONVERT(DATE, C.AwaitingScheduling) as DateAwaitingScheduling,
+  CO.ParentCompanyID,
+  CONVERT(VARCHAR(32), dbo.fnGetParamValue(CD.[Param], 'ClaimUniqueId'))	AS ClaimUniqueId,
+  CONVERT(VARCHAR(32), dbo.fnGetParamValue(CD.[Param], 'CMSClaimNumber'))	AS CMSClaimNumber,
+  CONVERT(VARCHAR(8),  dbo.fnGetParamValue(CD.[Param], 'ShortVendorId'))	AS ShortVendorId,
+  CONVERT(VARCHAR(12), dbo.fnGetParamValue(CD.[Param], 'OfficeNumber'))		AS ProcessingOfficeId,
+  CONVERT(VARCHAR(32), dbo.fnGetParamValue(CD.[Param], 'ReferralUniqueId')) AS ReferralUniqueId,
+  CONVERT(VARCHAR(12), NULL) AS ClientCustomerId,
+  CONVERT(VARCHAR(128),NULL) AS ClientCustomerName
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
@@ -220,6 +228,7 @@ left outer join tblEWFeeZone as FZ on isnull(CA.EWFeeZoneID, C.EWFeeZoneID) = FZ
 left outer join tblLanguage as LANG on C.LanguageID = LANG.LanguageID
 left outer join tblEWInputSource as EWIS on C.InputSourceID = EWIS.InputSourceID
 left outer join tblLocation as EL on CA.LocationCode = EL.LocationCode
+left outer join tblCustomerData as CD on C.CaseNbr = CD.TableKey AND CD.TableType = 'tblCase' 
 left outer join
   (select
      RelatedInvHeaderID, 
