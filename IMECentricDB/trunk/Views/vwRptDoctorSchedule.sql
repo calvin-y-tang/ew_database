@@ -42,7 +42,7 @@ AS
             ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName,
 
 			ISNULL((STUFF((
-			SELECT CHAR(13)+ CAST(P.Description AS VARCHAR)
+			SELECT CHAR(13) + CHAR(10) + CAST(P.Description AS VARCHAR)
 			FROM tblProblem AS P
 			INNER JOIN tblCaseProblem AS CP ON CP.ProblemCode = P.ProblemCode
 			WHERE CP.CaseNbr=C.CaseNbr
