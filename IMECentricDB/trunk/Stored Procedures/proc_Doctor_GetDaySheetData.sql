@@ -64,6 +64,7 @@ begin
 			(rtrim(tblLocation.Addr1 + ' ' + isnull(tblLocation.Addr2, '')) +  ', ' + tblLocation.City + ' ' + tblLocation.State + ' ' + tblLocation.Zip) as DoctorAddress,				
 			ISNULL(tblDoctor.FirstName, '') + ' ' + ISNULL(tblDoctor.LastName, '') + ', ' + ISNULL(tblDoctor.Credentials, '') as DoctorName,		
 			(case 
+				when tblDoctor.UseLocEmailForDaySheet = 1 AND ltrim(rtrim(isnull(tblLocation.Email, ''))) <> '' then tblLocation.Email
 				when ltrim(rtrim(isnull(tblDoctor.DaysheetEmailAddr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetEmailAddr)) 
 				when ltrim(rtrim(tblDoctor.EmailAddr)) <> '' then ltrim(rtrim(tblDoctor.EmailAddr)) 
 				else null end) as DoctorEmail,		
