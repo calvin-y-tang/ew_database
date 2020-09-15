@@ -78,7 +78,7 @@ UPDATE pmr SET pmr.FeeQuoteAmount = CASE (ISNULL(pmr.InvApptStatus, pmr.ApptStat
 									WHEN 'Show' THEN 
 										CASE
 											WHEN tbl.ApprovedAmt IS NOT NULL THEN tbl.ApprovedAmt
-											ELSE tbl.FeeRange
+											ELSE ISNULL(tbl.FeeAmtTo, tbl.FeeAmtFrom)
 										END
 									END
   FROM ##tmpProgessiveMgtRpt  as pmr
@@ -86,7 +86,8 @@ UPDATE pmr SET pmr.FeeQuoteAmount = CASE (ISNULL(pmr.InvApptStatus, pmr.ApptStat
 					AQ.CaseNbr,
 					CONVERT(VARCHAR(12), AQ.LateCancelAmt) AS LateCancelAmt,
 					CONVERT(VARCHAR(12), AQ.NoShowAmt) AS NoShowAmt,		
-					CONVERT(VARCHAR(12), AQ.FeeAmtFrom) + ' - ' + CONVERT(VARCHAR(12), AQ.FeeAmtTo) as FeeRange,					
+					CONVERT(VARCHAR(12), AQ.FeeAmtFrom) AS FeeAmtFrom,
+					CONVERT(VARCHAR(12), AQ.FeeAmtTo) AS FeeAmtTo,
 					CONVERT(VARCHAR(12), AQ.ApprovedAmt) AS ApprovedAmt
 	              FROM tblAcctQuote as AQ 
 			      WHERE AQ.QuoteType = 'IN') as tbl ON tbl.CaseNbr = pmr.CaseNbr
