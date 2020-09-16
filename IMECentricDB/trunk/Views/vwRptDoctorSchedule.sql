@@ -68,6 +68,7 @@ AS
 				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
 
 	WHERE CA.ApptStatusID IN (10,100,101,102)
+	  AND C.Status <> 9
 
 
 
