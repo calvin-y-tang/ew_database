@@ -49,7 +49,7 @@ AS
             tblCase.QARep ,
             tblCase.SchedulerCode ,
             DATEDIFF(day, tblCase.LastStatuschg, GETDATE()) AS IQ ,
-			DATEDIFF(day, tblCase.DateEdited, GETDATE()) AS DSE,
+            DATEDIFF(day, tblCase.DateEdited, GETDATE()) AS DSE ,
             tblCase.LastStatusChg ,
             tblCase.PanelNbr ,
             tblCase.CommitDate ,

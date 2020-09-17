@@ -5,7 +5,7 @@ AS
 	--		vwDoctorBlockTimeScheduleSummary. These 2 views are conditionally used within the same IMEC code
 	--		 and; therefore, need to be in "sync".
 
-   SELECT  tblDoctor.LastName ,
+   SELECT   tblDoctor.LastName ,
             tblDoctor.FirstName ,
             tblLocation.Location ,
             tblDoctorSchedule.Date ,
@@ -22,7 +22,12 @@ AS
             tblDoctorSchedule.CaseNbr5 ,
             tblDoctorSchedule.CaseNbr6 ,
             tblDoctorSchedule.StartTime, 
-			tblLocationOffice.OfficeCode as LocationOffice 
+			tblLocationOffice.OfficeCode as LocationOffice, 
+			-- new columns added to help debugging (specific to Block Time Scheduler implementation)
+			NULL AS CaseApptID, 
+			tblDoctorSchedule.SchedCode, 
+			NULL AS DoctorBlockTimeDayID, 
+			NULL AS DoctorBlockTimeSlotID
     FROM    tblDoctorSchedule
             INNER JOIN tblDoctor ON tblDoctorSchedule.DoctorCode = tblDoctor.DoctorCode
             INNER JOIN tblLocation ON tblDoctorSchedule.LocationCode = tblLocation.LocationCode

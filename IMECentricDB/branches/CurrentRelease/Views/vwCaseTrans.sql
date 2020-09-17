@@ -23,6 +23,8 @@ AS
             tblCaseTrans.UnitOfMeasureCode,
 			tblCaseTrans.CreateInvoiceVoucher,
 			tblCaseTrans.FeeCode, 
-			tblCaseTrans.FeeCodeSource
+			tblCaseTrans.FeeCodeSource, 
+			tblCaseTrans.FSDetailID,
+			tblCaseTrans.FeeScheduleName
     FROM    tblCaseTrans
     WHERE   HeaderID IS NULL

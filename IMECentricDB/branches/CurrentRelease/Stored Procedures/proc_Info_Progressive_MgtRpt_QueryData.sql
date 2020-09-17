@@ -154,7 +154,8 @@ SELECT
   CONVERT(DATETIME, NULL) AS "ThirdNoShow",
   CONVERT(MONEY, NULL) AS ThirdNoShowAmount,
   CONVERT(DATETIME, NULL) AS "ReportRetrievalDate",
- AHCA.DateAdded as ScheduledDate
+  AHCA.DateAdded as ScheduledDate,
+  CONVERT(VARCHAR(64), NULL) as FeeQuoteAmount  
 INTO ##tmpProgessiveMgtRpt
 FROM tblCase as C
 left outer join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'

@@ -70,6 +70,29 @@ UPDATE pmr SET pmr.ThirdNoShow = apt.ApptTime, pmr.ThirdNoShowAmount = apt.Total
 				WHERE tbl.ROWNUM = 3
 		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
 
+print 'Get Most recent FeeQuote for Case'
+UPDATE pmr SET pmr.FeeQuoteAmount = CASE (ISNULL(pmr.InvApptStatus, pmr.ApptStatus))
+									WHEN 'Late Canceled' THEN tbl.LateCancelAmt
+									WHEN 'Canceled' THEN tbl.NoShowAmt
+									WHEN 'No Show' THEN tbl.NoShowAmt
+									WHEN 'Show' THEN 
+										CASE
+											WHEN tbl.ApprovedAmt IS NOT NULL THEN tbl.ApprovedAmt
+											ELSE ISNULL(tbl.FeeAmtTo, tbl.FeeAmtFrom)
+										END
+									END
+  FROM ##tmpProgessiveMgtRpt  as pmr
+	INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY AQ.CaseNbr ORDER BY AQ.AcctQuoteID DESC) as ROWNUM,
+					AQ.CaseNbr,
+					CONVERT(VARCHAR(12), AQ.LateCancelAmt) AS LateCancelAmt,
+					CONVERT(VARCHAR(12), AQ.NoShowAmt) AS NoShowAmt,		
+					CONVERT(VARCHAR(12), AQ.FeeAmtFrom) AS FeeAmtFrom,
+					CONVERT(VARCHAR(12), AQ.FeeAmtTo) AS FeeAmtTo,
+					CONVERT(VARCHAR(12), AQ.ApprovedAmt) AS ApprovedAmt
+	              FROM tblAcctQuote as AQ 
+			      WHERE AQ.QuoteType = 'IN') as tbl ON tbl.CaseNbr = pmr.CaseNbr
+				  WHERE tbl.ROWNUM = 1
+
 
 print 'Return final result set'
 SELECT *
