@@ -56,6 +56,7 @@ AS
 			INNER JOIN tblDoctorOffice AS DocOff ON DocOff.DoctorCode = Doc.DoctorCode 
 			INNER JOIN tbllocationoffice AS LocOff ON (LocOff.OfficeCode = DocOff.OfficeCode AND LocOff.LocationCode = Loc.LocationCode) 
 			LEFT OUTER JOIN tblCaseAppt AS CA ON CA.CaseApptID = BTSlot.CaseApptID AND (CA.ApptStatusID in (10, 100, 101, 102)) 
+			LEFT OUTER JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = CA.CaseApptID AND CAP.DoctorBlockTimeSlotID = BTSlot.DoctorBlockTimeSlotID
 			LEFT OUTER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr AND (C.Status <> 9) 
 	WHERE   
 		(BTDay.Active = 1) 
@@ -87,7 +88,7 @@ AS
 		CA.CaseApptID AS CaseApptID, 
 		NULL AS SchedCode, 
 		NULL AS DoctorBlockTimeDayID, 
-		CA.DoctorBlockTimeSlotID AS DoctorBlockTimeSlotID
+		NULL AS DoctorBlockTimeSlotID
 	FROM
 		tblCaseAppt AS CA 
 			LEFT OUTER JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = CA.CaseApptID
@@ -97,6 +98,6 @@ AS
 			INNER JOIN tbllocationoffice AS LocOff ON (LocOff.OfficeCode = DocOff.OfficeCode AND LocOff.LocationCode = Loc.LocationCode) 
 			INNER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr
 	WHERE   
-		 CA.DoctorBlockTimeSlotID IS NULL 
+		 ((CA.DoctorBlockTimeSlotID IS NULL AND CA.DoctorCode IS NOT NULL) OR (CAP.DoctorBlockTimeSlotID IS NULL AND CAP.CaseApptID IS NOT NULL))
 	 AND (CA.ApptStatusID IN (10, 100, 101, 102)) 
 	 AND (C.Status <> 9) 
