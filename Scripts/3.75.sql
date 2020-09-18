@@ -229,7 +229,7 @@ AS
 		CAST(NULL AS INT) AS CaseNbr5 , 
 		CAST(NULL AS INT) AS CaseNbr6 , 
 		BTSlot.StartTime, 
-		LocOff.OfficeCode as LocationOffice,
+		LocOff.OfficeCode AS LocationOffice,
 		
 		-- new columns added to help debugging
 		CA.CaseApptID AS CaseApptID, 
@@ -243,7 +243,8 @@ AS
 			INNER JOIN tblLocation AS Loc ON Loc.LocationCode = BTDay.LocationCode
 			INNER JOIN tblDoctorOffice AS DocOff ON DocOff.DoctorCode = Doc.DoctorCode 
 			INNER JOIN tbllocationoffice AS LocOff ON (LocOff.OfficeCode = DocOff.OfficeCode AND LocOff.LocationCode = Loc.LocationCode) 
-			LEFT OUTER JOIN tblCaseAppt AS CA ON CA.CaseApptID = BTSlot.CaseApptID AND (CA.ApptStatusID in (10, 100, 101, 102)) 
+			LEFT OUTER JOIN tblCaseAppt AS CA ON CA.CaseApptID = BTSlot.CaseApptID AND (CA.ApptStatusID IN (10, 100, 101, 102)) 
+			LEFT OUTER JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = CA.CaseApptID AND CAP.DoctorBlockTimeSlotID = BTSlot.DoctorBlockTimeSlotID
 			LEFT OUTER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr AND (C.Status <> 9) 
 	WHERE   
 		(BTDay.Active = 1) 
@@ -257,7 +258,7 @@ AS
 		Loc.Location ,
 		-- need to return date + "00:00" time
 		DATEADD(d, DATEDIFF(d, 0, CA.ApptTime), 0) AS Date , 
-		'Scheduled' as Status, 
+		'Scheduled' AS Status, 
 		Loc.InsideDr ,
 		Doc.DoctorCode ,
 		DocOff.OfficeCode ,
@@ -270,12 +271,12 @@ AS
 		CAST(NULL AS INT) AS CaseNbr5 , 
 		CAST(NULL AS INT) AS CaseNbr6 , 
 		CA.ApptTime AS StartTime,
-		LocOff.OfficeCode as LocationOffice,
+		LocOff.OfficeCode AS LocationOffice,
 		-- new columns added to help debugging
 		CA.CaseApptID AS CaseApptID, 
 		NULL AS SchedCode, 
 		NULL AS DoctorBlockTimeDayID, 
-		CA.DoctorBlockTimeSlotID AS DoctorBlockTimeSlotID
+		NULL AS DoctorBlockTimeSlotID
 	FROM
 		tblCaseAppt AS CA 
 			LEFT OUTER JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = CA.CaseApptID
@@ -285,10 +286,12 @@ AS
 			INNER JOIN tbllocationoffice AS LocOff ON (LocOff.OfficeCode = DocOff.OfficeCode AND LocOff.LocationCode = Loc.LocationCode) 
 			INNER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr
 	WHERE   
-		 CA.DoctorBlockTimeSlotID IS NULL 
+		 ((CA.DoctorBlockTimeSlotID IS NULL AND CA.DoctorCode IS NOT NULL) OR (CAP.DoctorBlockTimeSlotID IS NULL AND CAP.CaseApptID IS NOT NULL))
 	 AND (CA.ApptStatusID IN (10, 100, 101, 102)) 
-	 AND (C.Status <> 9)
+	 AND (C.Status <> 9) 
 GO
+
+
 IF @@ERROR <> 0
    AND @@TRANCOUNT > 0
     BEGIN
@@ -332,7 +335,7 @@ AS
             tblDoctorSchedule.CaseNbr5 ,
             tblDoctorSchedule.CaseNbr6 ,
             tblDoctorSchedule.StartTime, 
-			tblLocationOffice.OfficeCode as LocationOffice, 
+			tblLocationOffice.OfficeCode AS LocationOffice, 
 			-- new columns added to help debugging (specific to Block Time Scheduler implementation)
 			NULL AS CaseApptID, 
 			tblDoctorSchedule.SchedCode, 
@@ -342,9 +345,11 @@ AS
             INNER JOIN tblDoctor ON tblDoctorSchedule.DoctorCode = tblDoctor.DoctorCode
             INNER JOIN tblLocation ON tblDoctorSchedule.LocationCode = tblLocation.LocationCode
             INNER JOIN tblDoctorOffice ON tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode 
-			inner join tbllocationoffice on (tbllocationoffice.officecode = tblDoctorOffice.OfficeCode and tblLocationOffice.LocationCode = tbllocation.LocationCode) 
+			INNER JOIN tbllocationoffice ON (tbllocationoffice.officecode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tbllocation.LocationCode) 
     WHERE   ( tblDoctorSchedule.Status <> 'Off' )
 GO
+
+
 IF @@ERROR <> 0
    AND @@TRANCOUNT > 0
     BEGIN
