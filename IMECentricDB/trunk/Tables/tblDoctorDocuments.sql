@@ -30,7 +30,7 @@
 
 GO
 
-CREATE INDEX [IX_U_tblDoctorDocuments_DoctorCodeRecID] ON [dbo].[tblDoctorDocuments] ([DoctorCode], [RecID])
+CREATE UNIQUE INDEX [IX_U_tblDoctorDocuments_DoctorCodeRecID] ON [dbo].[tblDoctorDocuments] ([DoctorCode], [RecID])
 
 GO
 
