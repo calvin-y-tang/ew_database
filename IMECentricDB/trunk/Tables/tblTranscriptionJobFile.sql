@@ -6,4 +6,7 @@
     [TransFileName]      VARCHAR(200) NULL, 
     CONSTRAINT [PK_tblTranscriptionJobFile] PRIMARY KEY CLUSTERED ([TransJobFileID] ASC)
 );
+GO
 
+
+CREATE INDEX [IX_tblTranscriptionJobFile_TranscriptionJobID] ON [dbo].[tblTranscriptionJobFile] ([TranscriptionJobID]);

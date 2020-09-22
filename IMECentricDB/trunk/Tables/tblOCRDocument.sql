@@ -16,11 +16,19 @@
     [OCRServer]           VARCHAR (15)  NULL,
     [Priority]            INT           NULL,
     [Source]              VARCHAR (20)  NULL,
-    [DateReadyOCR]		  DATETIME      NULL, 
-    [DateSent]            DATETIME      NULL, 
-    [DateReceived]        DATETIME      NULL, 
+    [DateReadyOCR]        DATETIME      NULL,
+    [DateSent]            DATETIME      NULL,
+    [DateReceived]        DATETIME      NULL,
     CONSTRAINT [PK_tblOCRDocument] PRIMARY KEY CLUSTERED ([OCRDocumentID] ASC)
 );
 
 
+
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblOCRDocument_OCRStatusID]
+    ON [dbo].[tblOCRDocument]([OCRStatusID] ASC)
+    INCLUDE([OCRSystemID], [CaseDocID], [ExtOCRDocumentID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [DateDue], [DateCompleted], [OriginalFileName], [OriginalFileDateUtc], [OriginalFileSizeKB], [OCRServer], [Priority], [Source], [DateReadyOCR], [DateSent], [DateReceived]);
 

@@ -12,3 +12,7 @@
 	[QuoteFeeConfigID] INT          NULL,
 	CONSTRAINT [PK_tblAcctQuoteFee] PRIMARY KEY CLUSTERED ([AcctQuoteFeeID] ASC)
 )
+
+GO
+
+CREATE INDEX [IX_tblAcctQuoteFee_AcctQuoteID] ON [dbo].[tblAcctQuoteFee] ([AcctQuoteID]) INCLUDE ([FeeValueName], [FeeAmount], [FeeUnit]) 

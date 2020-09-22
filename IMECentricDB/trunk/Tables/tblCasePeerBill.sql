@@ -18,8 +18,15 @@
     [UserIDAdded]           VARCHAR (15)  NULL,
     [DateEdited]            DATETIME      NULL,
     [UserIDEdited]          VARCHAR (15)  NULL,
-    [ProviderZip]           VARCHAR(10)   NULL, 
-    [ServiceEndDate]        DATETIME      NULL, 
+    [ProviderZip]           VARCHAR (10)  NULL,
+    [ServiceEndDate]        DATETIME      NULL,
     CONSTRAINT [PK_tblCasePeerBill] PRIMARY KEY CLUSTERED ([PeerBillID] ASC)
 );
+
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCasePeerBill_CaseNbr]
+    ON [dbo].[tblCasePeerBill]([CaseNbr] ASC);
 

@@ -27,15 +27,31 @@
     [ContactEmail]        VARCHAR (70)  NULL,
     [NotifyWhenComplete]  BIT           NULL,
     [DateAcknowledged]    DATETIME      NULL,
-    [WorkBundleDesc] VARCHAR(30) NULL, 
-    [ExtDocumentID] VARCHAR(100) NULL, 
-    [DPSPriorityID] INT NULL, 
-    [DPSSystemID] INT CONSTRAINT [DF_tblDPSBundle_DPSSystemID] DEFAULT ((0)) NOT NULL, 
-	[DPSBundleTypeID]     INT			NULL,
-	[CaseData]			  VARCHAR(MAX)	NULL,
-	[CancelReason]        VARCHAR(100)  NULL,
+    [WorkBundleDesc]      VARCHAR (30)  NULL,
+    [ExtDocumentID]       VARCHAR (100) NULL,
+    [DPSPriorityID]       INT           NULL,
+    [DPSSystemID]         INT           CONSTRAINT [DF_tblDPSBundle_DPSSystemID] DEFAULT ((0)) NOT NULL,
+    [DPSBundleTypeID]     INT           NULL,
+    [CaseData]            VARCHAR (MAX) NULL,
+    [CancelReason]        VARCHAR (100) NULL,
     CONSTRAINT [PK_tblDPSBundle] PRIMARY KEY CLUSTERED ([DPSBundleID] ASC)
 );
 
 
+
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblDPSBundle_DPSStatusIDDateAcknowledged]
+    ON [dbo].[tblDPSBundle]([DPSStatusID] ASC, [DateAcknowledged] ASC)
+	INCLUDE([CaseNbr]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblDPSBundle_CombinedDPSBundleID]
+    ON [dbo].[tblDPSBundle]([CombinedDPSBundleID] ASC) INCLUDE ([DPSBundleID], [DPSBundleTypeID]);
+
+
+GO
 

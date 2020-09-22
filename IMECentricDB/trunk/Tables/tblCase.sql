@@ -422,3 +422,5 @@ CREATE NONCLUSTERED INDEX [IX_tblCase_OfficeCodeNotaryRequired]
     ON [dbo].[tblCase]([OfficeCode] ASC, [NotaryRequired] ASC)
     INCLUDE([ChartNbr], [ClientCode], [ServiceCode]);
 
+
+GO

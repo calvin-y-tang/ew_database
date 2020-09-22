@@ -35,3 +35,7 @@
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 
+
+GO
+
+CREATE INDEX [IX_tblAcctQuote_CaseNbr] ON [dbo].[tblAcctQuote] ([CaseNbr])
