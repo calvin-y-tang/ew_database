@@ -41,3 +41,6 @@ GO
   LEFT JOIN tblOffice AS O On 1=1
 
 
+-- Issue 11814 - Default Docuemtn Filtering
+UPDATE tblOffice SET RecRetrievalIncludeFileTypes = 'Records;Attachment'
+UPDATE tblOffice SET RecRetrievalExcludeFileTypes = 'Diagnostic Image'
