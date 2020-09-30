@@ -91,8 +91,11 @@ CREATE TABLE [dbo].[tblDocument] (
     [CMSBox26]                      VARCHAR(30)     NULL, 
     [CMSLineItemAmtType]            VARCHAR(30)     NULL, 
 	[CMSBox6Other]                  VARCHAR(30)     NULL, 
-	[ShowProductDescOnClaimForm]	INT				CONSTRAINT [DF_tblDocument_ShowProductDescOnClaimForm] DEFAULT ((0)) NOT NULL
-    CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
+	[ShowProductDescOnClaimForm]	INT				CONSTRAINT [DF_tblDocument_ShowProductDescOnClaimForm] DEFAULT ((0)) NOT NULL,
+    [ElecTransferFolderID]          INT             NULL,
+	[ElecTransferOutputFile]        VARCHAR(128)    NULL,
+	[ElecTransferDupFileHandling]   INT             NULL,
+	CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 
 GO
