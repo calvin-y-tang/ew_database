@@ -44,6 +44,8 @@
 	[RecordRetrievalDocument]   VARCHAR (15)     NULL,
 	[RecRetrievalIncludeFileTypes] VARCHAR(150)  NULL,
 	[RecRetrievalExcludeFileTypes] VARCHAR(150)  NULL,
+	[RecRetrievalFileHandling]  INT              NULL,
+	[RecRetrievalOrderStatus]   VARCHAR(150)     NULL,
     CONSTRAINT [PK_tblOffice] PRIMARY KEY CLUSTERED ([OfficeCode] ASC) WITH (FILLFACTOR = 90)
 );
 
