@@ -16,6 +16,7 @@
 	[RecordType]			 VARCHAR (50)  NULL,
     [FileVersion]			 VARCHAR(25)   NULL, 
 	[FileType]               VARCHAR (50)  NULL,
+	[RetrievalGroupID]       VARCHAR(100)  NULL,
     PRIMARY KEY CLUSTERED ([RecRetrievalDocumentID] ASC)
 );
 
