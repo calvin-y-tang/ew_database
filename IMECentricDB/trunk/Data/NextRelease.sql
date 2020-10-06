@@ -60,3 +60,30 @@ UPDATE tblAcctQuote
  WHERE QuoteType = 'IN' AND QuoteStatusID IN (4,8) AND CaseNbr IN
 (SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
 
+
+-- Issue 11804  - data patch query for removing completed / cancelled cases from the certified mail, follow-up, and special services queues
+-- Follow-up Tracker
+UPDATE tblCaseHistory
+ SET FollowUpDate = NULL, AlertType=0, DateEdited = GetDate(), UserIDEdited = 'Admin'
+ WHERE FollowUpDate IS NOT NULL  AND CaseNbr IN
+(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
+
+ -- Special Services Tracker
+UPDATE tblCaseOtherParty 
+ SET Status = 'Canceled', DateEdited = GetDate(), UserIDEdited = 'Admin'
+ WHERE Status = 'Open' AND CaseNbr IN
+(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
+
+-- Certified Mail tracker
+ UPDATE tblCaseEnvelope
+ SET DateAcknowledged = GetDate(), UserIDAcknowledged = 'Admin'
+ FROM tblCaseEnvelope AS CE 
+ LEFT OUTER JOIN tblCase  AS C ON C.CaseNbr = CE.CaseNbr
+ WHERE CE.IsCertifiedMail = 1 AND CE.DateAcknowledged IS NULL 
+ AND (C.CertMailNbr IS NOT NULL OR C.CertMailNbr2 IS NOT NULL)
+ AND CE.DateImported IS NOT NULL  AND (CE.AddressedToEntity = 'EE' OR CE.AddressedToEntity = 'AT')
+ AND CE.CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
+
+
+
+
