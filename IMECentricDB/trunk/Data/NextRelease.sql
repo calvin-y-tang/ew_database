@@ -41,6 +41,22 @@ GO
   LEFT JOIN tblOffice AS O On 1=1
 
 
--- Issue 11814 - Default Docuemtn Filtering
+-- Issue 11814 - Default Document Filtering
 UPDATE tblOffice SET RecRetrievalIncludeFileTypes = 'Records;Attachment'
 UPDATE tblOffice SET RecRetrievalExcludeFileTypes = 'Diagnostic Image'
+
+-- Issue 11815 - Order Status Filtering
+UPDATE tblOffice SET RecRetrievalOrderStatus = 'ReadyForRetrieval;Retrieving;Retrieved;Failed'
+
+
+-- Issue 11717 - Quote Approval Tracker Data Patch to remove completed / cancelled cases  (cancels the quote)
+UPDATE tblAcctQuote
+ SET QuoteStatusID = 3, DateEdited = GetDate(), UserIDEdited = 'Admin'
+ WHERE QuoteType = 'VO' AND QuoteStatusID = 1  AND CaseNbr IN
+(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
+
+UPDATE tblAcctQuote
+ SET QuoteStatusID = 7, DateEdited = GetDate(), UserIDEdited = 'Admin'
+ WHERE QuoteType = 'IN' AND QuoteStatusID IN (4,8) AND CaseNbr IN
+(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
+
