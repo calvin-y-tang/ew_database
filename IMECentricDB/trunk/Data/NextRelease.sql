@@ -49,41 +49,5 @@ UPDATE tblOffice SET RecRetrievalExcludeFileTypes = 'Diagnostic Image'
 UPDATE tblOffice SET RecRetrievalOrderStatus = 'ReadyForRetrieval;Retrieving;Retrieved;Failed'
 
 
--- Issue 11717 - Quote Approval Tracker Data Patch to remove completed / cancelled cases  (cancels the quote)
-UPDATE tblAcctQuote
- SET QuoteStatusID = 3, DateEdited = GetDate(), UserIDEdited = 'Admin'
- WHERE QuoteType = 'VO' AND QuoteStatusID = 1  AND CaseNbr IN
-(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
-
-UPDATE tblAcctQuote
- SET QuoteStatusID = 7, DateEdited = GetDate(), UserIDEdited = 'Admin'
- WHERE QuoteType = 'IN' AND QuoteStatusID IN (4,8) AND CaseNbr IN
-(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
-
-
--- Issue 11804  - data patch query for removing completed / cancelled cases from the certified mail, follow-up, and special services queues
--- Follow-up Tracker
-UPDATE tblCaseHistory
- SET FollowUpDate = NULL, AlertType=0, DateEdited = GetDate(), UserIDEdited = 'Admin'
- WHERE FollowUpDate IS NOT NULL  AND CaseNbr IN
-(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
-
- -- Special Services Tracker
-UPDATE tblCaseOtherParty 
- SET Status = 'Canceled', DateEdited = GetDate(), UserIDEdited = 'Admin'
- WHERE Status = 'Open' AND CaseNbr IN
-(SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
-
--- Certified Mail tracker
- UPDATE tblCaseEnvelope
- SET DateAcknowledged = GetDate(), UserIDAcknowledged = 'Admin'
- FROM tblCaseEnvelope AS CE 
- LEFT OUTER JOIN tblCase  AS C ON C.CaseNbr = CE.CaseNbr
- WHERE CE.IsCertifiedMail = 1 AND CE.DateAcknowledged IS NULL 
- AND (C.CertMailNbr IS NOT NULL OR C.CertMailNbr2 IS NOT NULL)
- AND CE.DateImported IS NOT NULL  AND (CE.AddressedToEntity = 'EE' OR CE.AddressedToEntity = 'AT')
- AND CE.CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE [Status] IN (8,9))
-
-
 
 
