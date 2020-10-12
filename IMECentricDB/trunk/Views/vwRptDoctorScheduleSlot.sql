@@ -1,10 +1,10 @@
 ﻿CREATE VIEW vwRptDoctorScheduleSlot
 AS
-     SELECT CA.SchedCode AS RecID,
-            CA.DoctorCode,            
-			CA.LocationCode,
-            CAST(CAST(CA.Date AS DATE) AS DATETIME) AS Date,
-            CA.StartTime AS StartTime, 
+     SELECT BTS.RecID,
+            BTD.DoctorCode,            
+			BTD.LocationCode,
+            BTD.ScheduleDate AS Date,
+			BTS.StartTime AS StartTime, 
 
             NULL AS CaseNbr , 
 			NULL AS ExtCaseNbr , 
@@ -16,9 +16,9 @@ AS
 
             '' AS Interpreter,
 
-            CA.Status AS ScheduleDesc1,
+            BTSS.Name AS ScheduleDesc1,
 
-			CA.Description AS ScheduleDesc2,
+			'' AS ScheduleDesc2,
 
             '' AS Company ,
 
@@ -41,16 +41,18 @@ AS
 
 			'' AS Problem
 
-    FROM    tblDoctorSchedule AS CA
+    FROM (SELECT MAX(DoctorBlockTimeSlotID) AS RecID, MAX(DoctorBlockTimeSlotStatusID) AS DoctorBlockTimeSlotStatusID,
+		  DoctorBlockTimeDayID, StartTime FROM tblDoctorBlockTimeSlot
+		  GROUP BY DoctorBlockTimeDayID, StartTime
+		  HAVING MIN(IIF(DoctorBlockTimeSlotStatusID IN (10,22), 1, 0))=1
+		  ) AS BTS
+			INNER JOIN tblDoctorBlockTimeDay AS BTD ON BTD.DoctorBlockTimeDayID = BTS.DoctorBlockTimeDayID
+			INNER JOIN tblDoctorBlockTimeSlotStatus AS BTSS ON BTSS.DoctorBlockTimeSlotStatusID = BTS.DoctorBlockTimeSlotStatusID
+			INNER JOIN tblDoctor AS DR ON DR.DoctorCode = BTD.DoctorCode
+			INNER JOIN tblLocation AS L ON BTD.LocationCode = L.LocationCode
 
-				INNER JOIN tblDoctor AS DR ON DR.DoctorCode = CA.DoctorCode
-				INNER JOIN tblLocation AS L ON CA.LocationCode = L.LocationCode
+			INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
+			INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
 
-				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
-				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
-
-				INNER JOIN tblOffice AS O ON DRO.OfficeCode = O.OfficeCode
-				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
-
-
-	WHERE CA.Status IN ('Open', 'Hold', 'Held')
+			INNER JOIN tblOffice AS O ON DRO.OfficeCode = O.OfficeCode
+			INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
