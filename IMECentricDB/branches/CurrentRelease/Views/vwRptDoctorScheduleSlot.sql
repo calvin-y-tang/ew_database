@@ -51,8 +51,8 @@ AS
 			INNER JOIN tblDoctor AS DR ON DR.DoctorCode = BTD.DoctorCode
 			INNER JOIN tblLocation AS L ON BTD.LocationCode = L.LocationCode
 
-				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
-				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
+			INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
+			INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
 
-				INNER JOIN tblOffice AS O ON DRO.OfficeCode = O.OfficeCode
+			INNER JOIN tblOffice AS O ON DRO.OfficeCode = O.OfficeCode
 			INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID

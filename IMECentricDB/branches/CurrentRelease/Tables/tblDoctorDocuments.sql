@@ -24,6 +24,14 @@
     [FileSize]           BIGINT        NULL,
     [OriginalFilePath]   VARCHAR (250) NULL,
     [ConvertStatus]      VARCHAR (25)  NULL,
-    CONSTRAINT [PK_tblDoctorDocuments] PRIMARY KEY CLUSTERED ([DoctorCode] ASC, [RecID] ASC)
+    CONSTRAINT [PK_tblDoctorDocuments] PRIMARY KEY CLUSTERED ([RecID])
 );
 
+
+GO
+
+CREATE UNIQUE INDEX [IX_U_tblDoctorDocuments_DoctorCodeRecID] ON [dbo].[tblDoctorDocuments] ([DoctorCode], [RecID])
+
+GO
+
+CREATE INDEX [IX_tblDoctorDocuments_EWDoctorDocumentID] ON [dbo].[tblDoctorDocuments] ([EWDoctorDocumentID])

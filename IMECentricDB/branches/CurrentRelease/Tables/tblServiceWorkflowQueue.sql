@@ -13,3 +13,7 @@
     CONSTRAINT [PK_tblServiceWorkflowQueue] PRIMARY KEY CLUSTERED ([ServiceWorkflowQueueID] ASC)
 );
 
+
+GO
+
+CREATE INDEX [IX_tblServiceWorkflowQueue_ServiceWorkflowIDStatusCodeNextStatus] ON [dbo].[tblServiceWorkflowQueue] ([ServiceWorkflowID], [StatusCode], [NextStatus]) INCLUDE (QueueOrder, CreateInvoice, CreateVoucher);

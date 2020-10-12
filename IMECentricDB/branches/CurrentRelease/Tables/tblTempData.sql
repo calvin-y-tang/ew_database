@@ -17,9 +17,11 @@
     [TextValue2]     VARCHAR (MAX) NULL,
     [TextValue3]     VARCHAR (MAX) NULL,
     [TextValue4]     VARCHAR (MAX) NULL,
-	[MoneyValue1]    MONEY         NULL,
+    [MoneyValue1]    MONEY         NULL,
     CONSTRAINT [PK_tblTempData] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
+
+
 
 
 
@@ -31,5 +33,7 @@
 GO
 CREATE NONCLUSTERED INDEX [IX_tblTempData_SessionIDModuleName]
     ON [dbo].[tblTempData]([SessionID] ASC, [ModuleName] ASC)
-    INCLUDE([IntValue1], [BitValue1]);
+    INCLUDE([IntValue1], [IntValue2], [VarCharValue1], [BitValue1], [BitValue2]);
 
+
+GO

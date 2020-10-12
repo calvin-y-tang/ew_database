@@ -24,6 +24,8 @@
 
 
 
+
+
 GO
 
 
@@ -43,4 +45,9 @@ AS
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [IX_U_tblDoctorCheckRequest_AcctingTransID]
     ON [dbo].[tblDoctorCheckRequest]([AcctingTransID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblDoctorCheckRequest_CaseNbr]
+    ON [dbo].[tblDoctorCheckRequest]([CaseNbr] ASC);
 

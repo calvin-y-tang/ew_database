@@ -97,3 +97,6 @@ CREATE NONCLUSTERED INDEX [IX_tblAcctHeader_CaseNbr]
 
 
 GO
+
+
+CREATE INDEX [IX_tblAcctHeader_CaseDocID] ON [dbo].[tblAcctHeader] ([CaseDocID])

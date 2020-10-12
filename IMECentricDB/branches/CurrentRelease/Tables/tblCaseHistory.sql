@@ -38,18 +38,13 @@ GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_FollowUpDate]
     ON [dbo].[tblCaseHistory]([FollowUpDate] ASC) INCLUDE ([CaseNbr]);
 
-
 GO
-CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_CaseNbrEventDate]
-    ON [dbo].[tblCaseHistory]([CaseNbr] ASC, [EventDate] ASC);
-
+CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_CaseNbr]
+    ON [dbo].[tblCaseHistory]([CaseNbr] ASC)
+	INCLUDE ([EventDate], [Eventdesc], [OtherInfo], [Duration], [Type], [Status], [PublishOnWeb], [UserIDEdited], [Highlight], [PublishedTo], [FollowUpDate], [AlertType], [UserID]);
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_EventDate]
     ON [dbo].[tblCaseHistory]([EventDate] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_CaseNbrFollowUpDate]
-    ON [dbo].[tblCaseHistory]([CaseNbr] ASC, [FollowUpDate] ASC)
-    INCLUDE([EventDate], [Eventdesc], [UserID], [OtherInfo], [ID]);
-

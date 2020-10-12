@@ -13,3 +13,7 @@
     CONSTRAINT [PK_tblTranscriptionJobDictation] PRIMARY KEY CLUSTERED ([TranscriptionJobDictationID] ASC)
 );
 
+
+GO
+
+CREATE INDEX [IX_tblTranscriptionJobDictation_TranscriptionJobID] ON [dbo].[tblTranscriptionJobDictation] ([TranscriptionJobID])
