@@ -28,7 +28,7 @@ CREATE TABLE [dbo].[tblEWParentCompany] (
 	[AllowMedIndex]                  BIT         NULL,
 	[ShowFinancialInfo]              BIT         NULL,
 	[AllowScheduling]                BIT         NULL,
-	[RecordRetrievalMethod]          INT         CONSTRAINT [DF_tblEWParentCompany_RecordRetrievalMethod] DEFAULT ((0)) NOT NULL,
+	[RecordRetrievalMethod]          INT         NULL,
     CONSTRAINT [PK_tblEWParentCompany] PRIMARY KEY CLUSTERED ([ParentCompanyID] ASC)
 );
 

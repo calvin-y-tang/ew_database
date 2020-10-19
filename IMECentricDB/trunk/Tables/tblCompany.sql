@@ -75,6 +75,7 @@
 	[AllowMedIndex]              BIT              NULL,
 	[ShowFinancialInfo]          BIT              NULL,
 	[AllowScheduling]            BIT              NULL,
+	[RecordRetrievalMethod]      INT              NULL,
     CONSTRAINT [PK_tblCompany] PRIMARY KEY CLUSTERED ([CompanyCode] ASC) WITH (FILLFACTOR = 90)
 );
 
