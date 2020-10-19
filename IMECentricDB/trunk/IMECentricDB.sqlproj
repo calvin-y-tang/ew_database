@@ -1125,6 +1125,8 @@
     <Build Include="Tables\tblCaseRecRetrievalDocument.sql" />
     <Build Include="Tables\tblDPSResultFileConfig.sql" />
     <Build Include="Tables\tblOCRDocument.sql" />
+    <Build Include="Tables\tblCaseExport.sql" />
+    <Build Include="Tables\tblCaseExportBatch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
