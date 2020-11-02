@@ -47,3 +47,9 @@ x as (
 update tblAcctQuoteFee set FeeUnit = x.ChangeFeeUnit
 from tblAcctQuoteFee y join x on y.AcctQuoteFeeID = x.AcctQuoteFeeID
 GO
+
+
+
+-- Issue 11728 - New Quote number token and bookmark
+  INSERT INTO tblMessageToken (Name) VALUES ('@QuoteNbr@')
+
