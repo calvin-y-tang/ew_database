@@ -2,7 +2,7 @@
     [DPSBundleID]         INT           IDENTITY (1, 1) NOT NULL,
     [CaseNbr]             INT           NOT NULL,
     [DPSStatusID]         INT           CONSTRAINT [DF_tblDPSBundle_DPSStatusID] DEFAULT ((0)) NOT NULL,
-    [ExtWorkBundleID]     VARCHAR (20)  NULL,
+    [ExtWorkBundleID]     VARCHAR (30)  NULL,
     [ResultFileName]      VARCHAR (100) NULL,
     [FolderID]            INT           NULL,
     [SubFolder]           VARCHAR (32)  NULL,
