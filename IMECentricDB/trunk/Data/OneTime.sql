@@ -12,3 +12,9 @@ ALTER TABLE IMECentricMaster.dbo.EWParentCompany  ALTER COLUMN RecordRetrievalMe
 -- // add new token for Jurisdiction
 -- // Issue 11828 - Modified Replace_Tokens method to support new @Jurisdiction@ token.
 INSERT INTO tblMessageToken (Name) VALUES('@Jurisdiction@');
+
+
+-- Issue 11792: for ATIC Export; PARAM value is temporary and subject to change when deployed to production
+INSERT INTO tblConfiguration(ConfigurationID, Name, Active, ConfigurationType, DateEdited, UserIDEdited, Param)
+VALUES(9, 'ATIC Case & Document Export', 1, 'ATICCaseExport', '2020-10-28', 'JPais', 'CompanyCode=32413;ExportFolder=\\dev4\ISIntegrations\ATIC;NextBatchNbr=1000')
+
