@@ -16,5 +16,6 @@ INSERT INTO tblMessageToken (Name) VALUES('@Jurisdiction@');
 
 -- Issue 11792: for ATIC Export; PARAM value is temporary and subject to change when deployed to production
 INSERT INTO tblConfiguration(ConfigurationID, Name, Active, ConfigurationType, DateEdited, UserIDEdited, Param)
-VALUES(9, 'ATIC Case & Document Export', 1, 'ATICCaseExport', '2020-10-28', 'JPais', 'CompanyCode=32413;ExportFolder=\\dev4\ISIntegrations\ATIC;NextBatchNbr=1000')
+VALUES(9, 'ATIC Case & Document Export', 1, 'ATICCaseExport', '2020-10-28', 'JPais', 'CompanyCode=32413;ExportFolder=\\dev4\ISIntegrations\ATIC;NextBatchNbr=1000;NF10Template2NoShows=NF-10 Ortho')
+GO
 
