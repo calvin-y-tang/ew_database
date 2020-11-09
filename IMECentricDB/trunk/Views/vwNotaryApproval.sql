@@ -24,7 +24,9 @@ SELECT C.CaseNbr,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
 	   C.NotaryRequired,
 	   CASE WHEN C.NotarySent = 1 THEN 'Y' ELSE 'N' END AS NotarySent,
-	   C.NotaryRequiredCheckedDate
+	   C.NotaryRequiredCheckedDate,
+	   ST.Name As ServiceTypDesc,
+	   SE.EWServiceTypeID
  FROM tblCase AS C
  INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
  INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
@@ -34,4 +36,5 @@ SELECT C.CaseNbr,
  LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
  LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
  LEFT OUTER JOIN tblLocation AS LO ON LO.LocationCode = C.DoctorLocation
+ LEFT OUTER JOIN tblEWServiceType AS ST ON ST.EWServiceTypeID = SE.EWServiceTypeID
  WHERE C.NotaryRequired = 1

@@ -97,7 +97,9 @@ AS
             ATQ.FunctionCode ,
             S.Description AS ServiceDesc, 
 			C.ExtCaseNbr, 
-			ISNULL(BCOM.ParentCompanyID, COM.ParentCompanyID) AS ParentCompanyID
+			ISNULL(BCOM.ParentCompanyID, COM.ParentCompanyID) AS ParentCompanyID,
+			ServType.Name As ServiceTypDesc,
+			S.EWServiceTypeID
     FROM    tblCase AS C
             INNER JOIN tblAcctingTrans AS AT ON C.CaseNbr = AT.CaseNbr
 			INNER JOIN tblQueues AS CaseQ ON C.Status = CaseQ.StatusCode
@@ -114,4 +116,5 @@ AS
             LEFT OUTER JOIN tblDoctor AS ATDr ON AT.DrOpCode = ATDr.DoctorCode
             LEFT OUTER JOIN tblExaminee AS EE ON C.chartNbr = EE.chartNbr
             LEFT OUTER JOIN tblApptStatus ON AT.ApptStatusID = tblApptStatus.ApptStatusID
+			LEFT OUTER JOIN tblEWServiceType AS ServType ON ServType.EWServiceTypeID = S.EWServiceTypeID
     WHERE   ( AT.StatusCode <> 20 )

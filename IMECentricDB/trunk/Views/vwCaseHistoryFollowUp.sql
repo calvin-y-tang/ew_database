@@ -31,7 +31,9 @@ SELECT  C.CaseNbr ,
         CH.OtherInfo ,
         CH.FollowUpDate ,
 		CH.ID, 
-		ISNULL(BillCompany.ParentCompanyID, COM.ParentCompanyID) AS ParentCompanyID
+		ISNULL(BillCompany.ParentCompanyID, COM.ParentCompanyID) AS ParentCompanyID,
+		ST.Name As ServiceTypDesc,
+		S.EWServiceTypeID
 FROM    tblCase AS C
         INNER JOIN tblQueues AS Q ON C.Status = Q.StatusCode
         INNER JOIN tblServices AS S ON C.ServiceCode = S.ServiceCode
@@ -42,5 +44,6 @@ FROM    tblCase AS C
         LEFT OUTER JOIN tblExaminee AS EE ON C.ChartNbr = EE.ChartNbr
 		LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
 		LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
+		LEFT OUTER JOIN tblEWServiceType AS ST ON ST.EWServiceTypeID = S.EWServiceTypeID
         INNER JOIN tblCaseHistory AS CH ON CH.CaseNbr = C.CaseNbr
 WHERE   CH.FollowUpDate IS NOT NULL

@@ -22,7 +22,9 @@ AS
             tblCase.DoctorName ,
             tblCase.CaseType , 
 			tblCase.ExtCaseNbr, 
-			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID
+			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID,
+			ST.Name As ServiceTypDesc,
+			tblServices.EWServiceTypeID
     FROM    tblCaseOtherParty
             INNER JOIN tblCase ON tblCaseOtherParty.CaseNbr = tblCase.CaseNbr
             INNER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
@@ -32,4 +34,5 @@ AS
 			INNER JOIN tblCompany ON tblCompany.CompanyCode = tblCase.CompanyCode
 			LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = tblCase.BillClientCode
 			LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
+			LEFT OUTER JOIN tblEWServiceType AS ST ON ST.EWServiceTypeID = tblServices.EWServiceTypeID
     WHERE   ( tblCaseOtherParty.Status = 'Open' );

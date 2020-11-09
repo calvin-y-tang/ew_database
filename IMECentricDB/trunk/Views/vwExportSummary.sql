@@ -71,7 +71,9 @@ AS
             tblAcctHeader.EDISubmissionCount ,
             tblAcctHeader.EDISubmissionDateTime , 
 			tblCase.ExtCaseNbr, 
-			tblCompany.ParentCompanyID 
+			tblCompany.ParentCompanyID,
+			tblEWServiceType.Name As ServiceTypDesc,
+			tblServices.EWServiceTypeID
     FROM    tblAcctHeader
             INNER JOIN tblAcctingTrans ON tblAcctHeader.SeqNo = tblAcctingTrans.SeqNO
             INNER JOIN tblCase ON tblAcctHeader.CaseNbr = tblCase.CaseNbr
@@ -82,6 +84,7 @@ AS
             LEFT OUTER JOIN tblDoctor ON tblAcctHeader.DrOpCode = tblDoctor.DoctorCode
             LEFT OUTER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
             INNER JOIN tblServices ON tblServices.ServiceCode = tblCase.ServiceCode
+			LEFT OUTER JOIN tblEWServiceType ON tblEWServiceType.EWServiceTypeID = tblServices.EWServiceTypeID
     WHERE   ( tblAcctingTrans.StatusCode <> 20 )
             AND ( tblAcctHeader.BatchNbr IS NULL )
             AND ( tblAcctHeader.DocumentStatus = 'Final' )
