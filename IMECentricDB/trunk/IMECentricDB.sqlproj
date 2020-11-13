@@ -1127,6 +1127,7 @@
     <Build Include="Tables\tblOCRDocument.sql" />
     <Build Include="Tables\tblIntegrationBatchDetail.sql" />
     <Build Include="Tables\tblIntegrationBatchHeader.sql" />
+    <Build Include="Tables\tblOfficeState.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
