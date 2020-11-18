@@ -1128,6 +1128,7 @@
     <Build Include="Tables\tblIntegrationBatchDetail.sql" />
     <Build Include="Tables\tblIntegrationBatchHeader.sql" />
     <Build Include="Tables\tblOfficeState.sql" />
+    <Build Include="Views\vwDoctorSearchResultNew.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
