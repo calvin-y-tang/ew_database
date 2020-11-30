@@ -241,24 +241,13 @@ FROM
 
 	--Remove results for access restrictions
 	IF (SELECT RestrictToFavorites FROM tblUser WHERE UserID = ISNULL(@UserID,'')) = 1
-		IF @OfficeCode IS NOT NULL
-			DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND LocationCode NOT IN 
-				(SELECT DISTINCT L.LocationCode
-				FROM tblOfficeState AS OS
-				INNER JOIN tblUserOffice AS UO ON OS.OfficeCode = UO.OfficeCode
-				INNER JOIN tblUser AS U ON UO.UserID = U.UserID
-				INNER JOIN tblLocation AS L on OS.State = L.State
-				INNER JOIN tblLocationOffice AS LO ON OS.OfficeCode = LO.OfficeCode AND L.LocationCode = LO.LocationCode
-				WHERE U.UserID = ISNULL(@UserID,'') AND U.RestrictToFavorites = 1 AND UO.OfficeCode = @OfficeCode)
-		ELSE
-			DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND LocationCode NOT IN 
-				(SELECT DISTINCT L.LocationCode
-				FROM tblOfficeState AS OS
-				INNER JOIN tblUserOffice AS UO ON OS.OfficeCode = UO.OfficeCode
-				INNER JOIN tblUser AS U ON UO.UserID = U.UserID
-				INNER JOIN tblLocation AS L on OS.State = L.State
-				INNER JOIN tblLocationOffice AS LO ON OS.OfficeCode = LO.OfficeCode AND L.LocationCode = LO.LocationCode
-				WHERE U.UserID = ISNULL(@UserID,'') AND U.RestrictToFavorites = 1)
+        DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND LocationCode NOT IN 
+            (SELECT DISTINCT L.LocationCode
+                FROM tblUser AS U
+                INNER JOIN tblUserOffice AS UO ON UO.UserID = U.UserID
+                INNER JOIN tblOfficeState AS OS ON OS.OfficeCode = UO.OfficeCode
+                INNER JOIN tblLocation AS L ON L.State = OS.State
+                WHERE U.UserID = ISNULL(@UserID,''))
 
 
 	--Set Specialty List
