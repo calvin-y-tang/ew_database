@@ -55,7 +55,9 @@ AS
             tblCase.CaseType , 
 			tblCase.ExtCaseNbr, 
 			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID,
-			ISNULL(tblCaseAppt.ApptAttendance, '') as ApptAttendance
+			ISNULL(tblCaseAppt.ApptAttendance, '') as ApptAttendance,
+			tblEWServiceType.Name As ServiceTypDesc,
+			tblServices.EWServiceTypeID
     FROM    tblCase
             INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
             INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
@@ -70,3 +72,4 @@ AS
             LEFT OUTER JOIN tblDoctor ON tblCase.DoctorCode = tblDoctor.DoctorCode
             LEFT OUTER JOIN tblUser ON tblCase.SchedulerCode = tblUser.UserID
                                        AND tblUser.UserType = 'SC'
+			LEFT OUTER JOIN tblEWServiceType ON tblEWServiceType.EWServiceTypeID = tblServices.EWServiceTypeID

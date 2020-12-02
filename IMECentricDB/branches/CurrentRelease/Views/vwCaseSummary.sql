@@ -91,7 +91,8 @@ AS
 			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID, 
 			tblCase.Jurisdiction, 
 			CaseType.ShortDesc AS CaseTypeDesc,
-			tblServices.EWServiceTypeID
+			tblServices.EWServiceTypeID,
+			tblEWServiceType.Name As ServiceTypDesc
     FROM    tblCase
             INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
             INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
@@ -105,4 +106,5 @@ AS
 			LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = tblCase.BillClientCode
 			LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
 			LEFT OUTER JOIN tblCaseType AS CaseType ON CaseType.Code = tblCase.CaseType
+			LEFT OUTER JOIN tblEWServiceType ON tblEWServiceType.EWServiceTypeID = tblServices.EWServiceTypeID
 

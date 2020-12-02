@@ -34,7 +34,9 @@ SELECT C.CaseNbr,
        DATEDIFF(DAY, c.DateEdited, GETDATE()) AS DSE ,
 	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
 	   Q.StatusDesc,
-	   Q.FunctionCode
+	   Q.FunctionCode,
+	   ST.Name As ServiceTypDesc,
+	   SE.EWServiceTypeID
  FROM tblCase AS C
  INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
  INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
@@ -45,4 +47,5 @@ SELECT C.CaseNbr,
  LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
  LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
  LEFT OUTER JOIN tblLocation AS LO ON LO.LocationCode = C.DoctorLocation
+ LEFT OUTER JOIN tblEWServiceType AS ST ON ST.EWServiceTypeID = SE.EWServiceTypeID
 GO

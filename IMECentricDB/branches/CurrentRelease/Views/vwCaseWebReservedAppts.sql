@@ -34,7 +34,9 @@ AS
 			tblCase.ExtCaseNbr, 
 			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID, 
 			tblCase.Jurisdiction, 
-			CaseType.ShortDesc AS CaseTypeDesc 
+			CaseType.ShortDesc AS CaseTypeDesc,
+			tblEWServiceType.Name As ServiceTypDesc,
+			tblServices.EWServiceTypeID
     FROM    tblCase
             INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
             INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
@@ -49,3 +51,4 @@ AS
 			LEFT JOIN tblDoctorBlockTimeDay AS DBTD ON DBTS.DoctorBlockTimeDayID = DBTD.DoctorBlockTimeDayID
             LEFT JOIN tblLocation ON DBTD.LocationCode = tblLocation.LocationCode
             LEFT JOIN tblDoctor ON DBTD.DoctorCode = tblDoctor.DoctorCode
+			LEFT OUTER JOIN tblEWServiceType ON tblEWServiceType.EWServiceTypeID = tblServices.EWServiceTypeID

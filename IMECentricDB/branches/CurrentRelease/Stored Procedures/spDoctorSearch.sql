@@ -34,7 +34,8 @@
 	@EWServiceTypeID AS INT = NULL,
 	
 	@FirstName AS VARCHAR(50) = NULL,
-	@LastName AS VARCHAR(50) = NULL
+	@LastName AS VARCHAR(50) = NULL,
+	@UserID AS VARCHAR(15) = NULL
 )
 AS
 BEGIN
@@ -66,7 +67,8 @@ BEGIN
 	--Format delimited list
 	SET @lstSpecialties = ';;' + @Specialties
 	SET @lstKeywordIDs = ';;' + REPLACE(@KeyWordIDs, ' ', '')
-
+	
+	
 	--Calculate parameter geography data
 	IF (@ProximityZip IS NOT NULL)
 	BEGIN
@@ -236,6 +238,16 @@ FROM
 			@_FirstName = @FirstName,
 			@_LastName = @LastName
 	SET @returnValue = @@ROWCOUNT
+
+	--Remove results for access restrictions
+	IF (SELECT RestrictToFavorites FROM tblUser WHERE UserID = ISNULL(@UserID,'')) = 1
+        DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND LocationCode NOT IN 
+            (SELECT DISTINCT L.LocationCode
+                FROM tblUser AS U
+                INNER JOIN tblUserOffice AS UO ON UO.UserID = U.UserID
+                INNER JOIN tblOfficeState AS OS ON OS.OfficeCode = UO.OfficeCode
+                INNER JOIN tblLocation AS L ON L.State = OS.State
+                WHERE U.UserID = ISNULL(@UserID,''))
 
 
 	--Set Specialty List

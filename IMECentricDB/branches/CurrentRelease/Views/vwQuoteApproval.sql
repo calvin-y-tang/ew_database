@@ -27,7 +27,9 @@ SELECT AQ.AcctQuoteID,
        C.OfficeCode,
        C.CaseType,
        C.ServiceCode,
-       ISNULL(BCO.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID
+       ISNULL(BCO.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
+	   ST.Name As ServiceTypDesc,
+	   S.EWServiceTypeID
  FROM tblAcctQuote AS AQ
  INNER JOIN tblQuoteStatus AS QS ON QS.QuoteStatusID = AQ.QuoteStatusID
  INNER JOIN tblCase AS C ON C.CaseNbr = AQ.CaseNbr
@@ -39,4 +41,5 @@ SELECT AQ.AcctQuoteID,
  LEFT OUTER JOIN tblClient AS BCL ON BCL.ClientCode = C.BillClientCode
  LEFT OUTER JOIN tblCompany AS BCO ON BCO.CompanyCode = BCL.CompanyCode
  LEFT OUTER JOIN tblDoctor AS DR ON DR.DoctorCode = AQ.DoctorCode
+ LEFT OUTER JOIN tblEWServiceType AS ST ON ST.EWServiceTypeID = S.EWServiceTypeID
  WHERE QS.IsClosed=0

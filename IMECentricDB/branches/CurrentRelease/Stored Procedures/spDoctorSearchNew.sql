@@ -34,7 +34,8 @@
 	@EWServiceTypeID AS INT = NULL,
 	
 	@FirstName AS VARCHAR(50) = NULL,
-	@LastName AS VARCHAR(50) = NULL
+	@LastName AS VARCHAR(50) = NULL,
+	@UserID AS VARCHAR(15) = NULL
 )
 AS
 BEGIN
@@ -67,6 +68,7 @@ BEGIN
 	SET @lstSpecialties = ';;' + @Specialties
 	SET @lstKeywordIDs = ';;' + REPLACE(@KeyWordIDs, ' ', '')
 
+
 	--Calculate parameter geography data
 	IF (@ProximityZip IS NOT NULL)
 	BEGIN
@@ -84,17 +86,18 @@ BEGIN
 	--Set Differrent SQL String for Panel Search
 	IF ISNULL(@PanelExam,0) = 1
 		BEGIN
-			SET @strDrSchCol = ' BTS.DoctorBlockTimeSlotID AS SchedCode,'
+			SET @strDrSchCol = ' BTS.DoctorBlockTimeSlotID AS SchedCode,' +
+							   ' ROW_NUMBER() OVER (PARTITION BY BTS.DoctorBlockTimeDayID, BTS.StartTime ORDER BY BTS.DoctorBlockTimeSlotID) AS DisplayScore,'
 			SET @strDrSchFrom = ' INNER JOIN tblDoctorBlockTimeDay AS BTD ON BTD.DoctorCode=DL.DoctorCode AND BTD.LocationCode=DL.LocationCode AND BTD.ScheduleDate>=@_StartDate ' +
 								' INNER JOIN tblDoctorBlockTimeSlot AS BTS ON BTS.DoctorBlockTimeDayID = BTD.DoctorBlockTimeDayID AND BTS.DoctorBlockTimeSlotStatusID=10'
 		END
 	ELSE
-		SET @strDrSchCol = '(SELECT TOP 1 SchedCode FROM tblDoctorSchedule AS DS WHERE DS.DoctorCode=DL.DoctorCode AND DS.LocationCode=DL.LocationCode AND DS.date >= dbo.fnDateValue(@_StartDate) AND DS.Status = ''Open'' ORDER BY DS.date) AS SchedCode,'
 		SET @strDrSchCol = '(SELECT TOP 1 BTS.DoctorBlockTimeSlotID AS SchedCode FROM tblDoctorBlockTimeDay AS BTD ' +
 						   ' INNER JOIN tblDoctorBlockTimeSlot AS BTS ON BTS.DoctorBlockTimeDayID = BTD.DoctorBlockTimeDayID' +
 						   ' WHERE BTD.DoctorCode=DL.DoctorCode AND BTD.LocationCode=DL.LocationCode AND BTS.DoctorBlockTimeSlotStatusID=10' +
-						   ' AND BTD.ScheduleDate >= dbo.fnDateValue(@_StartDate) ORDER BY BTD.ScheduleDate) AS SchedCode,'
- 
+						   ' AND BTD.ScheduleDate >= dbo.fnDateValue(@_StartDate) ORDER BY BTD.ScheduleDate) AS SchedCode,' +
+						   ' 1 AS DisplayScore,'
+
 
 --Set main SQL String
 SET @strSQL='
@@ -104,6 +107,7 @@ INSERT INTO tblDoctorSearchResult
     DoctorCode,
     LocationCode,
     SchedCode,
+	DisplayScore,
     Proximity
 )
 SELECT
@@ -241,6 +245,19 @@ FROM
 			@_FirstName = @FirstName,
 			@_LastName = @LastName
 	SET @returnValue = @@ROWCOUNT
+	
+	--Use only the first row of the same start time (DisplayScore was set to 1 during INSERT)
+	DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND ISNULL(DisplayScore,0)<>1
+
+	--Remove results for access restrictions
+	IF (SELECT RestrictToFavorites FROM tblUser WHERE UserID = ISNULL(@UserID,'')) = 1
+		DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND LocationCode NOT IN 
+			(SELECT DISTINCT L.LocationCode
+				FROM tblUser AS U
+				INNER JOIN tblUserOffice AS UO ON UO.UserID = U.UserID
+				INNER JOIN tblOfficeState AS OS ON OS.OfficeCode = UO.OfficeCode
+				INNER JOIN tblLocation AS L ON L.State = OS.State
+				WHERE U.UserID = ISNULL(@UserID,''))
 
 
 	--Set Specialty List
@@ -274,6 +291,9 @@ FROM
 	 WHERE DSR.SessionID=@tmpSessionID
 
 	 -- Calculate DisplayScore
+	UPDATE tblDoctorSearchResult SET DisplayScore = NULL
+		WHERE SessionID = @tmpSessionID
+
 	SELECT 
 		@AvgMargin = MAX(AvgMargin), 
 		@MaxCaseCount = CAST(MAX(CaseCount) AS DECIMAL(8, 2)) 
