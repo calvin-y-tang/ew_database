@@ -11,10 +11,16 @@
     [DateEdited]        DATETIME     NULL, 
     [UserIDEdited]      VARCHAR(15)  NULL, 
 	[SysExceptionFired] BIT          NULL,
-    CONSTRAINT [PK_tblCaseSLARuleDetail] PRIMARY KEY CLUSTERED ([CaseNbr] ASC, [SLARuleDetailID] ASC)
+    [CaseSLARuleDetailID] INT NOT NULL IDENTITY, 
+    CONSTRAINT [PK_tblCaseSLARuleDetail] PRIMARY KEY CLUSTERED ([CaseSLARuleDetailID] ASC)
 );
 
 
 
 
 
+
+GO
+
+CREATE INDEX [IX_U_tblCaseSLARuleDetail_CaseNbrSLARuleDetailID] ON [dbo].[tblCaseSLARuleDetail] ([CaseNbr] ASC, [SLARuleDetailID] ASC)
+GO
