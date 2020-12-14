@@ -6,7 +6,7 @@
     [UserIDAdded] VARCHAR(15) NULL, 
     [SLAActionID] INT NOT NULL, 
     [Comment] VARCHAR(100) NULL, 
-    [ForDSE] BIT NOT NULL DEFAULT 0
+    [ForDSE] BIT NOT NULL DEFAULT (1)
 )
 
 GO

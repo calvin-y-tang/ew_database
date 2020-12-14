@@ -12,6 +12,8 @@
     [UserIDEdited]      VARCHAR(15)  NULL, 
 	[SysExceptionFired] BIT          NULL,
     [CaseSLARuleDetailID] INT NOT NULL IDENTITY, 
+    [IsResolved] BIT NOT NULL DEFAULT 0, 
+    [Responsible] VARCHAR(50) NULL, 
     CONSTRAINT [PK_tblCaseSLARuleDetail] PRIMARY KEY CLUSTERED ([CaseSLARuleDetailID] ASC)
 );
 
