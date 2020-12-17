@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[vwApptHoldRpt_BlockTime]
 	AS
 	    SELECT
-			ApptDay.ScheduleDate as Date,
+			CAST(ApptDay.ScheduleDate AS DATE) AS Date,
 			ApptSlot.StartTime,
 			ApptStatus.Name as Status,
 			ApptSlot.Duration,
