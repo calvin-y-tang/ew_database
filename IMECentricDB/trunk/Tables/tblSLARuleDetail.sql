@@ -9,12 +9,12 @@
     [UserIDAdded]            VARCHAR (15) NULL,
     [DateEdited]             DATETIME     NULL,
     [UserIDEdited]           VARCHAR (15) NULL,
-    [ExceptionDefIDTmp]	     INT          NULL, 
-	[Network]                INT          NULL,
-	[Amount]                 MONEY        NULL,
-	[Priority]               INT          NULL,
-	[Responsiblity]          VARCHAR(50)  NULL,
-	[NextAction]             VARCHAR(50)  NULL,
+    [ExceptionDefIDTmp]      INT          NULL,
+    [Network]                INT          NULL,
+    [Amount]                 MONEY        NULL,
+    [Priority]               INT          NULL,
+    [Responsible]            VARCHAR (50) NULL,
+    [NextAction]             VARCHAR (50) NULL,
     CONSTRAINT [PK_tblSLARuleDetail] PRIMARY KEY CLUSTERED ([SLARuleDetailID] ASC)
 );
 
