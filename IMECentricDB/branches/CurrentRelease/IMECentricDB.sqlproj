@@ -1129,6 +1129,9 @@
     <Build Include="Tables\tblIntegrationBatchHeader.sql" />
     <Build Include="Tables\tblOfficeState.sql" />
     <Build Include="Views\vwDoctorSearchResultNew.sql" />
+    <Build Include="Tables\tblCaseSLAAction.sql" />
+    <Build Include="Tables\tblSLAAction.sql" />
+    <Build Include="Views\vwApptHoldRpt_BlockTime.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
