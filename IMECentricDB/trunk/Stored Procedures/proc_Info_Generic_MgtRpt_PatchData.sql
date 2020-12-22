@@ -151,6 +151,17 @@ UPDATE ui SET ui.ClaimantConfirmationDateTime = lc.ContactedDateTime, ui.Claiman
 	inner join ##tmp_GenericConfirmationsExaminee as lc ON ui.CaseApptID = lc.CaseApptID
   WHERE lc.ContactType = 'Examinee'
 
+-- custom Sedgwick handling for customer data values
+ UPDATE ginv SET 
+		ginv.ClaimUniqueId		= dbo.fnGetParamValue(CD.[Param], 'ClaimUniqueId'),
+		ginv.CMSClaimNumber		= dbo.fnGetParamValue(CD.[Param], 'CMSClaimNumber'),
+		ginv.ShortVendorId		= dbo.fnGetParamValue(CD.[Param], 'ShortVendorId'),
+		ginv.ProcessingOfficeId = dbo.fnGetParamValue(CD.[Param], 'OfficeNumber'),
+		ginv.ReferralUniqueId	= dbo.fnGetParamValue(CD.[Param], 'ReferralUniqueId')
+   FROM ##tmp_GenericInvoices as ginv
+	    INNER JOIN tblCustomerData as CD on CD.TableType = 'tblCase' AND CD.TableKey = ginv.CaseNbr AND CD.CustomerName = 'Sedgwick CMS'
+   WHERE ginv.ParentCompanyID = 44
+
 -- return the main table
 print 'return final query results'
 SELECT * 
