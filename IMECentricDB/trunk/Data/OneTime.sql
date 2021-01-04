@@ -15,3 +15,5 @@ INSERT INTO tblOfficeState VALUES (43, 'CO', 'Admin', GetDate()),
  (43, 'UT', 'Admin', GetDate())
  GO
 
+ -- Issue 11926 - Allstate referral hub database changes - import additional company data
+ -- —Transfer tblCodes data from test system for Allstate NF10  
