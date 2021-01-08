@@ -849,6 +849,89 @@ IF @@TRANCOUNT = 0
 
 GO
 
+
+
+
+
+-- Added last minute because of a change the Gary R. had to make.
+PRINT N'Altering [dbo].[proc_DoctorSchedulePortalCalendarMonth]...';
+
+
+GO
+
+
+
+ALTER PROCEDURE [dbo].[proc_DoctorSchedulePortalCalendarMonth]  
+
+@StartDate SMALLDATETIME,
+@EndDate SMALLDATETIME,
+@DoctorCode INT
+
+AS
+BEGIN
+
+	SET NOCOUNT ON
+	DECLARE @Err INT
+
+	SELECT ApptDate, Service, SUM(CaseCount) CaseCount FROM
+	(
+	SELECT CONVERT(VARCHAR, apptTime, 101) ApptDate, tblEWServiceType.Name Service, COUNT(tblCase.casenbr) CaseCount FROM tblCase 
+	INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
+	INNER JOIN tblEWServiceType ON tblServices.EWServiceTypeID = tblEWServiceType.EWServiceTypeID
+	INNER JOIN tblPublishOnWeb ON tblCase.CaseNbr = tblPublishOnWeb.TableKey AND tblPublishOnWeb.TableType = 'tblCase' AND tblPublishOnWeb.UserCode = @DoctorCode
+	AND tblServices.UseDrPortalCalendar = 1
+	AND tblCase.ApptTime >= @StartDate AND tblCase.ApptTime <= @EndDate
+	AND tblCase.Status <> 9
+	AND tblPublishOnWeb.PublishOnWeb = 1
+	AND tblCase.DoctorCode = @DoctorCode
+	GROUP BY CONVERT(VARCHAR, apptTime, 101), tblEWServiceType.Name
+
+	UNION ALL
+
+	SELECT CONVERT(VARCHAR, apptTime, 101) ApptDate, tblEWServiceType.Name Service, COUNT(tblCase.casenbr) CaseCount FROM tblCasePanel 
+	INNER JOIN tblCase ON tblCasePanel.PanelNbr = tblCase.PanelNbr
+	INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
+	INNER JOIN tblEWServiceType ON tblServices.EWServiceTypeID = tblEWServiceType.EWServiceTypeID
+	INNER JOIN tblPublishOnWeb ON tblCase.CaseNbr = tblPublishOnWeb.TableKey AND tblPublishOnWeb.TableType = 'tblCase' AND tblPublishOnWeb.UserCode = @DoctorCode
+	AND tblServices.UseDrPortalCalendar = 1
+	AND tblCase.ApptTime >= @StartDate AND tblCase.ApptTime <= @EndDate
+	AND tblCase.Status <> 9
+	AND tblPublishOnWeb.PublishOnWeb = 1
+	AND tblCasePanel.DoctorCode = @DoctorCode
+	GROUP BY CONVERT(VARCHAR, apptTime, 101), tblEWServiceType.Name
+	)
+	AS sq GROUP BY sq.ApptDate, sq.Service, sq.CaseCount
+	
+	ORDER BY ApptDate, Service
+
+	SET @Err = @@Error
+
+	RETURN @Err
+END
+GO
+
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+
+
+
+
+
+
 IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
 GO
 IF @@TRANCOUNT>0 BEGIN
