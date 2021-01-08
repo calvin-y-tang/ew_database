@@ -19,6 +19,7 @@ BEGIN
 	AND tblServices.UseDrPortalCalendar = 1
 	AND tblCase.ApptTime >= @StartDate AND tblCase.ApptTime <= @EndDate
 	AND tblCase.Status <> 9
+	AND tblPublishOnWeb.PublishOnWeb = 1
 	AND tblCase.DoctorCode = @DoctorCode
 	GROUP BY CONVERT(VARCHAR, apptTime, 101), tblEWServiceType.Name
 
@@ -32,6 +33,7 @@ BEGIN
 	AND tblServices.UseDrPortalCalendar = 1
 	AND tblCase.ApptTime >= @StartDate AND tblCase.ApptTime <= @EndDate
 	AND tblCase.Status <> 9
+	AND tblPublishOnWeb.PublishOnWeb = 1
 	AND tblCasePanel.DoctorCode = @DoctorCode
 	GROUP BY CONVERT(VARCHAR, apptTime, 101), tblEWServiceType.Name
 	)
