@@ -21,7 +21,8 @@ AS
             tblCase.ChartNbr ,
             tblCCAddress.Status ,
             tblCCAddress.ccCode ,
-            tblCCAddress.City + ', ' + UPPER(tblCCAddress.State) + '  ' + tblCCAddress.Zip AS CityStateZip
+            tblCCAddress.City + ', ' + UPPER(tblCCAddress.State) + '  ' + tblCCAddress.Zip AS CityStateZip,
+			tblCase.OfficeCode
     FROM    tblCase
             INNER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
             INNER JOIN tblExamineecc ON tblCase.ChartNbr = tblExamineecc.ChartNbr
