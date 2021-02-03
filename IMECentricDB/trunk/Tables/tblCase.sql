@@ -265,7 +265,10 @@
 	[DoctorBlockTimeSlotID]          INT              NULL,
     [OrigApptMadeDate]				 DATETIME		  NULL, 
 	[RecordRetrievalMethod]         INT               CONSTRAINT [DF_tblCase_RecordRetrievalMethod] DEFAULT ((0)) NOT NULL,
-	[CustomerSystemID]               VARCHAR (50)     NULL,
+	[CustomerSystemID]              VARCHAR (50)     NULL,
+    [RetrieveMedRecords]            BIT              CONSTRAINT [DF_tblCase_RetrieveMedRecords] DEFAULT ((0)) NULL,
+    [RetrieveFilms]                 BIT              CONSTRAINT [DF_tblCase_RetrieveFilms] DEFAULT ((0)) NULL,
+    [RetrieveStudies]               VARCHAR (200)    NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
