@@ -25,5 +25,11 @@
 	[Overridden] BIT NULL,
 	[TransmitFileName] VARCHAR (256) NULL,
 	[AckFileName] VARCHAR (256) NULL,
-	CONSTRAINT [PK_tblExternalCommunications] PRIMARY KEY CLUSTERED ([CommunicationID] ASC)
+	[BulkBillingID] INT NULL, 
+    CONSTRAINT [PK_tblExternalCommunications] PRIMARY KEY CLUSTERED ([CommunicationID] ASC)
 )
+
+GO
+CREATE INDEX [IX_tblExternalCommunications_CaseNbr_CHID] ON [dbo].[tblExternalCommunications] ([CaseNbr],[CaseHistoryID])
+GO
+CREATE INDEX [IX_tblExternalCommunications_BulkBilling_CommSent] ON [dbo].[tblExternalCommunications] ([BulkBillingID],[CommunicationSent])
