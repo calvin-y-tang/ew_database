@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[proc_GetExternalCommunication]
-	@chID AS INTEGER
+	@chID AS INTEGER,
+	@parentCompanyID AS INTEGER
 AS
 	SELECT ch.EventDate,
 		c.ChartNbr,
@@ -15,7 +16,8 @@ AS
 		c.DoctorLocation,
 		c.claimnbr,
 		f.EWFacilityID, 
-		fgs.BusUnitGroupID
+		fgs.BusUnitGroupID,
+		com.BulkBillingID
  FROM tblcasehistory AS ch 
  INNER JOIN tblcase AS c ON ch.casenbr = c.casenbr
  INNER JOIN tblcasetype AS ct ON c.casetype = ct.code
@@ -24,8 +26,9 @@ AS
  INNER JOIN tbloffice AS o ON c.OfficeCode = o.OfficeCode
  INNER JOIN tblEWFacility AS f ON o.EWFacilityID = f.EWFacilityID
  INNER JOIN tblEWFacilityGroupSummary AS fgs ON f.EWFacilityID = fgs.EWFacilityID
- WHERE ch.ID = @chID
- AND ch.[Type] IN ('CANCEL', 'CANCELLED', 'FINALRPT', 'LATECANCEL', 'NEWCASE', 'NOSHOW', 
-					'RPTSENTEMAIL', 'RPTSENTFAX', 'RPTSENTPRINT', 'RPTSENTWEB', 'SCHEDULED', 'SHOW', 'TRANSCRIPTION')
- AND c.InputSourceID = 7 AND s.EWServiceTypeID NOT IN (0) AND com.ParentCompanyID = 44
-
+ WHERE (ch.ID = @chID)
+   AND (com.ParentCompanyID = @parentCompanyID)
+   AND (c.InputSourceID = 7)
+   AND (s.EWServiceTypeID NOT IN (0))
+   AND (ch.[Type] IN ('CANCEL', 'CANCELLED', 'FINALRPT', 'LATECANCEL', 'NEWCASE', 'NOSHOW', 
+					'RPTSENTEMAIL', 'RPTSENTFAX', 'RPTSENTPRINT', 'RPTSENTWEB', 'SCHEDULED', 'SHOW', 'TRANSCRIPTION')) 
