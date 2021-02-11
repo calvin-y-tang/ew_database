@@ -31,7 +31,8 @@
     [DateEdited]           DATETIME      NULL,
     [UserIDEdited]         VARCHAR (15)  NULL,
 	[QuoteHandlingID]      INT           NULL, 
-	[ApprovedAmt]       MONEY         NULL,
+	[ApprovedAmt]          MONEY         NULL,
+	[DateClientCommResent] DATETIME      NULL,
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 
