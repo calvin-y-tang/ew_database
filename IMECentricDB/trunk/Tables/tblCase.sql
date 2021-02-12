@@ -274,6 +274,8 @@
     [TATExamSchedToQuoteSent]          INT NULL, 
     [TATExamSchedToApprovalSent]       INT NULL, 
     [TATApprovalSentToResentApproval]  INT NULL, 
+	[InvFeeQuoteTotalAmt]              MONEY NULL, 
+	[InvFeeApprovalTotalAmt]           MONEY NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
