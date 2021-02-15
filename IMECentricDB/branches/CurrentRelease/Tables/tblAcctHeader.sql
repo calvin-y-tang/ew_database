@@ -69,6 +69,7 @@
     [RelatedInvHeaderID]    INT             NULL,
 	[BulkBillingID]         INT             NULL,
 	[FeeCodeSource]         INT             NULL,
+	[TaxOfficeCode]         INT             NULL,
     CONSTRAINT [PK_tblAcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 
