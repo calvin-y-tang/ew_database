@@ -1,0 +1,35 @@
+﻿CREATE TABLE [dbo].[tblExternalCommunications]
+(
+	[CommunicationID] INT IDENTITY (1,1) NOT NULL,
+	[DateAdded] DATETIME NOT NULL,
+	[EventDate] DATETIME NOT NULL,
+	[CaseNbr] INT NULL,
+	[ChartNbr] INT NULL,
+	[CaseHistoryID] INT NULL,
+	[UserID] VARCHAR(15) NULL,
+	[DoctorCode] INT NULL,
+	[DoctorSpecialty] VARCHAR(50) NULL,
+	[ApptDateTime] DATETIME NULL,
+	[DateCanceled] DATETIME NULL,
+	[CaseHistoryType] VARCHAR(20) NULL,
+	[EWBusLineID] INT NULL,
+	[EWServiceTypeID] INT NULL,
+	[OfficeCode] INT NULL,
+	[ApptLocationCode] INT NULL,
+	[ClaimNbr] VARCHAR (50) NULL,
+	[EWFacilityID] INT NULL,
+	[BusUnitGroupID] INT NULL,
+	[CommunicationSent] DATETIME NULL,
+	[CommunicationAck] DATETIME NULL,
+	[LastError] VARCHAR(1024) NULL,
+	[Overridden] BIT NULL,
+	[TransmitFileName] VARCHAR (256) NULL,
+	[AckFileName] VARCHAR (256) NULL,
+	[BulkBillingID] INT NULL, 
+    CONSTRAINT [PK_tblExternalCommunications] PRIMARY KEY CLUSTERED ([CommunicationID] ASC)
+)
+
+GO
+CREATE INDEX [IX_tblExternalCommunications_CaseNbr_CHID] ON [dbo].[tblExternalCommunications] ([CaseNbr],[CaseHistoryID])
+GO
+CREATE INDEX [IX_tblExternalCommunications_BulkBilling_CommSent] ON [dbo].[tblExternalCommunications] ([BulkBillingID],[CommunicationSent])
