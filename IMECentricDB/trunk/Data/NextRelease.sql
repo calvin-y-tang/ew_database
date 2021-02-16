@@ -49,6 +49,13 @@ VALUES(21, 207, 219, 'Day', 216, 0),
       (22, 207, 220, 'Day', 217, 0), 
       (23, 220, 221, 'Day', 218, 0)
 GO
-
+INSERT INTO tblEvent (EventID, Descrip, Category)
+VALUES(1060, 'Fee Quote/Approval Saved', 'Case')
+GO
+INSERT INTO tblTATCalculationMethodEvent (TATCalculationMethodID, EventID)
+VALUES (21,1060), 
+	   (22,1060), 
+	   (23,1060)
+GO
 
 
