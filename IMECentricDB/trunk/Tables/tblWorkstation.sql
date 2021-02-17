@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblWorkstation] (
+CREATE TABLE [dbo].[tblWorkstation] (
     [WorkstationID]         INT           IDENTITY (1, 1) NOT NULL,
     [WorkstationName]       VARCHAR (250) NOT NULL,
     [Domain]                VARCHAR (25)  NULL,
@@ -25,6 +25,6 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_U_tblWorkstation_WorkstationName]
+CREATE NONCLUSTERED INDEX [IX_tblWorkstation_WorkstationName]
     ON [dbo].[tblWorkstation]([WorkstationName] ASC);
 
