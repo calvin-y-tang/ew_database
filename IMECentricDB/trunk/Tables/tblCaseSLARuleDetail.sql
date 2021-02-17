@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[tblCaseSLARuleDetail] (
+﻿CREATE TABLE [dbo].[tblCaseSLARuleDetail] (
     [CaseNbr]             INT           NOT NULL,
     [SLARuleDetailID]     INT           NOT NULL,
     [RequiredDate]        DATETIME      NULL,
@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[tblCaseSLARuleDetail] (
     [UserIDEdited]        VARCHAR (15)  NULL,
     [SysExceptionFired]   BIT           NULL,
     [CaseSLARuleDetailID] INT           IDENTITY (1, 1) NOT NULL,
-    [IsResolved]          BIT           DEFAULT ((0)) NOT NULL,
+    [IsResolved]          BIT           CONSTRAINT [DF_tblCaseSLARuleDetail_IsResolved] DEFAULT ((0)) NOT NULL,
     [Responsible]         VARCHAR (50)  NULL,
     [StartDate]           DATETIME      NULL,
     [EndDate]             DATETIME      NULL,

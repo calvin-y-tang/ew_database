@@ -21,7 +21,7 @@
     [InformViaPhone]       BIT           CONSTRAINT [DF_tblAcctQuote_InformViaPhone] DEFAULT ((0)) NULL,
     [InformViaFax]         BIT           CONSTRAINT [DF_tblAcctQuote_InformViaFax] DEFAULT ((0)) NULL,
     [DateClientInformed]   DATETIME      NULL,
-    [ApproveViaEmail]      BIT           CONSTRAINT [DF_tblAcctOuote_ApproveViaEmail] DEFAULT ((0)) NULL,
+    [ApproveViaEmail]      BIT           CONSTRAINT [DF_tblAcctQuote_ApproveViaEmail] DEFAULT ((0)) NULL,
     [ApproveViaPhone]      BIT           CONSTRAINT [DF_tblAcctQuote_ApproveViaPhone] DEFAULT ((0)) NULL,
     [ApproveViaFax]        BIT           CONSTRAINT [DF_tblAcctQuote_ApproveViaFax] DEFAULT ((0)) NULL,
     [DateClientApproved]   DATETIME      NULL,

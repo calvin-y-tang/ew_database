@@ -5,7 +5,7 @@
     [UserIDAdded]         VARCHAR (15)  NULL,
     [SLAActionID]         INT           NOT NULL,
     [Comment]             VARCHAR (100) NULL,
-    [ForDSE]              BIT           DEFAULT ((1)) NOT NULL,
+    [ForDSE]              BIT           CONSTRAINT [DF_tblCaseSLAAction_ForDSE] DEFAULT ((1)) NOT NULL,
     CONSTRAINT [PK_tblCaseSLAAction] PRIMARY KEY CLUSTERED ([CaseSLAActionID] ASC)
 );
 
