@@ -67,11 +67,13 @@
     [IsEInvoice]            BIT             NULL,
     [HeaderID]              INT             IDENTITY (1, 1) NOT NULL,
     [RelatedInvHeaderID]    INT             NULL,
-	[BulkBillingID]         INT             NULL,
-	[FeeCodeSource]         INT             NULL,
-	[TaxOfficeCode]         INT             NULL,
+    [BulkBillingID]         INT             NULL,
+    [FeeCodeSource]         INT             NULL,
+    [TaxOfficeCode]         INT             NULL,
     CONSTRAINT [PK_tblAcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
+
+
 
 
 
@@ -101,3 +103,15 @@ GO
 
 
 CREATE INDEX [IX_tblAcctHeader_CaseDocID] ON [dbo].[tblAcctHeader] ([CaseDocID])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblAcctHeader_EWFacilityID]
+    ON [dbo].[tblAcctHeader]([EWFacilityID] ASC)
+    INCLUDE([DocumentNbr], [CaseDocID]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblAcctHeader_DocumentTypeDocumentStatusCompanyCode]
+    ON [dbo].[tblAcctHeader]([DocumentType] ASC, [DocumentStatus] ASC, [CompanyCode] ASC)
+    INCLUDE([DocumentNbr], [DocumentDate], [CaseNbr], [DocumentTotal], [DocumentCode], [ClientCode], [EWFacilityID], [BulkBillingID]);
+
