@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblCaseSLARuleDetail] (
+CREATE TABLE [dbo].[tblCaseSLARuleDetail] (
     [CaseNbr]             INT           NOT NULL,
     [SLARuleDetailID]     INT           NOT NULL,
     [RequiredDate]        DATETIME      NULL,
@@ -26,7 +26,12 @@
 
 
 
+
+
 GO
 
-CREATE INDEX [IX_U_tblCaseSLARuleDetail_CaseNbrSLARuleDetailID] ON [dbo].[tblCaseSLARuleDetail] ([CaseNbr] ASC, [SLARuleDetailID] ASC)
+
 GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseSLARuleDetail_CaseNbrSLARuleDetailID]
+    ON [dbo].[tblCaseSLARuleDetail]([CaseNbr] ASC, [SLARuleDetailID] ASC);
+
