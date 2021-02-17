@@ -11,13 +11,15 @@
     [CaseDocID]              INT           NULL,
     [RetrievalStatusID]      INT           CONSTRAINT [DF_tblCaseRecRetrievalDocument_RetrievalStatusID] DEFAULT ((0)) NOT NULL,
     [Description]            VARCHAR (200) NULL,
-	[LastResponse]           VARCHAR (200) NULL,
-	[Facility]				 VARCHAR (200) NULL,
-	[RecordType]			 VARCHAR (50)  NULL,
-    [FileVersion]			 VARCHAR(25)   NULL, 
-	[FileType]               VARCHAR (50)  NULL,
-	[RetrievalGroupID]       VARCHAR(100)  NULL,
-    PRIMARY KEY CLUSTERED ([RecRetrievalDocumentID] ASC)
+    [LastResponse]           VARCHAR (200) NULL,
+    [Facility]               VARCHAR (200) NULL,
+    [RecordType]             VARCHAR (50)  NULL,
+    [FileVersion]            VARCHAR (25)  NULL,
+    [FileType]               VARCHAR (50)  NULL,
+    [RetrievalGroupID]       VARCHAR (100) NULL,
+    CONSTRAINT [PK_tblCaseRecRetrievalDocument] PRIMARY KEY CLUSTERED ([RecRetrievalDocumentID] ASC)
 );
+
+
 
 

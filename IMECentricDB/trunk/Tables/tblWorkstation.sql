@@ -18,8 +18,10 @@
     [VertRes]               INT           NULL,
     [ColorDepth]            INT           NULL,
     [FontSize]              INT           NULL,
-    CONSTRAINT [PK__tblWorks__35183A6D449489B0] PRIMARY KEY CLUSTERED ([WorkstationID] ASC)
+    CONSTRAINT [PK_tblWorkstation] PRIMARY KEY CLUSTERED ([WorkstationID] ASC)
 );
+
+
 
 
 GO
