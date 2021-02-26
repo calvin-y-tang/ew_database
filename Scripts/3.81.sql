@@ -58,10 +58,14 @@ IF @@TRANCOUNT = 0
 
 
 GO
+
+
 PRINT N'Altering [dbo].[tblCase]...';
 
 
 GO
+
+-- This table is temporarily altered to aaccount for three columns that already exist.
 ALTER TABLE [dbo].[tblCase]
     ADD [RetrieveMedRecords]              BIT           CONSTRAINT [DF_tblCase_RetrieveMedRecords] DEFAULT ((0)) NULL,
         [RetrieveFilms]                   BIT           CONSTRAINT [DF_tblCase_RetrieveFilms] DEFAULT ((0)) NULL,
@@ -259,4 +263,21 @@ VALUES(21, 207, 219, 'Day', 216, 0),
 GO
 
 
+-- New items
+
+INSERT INTO tblEvent (EventID, Descrip, Category)
+VALUES(1060, 'Fee Quote/Approval Saved', 'Case')
+GO
+
+INSERT INTO tblTATCalculationMethodEvent (TATCalculationMethodID, EventID)
+VALUES (21,1060), 
+	   (22,1060), 
+	   (23,1060)
+GO
+
+-- Final new area missed
+INSERT INTO dbo.tblUserFunction
+(FunctionCode, FunctionDesc, DateAdded)
+VALUES
+('SetTaxOffice', 'Accounting - Set Tax Office', GETDATE())
 
