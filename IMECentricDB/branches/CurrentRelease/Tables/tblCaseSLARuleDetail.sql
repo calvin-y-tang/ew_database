@@ -12,7 +12,7 @@
     [UserIDEdited]        VARCHAR (15)  NULL,
     [SysExceptionFired]   BIT           NULL,
     [CaseSLARuleDetailID] INT           IDENTITY (1, 1) NOT NULL,
-    [IsResolved]          BIT           DEFAULT ((0)) NOT NULL,
+    [IsResolved]          BIT           CONSTRAINT [DF_tblCaseSLARuleDetail_IsResolved] DEFAULT ((0)) NOT NULL,
     [Responsible]         VARCHAR (50)  NULL,
     [StartDate]           DATETIME      NULL,
     [EndDate]             DATETIME      NULL,
@@ -26,7 +26,12 @@
 
 
 
+
+
 GO
 
-CREATE INDEX [IX_U_tblCaseSLARuleDetail_CaseNbrSLARuleDetailID] ON [dbo].[tblCaseSLARuleDetail] ([CaseNbr] ASC, [SLARuleDetailID] ASC)
+
 GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseSLARuleDetail_CaseNbrSLARuleDetailID]
+    ON [dbo].[tblCaseSLARuleDetail]([CaseNbr] ASC, [SLARuleDetailID] ASC);
+

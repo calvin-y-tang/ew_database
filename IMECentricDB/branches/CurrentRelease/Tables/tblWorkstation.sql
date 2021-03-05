@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblWorkstation] (
+CREATE TABLE [dbo].[tblWorkstation] (
     [WorkstationID]         INT           IDENTITY (1, 1) NOT NULL,
     [WorkstationName]       VARCHAR (250) NOT NULL,
     [Domain]                VARCHAR (25)  NULL,
@@ -18,11 +18,13 @@
     [VertRes]               INT           NULL,
     [ColorDepth]            INT           NULL,
     [FontSize]              INT           NULL,
-    CONSTRAINT [PK__tblWorks__35183A6D449489B0] PRIMARY KEY CLUSTERED ([WorkstationID] ASC)
+    CONSTRAINT [PK_tblWorkstation] PRIMARY KEY CLUSTERED ([WorkstationID] ASC)
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_U_tblWorkstation_WorkstationName]
+CREATE NONCLUSTERED INDEX [IX_tblWorkstation_WorkstationName]
     ON [dbo].[tblWorkstation]([WorkstationName] ASC);
 

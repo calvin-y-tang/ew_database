@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblLock] (
+CREATE TABLE [dbo].[tblLock] (
     [LockID]     INT          IDENTITY (1, 1) NOT NULL,
     [TableType]  VARCHAR (50) NULL,
     [TableKey]   INT          NULL,
@@ -11,8 +11,10 @@
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_U_tblLock_TableTypeTableKey]
+CREATE NONCLUSTERED INDEX [IX_tblLock_TableTypeTableKey]
     ON [dbo].[tblLock]([TableType] ASC, [TableKey] ASC)
     INCLUDE([SessionID], [UserID]);
 

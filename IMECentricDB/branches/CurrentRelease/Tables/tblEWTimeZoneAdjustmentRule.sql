@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblEWTimeZoneAdjustmentRule] (
+CREATE TABLE [dbo].[tblEWTimeZoneAdjustmentRule] (
     [PrimaryKey]                             INT           NOT NULL,
     [EWTimeZoneID]                           INT           NOT NULL,
     [RuleNo]                                 INT           NOT NULL,
@@ -21,7 +21,9 @@
 );
 
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_U_EWTimeZoneAdjustmentRule_EWTimeZoneID_DateStart_DateEnd]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_tblEWTimeZoneAdjustmentRule_EWTimeZoneIDDateStartDateEnd]
     ON [dbo].[tblEWTimeZoneAdjustmentRule]([EWTimeZoneID] ASC, [DateStart] ASC, [DateEnd] ASC);
 

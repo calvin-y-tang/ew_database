@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblSession] (
+CREATE TABLE [dbo].[tblSession] (
     [PrimaryKey]      INT          IDENTITY (1, 1) NOT NULL,
     [SessionID]       VARCHAR (50) NOT NULL,
     [DateAdded]       DATETIME     NULL,
@@ -11,7 +11,9 @@
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_U_tblSession_SessionID]
+CREATE NONCLUSTERED INDEX [IX_tblSession_SessionID]
     ON [dbo].[tblSession]([SessionID] ASC);
 
