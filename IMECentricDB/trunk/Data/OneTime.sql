@@ -1,1 +1,74 @@
-﻿
+﻿-- Issue 12027 - add Content Type to be used in tblDocument & tblBusinessRuleCondition for Sentry
+insert into tblCodes (Category, SubCategory, Value)
+Values ('DocumentContentType', 'Referral Confirmation', 1), 
+       ('DocumentContentType', 'Appointment Confirmation', 2), 
+       ('DocumentContentType', 'Fee Quote Notice', 3), 
+       ('DocumentContentType', 'Fee Approval Notice', 4), 
+       ('DocumentContentType', 'Medical Records Request', 5), 
+       ('DocumentContentType', 'IME Cite Letter ', 6), 
+       ('DocumentContentType', 'Appointment Delay', 7), 
+       ('DocumentContentType', 'Physician Selection', 8), 
+       ('DocumentContentType', 'Cover Letter Request', 9), 
+       ('DocumentContentType', 'Reschedule Notice', 10), 
+       ('DocumentContentType', 'Attendance Confirmation', 11), 
+       ('DocumentContentType', 'No Show/Cancellation', 12), 
+       ('DocumentContentType', 'IME Report Cover Sheet', 13), 
+       ('DocumentContentType', 'Invoice', 14), 
+       ('DocumentContentType', 'Voucher', 15), 
+       ('DocumentContentType', 'Invoice Status Inquiries', 16)
+GO
+-- Issue 12027 - update param4 desc for tblBusinessRule
+UPDATE tblBusinessRule
+   SET Param4Desc = 'MatchOnContentTypeID'
+  FROM tblBusinessRule
+ WHERE BusinessRuleID in (109,110,111)
+GO
+-- Issue 12027 - delete existing entries for sentry from tblBusinessRuleCondition
+DELETE FROM tblBusinessRuleCondition 
+WHERE BusinessRuleID in (109,110,111) 
+  AND EntityID = 46 
+  AND EntityType = 'PC'
+GO
+-- Issue 12027 - add new entries for Sentry to tblBusinessRuleCondition
+INSERT INTO 
+     tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited,
+                              OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+       -- generate doc
+VALUES ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '1', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '2', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '3', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '4', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '5', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '6', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '7', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '10', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '11', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '12', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '13', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', '16', NULL),
+       -- distribute doc
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '1', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '2', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '3', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '4', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '5', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '6', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '7', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '10', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '11', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '12', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '13', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', '16', NULL),
+       -- distribute rpt
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '1', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '2', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '3', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '4', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', '5', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '6', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '7', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '10', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '11', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '12', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', '13', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', '16', NULL)
