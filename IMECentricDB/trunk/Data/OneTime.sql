@@ -19,7 +19,7 @@ Values ('DocumentContentType', 'Referral Confirmation', 1),
 GO
 -- Issue 12027 - update param4 desc for tblBusinessRule
 UPDATE tblBusinessRule
-   SET Param4Desc = 'MatchOnContentTypeID'
+   SET Param4Desc = 'MatchOnContentType'
   FROM tblBusinessRule
  WHERE BusinessRuleID in (109,110,111)
 GO
