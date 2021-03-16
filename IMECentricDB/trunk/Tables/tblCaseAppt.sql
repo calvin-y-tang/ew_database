@@ -44,3 +44,8 @@ GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_ApptTimeApptStatusID]
     ON [dbo].[tblCaseAppt]([ApptTime] ASC, [ApptStatusID] ASC);
 
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_CaseNbrApptTimeDoctorCodeLocationCodeDoctorBlockTimeSlotID]
+ON [dbo].[tblCaseAppt] ([ApptStatusID])
+INCLUDE ([CaseNbr],[ApptTime],[DoctorCode],[LocationCode],[DoctorBlockTimeSlotID]);
+
