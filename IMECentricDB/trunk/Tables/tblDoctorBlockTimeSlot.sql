@@ -17,3 +17,5 @@
 
 
 GO
+CREATE NONCLUSTERED INDEX [IX_tblDoctorBlockTimeSlot_DoctorBlockTimeDayIDStartTime]
+ON [dbo].[tblDoctorBlockTimeSlot] ([DoctorBlockTimeDayID],[StartTime]);
