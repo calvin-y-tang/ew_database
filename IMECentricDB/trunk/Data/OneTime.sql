@@ -11,11 +11,13 @@ Values ('DocumentContentType', 'Referral Confirmation', 1),
        ('DocumentContentType', 'Cover Letter Request', 9), 
        ('DocumentContentType', 'Reschedule Notice', 10), 
        ('DocumentContentType', 'Attendance Confirmation', 11), 
-       ('DocumentContentType', 'No Show/Cancellation', 12), 
+       ('DocumentContentType', 'No Show Notice', 12), 
        ('DocumentContentType', 'IME Report Cover Sheet', 13), 
        ('DocumentContentType', 'Invoice', 14), 
        ('DocumentContentType', 'Voucher', 15), 
-       ('DocumentContentType', 'Invoice Status Inquiries', 16)
+       ('DocumentContentType', 'Invoice Status Inquiries', 16), 
+       ('DocumentContentType', 'Cancellation Notice', 17)
+
 GO
 -- Issue 12027 - update param4 desc for tblBusinessRule
 UPDATE tblBusinessRule
@@ -43,7 +45,8 @@ VALUES ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
        ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Appointment Delay', NULL),
        ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Reschedule Notice', NULL),
        ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Attendance Confirmation', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show/Cancellation', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show Notice', NULL),
+       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
        ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
        ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL),
        -- distribute doc
@@ -56,7 +59,8 @@ VALUES ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
        ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Appointment Delay', NULL),
        ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Reschedule Notice', NULL),
        ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Attendance Confirmation', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show/Cancellation', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show Notice', NULL),
+       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
        ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
        ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL),
        -- distribute rpt
@@ -69,6 +73,7 @@ VALUES ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Appointment Delay', NULL),
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Reschedule Notice', NULL),
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Attendance Confirmation', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show/Cancellation', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show Notice', NULL),
+       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL)
