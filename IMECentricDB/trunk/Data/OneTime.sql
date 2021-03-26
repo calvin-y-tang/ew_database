@@ -77,3 +77,14 @@ VALUES ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
        ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL)
+
+GO
+
+-- Issue 12011 - storing appt letter content type here
+insert into tblSetting (Name, Value)
+Values ('ApptLetterContentType', 'Appointment Confirmation')
+
+
+Go
+  
+
