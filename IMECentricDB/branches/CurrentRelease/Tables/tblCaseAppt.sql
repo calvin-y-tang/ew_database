@@ -29,6 +29,7 @@
     [ScheduleMethod]          INT           NULL,
     [Duration]                INT           NULL,
     [DoctorBlockTimeSlotID]   INT           NULL,
+	[DateApptLetterSent]       DATETIME      NULL,
     CONSTRAINT [PK_tblCaseAppt] PRIMARY KEY CLUSTERED ([CaseApptID] ASC)
 );
 
@@ -43,4 +44,9 @@ CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_CaseNbr]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_ApptTimeApptStatusID]
     ON [dbo].[tblCaseAppt]([ApptTime] ASC, [ApptStatusID] ASC);
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_CaseNbrApptTimeDoctorCodeLocationCodeDoctorBlockTimeSlotID]
+ON [dbo].[tblCaseAppt] ([ApptStatusID])
+INCLUDE ([CaseNbr],[ApptTime],[DoctorCode],[LocationCode],[DoctorBlockTimeSlotID]);
 

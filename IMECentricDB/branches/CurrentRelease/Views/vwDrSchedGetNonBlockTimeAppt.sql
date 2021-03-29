@@ -4,7 +4,7 @@
 			ca.CaseApptID,
 			ca.CaseNbr,
 			ca.ApptStatusID,
-			ca.DoctorCode, 
+			ISNULL(cap.DoctorCode, ca.DoctorCode) as Doctorcode,
 			ca.LocationCode, 
 			ca.ApptTime,
 			ca.Duration,
@@ -22,6 +22,7 @@
 			serv.ShortDesc AS ServiceShortDesc
 		FROM
 			tblCaseAppt AS ca
+				LEFT OUTER JOIN tblCaseApptPanel AS CAP on cap.CaseApptID = ca.CaseApptID
 				INNER JOIN tblCase AS c ON c.CaseNbr = ca.CaseNbr
 				INNER JOIN tblExaminee AS ex ON ex.ChartNbr = c.Chartnbr
 				INNER JOIN tblServices AS serv ON serv.ServiceCode = c.ServiceCode

@@ -95,6 +95,7 @@ CREATE TABLE [dbo].[tblDocument] (
     [ElecTransferFolderID]          INT             NULL,
 	[ElecTransferOutputFile]        VARCHAR(128)    NULL,
 	[ElecTransferDupFileHandling]   INT             NULL,
+	[ContentType]                   VARCHAR(50)     NULL,
 	CONSTRAINT [PK_tbldocument] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 

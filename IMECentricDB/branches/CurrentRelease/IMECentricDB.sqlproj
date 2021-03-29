@@ -1132,6 +1132,7 @@
     <Build Include="Tables\tblCaseSLAAction.sql" />
     <Build Include="Tables\tblSLAAction.sql" />
     <Build Include="Views\vwApptHoldRpt_BlockTime.sql" />
+    <Build Include="Stored Procedures\spGetAllBusinessRules.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
