@@ -189,6 +189,9 @@ IF @@TRANCOUNT = 0
 
 
 GO
+
+--spGetAllBusinessRules already exists
+/*
 PRINT N'Creating [dbo].[spGetAllBusinessRules]...';
 
 
@@ -259,6 +262,10 @@ BEGIN
 	ORDER BY sortedBR.BusinessRuleID, sortedBR.ProcessOrder
 END
 GO
+
+*/
+
+
 IF @@ERROR <> 0
    AND @@TRANCOUNT > 0
     BEGIN
