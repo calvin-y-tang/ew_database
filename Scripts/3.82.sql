@@ -435,52 +435,45 @@ IF @@TRANCOUNT = 0
 
 
 GO
-PRINT N'Dropping unnamed constraint on [dbo].[tblCaseSLAAction]...';
+
+--PRINT N'Dropping unnamed constraint on [dbo].[tblCaseSLAAction]...';
+--GO
+--ALTER TABLE [dbo].[tblCaseSLAAction] DROP CONSTRAINT ;
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
+
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
+--GO
 
 
-GO
-ALTER TABLE [dbo].[tblCaseSLAAction] DROP CONSTRAINT ;
+--PRINT N'Dropping unnamed constraint on [dbo].[tblCaseSLARuleDetail]...';
+--GO
+--ALTER TABLE [dbo].[tblCaseSLARuleDetail] DROP CONSTRAINT ;
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
+
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
+--GO
 
 
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
-
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
-
-
-GO
-PRINT N'Dropping unnamed constraint on [dbo].[tblCaseSLARuleDetail]...';
-
-
-GO
-ALTER TABLE [dbo].[tblCaseSLARuleDetail] DROP CONSTRAINT ;
-
-
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
-
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
-
-
-GO
 PRINT N'Dropping [dbo].[DF_tblDoctorBlockTimeDayActive]...';
 
 
@@ -550,52 +543,46 @@ IF @@TRANCOUNT = 0
 
 
 GO
-PRINT N'Dropping unnamed constraint on [dbo].[tblSLAAction]...';
 
 
-GO
-ALTER TABLE [dbo].[tblSLAAction] DROP CONSTRAINT ;
+--PRINT N'Dropping unnamed constraint on [dbo].[tblSLAAction]...';
+--GO
+--ALTER TABLE [dbo].[tblSLAAction] DROP CONSTRAINT ;
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
+
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
+--GO
 
 
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
+--PRINT N'Dropping unnamed constraint on [dbo].[tblSLAAction]...';
+--GO
+--ALTER TABLE [dbo].[tblSLAAction] DROP CONSTRAINT ;
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
 
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
-
-
-GO
-PRINT N'Dropping unnamed constraint on [dbo].[tblSLAAction]...';
-
-
-GO
-ALTER TABLE [dbo].[tblSLAAction] DROP CONSTRAINT ;
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
+--GO
 
 
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
-
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
-
-
-GO
 PRINT N'Dropping [dbo].[DF_tblCaseRecRetrievalDocument_RetrievalStatusID]...';
 
 
@@ -1855,30 +1842,30 @@ IF @@TRANCOUNT = 0
 
 
 GO
-PRINT N'Creating [dbo].[DF_tblCaseSLARuleDetail_IsResolved]...';
+--PRINT N'Creating [dbo].[DF_tblCaseSLARuleDetail_IsResolved]...';
 
 
-GO
-ALTER TABLE [dbo].[tblCaseSLARuleDetail]
-    ADD CONSTRAINT [DF_tblCaseSLARuleDetail_IsResolved] DEFAULT ((0)) FOR [IsResolved];
+--GO
+--ALTER TABLE [dbo].[tblCaseSLARuleDetail]
+--    ADD CONSTRAINT [DF_tblCaseSLARuleDetail_IsResolved] DEFAULT ((0)) FOR [IsResolved];
 
 
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
 
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
 
 
-GO
+--GO
 PRINT N'Creating [dbo].[DF_tblDoctorBlockTimeDay_Active]...';
 
 
