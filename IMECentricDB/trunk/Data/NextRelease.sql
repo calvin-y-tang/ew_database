@@ -22,3 +22,11 @@ VALUES (21,1060),
 GO
 
 
+-- Issue 12079 - add med status options to combo
+INSERT INTO tblRecordStatus  (Description, DateAdded, UserIDAdded, PublishOnWeb)
+VALUES ('Awaiting Declaration', GETDATE(), 'TLyde', 1),
+       ('Declaration Received', GETDATE(), 'TLyde', 1)
+
+GO
+
+
