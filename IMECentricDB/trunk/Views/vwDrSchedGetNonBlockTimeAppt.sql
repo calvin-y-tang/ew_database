@@ -19,7 +19,8 @@
 			ex.LastName + ', ' + ex.FirstName AS ExamineeName,
 			co.IntName AS CompanyName,
 			ct.ShortDesc AS CaseTypeShortDesc,
-			serv.ShortDesc AS ServiceShortDesc
+			serv.ShortDesc AS ServiceShortDesc,
+			IIF(c.PanelNbr IS NOT NULL AND c.PanelNbr > 0, c.DoctorName, '') AS PanelDoctor
 		FROM
 			tblCaseAppt AS ca
 				LEFT OUTER JOIN tblCaseApptPanel AS CAP on cap.CaseApptID = ca.CaseApptID
