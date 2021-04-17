@@ -1136,6 +1136,9 @@
     <Build Include="Tables\tblCaseOverviewGroup.sql" />
     <Build Include="Tables\tblCaseOverviewGroupItem.sql" />
     <Build Include="Tables\tblCaseDetermination.sql" />
+    <Build Include="Views\vwPDFInvDetData3.sql" />
+    <Build Include="Views\vwPDFInvDetData2.sql" />
+    <Build Include="Views\vwPDFInvDetData1.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
