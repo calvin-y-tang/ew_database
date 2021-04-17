@@ -19,6 +19,12 @@ AS
 
 			B.BlankValue AS InvoiceAmtDollars,
 			B.BlankValue AS InvoiceAmtCents,
+			B.BlankValue AS InvoiceAmtDollars_P1,
+			B.BlankValue AS InvoiceAmtCents_P1,
+			B.BlankValue AS InvoiceAmtDollars_P2,
+			B.BlankValue AS InvoiceAmtCents_P2,
+			B.BlankValue AS InvoiceAmtDollars_P3,
+			B.BlankValue AS InvoiceAmtCents_P3,
 			B.BlankValue AS InvoicePaymentCreditAmtDollars,
 			B.BlankValue AS InvoicePaymentCreditAmtCents,
 			B.BlankValue AS InvoiceBalanceDueDollars,
