@@ -7,7 +7,7 @@ GO
 
 -- Issue 12026 - add new security token and items to tblSetting for CCMSI
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES('CaseOverview', 'Case - CCMSI Overview', GETDATE())
+VALUES('CaseOverview', 'Case - Overview Info', GETDATE())
 GO
 INSERT INTO tblSetting(Name, Value)
 VALUES('CCMSIBaseAPIURL', 'https://api.terraclaim.com/connect/vendors/test/'),
