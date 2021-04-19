@@ -76,6 +76,7 @@ AS
 			B.BlankValueLong AS ProblemList ,
             
 			CO.ExtName AS Company ,
+			C.InsuringCompany AS InsuringCompany,
             
 			CL.FirstName + ' ' + CL.LastName AS ClientName ,
 			B.BlankValue AS ReferringProvider,	--Fill by system option
