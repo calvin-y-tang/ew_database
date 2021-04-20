@@ -11,7 +11,7 @@ GO
 UPDATE tblDocument SET CMSBox19 = '%Blank%' 
 WHERE Document LIKE 'CMS%' AND Type = 'Invoice' AND CMSBox19 IS NULL
 
-UPDATE tblDocument SET CMSBox28Dollars = '%InvAmtDetailDollars%', CMSBox28Cents='%InvAmtDetailCents'
+UPDATE tblDocument SET CMSBox28Dollars = '%InvoiceAmtDollars%', CMSBox28Cents='%InvoiceAmtCents%'
 WHERE Document LIKE 'CMS%' AND Type = 'Invoice' AND CMSBox28Cents IS NULL AND CMSBox28Dollars IS NULL
 
 
