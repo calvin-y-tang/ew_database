@@ -67,6 +67,7 @@ PRINT N'Creating [dbo].[tblCaseAppt].[IX_tblCaseAppt_CaseNbrApptTimeDoctorCodeLo
 
 
 GO
+IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_tblCaseAppt_CaseNbrApptTimeDoctorCodeLocationCodeDoctorBlockTimeSlotID')
 CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_CaseNbrApptTimeDoctorCodeLocationCodeDoctorBlockTimeSlotID]
     ON [dbo].[tblCaseAppt]([ApptStatusID] ASC)
     INCLUDE([CaseNbr], [ApptTime], [DoctorCode], [LocationCode], [DoctorBlockTimeSlotID]);
@@ -116,6 +117,7 @@ PRINT N'Creating [dbo].[tblDoctorBlockTimeSlot].[IX_tblDoctorBlockTimeSlot_Docto
 
 
 GO
+IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_tblDoctorBlockTimeSlot_DoctorBlockTimeDayIDStartTime')
 CREATE NONCLUSTERED INDEX [IX_tblDoctorBlockTimeSlot_DoctorBlockTimeDayIDStartTime]
     ON [dbo].[tblDoctorBlockTimeSlot]([DoctorBlockTimeDayID] ASC, [StartTime] ASC);
 
