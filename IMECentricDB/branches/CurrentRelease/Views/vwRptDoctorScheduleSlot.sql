@@ -18,7 +18,7 @@ AS
 
             BTSS.Name AS ScheduleDesc1,
 
-			'' AS ScheduleDesc2,
+			BTS.HoldDescription AS ScheduleDesc2,
 
             '' AS Company ,
 
@@ -41,10 +41,15 @@ AS
 
 			'' AS Problem
 
-    FROM (SELECT MAX(DoctorBlockTimeSlotID) AS RecID, MAX(DoctorBlockTimeSlotStatusID) AS DoctorBlockTimeSlotStatusID,
-		  DoctorBlockTimeDayID, StartTime FROM tblDoctorBlockTimeSlot
-		  GROUP BY DoctorBlockTimeDayID, StartTime
-		  HAVING MIN(IIF(DoctorBlockTimeSlotStatusID IN (10,22), 1, 0))=1
+    FROM (SELECT 
+			  MAX(DoctorBlockTimeSlotID) AS RecID, 
+			  MAX(DoctorBlockTimeSlotStatusID) AS DoctorBlockTimeSlotStatusID,
+			  DoctorBlockTimeDayID, 
+			  StartTime, 
+			  HoldDescription 
+			FROM tblDoctorBlockTimeSlot
+			GROUP BY DoctorBlockTimeDayID, StartTime, HoldDescription
+			HAVING MIN(IIF(DoctorBlockTimeSlotStatusID IN (10,22), 1, 0)) = 1
 		  ) AS BTS
 			INNER JOIN tblDoctorBlockTimeDay AS BTD ON BTD.DoctorBlockTimeDayID = BTS.DoctorBlockTimeDayID
 			INNER JOIN tblDoctorBlockTimeSlotStatus AS BTSS ON BTSS.DoctorBlockTimeSlotStatusID = BTS.DoctorBlockTimeSlotStatusID

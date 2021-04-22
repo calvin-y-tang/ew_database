@@ -1,54 +1,18 @@
-﻿--IMECentricEW only
-DELETE FROM tblBusinessRuleCondition 
-WHERE BusinessRuleID in (109,110,111) 
-  AND EntityID = 46 
-  AND EntityType = 'PC'
+﻿
+-- ISSUE 12082 - remove "time" from tblDoctorBlockTimeDay.ScheduleDate
+UPDATE tblDoctorBlockTimeDay
+SET ScheduleDate = CAST(ScheduleDate AS Date)
+FROM tblDoctorBlockTimeDay
+WHERE DateAdded >= '2021-03-01'
 GO
-INSERT INTO 
-     tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited,
-                              OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-       -- generate doc
-VALUES ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Referral Confirmation', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Appointment Confirmation', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Fee Quote Notice', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Fee Approval Notice', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Medical Records Request', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Cite Letter', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Appointment Delay', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Reschedule Notice', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Attendance Confirmation', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show Notice', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
-       ('PC', 46, 2, 1, 109, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL),
-       -- distribute doc
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Referral Confirmation', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Appointment Confirmation', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Fee Quote Notice', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Fee Approval Notice', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Medical Records Request', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Cite Letter', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Appointment Delay', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Reschedule Notice', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Attendance Confirmation', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show Notice', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
-       ('PC', 46, 2, 1, 110, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL),
-       -- distribute rpt
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Referral Confirmation', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Appointment Confirmation', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Fee Quote Notice', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Fee Approval Notice', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'WCClaimTechStPtEast@sentry.com', '', 'Medical Records Request', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Cite Letter', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Appointment Delay', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Reschedule Notice', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Attendance Confirmation', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'No Show Notice', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'Cancellation Notice', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'ClaimsMail@sentry.com', '', 'IME Report Cover Sheet', NULL),
-       ('PC', 46, 2, 1, 111, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 1, 'SentryMbrMgmt@sentry.com', '', 'Invoice Status Inquiries', NULL)
 
-GO
+
+-- Issue 10778 - set CMS1500 Boxes 19 and 28 for past behavior
+UPDATE tblDocument SET CMSBox19 = '%Blank%' 
+WHERE Document LIKE 'CMS%' AND Type = 'Invoice' AND CMSBox19 IS NULL
+
+UPDATE tblDocument SET CMSBox28Dollars = '%InvoiceAmtDollars%', CMSBox28Cents='%InvoiceAmtCents%'
+WHERE Document LIKE 'CMS%' AND Type = 'Invoice' AND CMSBox28Cents IS NULL AND CMSBox28Dollars IS NULL
+
+
 

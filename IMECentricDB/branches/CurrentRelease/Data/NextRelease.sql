@@ -1,34 +1,16 @@
-insert into tblCodes (Category, SubCategory, Value)
-Values ('DocumentContentType', 'Referral Confirmation', 1), 
-       ('DocumentContentType', 'Appointment Confirmation', 2), 
-       ('DocumentContentType', 'Fee Quote Notice', 3), 
-       ('DocumentContentType', 'Fee Approval Notice', 4), 
-       ('DocumentContentType', 'Medical Records Request', 5), 
-       ('DocumentContentType', 'IME Cite Letter', 6), 
-       ('DocumentContentType', 'Appointment Delay', 7), 
-       ('DocumentContentType', 'Physician Selection', 8), 
-       ('DocumentContentType', 'Cover Letter Request', 9), 
-       ('DocumentContentType', 'Reschedule Notice', 10), 
-       ('DocumentContentType', 'Attendance Confirmation', 11), 
-       ('DocumentContentType', 'No Show Notice', 12), 
-       ('DocumentContentType', 'IME Report Cover Sheet', 13), 
-       ('DocumentContentType', 'Invoice', 14), 
-       ('DocumentContentType', 'Voucher', 15), 
-       ('DocumentContentType', 'Invoice Status Inquiries', 16), 
-       ('DocumentContentType', 'Cancellation Notice', 17)
+-- Issue 12079 - add med status options to combo
+INSERT INTO tblRecordStatus  (Description, DateAdded, UserIDAdded, PublishOnWeb)
+VALUES ('Awaiting Declaration', GETDATE(), 'TLyde', 1),
+       ('Declaration Received', GETDATE(), 'TLyde', 1)
 
 GO
-UPDATE tblBusinessRule
-   SET Param4Desc = 'MatchOnContentType'
-  FROM tblBusinessRule
- WHERE BusinessRuleID in (109,110,111)
+
+-- Issue 12026 - add new security token and items to tblSetting for CCMSI
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES('CaseOverview', 'Case - Overview Info', GETDATE())
 GO
-
-
-insert into tblSetting (Name, Value)
-Values ('ApptLetterContentType', 'Appointment Confirmation')
-
-
-Go
-  
+INSERT INTO tblSetting(Name, Value)
+VALUES('CCMSIBaseAPIURL', 'https://api.terraclaim.com/connect/vendors/test/'),
+      ('CCMSIAPISecurityToken', '31031783bcb8466abfc45521a2fdcfe9')
+GO
 

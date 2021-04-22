@@ -40,6 +40,18 @@ AS
 			'%CMSBox24JNonNPILine4%' AS PrimaryDoctorNonNPINbr4,
 			'%CMSBox24JNonNPILine5%' AS PrimaryDoctorNonNPINbr5,
 			'%CMSBox24JNonNPILine6%' AS PrimaryDoctorNonNPINbr6,
+			'%CMSBox24JNonNPILine7%' AS PrimaryDoctorNonNPINbr7,
+			'%CMSBox24JNonNPILine8%' AS PrimaryDoctorNonNPINbr8,
+			'%CMSBox24JNonNPILine9%' AS PrimaryDoctorNonNPINbr9,
+			'%CMSBox24JNonNPILine10%' AS PrimaryDoctorNonNPINbr10,
+			'%CMSBox24JNonNPILine11%' AS PrimaryDoctorNonNPINbr11,
+			'%CMSBox24JNonNPILine12%' AS PrimaryDoctorNonNPINbr12,
+			'%CMSBox24JNonNPILine13%' AS PrimaryDoctorNonNPINbr13,
+			'%CMSBox24JNonNPILine14%' AS PrimaryDoctorNonNPINbr14,
+			'%CMSBox24JNonNPILine15%' AS PrimaryDoctorNonNPINbr15,
+			'%CMSBox24JNonNPILine16%' AS PrimaryDoctorNonNPINbr16,
+			'%CMSBox24JNonNPILine17%' AS PrimaryDoctorNonNPINbr17,
+			'%CMSBox24JNonNPILine18%' AS PrimaryDoctorNonNPINbr18,
 
 			--For backward compatibility, these fields are renamed in tblClaimInfo
 			'%CMSBox23%' AS PriorAuthNbr,
@@ -82,6 +94,9 @@ AS
 			B.BlankValue AS CMSBox17b ,										--doc override
 			
 			B.BlankValue AS CMSBox19 ,										--doc override	
+			B.BlankValue AS CMSBox19_P1 ,									--doc override	
+			B.BlankValue AS CMSBox19_P2 ,									--doc override
+			B.BlankValue AS CMSBox19_P3 ,									--doc override
 
 			B.BlankValue AS CMSBox23 ,										--inv override
 			B.BlankValue AS CMSBox24JNonNPINbr ,							--doc and inv override
@@ -93,6 +108,18 @@ AS
 			B.BlankValue AS CMSBox24JNonNPIQualLine4 ,						--doc override
 			B.BlankValue AS CMSBox24JNonNPIQualLine5 ,						--doc override
 			B.BlankValue AS CMSBox24JNonNPIQualLine6 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine7 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine8 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine9 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine10 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine11 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine12 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine13 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine14 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine15 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine16 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine17 ,						--doc override
+			B.BlankValue AS CMSBox24JNonNPIQualLine18 ,						--doc override
 
 			B.BlankValue AS CMSBox24JNonNPILine1 ,							--doc override
 			B.BlankValue AS CMSBox24JNonNPILine2 ,							--doc override
@@ -100,6 +127,18 @@ AS
 			B.BlankValue AS CMSBox24JNonNPILine4 ,							--doc override
 			B.BlankValue AS CMSBox24JNonNPILine5 ,							--doc override
 			B.BlankValue AS CMSBox24JNonNPILine6 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine7 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine8 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine9 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine10 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine11 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine12 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine13 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine14 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine15 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine16 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine17 ,							--doc override
+			B.BlankValue AS CMSBox24JNonNPILine18 ,							--doc override
 
 			B.BlankValue AS CMSBox24JNPILine1 ,								--doc override
 			B.BlankValue AS CMSBox24JNPILine2 ,								--doc override
@@ -107,10 +146,29 @@ AS
 			B.BlankValue AS CMSBox24JNPILine4 ,								--doc override
 			B.BlankValue AS CMSBox24JNPILine5 ,								--doc override
 			B.BlankValue AS CMSBox24JNPILine6 ,								--doc override
+			B.BlankValue AS CMSBox24JNPILine7 ,								--doc override
+			B.BlankValue AS CMSBox24JNPILine8 ,								--doc override
+			B.BlankValue AS CMSBox24JNPILine9 ,								--doc override
+			B.BlankValue AS CMSBox24JNPILine10 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine11 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine12 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine13 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine14 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine15 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine16 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine17 ,							--doc override
+			B.BlankValue AS CMSBox24JNPILine18 ,							--doc override
 
 			B.BlankValue AS CMSBox25,
 			B.BlankValue AS CMSBox26,										--inv override
 			B.BlankValue AS CMSBox27Yes ,									--doc override
+
+			B.BlankValue AS CMSBox28Dollars_P1,								--inv override
+			B.BlankValue AS CMSBox28Dollars_P2,								--inv override
+			B.BlankValue AS CMSBox28Dollars_P3,								--inv override
+			B.BlankValue AS CMSBox28Cents_P1,								--inv override
+			B.BlankValue AS CMSBox28Cents_P2,								--inv override
+			B.BlankValue AS CMSBox28Cents_P3,								--inv override
 
 			B.BlankValueLong AS CMSBox31Line1 ,								--doc and inv override
 			B.BlankValue AS CMSBox31Line2 ,									--doc and inv override

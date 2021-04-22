@@ -14,7 +14,8 @@
 			ex.LastName + ', ' + ex.Firstname as ExamineeName, 
 			co.intname as CompanyName,
 			ct.shortdesc as CaseTypeShortDesc,
-			serv.ShortDesc as ServiceShortDesc 
+			serv.ShortDesc as ServiceShortDesc,
+			IIF(c.PanelNbr IS NOT NULL AND c.PanelNbr > 0, c.DoctorName, '') AS PanelDoctor 
 		FROM 
 			tblDoctorBlockTimeSlot AS TimeSlot
 				LEFT OUTER JOIN tblCaseAppt AS ca ON ca.CaseApptID = TimeSlot.CaseApptID
