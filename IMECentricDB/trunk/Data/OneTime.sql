@@ -6,6 +6,16 @@ FROM tblDoctorBlockTimeDay
 WHERE DateAdded >= '2021-03-01'
 GO
 
+-- IMEC-12095 - need to clean up existing problem so 
+--		that a unique index can be successfully created.
+DELETE 
+  FROM tblDoctorBlockTimeDay 
+ WHERE DoctorBlockTimeDayID NOT IN (SELECT DISTINCT DoctorBlockTimeDayID FROM tblDoctorBlockTimeSlot)
+GO
+DELETE 
+  FROM tblDoctorBlockTimeSlot 
+ WHERE DoctorBlockTimeDayID NOT IN (SELECT DISTINCT DoctorBlockTimeDayID FROM tblDoctorBlockTimeDay)
+GO
 
 -- Issue 10778 - set CMS1500 Boxes 19 and 28 for past behavior
 UPDATE tblDocument SET CMSBox19 = '%Blank%' 
