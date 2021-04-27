@@ -15,4 +15,7 @@ UPDATE tblDocument SET CMSBox28Dollars = '%InvoiceAmtDollars%', CMSBox28Cents='%
 WHERE Document LIKE 'CMS%' AND Type = 'Invoice' AND CMSBox28Cents IS NULL AND CMSBox28Dollars IS NULL
 
 
+-- Issue 12030 - sprint 65 Branding for file link - set MCMC offices WebCompanyID to the MCMC Web compay ID
+UPDATE IMECentricEW.dbo.tblOffice SET WebCompanyID = 62 WHERE OfficeCode = 43
+
 
