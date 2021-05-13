@@ -76,7 +76,10 @@ SELECT
 	CONVERT(INT, NULL) as ApptToReportSentCalDays, 	
     CONVERT(INT, NULL) AS ReferralReportReceviedCalDays,
 	ISNULL(e.LastName, '') + ', ' + ISNULL(e.FirstName, '') as ExamineeName,
-	c.RptFinalizedDate as ReportFinalizedDate
+	c.RptFinalizedDate as ReportFinalizedDate,
+	CD.[Param] as CustomerDataParam,
+	CONVERT(VARCHAR(128), NULL) as TimeTrackReferralNbr, 
+	CONVERT(VARCHAR(128), NULL) as ClaimantNbr
 INTO ##tmp_TravelersInvoices
 FROM tblAcctHeader AS AH
 	LEFT OUTER JOIN tblCase as C on ah.CaseNbr = C.CaseNbr
@@ -105,6 +108,7 @@ FROM tblAcctHeader AS AH
 	LEFT OUTER JOIN tblLanguage as LANG on C.LanguageID = LANG.LanguageID
 	LEFT OUTER JOIN tblEWInputSource as EWIS on C.InputSourceID = EWIS.InputSourceID
 	LEFT OUTER JOIN tblLocation as EL on CA.LocationCode = EL.LocationCode
+	LEFT OUTER JOIN tblCustomerData as CD on (C.CaseNbr = CD.TableKey AND CD.TableType = 'tblCase' AND CD.CustomerName = 'Travelers')
 WHERE (ah.DocumentType='IN')
       AND (ah.DocumentStatus='Final')
 	  AND (CO.ParentCompanyID = 52)

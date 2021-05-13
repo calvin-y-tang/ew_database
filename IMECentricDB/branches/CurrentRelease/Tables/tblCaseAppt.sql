@@ -29,7 +29,8 @@
     [ScheduleMethod]          INT           NULL,
     [Duration]                INT           NULL,
     [DoctorBlockTimeSlotID]   INT           NULL,
-	[DateApptLetterSent]       DATETIME      NULL,
+	[DateApptLetterSent]      DATETIME      NULL,
+	[NoShowNotificationDate]  DATETIME      NULL,
     CONSTRAINT [PK_tblCaseAppt] PRIMARY KEY CLUSTERED ([CaseApptID] ASC)
 );
 

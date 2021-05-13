@@ -6,14 +6,6 @@ BEGIN
 	
 	DECLARE @iDtlSetupID INTEGER 
 	DECLARE @iDetailID INTEGER 
-	DECLARE @sBusLine VARCHAR(MAX)
-	DECLARE @sFeeZone VARCHAR(MAX)
-	DECLARE @sProduct VARCHAR(MAX)
-	DECLARE @sSpecialty VARCHAR(MAX)
-	DECLARE @sSvcType VARCHAR(MAX)
-	DECLARE @sService VARCHAR(MAX)
-	DECLARE @sDoctor VARCHAR(MAX)
-	DECLARE @sExamLocation VARCHAR(MAX)
 	
 	-- DEV NOTE: this process will completely rebuild all items in FSDetailCondition for the Detail items
 	--		that are present; therefore, before we do anything we are going dump all Condition items
@@ -24,12 +16,11 @@ BEGIN
 
 	-- get a list of Detail Items that make up this Header and process them
 	DECLARE curDetailSetup CURSOR FOR
-		SELECT FSDetailSetupID, FSDetailID, 
-			  BusLine,  ServiceType, Service, Product, FeeZone, Specialty, Doctor, ExamLocation
+		SELECT FSDetailSetupID, FSDetailID
 		  FROM tblFSDetailSetup 
 		 WHERE FSHeaderSetupID = @iHdrSetupID
 	OPEN curDetailSetup
-	FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
+	FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID 
 	WHILE @@FETCH_STATUS = 0
 	BEGIN 
 		-- update or insert item? 
@@ -74,14 +65,14 @@ BEGIN
 		END 
 
 		-- process next row
-		FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
+		FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID
 	END
 	CLOSE curDetailSetup
 	DEALLOCATE curDetailSetup
 	
 	-- Process Detail Condition selections
-	INSERT INTO tblFSDetailCondition(FSDetailID, ConditionTable, ConditionKey)
-		SELECT  FSDetailID, 'tblEWBusLine', BL.value
+	INSERT INTO tblFSDetailCondition(FSDetailID, ConditionTable, ConditionKey, ConditionValue)
+		SELECT  FSDetailID, 'tblEWBusLine', BL.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(BusLine, ',') AS BL
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -89,7 +80,7 @@ BEGIN
 
 		UNION 
 
-		SELECT  FSDetailID, 'tblEWServiceType', ST.value
+		SELECT  FSDetailID, 'tblEWServiceType', ST.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(ServiceType, ',') AS ST
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -97,7 +88,7 @@ BEGIN
 
 		UNION 
 
-		SELECT  FSDetailID, 'tblServices', S.value
+		SELECT  FSDetailID, 'tblServices', S.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(Service, ',') AS S
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -105,7 +96,7 @@ BEGIN
 
 		UNION 
 		
-		SELECT  FSDetailID, 'tblProduct', P.value
+		SELECT  FSDetailID, 'tblProduct', P.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(Product, ',') AS P
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -113,7 +104,7 @@ BEGIN
 
 		UNION 
 
-		SELECT  FSDetailID, 'tblEWFeeZone', FZ.value
+		SELECT  FSDetailID, 'tblEWFeeZone', FZ.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(FeeZone, ',') AS FZ
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -121,7 +112,7 @@ BEGIN
 
 		UNION 
 
-		SELECT  FSDetailID, 'tblSpecialty', SP.value
+		SELECT  FSDetailID, 'tblSpecialty', SP.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(Specialty, ',') AS SP
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -129,7 +120,7 @@ BEGIN
 
 		UNION 
 
-		SELECT  FSDetailID, 'tblDoctor', D.value
+		SELECT  FSDetailID, 'tblDoctor', D.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(Doctor, ',') AS D
 		 WHERE FSHeaderSetupID = @iHdrSetupID
@@ -137,11 +128,19 @@ BEGIN
 
 		UNION 
 
-		SELECT  FSDetailID, 'tblLocation', L.value
+		SELECT  FSDetailID, 'tblLocation', L.value, NULL 
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(ExamLocation, ',') AS L
 		 WHERE FSHeaderSetupID = @iHdrSetupID
 		   AND L.value <> -1
+
+		UNION 
+
+		SELECT FSDetailID, 'tblLocation', NULL, TRIM(C.value)  
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(ExamLocationCity, ',') AS C
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND C.value IS NOT NULL
 	
 	-- cleanup Detail table for items no longer part of setup table
 	DELETE tblFSDetail

@@ -14,6 +14,7 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_tblDoctorBlockTimeDay_ScheduleDateDoctorCodeLocationCode]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDoctorBlockTimeDay_ScheduleDateDoctorCodeLocationCode]
     ON [dbo].[tblDoctorBlockTimeDay]([ScheduleDate] ASC, [DoctorCode] ASC, [LocationCode] ASC);
 
+GO
