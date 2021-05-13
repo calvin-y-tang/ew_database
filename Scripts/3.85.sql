@@ -496,10 +496,11 @@ GO
 --
 --GO
 
+--The following seems to exist in all databases.  Not including this
 -- Issue 12026 - add new security token and items to tblSetting for CCMSI
-INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES('CaseOverview', 'Case - Overview Info', GETDATE())
-GO
+--INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+--VALUES('CaseOverview', 'Case - Overview Info', GETDATE())
+--GO
 
 --The following seems to exist in all databases.  Not including this
 --INSERT INTO tblSetting(Name, Value)
