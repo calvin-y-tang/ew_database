@@ -498,7 +498,9 @@ GO
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
 VALUES('CaseOverview', 'Case - Overview Info', GETDATE())
 GO
-INSERT INTO tblSetting(Name, Value)
-VALUES('CCMSIBaseAPIURL', 'https://api.terraclaim.com/connect/vendors/test/'),
-      ('CCMSIAPISecurityToken', '31031783bcb8466abfc45521a2fdcfe9')
-GO
+
+--The following seems to exist in all databases.  Not including this
+--INSERT INTO tblSetting(Name, Value)
+--VALUES('CCMSIBaseAPIURL', 'https://api.terraclaim.com/connect/vendors/test/'),
+--      ('CCMSIAPISecurityToken', '31031783bcb8466abfc45521a2fdcfe9')
+--GO
