@@ -23,7 +23,7 @@
 			IIF(c.PanelNbr IS NOT NULL AND c.PanelNbr > 0, c.DoctorName, '') AS PanelDoctor
 		FROM
 			tblCaseAppt AS ca
-				LEFT OUTER JOIN tblCaseApptPanel AS CAP on cap.CaseApptID = ca.CaseApptID
+				LEFT OUTER JOIN tblCaseApptPanel AS CAP on cap.CaseApptID = ca.CaseApptID AND CAP.DoctorBlockTimeSlotID IS NULL
 				INNER JOIN tblCase AS c ON c.CaseNbr = ca.CaseNbr
 				INNER JOIN tblExaminee AS ex ON ex.ChartNbr = c.Chartnbr
 				INNER JOIN tblServices AS serv ON serv.ServiceCode = c.ServiceCode

@@ -197,7 +197,8 @@ SELECT
   CONVERT(VARCHAR(12), NULL) AS ProcessingOfficeId,
   CONVERT(VARCHAR(32), NULL) AS ReferralUniqueId,
   CONVERT(VARCHAR(12), NULL) AS ClientCustomerId,
-  CONVERT(VARCHAR(128),NULL) AS ClientCustomerName
+  CONVERT(VARCHAR(128),NULL) AS ClientCustomerName,
+  C.ClaimNbrExt as ClaimNoExt
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
