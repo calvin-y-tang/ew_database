@@ -36,3 +36,8 @@ FROM tblFSHeaderSetup AS hdr
           INNER JOIN tblFSDetailSetup AS dtl ON dtl.FSHeaderSetupID = hdr.FSHeaderSetupID
 WHERE hdr.EntityType = 'NW'
 GO
+
+
+-- Issue 12181 - sprint 67, set tblAcctQuote.InNetwork field based on EWNetworkID field
+UPDATE tblAcctQuote SET InNetwork = CASE WHEN EWNetworkID = 1 THEN 0 ELSE 1 END
+
