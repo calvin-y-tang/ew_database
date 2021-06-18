@@ -41,3 +41,12 @@ GO
 -- Issue 12181 - sprint 67, set tblAcctQuote.InNetwork field based on EWNetworkID field
 UPDATE tblAcctQuote SET InNetwork = CASE WHEN EWNetworkID = 1 THEN 0 ELSE 1 END
 
+
+-- Issue 12182 - sprint 67 data patch for setting the Fee Zone based on Jurisdiction for active cases not in Jurisdiction NY and FL
+UPDATE tblCase 
+SET tblCase.EWFeeZoneID = 
+(SELECT EWFeeZoneID FROM tblEWFeeZone WHERE tblEWFeeZone.CountryCode = 'US' AND tblEWFeeZone.StateCode = tblCase.Jurisdiction)
+WHERE tblCase.EWFeeZoneID IS NULL AND tblCase.Jurisdiction IS NOT NULL AND tblCase.Jurisdiction NOT IN ('NY', 'FL')
+AND tblCase.Status NOT IN (8, 9)
+
+
