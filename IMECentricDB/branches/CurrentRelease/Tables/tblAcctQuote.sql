@@ -33,6 +33,7 @@
     [QuoteHandlingID]      INT           NULL,
     [ApprovedAmt]          MONEY         NULL,
     [DateClientCommResent] DATETIME      NULL,
+    [InNetwork]            BIT           CONSTRAINT [DF_tblAcctQuote_InNetwork] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 

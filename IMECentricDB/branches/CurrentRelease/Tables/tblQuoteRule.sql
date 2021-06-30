@@ -15,6 +15,8 @@
 	[UserIDAdded] [varchar](15) NULL,
 	[DateEdited] [datetime] NULL,
 	[UserIDEdited] [varchar](15) NULL,
+    [EWSelected]           BIT           CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((0)) NULL,
+    [InNetwork]            BIT           CONSTRAINT [DF_tblQuoteRule_InNetwork]  DEFAULT ((0)) NULL,
  CONSTRAINT [PK_tblQuoteRule] PRIMARY KEY CLUSTERED ([QuoteRuleID] ASC)
 );
 
