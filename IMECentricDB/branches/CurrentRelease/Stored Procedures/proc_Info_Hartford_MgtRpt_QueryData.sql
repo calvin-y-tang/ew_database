@@ -64,7 +64,8 @@ SELECT
 	CONVERT(VARCHAR(32), NULL) as PrimaryDriver,
 	CONVERT(VARCHAR(300), NULL) as SecondaryException,
 	CONVERT(VARCHAR(32), NULL) as SecondaryDriver,
-	CONVERT(VARCHAR(800), NULL) as Comments
+	CONVERT(VARCHAR(800), NULL) as Comments,
+	c.DoctorReason 
 INTO ##tmp_HartfordInvoices
 FROM tblAcctHeader as AH
 	inner join tblClient as cli on AH.ClientCode = cli.ClientCode
