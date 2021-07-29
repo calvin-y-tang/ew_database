@@ -13,4 +13,7 @@ GO
 INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
 VALUES('Med Recs Over 1"', 45, GETDATE(), 'Admin', 385)
 GO
-
+UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 0
+GO
+UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 1 WHERE ParentCompanyID = 9
+GO
