@@ -17,7 +17,7 @@ GO
   ALTER TABLE tblQuoteRule ALTER COLUMN InNetwork INT
   GO
 
-  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((0)) FOR [EWSelected]
-  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_InNetwork] DEFAULT ((0)) FOR [InNetwork]
+  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((2)) FOR [EWSelected]
+  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_InNetwork] DEFAULT ((2)) FOR [InNetwork]
   GO
 
