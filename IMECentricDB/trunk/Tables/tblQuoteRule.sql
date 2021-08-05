@@ -15,8 +15,8 @@
 	[UserIDAdded] [varchar](15) NULL,
 	[DateEdited] [datetime] NULL,
 	[UserIDEdited] [varchar](15) NULL,
-    [EWSelected]           INT           CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((0)) NULL,
-    [InNetwork]            INT           CONSTRAINT [DF_tblQuoteRule_InNetwork]  DEFAULT ((0)) NULL,
+    [EWSelected]           INT           CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((2)) NULL,
+    [InNetwork]            INT           CONSTRAINT [DF_tblQuoteRule_InNetwork]  DEFAULT ((2)) NULL,
  CONSTRAINT [PK_tblQuoteRule] PRIMARY KEY CLUSTERED ([QuoteRuleID] ASC)
 );
 
