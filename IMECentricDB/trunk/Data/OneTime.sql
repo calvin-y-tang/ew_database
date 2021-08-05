@@ -6,3 +6,18 @@ UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 0
 GO
 UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 1 WHERE ParentCompanyID = 9
 GO
+
+
+-- Issue 12221 - change columns [EWSelected], [InNetwork] from Bit to Int
+  ALTER TABLE tblQuoteRule DROP CONSTRAINT [DF_tblQuoteRule_EWSelected]
+  ALTER TABLE tblQuoteRule DROP CONSTRAINT [DF_tblQuoteRule_InNetwork]
+  GO
+
+  ALTER TABLE tblQuoteRule ALTER COLUMN EWSelected INT
+  ALTER TABLE tblQuoteRule ALTER COLUMN InNetwork INT
+  GO
+
+  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((0)) FOR [EWSelected]
+  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_InNetwork] DEFAULT ((0)) FOR [InNetwork]
+  GO
+
