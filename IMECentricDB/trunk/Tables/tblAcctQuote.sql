@@ -35,6 +35,7 @@
     [DateClientCommResent] DATETIME      NULL,
     [InNetwork]            BIT           CONSTRAINT [DF_tblAcctQuote_InNetwork] DEFAULT ((0)) NULL,
     [MedRecsPages]         INT           NULL,
+    [CaseDocID]            INT           NULL, 
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 
