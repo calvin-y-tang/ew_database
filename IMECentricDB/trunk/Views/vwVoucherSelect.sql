@@ -34,6 +34,6 @@ AS
             + ISNULL(tblDoctor.credentials, '') AS Provider ,
             tbldoctor.OpType, CreateVouchers, Prepaid
     FROM    tblCase
-            INNER JOIN tblCaseApptPanel ON tblCase.CaseApptID = tblCaseApptPanel.CaseApptID
+            INNER JOIN tblCaseAppt ON tblCase.CaseNbr = tblCaseAppt.CaseNbr
+            INNER JOIN tblCaseApptPanel ON tblCaseAppt.CaseApptID = tblCaseApptPanel.CaseApptID
             INNER JOIN tblDoctor ON tblCaseApptPanel.doctorcode = tblDoctor.doctorcode
-	WHERE   tblCase.Status = 9
