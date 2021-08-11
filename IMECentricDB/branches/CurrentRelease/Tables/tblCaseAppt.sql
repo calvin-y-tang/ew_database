@@ -31,6 +31,7 @@
     [DoctorBlockTimeSlotID]   INT           NULL,
 	[DateApptLetterSent]      DATETIME      NULL,
 	[NoShowNotificationDate]  DATETIME      NULL,
+    [DoctorReason]            VARCHAR (25)  NULL,
     CONSTRAINT [PK_tblCaseAppt] PRIMARY KEY CLUSTERED ([CaseApptID] ASC)
 );
 

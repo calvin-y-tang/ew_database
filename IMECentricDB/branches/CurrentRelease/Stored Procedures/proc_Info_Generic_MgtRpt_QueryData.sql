@@ -91,6 +91,7 @@ SELECT
   BB.Descrip as BulkBilling,
   DOC.Description as InvoiceDocument,
   APS.Name as ApptStatus,
+  AHAS.Name as InvApptStatus,
   CB.ExtName as CanceledBy,
   CA.Reason as CancelReason,
   isnull(Inv.ClientRefNbr, '') as ClientRefNo,
@@ -198,7 +199,9 @@ SELECT
   CONVERT(VARCHAR(32), NULL) AS ReferralUniqueId,
   CONVERT(VARCHAR(12), NULL) AS ClientCustomerId,
   CONVERT(VARCHAR(128),NULL) AS ClientCustomerName,
-  C.ClaimNbrExt as ClaimNoExt
+  C.ClaimNbrExt as ClaimNoExt,
+  CONVERT(VARCHAR(32), NULL) as FeeQuoteAmount,
+  CONVERT(VARCHAR(64), NULL) AS OutOfNetworkReason
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
@@ -223,6 +226,8 @@ left outer join tblUser as M on C.MarketerCode = M.UserID
 left outer join tblEWParentCompany as PC on CO.ParentCompanyID = PC.ParentCompanyID
 left outer join tblEWBulkBilling as BB on CO.BulkBillingID = BB.BulkBillingID
 left outer join tblCaseAppt as CA on isnull(Inv.CaseApptID, C.CaseApptID) = CA.CaseApptID
+left outer join tblCaseAppt as AHCA on Inv.CaseApptID = AHCA.CaseApptID
+left outer join tblApptStatus as AHAS on AHCA.ApptStatusID = AHAS.ApptStatusID
 left outer join tblApptStatus as APS on isnull(Inv.ApptStatusID, C.ApptStatusID) = APS.ApptStatusID
 left outer join tblCanceledBy as CB on CA.CanceledByID = CB.CanceledByID
 left outer join tblEWFeeZone as FZ on isnull(CA.EWFeeZoneID, C.EWFeeZoneID) = FZ.EWFeeZoneID

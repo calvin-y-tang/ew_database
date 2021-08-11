@@ -1,24 +1,34 @@
 ﻿
--- Issue 12152 Zurich Default Invoice Formats for Paykind Codes
---   Changing Business rule and adding business rule conditions
-
-UPDATE tblBusinessRule SET Param2Desc = 'PayKind Code' WHERE BusinessRuleID = 120
-
-  
-INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-VALUES('PC', 60, 2, 1, 120, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 'Invoice', '37IME', NULL, NULL, NULL)
-
-INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-VALUES('PC', 60, 2, 1, 120, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 'Invoice', '37PCS', NULL, NULL, NULL)
-
-INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-VALUES('PC', 60, 2, 1, 120, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 'CMSZurich', '30IME', NULL, NULL, NULL)
+-- Issue 12222 - new setting for require out of network reason on quote form.
+ALTER TABLE EWParentCompany ADD [RequireOutofNetworkReason] BIT CONSTRAINT [DF_tblEWParentCompany_RequireOutofNetworkReason] DEFAULT (0)
+GO
+UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 0
+GO
+UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 1 WHERE ParentCompanyID = 9
+GO
 
 
--- Issue 12185 - AmTrust Email Fee Quote approval to specific emails - add business rule
+-- Issue 12221 - change columns [EWSelected], [InNetwork] from Bit to Int
+  ALTER TABLE tblQuoteRule DROP CONSTRAINT [DF_tblQuoteRule_EWSelected]
+  ALTER TABLE tblQuoteRule DROP CONSTRAINT [DF_tblQuoteRule_InNetwork]
+  GO
 
- 
-INSERT INTO IMECentricEW.dbo.tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
-UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-VALUES('PC', 9, 2, 1, 160, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 'terri.lyde@examworks.com', NULL, NULL, NULL, NULL)
+  ALTER TABLE tblQuoteRule ALTER COLUMN EWSelected INT
+  ALTER TABLE tblQuoteRule ALTER COLUMN InNetwork INT
+  GO
 
+  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_EWSelected] DEFAULT ((2)) FOR [EWSelected]
+  ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_InNetwork] DEFAULT ((2)) FOR [InNetwork]
+  GO
+
+-- Issue 12222 - data patch items in tblCaseHistory from quote to correct type 
+UPDATE tblCaseHistory SET Type = 'ACCT' WHERE Type = 'ACCT Quote'
+GO
+
+-- Issue 12216 - patch tblCaseAppt.DoctorReason for active cases
+UPDATE tblCaseAppt 
+   SET DoctorReason = C.DoctorReason 
+FROM tblCaseAppt AS CA
+          INNER JOIN tblCase AS C ON c.CaseApptID = ca.CaseApptID
+WHERE C.Status NOT IN (8, 9)
+GO

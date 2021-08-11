@@ -151,6 +151,33 @@ UPDATE ui SET ui.ClaimantConfirmationDateTime = lc.ContactedDateTime, ui.Claiman
 	inner join ##tmp_GenericConfirmationsExaminee as lc ON ui.CaseApptID = lc.CaseApptID
   WHERE lc.ContactType = 'Examinee'
 
+-- update the main table with the most recent quote information
+print 'Get Most recent FeeQuote for Case'
+UPDATE gi SET gi.FeeQuoteAmount = CASE (ISNULL(gi.InvApptStatus, gi.ApptStatus))
+									WHEN 'Late Canceled' THEN tbl.LateCancelAmt
+									WHEN 'Canceled' THEN tbl.NoShowAmt
+									WHEN 'No Show' THEN tbl.NoShowAmt
+									WHEN 'Show' THEN 
+										CASE
+											WHEN tbl.ApprovedAmt IS NOT NULL THEN tbl.ApprovedAmt
+											ELSE ISNULL(tbl.FeeAmtTo, tbl.FeeAmtFrom)
+										END
+									END,
+	          gi.OutOfNetworkReason = tbl.OutOfNetworkReason
+  FROM ##tmp_GenericInvoices  as gi
+	INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY AQ.CaseNbr ORDER BY AQ.AcctQuoteID DESC) as ROWNUM,
+					AQ.CaseNbr,
+					CONVERT(VARCHAR(12), AQ.LateCancelAmt)	AS LateCancelAmt,
+					CONVERT(VARCHAR(12), AQ.NoShowAmt)		AS NoShowAmt,		
+					CONVERT(VARCHAR(12), AQ.FeeAmtFrom)		AS FeeAmtFrom,
+					CONVERT(VARCHAR(12), AQ.FeeAmtTo)		AS FeeAmtTo,
+					CONVERT(VARCHAR(12), AQ.ApprovedAmt)	AS ApprovedAmt,
+					ISNULL(NR.Description, '')              AS OutOfNetworkReason
+	              FROM tblAcctQuote as AQ 
+					LEFT OUTER JOIN tblOutOfNetworkReason as NR on AQ.OutOfNetworkReasonID = NR.OutOfNetworkReasonID
+			      WHERE AQ.QuoteType = 'IN') as tbl ON tbl.CaseNbr = gi.CaseNbr
+				  WHERE tbl.ROWNUM = 1
+
 -- custom Sedgwick handling for customer data values
  UPDATE ginv SET 
 		ginv.ClaimUniqueId		= dbo.fnGetParamValue(CD.[Param], 'ClaimUniqueId'),

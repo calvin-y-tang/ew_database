@@ -26,3 +26,14 @@ AS
     FROM    tblCase
             INNER JOIN tblCasePanel ON tblCase.PanelNbr = tblCasePanel.panelNbr
             INNER JOIN tblDoctor ON tblCasePanel.doctorcode = tblDoctor.doctorcode
+    UNION
+    SELECT  tblCase.CaseNbr ,
+            tblCaseApptPanel.doctorcode AS OpCode ,
+            ISNULL(tblDoctor.lastname, '') + ', '
+            + ISNULL(tblDoctor.firstname, '') + ' '
+            + ISNULL(tblDoctor.credentials, '') AS Provider ,
+            tbldoctor.OpType, CreateVouchers, Prepaid
+    FROM    tblCase
+            INNER JOIN tblCaseAppt ON tblCase.CaseNbr = tblCaseAppt.CaseNbr
+            INNER JOIN tblCaseApptPanel ON tblCaseAppt.CaseApptID = tblCaseApptPanel.CaseApptID
+            INNER JOIN tblDoctor ON tblCaseApptPanel.doctorcode = tblDoctor.doctorcode
