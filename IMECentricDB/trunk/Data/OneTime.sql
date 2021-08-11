@@ -24,3 +24,11 @@ GO
 -- Issue 12222 - data patch items in tblCaseHistory from quote to correct type 
 UPDATE tblCaseHistory SET Type = 'ACCT' WHERE Type = 'ACCT Quote'
 GO
+
+-- Issue 12216 - patch tblCaseAppt.DoctorReason for active cases
+UPDATE tblCaseAppt 
+   SET DoctorReason = C.DoctorReason 
+FROM tblCaseAppt AS CA
+          INNER JOIN tblCase AS C ON c.CaseApptID = ca.CaseApptID
+WHERE C.Status NOT IN (8, 9)
+GO
