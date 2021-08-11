@@ -21,3 +21,6 @@ GO
   ALTER TABLE tblQuoteRule ADD CONSTRAINT [DF_tblQuoteRule_InNetwork] DEFAULT ((2)) FOR [InNetwork]
   GO
 
+-- Issue 12222 - data patch items in tblCaseHistory from quote to correct type 
+UPDATE tblCaseHistory SET Type = 'ACCT' WHERE Type = 'ACCT Quote'
+GO
