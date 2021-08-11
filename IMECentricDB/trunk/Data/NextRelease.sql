@@ -29,4 +29,8 @@ INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, Billi
 VALUES(152, 'PC', 9, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'True', NULL, NULL, NULL, NULL)
 GO
 
+-- Issue 12231 - new override setting for creating line items from quote additional fees.
+INSERT INTO tblSetting (Name, Value)
+VALUES('DoNotCreateQuoteLineItems', '')
+GO
 
