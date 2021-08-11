@@ -11,7 +11,7 @@ GO
 
 -- Issue 12202/12203 - new product item for quote additional fees
 INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
-VALUES('Med Recs Over 1"', 45, GETDATE(), 'Admin', 385)
+VALUES('Med Recs > 250pgs', 45, GETDATE(), 'Admin', 385)
 GO
 UPDATE tblEWParentCompany SET RequireOutofNetworkReason = 0
 GO
