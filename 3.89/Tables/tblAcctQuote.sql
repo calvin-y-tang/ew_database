@@ -1,0 +1,45 @@
+﻿CREATE TABLE [dbo].[tblAcctQuote] (
+    [AcctQuoteID]          INT           IDENTITY (1, 1) NOT NULL,
+    [CaseNbr]              INT           NOT NULL,
+    [QuoteType]            VARCHAR (2)   NOT NULL,
+    [DoctorCode]           INT           NULL,
+    [EWSpecialtyID]        INT           NULL,
+    [QuoteStatusID]        INT           NULL,
+    [QuoteDate]            DATETIME      NULL,
+    [ProdCode]             INT           NULL,
+    [EWNetworkID]          INT           NULL,
+    [FeeAmtFrom]           MONEY         NULL,
+    [FeeAmtTo]             MONEY         NULL,
+    [NoShowAmt]            MONEY         NULL,
+    [LateCancelAmt]        MONEY         NULL,
+    [CancelDays]           INT           NULL,
+    [FeeUnit]              VARCHAR (10)  NULL,
+    [ClientFeeBudgetAmt]   MONEY         NULL,
+    [Note]                 VARCHAR (500) NULL,
+    [OutOfNetworkReasonID] INT           NULL,
+    [InformViaEmail]       BIT           CONSTRAINT [DF_tblAcctQuote_InformViaEmail] DEFAULT ((0)) NULL,
+    [InformViaPhone]       BIT           CONSTRAINT [DF_tblAcctQuote_InformViaPhone] DEFAULT ((0)) NULL,
+    [InformViaFax]         BIT           CONSTRAINT [DF_tblAcctQuote_InformViaFax] DEFAULT ((0)) NULL,
+    [DateClientInformed]   DATETIME      NULL,
+    [ApproveViaEmail]      BIT           CONSTRAINT [DF_tblAcctQuote_ApproveViaEmail] DEFAULT ((0)) NULL,
+    [ApproveViaPhone]      BIT           CONSTRAINT [DF_tblAcctQuote_ApproveViaPhone] DEFAULT ((0)) NULL,
+    [ApproveViaFax]        BIT           CONSTRAINT [DF_tblAcctQuote_ApproveViaFax] DEFAULT ((0)) NULL,
+    [DateClientApproved]   DATETIME      NULL,
+    [ApprovedByClientName] VARCHAR (100) NULL,
+    [DateAdded]            DATETIME      NOT NULL,
+    [UserIDAdded]          VARCHAR (15)  NOT NULL,
+    [DateEdited]           DATETIME      NULL,
+    [UserIDEdited]         VARCHAR (15)  NULL,
+    [QuoteHandlingID]      INT           NULL,
+    [ApprovedAmt]          MONEY         NULL,
+    [DateClientCommResent] DATETIME      NULL,
+    [InNetwork]            BIT           CONSTRAINT [DF_tblAcctQuote_InNetwork] DEFAULT ((0)) NULL,
+    [MedRecsPages]         INT           NULL,
+    [CaseDocID]            INT           NULL, 
+    CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
+);
+
+
+GO
+
+CREATE INDEX [IX_tblAcctQuote_CaseNbr] ON [dbo].[tblAcctQuote] ([CaseNbr])
