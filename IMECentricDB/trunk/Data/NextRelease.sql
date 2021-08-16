@@ -34,3 +34,8 @@ INSERT INTO tblSetting (Name, Value)
 VALUES('DoNotCreateQuoteLineItems', '')
 GO
 
+-- Issue 12229 - Parent company bookmark request - add token also
+  INSERT INTO tblMessageToken (Name, Description)
+  VALUES ('@ParentCompany@', '')
+
+
