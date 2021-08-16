@@ -476,7 +476,8 @@ AS
 			tblCase.InsuringCompany as InsuringCompany,
 			tblCase.CaseCaption, 
 			tblCase.LitigationNotes, 
-			tblCase.BillClientCode
+			tblCase.BillClientCode,
+			tblEWParentCompany.Name AS ParentCompanyName
 
     FROM    tblCase
             INNER JOIN tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
@@ -507,4 +508,5 @@ AS
             LEFT OUTER JOIN tblApptStatus ON tblCase.ApptStatusID = tblApptStatus.ApptStatusID
             LEFT OUTER JOIN tblEmployer on tblcase.EmployerID = tblEmployer.EmployerID 
             LEFT OUTER JOIN tblEmployerAddress on tblcase.EmployerAddressID = tblEmployerAddress.EmployerAddressID 
+			LEFT OUTER JOIN tblEWParentCompany ON tblCompany.ParentCompanyID = tblEWParentCompany.ParentCompanyID
 
