@@ -474,7 +474,8 @@ AS
 
             tblTranscription.TransCompany,
 
-			tblCase.InsuringCompany as InsuringCompany
+			tblCase.InsuringCompany as InsuringCompany,
+            tblEWParentCompany.Name AS ParentCompanyName
 
     FROM    tblCase
             INNER JOIN tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
@@ -507,3 +508,4 @@ AS
             LEFT OUTER JOIN tblTranscription ON tblCase.TransCode = tblTranscription.TransCode
             LEFT OUTER JOIN tblEmployer on tblcase.EmployerID = tblEmployer.EmployerID 
             LEFT OUTER JOIN tblEmployerAddress on tblcase.EmployerAddressID = tblEmployerAddress.EmployerAddressID 
+			LEFT OUTER JOIN tblEWParentCompany ON tblCompany.ParentCompanyID = tblEWParentCompany.ParentCompanyID
