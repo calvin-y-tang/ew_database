@@ -43,3 +43,8 @@
 GO
 
 CREATE INDEX [IX_tblAcctQuote_CaseNbr] ON [dbo].[tblAcctQuote] ([CaseNbr])
+GO
+
+CREATE INDEX [IX_tblAcctQuote_CaseDocID] ON [dbo].[tblAcctQuote] ([CaseDocID])
+
+
