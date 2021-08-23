@@ -1,15 +1,15 @@
 ﻿
-CREATE FUNCTION [dbo].[fnGetBusinessDays](@StartDate DATETIME, @EndDate DATETIME ,@startFromBusinessDay bit = 1)
+CREATE FUNCTION [dbo].[fnGetBusinessHours](@StartDate DATETIME, @EndDate DATETIME ,@startFromBusinessDay bit = 1)
 RETURNS INT 
 AS
 BEGIN
-DECLARE @BusinessDays int
+DECLARE @BusinessHours int
 DECLARE @iNonWorkingDays int
 DECLARE @iWeekendDays int
 DECLARE @padStart int
 DECLARE @padEnd int
 
-SET @BusinessDays = 0
+SET @BusinessHours = 0
 
 DECLARE @newStartDate DATETIME
 DECLARE @newEndDate DATETIME
@@ -44,9 +44,9 @@ if DATEDIFF(Day, @StartDate, @EndDate) > 0
 		if  @startFromBusinessDay = 0 and (DATENAME(dw, @StartDate) ='Sunday' or DATENAME(dw, @StartDate) ='Saturday')
 			 set @iWeekendDays = @iWeekendDays -1	
 		
-		select @BusinessDays =DATEDIFF(hh, @StartDate, @EndDate) - @iNonWorkingDays - @iWeekendDays		
+		select @BusinessHours =DATEDIFF(hh, @StartDate, @EndDate) - @iNonWorkingDays - @iWeekendDays		
 	End		
-RETURN  @BusinessDays
+RETURN  @BusinessHours
 END
 
 
