@@ -25,7 +25,7 @@ if DATEDIFF(Day, @StartDate, @EndDate) > 0
 		SELECT @iNonWorkingDays=count(NonWorkDay)
 		FROM tblNonWorkDays where NonWorkDay > CONVERT(VARCHAR(10),  @StartDate, 111) and NonWorkDay <= CONVERT(VARCHAR(10),  @EndDate, 111) 
 		and DATENAME(dw, NonWorkDay)<>'Sunday' and DATENAME(dw, NonWorkDay)<>'Saturday'		
-		
+
 		SELECT  @padStart = DATEPART(weekday, @StartDate), @padEnd =DATEPART(weekday,@EndDate)
 		set @padStart = @padStart-1
 		set @padEnd=7-@padEnd
@@ -44,11 +44,10 @@ if DATEDIFF(Day, @StartDate, @EndDate) > 0
 		if  @startFromBusinessDay = 0 and (DATENAME(dw, @StartDate) ='Sunday' or DATENAME(dw, @StartDate) ='Saturday')
 			 set @iWeekendDays = @iWeekendDays -1	
 		
-		select @BusinessHours =DATEDIFF(hh, @StartDate, @EndDate) - @iNonWorkingDays - @iWeekendDays		
+		select @BusinessHours =DATEDIFF(hh, @StartDate, @EndDate) - (@iNonWorkingDays * 24) - (@iWeekendDays * 24)	
 	End		
 RETURN  @BusinessHours
 END
-
 
 
 GO
