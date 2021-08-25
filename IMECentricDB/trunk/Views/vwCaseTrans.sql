@@ -25,6 +25,10 @@ AS
 			tblCaseTrans.FeeCode, 
 			tblCaseTrans.FeeCodeSource, 
 			tblCaseTrans.FSDetailID,
-			tblCaseTrans.FeeScheduleName
+			tblCaseTrans.FeeScheduleName,
+            tblCaseTrans.RptFSSource,
+            tblCaseTrans.RptFSGroupID,
+            tblCaseTrans.RptFSDetailID,
+            tblCaseTrans.RptFeeAmt
     FROM    tblCaseTrans
     WHERE   HeaderID IS NULL
