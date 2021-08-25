@@ -32,6 +32,10 @@ CREATE TABLE [dbo].[tblAcctDetail] (
 	[FeeCodeSource]          INT             NULL,
     [FSDetailID]             INT             NULL,
 	[FeeScheduleName]        VARCHAR(100)    NULL,
+	[RptFSSource]            INT             NULL,
+    [RptFSGroupID]           INT             NULL,
+    [RptFSDetailID]          INT             NULL,
+    [RptFeeAmt]              MONEY           NULL,
     CONSTRAINT [PK_tblAcctDetail] PRIMARY KEY CLUSTERED ([DetailID] ASC)
 );
 

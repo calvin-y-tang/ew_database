@@ -26,6 +26,10 @@ CREATE TABLE [dbo].[tblCaseTrans] (
 	[FeeCodeSource]        INT             NULL,
     [FSDetailID]           INT             NULL,
 	[FeeScheduleName]      VARCHAR(100)    NULL,
+	[RptFSSource]          INT             NULL,
+    [RptFSGroupID]         INT             NULL,
+    [RptFSDetailID]        INT             NULL,
+    [RptFeeAmt]            MONEY           NULL,
     CONSTRAINT [PK_TblCaseTrans] PRIMARY KEY CLUSTERED ([SeqNo] ASC) WITH (FILLFACTOR = 90)
 );
 
