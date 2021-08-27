@@ -37,6 +37,7 @@
     [MedRecsPages]         INT           NULL,
     [CaseDocID]            INT           NULL, 
     [FeeScheduleAmt]       MONEY         NULL,
+    [DateToResendClientComm]  DateTime   NULL,
     CONSTRAINT [PK_tblAcctQuote] PRIMARY KEY CLUSTERED ([AcctQuoteID] ASC)
 );
 
