@@ -1140,7 +1140,6 @@
     <Build Include="Views\vwPDFInvDetData2.sql" />
     <Build Include="Views\vwPDFInvDetData1.sql" />
     <Build Include="Views\vwGetWebActionLinkURLInfo.sql" />
-    <Build Include="Functions\fnGetBusinessHours.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
