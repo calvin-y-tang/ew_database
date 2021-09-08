@@ -30,6 +30,7 @@ CREATE TABLE [dbo].[tblEWParentCompany] (
 	[AllowScheduling]                BIT         NULL,
 	[RecordRetrievalMethod]          INT         NULL,
     [RequireOutofNetworkReason]      BIT         CONSTRAINT [DF_tblEWParentCompany_RequireOutofNetworkReason] DEFAULT (0),
+    [RequireExamineeDOB]             BIT         CONSTRAINT [DF_tblEWParentCompany_RequireExamineeDOB] DEFAULT (0),
     CONSTRAINT [PK_tblEWParentCompany] PRIMARY KEY CLUSTERED ([ParentCompanyID] ASC)
 );
 
