@@ -70,6 +70,16 @@
     [BulkBillingID]         INT             NULL,
     [FeeCodeSource]         INT             NULL,
     [TaxOfficeCode]         INT             NULL,
+    [TaxCode4]              VARCHAR (10)    NULL,
+    [TaxCode5]              VARCHAR (10)    NULL,
+    [TaxCode6]              VARCHAR (10)    NULL,
+    [TaxCode7]              VARCHAR (10)    NULL,
+    [TaxCode8]              VARCHAR (10)    NULL,
+    [TaxAmount4]            MONEY           NULL,
+    [TaxAmount5]            MONEY           NULL,
+    [TaxAmount6]            MONEY           NULL,
+    [TaxAmount7]            MONEY           NULL,
+    [TaxAmount8]            MONEY           NULL,
     CONSTRAINT [PK_tblAcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 
