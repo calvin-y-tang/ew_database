@@ -80,6 +80,7 @@
     [TaxAmount6]            MONEY           NULL,
     [TaxAmount7]            MONEY           NULL,
     [TaxAmount8]            MONEY           NULL,
+    [TaxHandling]           INT             NULL,
     CONSTRAINT [PK_tblAcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 
