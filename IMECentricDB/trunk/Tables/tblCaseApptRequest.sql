@@ -8,6 +8,7 @@
     [DateEdited]              DATETIME      NULL,
     [UserIDEdited]            VARCHAR (15)  NULL,
     [RejectionReason]         VARCHAR (100) NULL,
+    [ReservationSource] VARCHAR(200) NULL, 
     CONSTRAINT [PK_tblCaseApptRequest] PRIMARY KEY CLUSTERED ([CaseApptRequestID] ASC)
 );
 
