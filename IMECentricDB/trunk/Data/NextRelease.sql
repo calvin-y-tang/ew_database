@@ -34,5 +34,15 @@ INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, Billi
 VALUES(153, 'PC', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Always', NULL, NULL, NULL, NULL)
 GO
 
-
+-- Issue 12354 - need to use business rules for "Convert to Sub-Case" tblCustomerData processing
+INSERT INTO tblEvent (EventID, Descrip, Category)
+VALUES(1005, 'Convert Case to Sub Case', 'Case')
+GO
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES (157, 'CustomerDataConvertSubCase', 'Case', 'Convert to Sub Handing of tblCustomerData', 1, 1005, 0, 'InputSourceID', NULL, NULL, NULL, NULL, 0)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES (157, 'PC', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+       (157, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, '7', NULL, NULL, NULL, NULL)
+GO
 
