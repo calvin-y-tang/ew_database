@@ -20,7 +20,8 @@ WHERE BusinessRuleID = 7
 
 --   2. new allstate customer tab with required properties
 INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-VALUES(7, 'PC', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, 1, NULL, 'CustomerData', @iPKeyID, NULL, NULL, NULL),
+VALUES(7, 'CO', 73905, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, 1, NULL, 'CustomerData', @iPKeyID, NULL, NULL, NULL),
+      (7, 'CO', 73906, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, 1, NULL, 'CustomerData', @iPKeyID, NULL, NULL, NULL),
      -- 3. recreate original allstate rule with properties not required
       (7, 'PC', 4, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'CustomerData', '2', NULL, NULL, NULL)
 GO
