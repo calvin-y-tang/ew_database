@@ -68,40 +68,44 @@ IF @@TRANCOUNT = 0
 
 
 GO
-PRINT N'Altering [dbo].[tblEWParentCompany]...';
+
+/*
+--PRINT N'Altering [dbo].[tblEWParentCompany]...';
 
 
-GO
-SET QUOTED_IDENTIFIER ON;
+--GO
+--SET QUOTED_IDENTIFIER ON;
 
-SET ANSI_NULLS OFF;
+--SET ANSI_NULLS OFF;
 
 
-GO
-ALTER TABLE [dbo].[tblEWParentCompany]
+--GO
+--ALTER TABLE [dbo].[tblEWParentCompany]
     ADD [RequireExamineeDOB] BIT CONSTRAINT [DF_tblEWParentCompany_RequireExamineeDOB] DEFAULT (0) NULL;
 
 
-GO
-SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
+--GO
+--SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
 
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
 
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
 
 
-GO
+--GO
+*/
+
 PRINT N'Altering [dbo].[tblServices]...';
 
 
