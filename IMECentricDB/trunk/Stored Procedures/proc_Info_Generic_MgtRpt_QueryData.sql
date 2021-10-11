@@ -247,7 +247,7 @@ left outer join
    where DocumentType='VO' and DocumentStatus='Final' 
          and (DocumentDate >= @startDate and DocumentDate <= @endDate )
    group by RelatedInvHeaderID
-  ) as VO on Inv.RelatedInvHeaderID = VO.RelatedInvHeaderID
+  ) as VO on Inv.HeaderID = VO.RelatedInvHeaderID
 WHERE (Inv.DocumentType='IN')
       AND (Inv.DocumentStatus='Final')
       AND (Inv.DocumentDate >= @startDate) and (Inv.DocumentDate <= @endDate)
