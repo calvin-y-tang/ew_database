@@ -10,6 +10,16 @@ SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 GO
 BEGIN TRANSACTION
 GO
+
+-- Added late by Terri Lyde.
+-- I'll make sure this isn't in the Sprint 73 DB Script
+
+PRINT N'Altering [dbo].[tblCaseRecRetrievalDocument]...';
+GO
+ALTER TABLE tblCaseRecRetrievalDocument
+	ADD WorkOrderLocation VARCHAR (100) NULL;
+GO
+
 PRINT N'Altering [dbo].[proc_Info_Generic_MgtRpt_QueryData]...';
 
 
