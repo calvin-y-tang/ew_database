@@ -8,9 +8,6 @@
     [DateEdited]   DATETIME     NULL,
     [UserIDEdited] VARCHAR (20) NULL,
     [Vendor]       VARCHAR (70) NULL,
-    [LastVerified] DATETIME     NULL, 
-    [LastUpdate]   DATETIME     NULL, 
-    [DateExpired]  DATETIME     NULL, 
     CONSTRAINT [PK_TblTaxTable] PRIMARY KEY CLUSTERED ([TaxCode] ASC)
 );
 
