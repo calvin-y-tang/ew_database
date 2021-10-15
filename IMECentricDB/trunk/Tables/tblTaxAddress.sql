@@ -1,9 +1,9 @@
 ﻿CREATE TABLE [dbo].[tblTaxAddress]
 (
 	[TaxAddressID] INT IDENTITY (1, 1) NOT NULL,
-	[TableType]    VARCHAR(2) NULL, 
-	[TableKey]     INT NULL, 
-	[TaxCode]      VARCHAR(20) NOT NULL, 
+	[TableType]    VARCHAR(2)    NULL, 
+	[TableKey]     INT           NULL, 
+	[TaxCode]      VARCHAR(20)   NOT NULL, 
 	[DateAdded]    DATETIME      NOT NULL,
 	[UserIDAdded]  VARCHAR (15)  NOT NULL,
 	[DateEdited]   DATETIME      NULL,
