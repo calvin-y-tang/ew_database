@@ -17,6 +17,7 @@
     [FileVersion]            VARCHAR (25)  NULL,
     [FileType]               VARCHAR (50)  NULL,
     [RetrievalGroupID]       VARCHAR (100) NULL,
+    [WorkOrderLocation]      VARCHAR (100) NULL,
     CONSTRAINT [PK_tblCaseRecRetrievalDocument] PRIMARY KEY CLUSTERED ([RecRetrievalDocumentID] ASC)
 );
 
