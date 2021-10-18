@@ -40,6 +40,14 @@ IF N'$(__IsSqlCmdEnabled)' NOT LIKE N'True'
 GO
 USE [$(DatabaseName)];
 
+/*
+
+This is a blank script.  It was created to verify that committed scripts had
+been removed.
+
+Do not use this for deployment
+
+*/
 
 GO
 PRINT N'Update complete.';
