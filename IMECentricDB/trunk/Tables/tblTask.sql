@@ -1,6 +1,6 @@
-﻿CREATE TABLE [dbo].[tblEWISProcessAction]
+﻿CREATE TABLE [dbo].[tblTask]
 (
-	[EWISProcessActionID] INT          IDENTITY (1, 1) NOT NULL,
+	[TaskID]              INT          IDENTITY (1, 1) NOT NULL,
 	[DateAdded]           DATETIME     NOT NULL,
 	[UserIDAdded]         VARCHAR(15)  NOT NULL, 
 	[DateCompleted]       DATETIME     NULL,
@@ -12,8 +12,8 @@
 	[Date2]               DATETIME     NULL, 
 	[Int1]                DATETIME     NULL, 
 	[Int2]                DATETIME     NULL,
-	CONSTRAINT [PK_tblEWISProcessAction] PRIMARY KEY CLUSTERED ([EWISProcessActionID] ASC)
+	CONSTRAINT [PK_tblTask] PRIMARY KEY CLUSTERED ([TaskID] ASC)
 )
 GO
-CREATE NONCLUSTERED INDEX [IX_tblEWISProcessAction_DateCompletedProcessName]
-	ON [dbo].tblEWISProcessAction([DateCompleted] ASC, [ProcessName] ASC);
+CREATE NONCLUSTERED INDEX [IX_tblTask_DateCompletedProcessName]
+	ON [dbo].tblTask([DateCompleted] ASC, [ProcessName] ASC);
