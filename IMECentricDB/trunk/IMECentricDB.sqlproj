@@ -1141,7 +1141,7 @@
     <Build Include="Views\vwPDFInvDetData1.sql" />
     <Build Include="Views\vwGetWebActionLinkURLInfo.sql" />
     <Build Include="Tables\tblTaxAddress.sql" />
-    <Build Include="Tables\tblEWISProcessAction.sql" />
+    <Build Include="Tables\tblTask.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\Snapshots.scmp" />
