@@ -12,3 +12,7 @@
 	[DateEdited]              DATETIME     NULL, 
 	CONSTRAINT [PK_tblCaseOverviewGroupItem] PRIMARY KEY CLUSTERED ([CaseOverviewGroupItemID] ASC)
 )
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseOverviewGroupItem_GroupID]
+    ON [dbo].[tblCaseOverviewGroupItem]([CaseOverviewGroupID] ASC);
+GO

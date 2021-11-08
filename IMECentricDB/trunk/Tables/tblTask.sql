@@ -17,3 +17,7 @@
 GO
 CREATE NONCLUSTERED INDEX [IX_tblTask_DateCompletedProcessName]
 	ON [dbo].tblTask([DateCompleted] ASC, [ProcessName] ASC);
+GO
+CREATE NONCLUSTERED INDEX [IX_tblTask_ProcessTableTypeDate1]
+    ON [dbo].[tblTask]([ProcessName] ASC, [TableType] ASC, [Date1] ASC);
+

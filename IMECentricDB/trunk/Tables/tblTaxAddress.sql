@@ -15,4 +15,8 @@ GO
 CREATE UNIQUE INDEX [IX_tblTaxAddress_TableTypeKeyCode]
 	ON [dbo].[tblTaxAddress]([TableType] ASC, [TableKey] ASC, [TaxCode] ASC);
 
+GO
+CREATE NONCLUSTERED INDEX [IX_tblTaxAddress_TaxCode]
+    ON [dbo].[tblTaxAddress]([TaxCode] ASC);
+
 
