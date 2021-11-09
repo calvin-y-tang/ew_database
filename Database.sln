@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "IMECentricDB", "IMECentricDB\trunk\IMECentricDB.sqlproj", "{1A636D4E-5584-4E25-9E02-662C789B97DA}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CustomRepositoryDB", "CustomRepositoryDB\CustomRepositoryDB.sqlproj", "{21FFA562-51FD-48E1-AB44-56C656658BCB}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CustomRepository", "CustomRepository\CustomRepositoryDB.sqlproj", "{21FFA562-51FD-48E1-AB44-56C656658BCB}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "EWDataRepository", "EWDataRepository\EWDataRepository.sqlproj", "{DEAA5037-8B70-48CE-ABEC-78CC63293346}"
 EndProject
