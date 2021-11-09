@@ -130,7 +130,4 @@
   <ItemGroup>
     <PostDeploy Include="Data\DataPatching.PostDeployment.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="CustomRepositoryDB.refactorlog" />
-  </ItemGroup>
 </Project>
