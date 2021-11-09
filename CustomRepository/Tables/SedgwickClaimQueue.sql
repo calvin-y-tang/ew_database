@@ -11,6 +11,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IDX_ClaimUniqueId]
     ON [dbo].[SedgwickClaimQueue]([ClaimUniqueId] ASC);
@@ -19,4 +21,9 @@ CREATE NONCLUSTERED INDEX [IDX_ClaimUniqueId]
 GO
 CREATE NONCLUSTERED INDEX [IDX_ClaimStatus]
     ON [dbo].[SedgwickClaimQueue]([Status] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IDX_DateAdded]
+    ON [dbo].[SedgwickClaimQueue]([DateAdded] ASC);
 

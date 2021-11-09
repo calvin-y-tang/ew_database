@@ -11,3 +11,10 @@
     CONSTRAINT [PK_SedgwickServiceRequestQueue] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IDX_UniqueRecordId]
+    ON [dbo].[SedgwickServiceRequestQueue]([UniqueRecordId] ASC) WITH (FILLFACTOR = 100);
+

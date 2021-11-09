@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SedgwickClaimRecord] (
+CREATE TABLE [dbo].[SedgwickClaimRecord] (
     [Id]                             INT             IDENTITY (1, 1) NOT NULL,
     [ClientNumber]                   INT             NOT NULL,
     [ClaimNumber]                    VARCHAR (32)    NOT NULL,
@@ -126,9 +126,17 @@
     [ICDFormat]                      INT             NULL,
     [ICDFormatSecondary]             INT             NULL,
     [ClaimID]                        NUMERIC (27, 3) DEFAULT ((0.0)) NOT NULL,
-    [AdminClaimNumber] VARCHAR(25) NULL, 
+    [AdminClaimNumber]               VARCHAR (25)    NULL,
+    [CarriersPlanNumber]             VARCHAR (16)    NULL,
+    [CACN]                           VARCHAR (32)    NULL,
+    [mbrVendorId]                    VARCHAR (6)     NULL,
+    [SensitiveFlag]                  VARCHAR (6)     NULL,
+    [SensitiveFlagDateUpdate]        DATETIME        NULL,
+    [ClaimVendorId]                  CHAR (6)        NULL,
     CONSTRAINT [PK_SedgwickClaimRecord_1] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 GO
@@ -167,3 +175,12 @@ BEGIN
 	END
 END
 GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimRecord_DateOfInjuryClaimantDOB]
+    ON [dbo].[SedgwickClaimRecord]([DateOfInjury] ASC, [ClaimantDOB] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ClaimUniqueId_Includes]
+    ON [dbo].[SedgwickClaimRecord]([ClaimUniqueId] ASC)
+    INCLUDE([ClaimNumber], [ShortVendorId], [DateOfInjury], [ClaimantDOB], [PackedClaimNumber]);
+

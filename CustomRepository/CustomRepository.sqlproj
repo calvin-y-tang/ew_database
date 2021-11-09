@@ -65,6 +65,7 @@
     <Folder Include="Stored Procedures\" />
     <Folder Include="Compare" />
     <Folder Include="Data" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\SedgwickCodes.sql" />
@@ -123,9 +124,16 @@
     <Build Include="Stored Procedures\proc_WriteAcknowledgementRecordsPack3to2.sql" />
     <Build Include="Stored Procedures\proc_WriteAcknowledgementRecordsSetDefaultError.sql" />
     <Build Include="Stored Procedures\proc2_SedgwickClaimMasterStoredProcedure.sql" />
+    <Build Include="Tables\SedgwickRMDReferralRecord.sql" />
+    <Build Include="Tables\SedgwickLRPReferralRecord.sql" />
+    <Build Include="Tables\SedgwickIMQReferralRecord.sql" />
+    <Build Include="Tables\SedgwickCOMReferralRecord.sql" />
+    <Build Include="Tables\GallagherBassettClaimSupplemental.sql" />
+    <Build Include="Tables\GallagherBassettClaim.sql" />
+    <Build Include="Views\vwGallagherBassettClaim.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Compare\CustomRepositoryDB.scmp" />
+    <None Include="Compare\DefaultCompareOptions.scmp" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Data\DataPatching.PostDeployment.sql" />
