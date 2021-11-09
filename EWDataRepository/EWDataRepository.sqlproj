@@ -13,8 +13,8 @@
     </RootPath>
     <RootNamespace>EWDataRepository</RootNamespace>
     <AssemblyName>EWDataRepository</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
-    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
@@ -22,6 +22,8 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -56,5 +58,38 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables\" />
+    <Folder Include="Compare" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\AcctDetail.sql" />
+    <Build Include="Tables\EWParentCompany.sql" />
+    <Build Include="Tables\Source.sql" />
+    <Build Include="Tables\AcctEDIStatus.sql" />
+    <Build Include="Tables\EWFeeZone.sql" />
+    <Build Include="Tables\EWCompanyType.sql" />
+    <Build Include="Tables\EWFacility.sql" />
+    <Build Include="Tables\EWFacilityGroup.sql" />
+    <Build Include="Tables\EWFacilityGroupCategory.sql" />
+    <Build Include="Tables\EWFacilityGroupDetail.sql" />
+    <Build Include="Tables\EWFacilityGroupSummary.sql" />
+    <Build Include="Tables\EWLocation.sql" />
+    <Build Include="Tables\EWServiceType.sql" />
+    <Build Include="Tables\EWDRFlashMapping.sql" />
+    <Build Include="Tables\EWFlashCategory.sql" />
+    <Build Include="Tables\Doctor.sql" />
+    <Build Include="Tables\Company.sql" />
+    <Build Include="Tables\Client.sql" />
+    <Build Include="Tables\EWBusLine.sql" />
+    <Build Include="Tables\AcctAdjustment.sql" />
+    <Build Include="Tables\TempVendorVoucher.sql" />
+    <Build Include="Tables\VendorCheckRequest.sql" />
+    <Build Include="Tables\EWGLAcctCategory.sql" />
+    <Build Include="Tables\EWGLAcct.sql" />
+    <Build Include="Tables\AcctHeader.sql" />
+    <Build Include="Tables\AcctManualPayment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compare\DefaultCompareOptions.scmp" />
   </ItemGroup>
 </Project>
