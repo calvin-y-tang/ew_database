@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblDoctorBlockTimeDay] (
+CREATE TABLE [dbo].[tblDoctorBlockTimeDay] (
     [DoctorBlockTimeDayID] INT          IDENTITY (1, 1) NOT NULL,
     [DoctorCode]           INT          NOT NULL,
     [LocationCode]         INT          NOT NULL,
@@ -13,8 +13,12 @@
 );
 
 
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDoctorBlockTimeDay_ScheduleDateDoctorCodeLocationCode]
-    ON [dbo].[tblDoctorBlockTimeDay]([ScheduleDate] ASC, [DoctorCode] ASC, [LocationCode] ASC);
+
 
 GO
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_tblDoctorBlockTimeDay_ScheduleDateDoctorCodeLocationCode]
+    ON [dbo].[tblDoctorBlockTimeDay]([ScheduleDate] ASC, [DoctorCode] ASC, [LocationCode] ASC);
+

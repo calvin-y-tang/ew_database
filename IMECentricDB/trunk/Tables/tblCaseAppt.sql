@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblCaseAppt] (
+CREATE TABLE [dbo].[tblCaseAppt] (
     [CaseApptID]              INT           IDENTITY (1, 1) NOT NULL,
     [CaseNbr]                 INT           NOT NULL,
     [ApptTime]                DATETIME      NOT NULL,
@@ -29,11 +29,13 @@
     [ScheduleMethod]          INT           NULL,
     [Duration]                INT           NULL,
     [DoctorBlockTimeSlotID]   INT           NULL,
-	[DateApptLetterSent]      DATETIME      NULL,
-	[NoShowNotificationDate]  DATETIME      NULL,
+    [DateApptLetterSent]      DATETIME      NULL,
+    [NoShowNotificationDate]  DATETIME      NULL,
     [DoctorReason]            VARCHAR (25)  NULL,
     CONSTRAINT [PK_tblCaseAppt] PRIMARY KEY CLUSTERED ([CaseApptID] ASC)
 );
+
+
 
 
 
@@ -48,7 +50,7 @@ CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_ApptTimeApptStatusID]
     ON [dbo].[tblCaseAppt]([ApptTime] ASC, [ApptStatusID] ASC);
 
 GO
-CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_CaseNbrApptTimeDoctorCodeLocationCodeDoctorBlockTimeSlotID]
-ON [dbo].[tblCaseAppt] ([ApptStatusID])
-INCLUDE ([CaseNbr],[ApptTime],[DoctorCode],[LocationCode],[DoctorBlockTimeSlotID]);
+CREATE NONCLUSTERED INDEX [IX_tblCaseAppt_ApptStatusID]
+    ON [dbo].[tblCaseAppt]([ApptStatusID] ASC)
+    INCLUDE([CaseNbr], [ApptTime], [DoctorCode], [LocationCode], [DoctorBlockTimeSlotID]);
 
