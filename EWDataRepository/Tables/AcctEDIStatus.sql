@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[AcctEDIStatus] (
-    [EDIStatusID]      INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [EDIStatusID]      INT           IDENTITY (1, 1) NOT NULL,
     [SourceID]         INT           NULL,
     [DocumentType]     VARCHAR (2)   NULL,
     [DocumentNo]       VARCHAR (15)  NULL,
@@ -15,6 +15,8 @@
     [CaseNo]           VARCHAR (15)  NULL,
     [BatchNo]          INT           NULL,
     [GPExportStatus]   INT           NULL,
-    PRIMARY KEY CLUSTERED ([EDIStatusID] ASC)
+    CONSTRAINT [PK_AcctEDIStatus] PRIMARY KEY CLUSTERED ([EDIStatusID] ASC)
 );
+
+
 

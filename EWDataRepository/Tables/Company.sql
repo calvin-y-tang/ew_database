@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[Company] (
-    [CompanyID]       INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+CREATE TABLE [dbo].[Company] (
+    [CompanyID]       INT           IDENTITY (1, 1) NOT NULL,
     [DataFeedID]      VARCHAR (15)  NULL,
     [GPEntityPrefix]  VARCHAR (3)   NULL,
     [GPCustomerID]    VARCHAR (15)  NULL,
@@ -26,17 +26,27 @@
 );
 
 
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [IdxCompany_UNIQUE_GPEntityPrefixDataFeedID]
-    ON [dbo].[Company]([GPEntityPrefix] ASC, [DataFeedID] ASC) WITH (FILLFACTOR = 90);
 
 
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IdxCompany_UNIQUE_GPEntityPrefixIMECentricID]
+
+
+
+GO
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_Company_GPEntityPrefixIMECentricID]
     ON [dbo].[Company]([GPEntityPrefix] ASC, [IMECentricID] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [GPCustomerID]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_Company_GPEntityPrefixDataFeedID]
+    ON [dbo].[Company]([GPEntityPrefix] ASC, [DataFeedID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Company_GPCustomerID]
     ON [dbo].[Company]([GPCustomerID] ASC);
 

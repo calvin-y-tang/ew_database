@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[AcctHeader] (
-    [HeaderID]         INT             IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [HeaderID]         INT             IDENTITY (1, 1) NOT NULL,
     [SourceID]         INT             NULL,
     [DocumentType]     VARCHAR (2)     NULL,
     [DocumentNo]       VARCHAR (15)    NULL,
@@ -67,12 +67,18 @@
 );
 
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IdxAcctHeader_UNIQUE_EWFacilityIDDocumentTypeDocumentNo]
-    ON [dbo].[AcctHeader]([EWFacilityID] ASC, [DocumentType] ASC, [DocumentNo] ASC);
+
 
 
 GO
 CREATE NONCLUSTERED INDEX [IX_AcctHeader_DocumentDate]
     ON [dbo].[AcctHeader]([DocumentDate] ASC);
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_AcctHeader_EWFacilityIDDocumentTypeDocumentNo]
+    ON [dbo].[AcctHeader]([EWFacilityID] ASC, [DocumentType] ASC, [DocumentNo] ASC);
 

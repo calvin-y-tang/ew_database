@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[AcctAdjustment] (
-    [AdjID]             INT             IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+CREATE TABLE [dbo].[AcctAdjustment] (
+    [AdjID]             INT             IDENTITY (1, 1) NOT NULL,
     [SourceID]          INT             NULL,
     [AdjNo]             VARCHAR (15)    NULL,
     [AdjDate]           DATETIME        NULL,
@@ -50,9 +50,10 @@
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_AcctAdjustment]
-    ON [dbo].[AcctAdjustment]([HeaderID] ASC) WITH (FILLFACTOR = 90);
+
 
 
 GO
@@ -61,6 +62,11 @@ CREATE NONCLUSTERED INDEX [IX_AcctAdjustment_AdjDateEWFacilityIDDocumentType]
 
 
 GO
-CREATE NONCLUSTERED INDEX [AdjNo_DocumentType_EWFacilityID]
+CREATE NONCLUSTERED INDEX [IX_AcctAdjustment_HeaderID]
+    ON [dbo].[AcctAdjustment]([HeaderID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_AcctAdjustment_AdjNoDocumentTypeEWFacilityID]
     ON [dbo].[AcctAdjustment]([AdjNo] ASC, [DocumentType] ASC, [EWFacilityID] ASC);
 

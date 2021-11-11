@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[AcctDetail] (
-    [DetailID]          INT             IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+CREATE TABLE [dbo].[AcctDetail] (
+    [DetailID]          INT             IDENTITY (1, 1) NOT NULL,
     [HeaderID]          INT             NULL,
     [LineNo]            INT             NULL,
     [SourceID]          INT             NULL,
@@ -15,11 +15,13 @@
     [DetailType]        VARCHAR (10)    NULL,
     [EWFlashCategoryID] INT             NULL,
     [GLNaturalAccount]  VARCHAR (5)     NULL,
-    CONSTRAINT [PK_AcctDetails] PRIMARY KEY CLUSTERED ([DetailID] ASC)
+    CONSTRAINT [PK_AcctDetail] PRIMARY KEY CLUSTERED ([DetailID] ASC)
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IdxAcctDetails_BY_HeaderID]
+CREATE NONCLUSTERED INDEX [IX_AcctDetail_HeaderID]
     ON [dbo].[AcctDetail]([HeaderID] ASC);
 

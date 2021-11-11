@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[Doctor] (
-    [DoctorID]       INT          IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+CREATE TABLE [dbo].[Doctor] (
+    [DoctorID]       INT          IDENTITY (1, 1) NOT NULL,
     [DoctorGUID]     INT          NULL,
     [DataFeedID]     VARCHAR (15) NULL,
     [GPEntityPrefix] VARCHAR (3)  NULL,
@@ -45,17 +45,27 @@
 );
 
 
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [IdxDoctor_UNIQUE_GPEntityPrefixDataFeedID]
-    ON [dbo].[Doctor]([GPEntityPrefix] ASC, [DataFeedID] ASC);
 
 
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IdxDoctor_UNIQUE_GPEntityPrefixIMECentricID]
+
+
+
+GO
+
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_Doctor_GPEntityPrefixIMECentricID]
     ON [dbo].[Doctor]([GPEntityPrefix] ASC, [IMECentricID] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [GPVendorID]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_Doctor_GPEntityPrefixDataFeedID]
+    ON [dbo].[Doctor]([GPEntityPrefix] ASC, [DataFeedID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Doctor_GPVendorID]
     ON [dbo].[Doctor]([GPVendorID] ASC);
 

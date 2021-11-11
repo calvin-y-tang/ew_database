@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[AcctManualPayment] (
-    [ManualPaymentID] INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [ManualPaymentID] INT           IDENTITY (1, 1) NOT NULL,
     [SourceID]        INT           NULL,
     [PaymentType]     INT           NULL,
     [PaymentNo]       VARCHAR (20)  NULL,
@@ -13,6 +13,8 @@
     [MonetaryUnit]    INT           NULL,
     [PayeeName]       VARCHAR (100) NULL,
     [GPExportStatus]  INT           NULL,
-    CONSTRAINT [PK__AcctManualPayment] PRIMARY KEY CLUSTERED ([ManualPaymentID] ASC)
+    CONSTRAINT [PK_AcctManualPayment] PRIMARY KEY CLUSTERED ([ManualPaymentID] ASC)
 );
+
+
 
