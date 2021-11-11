@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[tblEWTimeZoneAdjustmentRule] (
+﻿CREATE TABLE [dbo].[tblEWTimeZoneAdjustmentRule] (
     [PrimaryKey]                             INT           NOT NULL,
     [EWTimeZoneID]                           INT           NOT NULL,
     [RuleNo]                                 INT           NOT NULL,
@@ -17,8 +17,10 @@ CREATE TABLE [dbo].[tblEWTimeZoneAdjustmentRule] (
     [DaylightTransitionEndDayOfWeek]         INT           NOT NULL,
     [DaylightTransitionEndTimeOfDay]         TIME (7)      NOT NULL,
     [DaylightDeltaSec]                       INT           NOT NULL,
-    CONSTRAINT [PK_EWTimeZoneAdjustmentRule] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
+    CONSTRAINT [PK_tblEWTimeZoneAdjustmentRule] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
+
+
 
 
 
