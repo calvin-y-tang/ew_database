@@ -16,7 +16,16 @@ CREATE TABLE [dbo].[SedgwickServiceRequestQueue] (
 
 
 
+
+
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_SedgwickServiceRequestQueue_UniqueRecordId]
     ON [dbo].[SedgwickServiceRequestQueue]([UniqueRecordId] ASC) WITH (FILLFACTOR = 100);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickServiceRequestQueue_TotalRequestAttempts]
+    ON [dbo].[SedgwickServiceRequestQueue]([TotalRequestAttempts] ASC);
 
