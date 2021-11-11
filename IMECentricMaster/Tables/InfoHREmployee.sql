@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[InfoHREmployee] (
-    [EmployeeID]      INT          IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+CREATE TABLE [dbo].[InfoHREmployee] (
+    [EmployeeID]      INT          IDENTITY (1, 1) NOT NULL,
     [IntegrationID]   VARCHAR (10) NULL,
     [FirstName]       VARCHAR (50) NULL,
     [LastName]        VARCHAR (50) NULL,
@@ -11,12 +11,14 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_InfoHREmployee_LastNameFirstName]
     ON [dbo].[InfoHREmployee]([LastName] ASC, [FirstName] ASC) WITH (FILLFACTOR = 90);
 
 
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_U_InfoHREmployee_IntegrationID]
-    ON [dbo].[InfoHREmployee]([IntegrationID] ASC, [IntegrationCode] ASC) WITH (FILLFACTOR = 90);
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_InfoHREmployee_IntegrationIDIntegrationCode]
+    ON [dbo].[InfoHREmployee]([IntegrationID] ASC, [IntegrationCode] ASC);
 
