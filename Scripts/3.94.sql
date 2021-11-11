@@ -115,39 +115,42 @@ IF @@TRANCOUNT = 0
 
 
 GO
-PRINT N'Creating [dbo].[tblTaxAddress]...';
+
+/* Already exists.  Removing */
+--PRINT N'Creating [dbo].[tblTaxAddress]...';
 
 
-GO
-CREATE TABLE [dbo].[tblTaxAddress] (
-    [TaxAddressID] INT          IDENTITY (1, 1) NOT NULL,
-    [TableType]    VARCHAR (2)  NULL,
-    [TableKey]     INT          NULL,
-    [TaxCode]      VARCHAR (20) NOT NULL,
-    [DateAdded]    DATETIME     NOT NULL,
-    [UserIDAdded]  VARCHAR (15) NOT NULL,
-    [DateEdited]   DATETIME     NULL,
-    [UserIDEdited] VARCHAR (15) NULL,
-    CONSTRAINT [PK_TblTaxAddress] PRIMARY KEY CLUSTERED ([TaxAddressID] ASC)
-);
+--GO
+--CREATE TABLE [dbo].[tblTaxAddress] (
+--    [TaxAddressID] INT          IDENTITY (1, 1) NOT NULL,
+--    [TableType]    VARCHAR (2)  NULL,
+--    [TableKey]     INT          NULL,
+--    [TaxCode]      VARCHAR (20) NOT NULL,
+--    [DateAdded]    DATETIME     NOT NULL,
+--    [UserIDAdded]  VARCHAR (15) NOT NULL,
+--    [DateEdited]   DATETIME     NULL,
+--    [UserIDEdited] VARCHAR (15) NULL,
+--    CONSTRAINT [PK_TblTaxAddress] PRIMARY KEY CLUSTERED ([TaxAddressID] ASC)
+--);
 
 
-GO
-IF @@ERROR <> 0
-   AND @@TRANCOUNT > 0
-    BEGIN
-        ROLLBACK;
-    END
+--GO
+--IF @@ERROR <> 0
+--   AND @@TRANCOUNT > 0
+--    BEGIN
+--        ROLLBACK;
+--    END
 
-IF @@TRANCOUNT = 0
-    BEGIN
-        INSERT  INTO #tmpErrors (Error)
-        VALUES                 (1);
-        BEGIN TRANSACTION;
-    END
+--IF @@TRANCOUNT = 0
+--    BEGIN
+--        INSERT  INTO #tmpErrors (Error)
+--        VALUES                 (1);
+--        BEGIN TRANSACTION;
+--    END
 
 
-GO
+--GO
+
 PRINT N'Creating [dbo].[tblTaxAddress].[IX_tblTaxAddress_TableTypeKeyCode]...';
 
 
