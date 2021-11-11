@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SedgwickReferralRecord] (
+CREATE TABLE [dbo].[SedgwickReferralRecord] (
     [Id]                               INT            IDENTITY (1, 1) NOT NULL,
     [RecordType]                       VARCHAR (8)    NOT NULL,
     [ClientNumber]                     INT            NOT NULL,
@@ -29,12 +29,18 @@
 
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IDX_ReferralUniqueId]
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickReferralRecord_ReferralUniqueId]
     ON [dbo].[SedgwickReferralRecord]([ReferralUniqueId] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IDX_ClaimUniqueId]
+CREATE NONCLUSTERED INDEX [IX_SedgwickReferralRecord_ClaimUniqueId]
     ON [dbo].[SedgwickReferralRecord]([ClaimUniqueId] ASC);
 

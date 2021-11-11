@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SedgwickClaimQueue] (
+CREATE TABLE [dbo].[SedgwickClaimQueue] (
     [Id]                   INT           IDENTITY (1, 1) NOT NULL,
     [ClaimUniqueId]        VARCHAR (32)  NOT NULL,
     [SerializedClaimData]  VARCHAR (MAX) NOT NULL,
@@ -13,17 +13,27 @@
 
 
 
-GO
-CREATE NONCLUSTERED INDEX [IDX_ClaimUniqueId]
-    ON [dbo].[SedgwickClaimQueue]([ClaimUniqueId] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IDX_ClaimStatus]
+
+
+
+GO
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimQueue_Status]
     ON [dbo].[SedgwickClaimQueue]([Status] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IDX_DateAdded]
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimQueue_DateAdded]
     ON [dbo].[SedgwickClaimQueue]([DateAdded] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimQueue_ClaimUniqueId]
+    ON [dbo].[SedgwickClaimQueue]([ClaimUniqueId] ASC);
 

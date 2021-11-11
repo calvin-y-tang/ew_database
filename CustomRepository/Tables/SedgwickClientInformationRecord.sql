@@ -19,6 +19,8 @@
     [EntityLevel]            CHAR (1)      NULL,
     [EntityName]             VARCHAR (100) NULL,
     [ClientContactStatus]    CHAR (1)      NULL,
-    CONSTRAINT [PK_SedgwickClientInformationRecord_1] PRIMARY KEY CLUSTERED ([SCMSClientId] ASC)
+    CONSTRAINT [PK_SedgwickClientInformationRecord] PRIMARY KEY CLUSTERED ([SCMSClientId] ASC)
 );
+
+
 

@@ -35,24 +35,23 @@
     [AddressRecordInternalUniqueID] VARCHAR (20)    NULL,
     [EmailAddress]                  VARCHAR (320)   NULL,
     [ClaimRecordId]                 INT             NOT NULL,
-    [ClaimID]                       NUMERIC (27, 3) DEFAULT ((0.0)) NOT NULL,
+    [ClaimID]                       NUMERIC (27, 3) CONSTRAINT [DF_SedgwickClaimContactInformationRecord_ClaimID] DEFAULT ((0.0)) NOT NULL,
     CONSTRAINT [PK_SedgwickClaimContactInformationRecord] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
-GO
-CREATE NONCLUSTERED INDEX [IDX_ClaimNumberShortVendorId]
-    ON [dbo].[SedgwickClaimContactInformationRecord]([ClaimNumber] ASC, [ShortVendorId] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_ClaimID]
-    ON [dbo].[SedgwickClaimContactInformationRecord]([ClaimID] ASC);
+
 
 
 GO
-CREATE NONCLUSTERED INDEX [IDX_ClaimUniqueId]
-    ON [dbo].[SedgwickClaimContactInformationRecord]([ClaimUniqueId] ASC);
+
+
+
+GO
+
 
 
 GO
@@ -72,3 +71,17 @@ CREATE TRIGGER [dbo].[SedgwickClaimContactInformationRecord_InsUpd_Trigger]
 		END
     END
     
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimContactInformationRecord_ClaimUniqueId]
+    ON [dbo].[SedgwickClaimContactInformationRecord]([ClaimUniqueId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimContactInformationRecord_ClaimNumberShortVendorId]
+    ON [dbo].[SedgwickClaimContactInformationRecord]([ClaimNumber] ASC, [ShortVendorId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SedgwickClaimContactInformationRecord_ClaimID]
+    ON [dbo].[SedgwickClaimContactInformationRecord]([ClaimID] ASC);
+

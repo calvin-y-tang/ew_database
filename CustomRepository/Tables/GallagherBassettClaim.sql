@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[GallagherBassettClaim] (
+CREATE TABLE [dbo].[GallagherBassettClaim] (
     [PrimaryKey]            INT           IDENTITY (1, 1) NOT NULL,
     [RecordType]            CHAR (2)      NOT NULL,
     [ClaimTaxId]            VARCHAR (11)  NULL,
@@ -48,7 +48,9 @@
 );
 
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IDX_ClaimNumber]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_U_GallagherBassettClaim_PPSClaimNumber]
     ON [dbo].[GallagherBassettClaim]([PPSClaimNumber] ASC);
 

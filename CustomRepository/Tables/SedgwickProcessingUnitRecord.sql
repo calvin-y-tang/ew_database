@@ -12,6 +12,8 @@
     [Manager]          VARCHAR (64)  NULL,
     [Coordinator]      VARCHAR (128) NULL,
     [OfficeEmail]      VARCHAR (320) NULL,
-    CONSTRAINT [PK_SedgwickProcessingUnitRecord_1] PRIMARY KEY CLUSTERED ([OfficeNumber] ASC)
+    CONSTRAINT [PK_SedgwickProcessingUnitRecord] PRIMARY KEY CLUSTERED ([OfficeNumber] ASC)
 );
+
+
 

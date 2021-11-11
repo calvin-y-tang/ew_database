@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SedgwickServiceRequestQueue] (
+CREATE TABLE [dbo].[SedgwickServiceRequestQueue] (
     [Id]                   INT            IDENTITY (1, 1) NOT NULL,
     [ServiceType]          VARCHAR (16)   NOT NULL,
     [UniqueRecordId]       VARCHAR (64)   NOT NULL,
@@ -14,7 +14,9 @@
 
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IDX_UniqueRecordId]
+CREATE NONCLUSTERED INDEX [IX_SedgwickServiceRequestQueue_UniqueRecordId]
     ON [dbo].[SedgwickServiceRequestQueue]([UniqueRecordId] ASC) WITH (FILLFACTOR = 100);
 

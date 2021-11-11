@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[GallagherBassettClaimSupplemental] (
+CREATE TABLE [dbo].[GallagherBassettClaimSupplemental] (
     [PrimaryKey]              INT          IDENTITY (1, 1) NOT NULL,
     [VendorID]                CHAR (2)     NULL,
     [ClaimNumber]             VARCHAR (32) NOT NULL,
@@ -45,11 +45,13 @@
     [InsurerCity]             VARCHAR (28) NULL,
     [InsurerState]            CHAR (2)     NULL,
     [ClaimPK]                 INT          NOT NULL,
-    CONSTRAINT [PK_GallagherBassettClaimSupplmental] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
+    CONSTRAINT [PK_GallagherBassettClaimSupplemental] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IDX_ClaimPK]
+CREATE NONCLUSTERED INDEX [IX_GallagherBassettClaimSupplemental_ClaimPK]
     ON [dbo].[GallagherBassettClaimSupplemental]([ClaimPK] ASC);
 
