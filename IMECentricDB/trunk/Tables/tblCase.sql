@@ -283,6 +283,7 @@ CREATE TABLE [dbo].[tblCase] (
     [ExamStartTime]                    DATETIME         NULL,
     [ExamEndTime]                      DATETIME         NULL,
     [TimeReviewingRecords]             VARCHAR (20)     NULL,
+    [Tags]                             VARCHAR (1000)   NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
