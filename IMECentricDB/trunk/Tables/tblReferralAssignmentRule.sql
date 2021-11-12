@@ -15,6 +15,7 @@
     [DateEdited]               DATETIME     NULL,
     [UserIDEdited]             VARCHAR (15) NULL,
     [ServiceCode] INT NULL, 
+    [Tags]             VARCHAR (1000) NULL,
     CONSTRAINT [PK_tblReferralAssignmentRule] PRIMARY KEY CLUSTERED ([ReferralAssignmentRuleID] ASC)
 );
 
