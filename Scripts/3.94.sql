@@ -35,6 +35,16 @@ IF @@TRANCOUNT = 0
 
 GO
 
+PRINT N'Altering [dbo].[tblWorkstation]...';
+
+
+GO
+ALTER TABLE [dbo].[tblWorkstation]
+    ADD [Param] [VARCHAR](200) NULL;
+
+GO
+
+
 -- Was deployed in last sprint
 --PRINT N'Altering [dbo].[tblCaseRecRetrievalDocument]...';
 --GO
