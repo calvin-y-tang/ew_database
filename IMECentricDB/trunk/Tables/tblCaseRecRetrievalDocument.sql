@@ -24,3 +24,7 @@
 
 
 
+
+GO
+
+CREATE INDEX [IX_tblCaseRecRetrievalDocument_CaseNbr] ON [dbo].[tblCaseRecRetrievalDocument] ([CaseNbr])
