@@ -18,6 +18,7 @@ CREATE TABLE [dbo].[tblWorkstation] (
     [VertRes]               INT           NULL,
     [ColorDepth]            INT           NULL,
     [FontSize]              INT           NULL,
+    [Param]                 VARCHAR (200) NULL,
     CONSTRAINT [PK_tblWorkstation] PRIMARY KEY CLUSTERED ([WorkstationID] ASC)
 );
 
