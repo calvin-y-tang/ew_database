@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[tblTempVendorVoucher] (
+    [TempVendorVoucherID] INT          IDENTITY (1, 1) NOT NULL,
+    [TempVendorVoucherNo] VARCHAR (15) NOT NULL,
+    [CaseNbr]             INT          NOT NULL,
+    [VendorID]            INT          NOT NULL,
+    [VendorType]          VARCHAR (3)  NOT NULL,
+    [DateAdded]           DATETIME     NOT NULL,
+    [UserIDAdded]         VARCHAR (20) NOT NULL,
+    [DateEdited]          DATETIME     NOT NULL,
+    [UserIDEdited]        VARCHAR (20) NOT NULL,
+    [ProdCode]            INT          NOT NULL,
+    [Amount]              MONEY        NOT NULL,
+    [Comment]             VARCHAR (30) NULL,
+    [EWFacilityID]        INT          NOT NULL,
+    [BatchNbr]            INT          NULL,
+    [ExportDate]          DATETIME     NULL,
+    [PayeeName]           VARCHAR (64) NOT NULL,
+    [AddressLine1]        VARCHAR (50) NOT NULL,
+    [AddressLine2]        VARCHAR (50) NULL,
+    [AddressLine3]        VARCHAR (50) NULL,
+    [City]                VARCHAR (35) NOT NULL,
+    [State]               CHAR (2)     NOT NULL,
+    [Zip]                 VARCHAR (12) NOT NULL,
+    CONSTRAINT [PK_tblTempVendorVoucher] PRIMARY KEY CLUSTERED ([TempVendorVoucherID] ASC)
+);
+

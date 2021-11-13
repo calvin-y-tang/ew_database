@@ -1,0 +1,21 @@
+CREATE TABLE [dbo].[tblCaseOverviewGroupItem] (
+    [CaseOverviewGroupItemID] INT           IDENTITY (1, 1) NOT NULL,
+    [CaseOverviewGroupID]     INT           NOT NULL,
+    [ItemNumber]              INT           NOT NULL,
+    [ResponseValue]           VARCHAR (8)   NOT NULL,
+    [Description]             VARCHAR (MAX) NOT NULL,
+    [IsSelected]              BIT           NULL,
+    [UserIDAdded]             VARCHAR (25)  NOT NULL,
+    [DateAdded]               DATETIME      NOT NULL,
+    [UserIDEdited]            VARCHAR (25)  NULL,
+    [DateEdited]              DATETIME      NULL,
+    CONSTRAINT [PK_tblCaseOverviewGroupItem] PRIMARY KEY CLUSTERED ([CaseOverviewGroupItemID] ASC)
+);
+
+
+GO
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseOverviewGroupItem_CaseOverviewGroupID]
+    ON [dbo].[tblCaseOverviewGroupItem]([CaseOverviewGroupID] ASC);
+
