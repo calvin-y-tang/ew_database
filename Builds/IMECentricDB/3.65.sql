@@ -1,0 +1,678 @@
+﻿
+
+IF (SELECT OBJECT_ID('tempdb..#tmpErrors')) IS NOT NULL DROP TABLE #tmpErrors
+GO
+CREATE TABLE #tmpErrors (Error int)
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+GO
+BEGIN TRANSACTION
+GO
+PRINT N'Altering [dbo].[tblClient]...';
+
+
+GO
+ALTER TABLE [dbo].[tblClient]
+    ADD [DateInactivated] DATETIME     NULL,
+        [UserInactivated] VARCHAR (20) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblCompany]...';
+
+
+GO
+ALTER TABLE [dbo].[tblCompany]
+    ADD [DateInactivated] DATETIME     NULL,
+        [UserInactivated] VARCHAR (20) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblDoctor]...';
+
+
+GO
+ALTER TABLE [dbo].[tblDoctor]
+    ADD [DaysheetEmailAddr] VARCHAR (150) NULL,
+        [DaysheetFaxNbr]    VARCHAR (15)  NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblElectronicMessage]...';
+
+
+GO
+ALTER TABLE [dbo].[tblElectronicMessage] ALTER COLUMN [RecordType] VARCHAR (50) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblExceptionList]...';
+
+
+GO
+ALTER TABLE [dbo].[tblExceptionList]
+    ADD [Type] VARCHAR (15) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblTempData]...';
+
+
+GO
+ALTER TABLE [dbo].[tblTempData]
+    ADD [TextValue1] VARCHAR (MAX) NULL,
+        [TextValue2] VARCHAR (MAX) NULL,
+        [TextValue3] VARCHAR (MAX) NULL,
+        [TextValue4] VARCHAR (MAX) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwCaseWebReservedAppts]...';
+
+
+GO
+ALTER VIEW vwCaseWebReservedAppts
+AS
+    SELECT 
+            tblCase.CaseNbr ,
+            tblExaminee.LastName + ', ' + tblExaminee.FirstName AS ExamineeName ,
+            tblClient.LastName + ', ' + tblClient.FirstName AS ClientName ,
+            tblCompany.IntName AS CompanyName ,
+            tblCase.MarketerCode ,
+            tblCase.QARep ,
+            tblCase.SchedulerCode ,
+            tblCase.Priority ,
+            tblCase.Status ,
+            tblCase.DateAdded ,
+            tblCase.ClaimNbr + ' ' + ISNULL(tblCase.ClaimNbrExt, '') AS ClaimNbr,
+            tblLocation.Location ,
+            tblCase.ApptSelect ,
+            tblCase.ServiceCode ,
+            tblQueues.StatusDesc ,
+            tblCase.UserIDAdded ,
+            tblServices.ShortDesc AS Service ,
+            tblClient.CompanyCode ,
+            tblCase.OfficeCode ,
+            DATEDIFF(day, tblCase.LastStatuschg, GETDATE()) AS IQ ,
+            tblCase.LastStatusChg ,
+			DBTS.StartTime,
+            DBTD.ScheduleDate ,
+            DBTD.DoctorCode ,
+            DBTD.LocationCode AS doctorLocation,
+            tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName, ' ') AS DoctorName ,
+			ApptReq.CaseApptRequestStatusID,
+
+            tblqueues.FunctionCode ,
+            tblCase.Casetype ,
+			tblCase.ExtCaseNbr, 
+			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID, 
+			tblCase.Jurisdiction, 
+			CaseType.ShortDesc AS CaseTypeDesc 
+    FROM    tblCase
+            INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
+            INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
+            INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
+			INNER JOIN tblCaseApptRequest AS ApptReq ON tblCase.CaseNbr = ApptReq.CaseNbr
+            LEFT JOIN tblCompany ON tblCompany.CompanyCode = tblClient.CompanyCode
+            LEFT JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
+			LEFT JOIN tblClient AS BillClient ON BillClient.ClientCode = tblCase.BillClientCode
+			LEFT JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
+			LEFT JOIN tblCaseType AS CaseType ON CaseType.Code = tblCase.CaseType
+			LEFT JOIN tblDoctorBlockTimeSlot AS DBTS ON ApptReq.CaseApptRequestID = DBTS.CaseApptRequestID
+			LEFT JOIN tblDoctorBlockTimeDay AS DBTD ON DBTS.DoctorBlockTimeDayID = DBTD.DoctorBlockTimeDayID
+            LEFT JOIN tblLocation ON DBTD.LocationCode = tblLocation.LocationCode
+            LEFT JOIN tblDoctor ON DBTD.DoctorCode = tblDoctor.DoctorCode
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_Doctor_GetDaySheetData]...';
+
+
+GO
+
+ALTER proc [dbo].[proc_Doctor_GetDaySheetData]
+	@fromDate datetime,
+	@toDate datetime,
+	@office int,
+	@casetype int, 
+	@doctor int,
+	@location int,
+	@alloffices int,
+	@usenewdata int,
+	@userid varchar(15)
+as
+begin
+	
+
+	if @alloffices is null or @alloffices < 0
+	begin
+		set @alloffices = -1;
+	end
+
+	if @usenewdata is null or @usenewdata <= 0
+	begin
+		set @usenewdata = -1;
+	end
+
+	if @userid is null 
+	begin
+		set @userid = '';
+	end
+
+	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
+
+	if object_id('tempdb..#daysheetdatanew') is not null drop table #daysheetdatanew;   
+
+
+	select 
+		distinct LocationCode, LocationOffice, DoctorOffice 
+		into #daysheetdatanew 
+	from (
+		select 
+			ca.CaseApptID as SchedCode,
+			ca.DoctorCode ,            
+			ca.LocationCode ,
+			c.CaseNbr, 
+			c.ExtCaseNbr, 
+			c.OfficeCode,
+			lo.OfficeCode as LocationOffice,
+			dro.OfficeCode as DoctorOffice
+
+		from tblcaseappt as ca with (nolock)
+			inner join tblcase as c  with (nolock)on ca.caseapptid = c.caseapptid			
+			left join tblcaseapptpanel as cap  with (nolock)on cap.caseapptid = c.caseapptid
+			inner join tbldoctor as dr  with (nolock)on dr.doctorcode = isnull(ca.doctorcode, cap.doctorcode)
+			inner join tbllocation as l  with (nolock)on ca.locationcode = l.locationcode
+			inner join tbldoctoroffice as dro  with (nolock)on dr.doctorcode = dro.doctorcode
+			inner join tbllocationoffice as lo  with (nolock)on lo.officecode = dro.officecode and lo.locationcode = l.locationcode			
+			inner join tblapptstatus as aps  with (nolock)on aps.apptstatusid = ca.apptstatusid and ca.apptstatusid = 10
+
+		where
+			(cast(ca.ApptTime as date) >= @fromDate and cast(ca.ApptTime as date) <= @toDate)	
+			and aps.Name = 'Scheduled'
+			and (c.CaseType = (COALESCE(NULLIF(@casetype, '-1'), c.CaseType)) or c.CaseType is null)
+			and ca.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), ca.DoctorCode))
+			and ca.LocationCode = (COALESCE(NULLIF(@location, '-1'), ca.LocationCode))
+	) x
+	;
+
+	select 
+		x.*, 
+		isnull(cpc.OfficeCode, c.OfficeCode) as OfficeCode, 
+		isnull(cpc.CaseNbr, c.CaseNbr) as CaseNbr, 
+		isnull(cpc.ExtCaseNbr, c.ExtCaseNbr) as ExtCaseNbr
+		
+		into #daysheetdata
+	from (
+
+		select 
+
+			tblDoctorSchedule.SchedCode,		
+			tblDoctorSchedule.DoctorCode,
+			tblDoctorSchedule.LocationCode,		
+			tblLocation.Location,
+			(rtrim(tblLocation.Addr1 + ' ' + isnull(tblLocation.Addr2, '')) +  ', ' + tblLocation.City + ' ' + tblLocation.State + ' ' + tblLocation.Zip) as DoctorAddress,				
+			tblDoctorSchedule.date as ApptDate,
+			tblDoctorSchedule.StartTime as ApptDateTime,
+			stuff(replace(right(convert(varchar(19), tblDoctorSchedule.StartTime, 0), 7), ' ', '0'), 6, 0, ' ') as ApptTime,		
+			ISNULL(tblDoctor.FirstName, '') + ' ' + ISNULL(tblDoctor.LastName, '') + ', ' + ISNULL(tblDoctor.Credentials, '') as DoctorName,		
+			(case 
+				when ltrim(rtrim(isnull(tblDoctor.DaysheetEmailAddr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetEmailAddr)) 
+				when ltrim(rtrim(tblDoctor.EmailAddr)) <> '' then ltrim(rtrim(tblDoctor.EmailAddr)) 
+				else null end) as DoctorEmail,		
+			tblLocation.Phone as LocationPhone,
+			(case 
+				when ltrim(rtrim(isnull(tblDoctor.DaysheetFaxNbr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetFaxNbr)) 
+				when ltrim(rtrim(isnull(tblLocation.Fax, ''))) <> '' then ltrim(rtrim(tblLocation.Fax)) 
+				else null end) as LocationFax,
+			tblLocation.ContactLast,
+			tblLocation.ContactFirst,
+			tblLocation.ExtName as LocationExtName,
+			tblLocationOffice.OfficeCode as LocationOffice, 
+			tblDoctorOffice.OfficeCode as DoctorOffice,
+			tblDoctorSchedule.CaseNbr1,
+			tblDoctorSchedule.CaseNbr2,
+			tblDoctorSchedule.CaseNbr3,
+			tblDoctorSchedule.CaseNbr4,
+			tblDoctorSchedule.CaseNbr5,
+			tblDoctorSchedule.CaseNbr6
+
+		FROM tblDoctorSchedule with (nolock)
+			inner join tblDoctor with (nolock) on tblDoctorSchedule.DoctorCode = tblDoctor.DoctorCode	
+			inner join tblLocation with (nolock) on tblDoctorSchedule.LocationCode = tblLocation.LocationCode 
+			inner join tblDoctorOffice with (nolock) on tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
+			inner join tblLocationOffice with (nolock) on tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode	
+
+		WHERE 					
+			(tblDoctorSchedule.date >= @fromDate and tblDoctorSchedule.date <= @toDate)			
+			and tblDoctorSchedule.Status = 'Scheduled'		
+			and tblDoctorSchedule.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctorSchedule.DoctorCode))
+			and tblDoctorSchedule.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblDoctorSchedule.LocationCode))
+
+	) x
+		left outer join tblCasePanel cp with (nolock) 
+			join tblCase cpc with (nolock) on cp.PanelNbr = cpc.PanelNbr
+			on cp.SchedCode = x.SchedCode and cpc.CaseNbr in (x.CaseNbr1, x.CaseNbr2, x.CaseNbr3, x.CaseNbr4, x.CaseNbr5, x.CaseNbr6)
+
+		left outer join tblCase c with (nolock) on c.SchedCode = x.SchedCode and c.CaseNbr in (x.CaseNbr1, x.CaseNbr2, x.CaseNbr3, x.CaseNbr4, x.CaseNbr5, x.CaseNbr6)
+
+	;
+
+	with
+	ddata as (
+
+		select 
+			distinct 
+			SchedCode, OfficeCode, DoctorCode, LocationCode, Location, DoctorAddress, CaseNbr, ExtCaseNbr, ApptDate, ApptDateTime, ApptTime,  
+			DoctorName, DoctorEmail, LocationPhone, LocationFax, ContactLast, ContactFirst, LocationExtName
+		from #daysheetdata
+		where 
+		(1=1 and 
+				--// favorites
+				(
+					1 = (case when @alloffices = 0 then 1 else 0 end) 
+					and	OfficeCode in (select distinct OfficeCode from tblUserOffice where UserID = @userid)
+					and LocationOffice in (select distinct OfficeCode from tblUserOffice where UserID = @userid) 
+					and DoctorOffice in (select distinct OfficeCode from tblUserOffice where UserID = @userid)
+				)
+
+				or
+
+				----// default
+				(
+					2 = (case when @alloffices = -1 then 2 else 0 end) 
+					and	OfficeCode = @office
+					and LocationOffice = @office 
+					and DoctorOffice = @office
+				)
+
+				or
+			
+				----// all offices
+				(
+					3 = (case when @alloffices = 1 then 3 else 0 end) 						
+				)
+		)
+
+	)
+
+	select 
+		d.*,
+		tblOffice.ShortDesc as OfficeName,
+		tblExaminee.FirstName + ' ' + tblExaminee.LastName as Examinee,
+		tblCaseType.Description as CaseType,
+		tblCaseType.ExternalDesc as CaseTypeShort,
+		tblServices.Description as [Service],
+		tblServices.ShortDesc as [ServiceShort],
+		tblCase.DoctorSpecialty as Specialty,
+		(tblServices.ShortDesc + ' / ' + tblCase.DoctorSpecialty) as ServiceSpecialty,		
+		(case when tblCase.PhotoRqd is not null and tblCase.PhotoRqd = 1 then convert(bit, 1) else convert(bit, 0) end) as PhotoRequired,
+		(case when tblCase.InterpreterRequired = 1 then 'Interpreter' else '' end) as Interpreter,
+		(case when tblCase.LanguageID > 0 then tblLanguage.Description else '' end) as [InterpreterLanguage],
+		(case when (select top 1 [Type] from tblRecordHistory with (nolock) where [Type] = 'F' and CaseNbr = tblCase.CaseNbr) = 'F' then 'Films' else '' end) as Comments,
+		tblEWFacility.Logo as LogoURL
+	from ddata d
+			inner join tblCase with (nolock) on tblCase.CaseNbr = d.CaseNbr
+			inner join tblClient with (nolock) on tblCase.ClientCode = tblClient.ClientCode
+			inner join tblCompany with (nolock) on tblClient.CompanyCode = tblCompany.CompanyCode
+			inner join tblOffice with (nolock) on tblCase.OfficeCode = tblOffice.OfficeCode
+			inner join tblEWFacility with (nolock) on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
+			inner join tblServices with (nolock) on tblCase.ServiceCode = tblServices.ServiceCode 
+			inner join tblExaminee with (nolock) on tblCase.ChartNbr = tblExaminee.ChartNbr
+			inner join tblCaseType with (nolock) on tblCase.CaseType = tblCaseType.Code		
+			left outer join tblLanguage with (nolock) on tblLanguage.LanguageID = tblcase.LanguageID
+	;
+
+	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
+
+	if object_id('tempdb..#daysheetdatanew') is not null drop table #daysheetdatanew; 
+
+
+end
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_IMEException]...';
+
+
+GO
+ALTER PROCEDURE proc_IMEException
+    @ExceptionID INT ,
+    @OfficeCode INT ,
+    @CaseTypeCode INT ,
+    @ServiceCode INT ,
+    @StatusCode INT ,
+    @EnterLeave INT ,
+    @CaseNbr INT, 
+	@SLARuleDetailID INT
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+    DECLARE @Err INT;
+
+	-- DEV NOTE: Changed this to be a SELECT DISTINCT when the SLA tables were added to this.
+	--	the problem is with tblSLARuleDetail because that will have multiple items for each SLA Rule.
+	--	Just need to keep this point in mind when making any future changes to this stored procedure.
+
+    SELECT  DISTINCT 
+		ED.ExceptionDefID, 
+		ED.Description, 
+		ED.Entity, 
+		ED.IMECentricCode,
+		ED.ExceptionID, 
+		ED.CaseTypeCode, 
+		ED.ServiceCode, 
+		ED.StatusCodeValue, 
+		ED.DisplayMessage, 
+		ED.RequireComment, 
+		ED.EmailMessage,
+		ED.EditEMail, 
+		ED.GenerateDocument, 
+		CAST(ED.Message AS VARCHAR(MAX)) AS Message, 
+		ED.EmailScheduler, 
+		ED.EmailQA, 
+		ED.EmailOther, 
+		ED.EmailSubject, 
+		CAST(ED.EmailText AS VARCHAR(MAX)) AS EmailText, 
+		ED.Document1, 
+		ED.Document2, 
+		ED.Status,
+		ED.DateAdded, 
+		ED.UserIDAdded, 
+		ED.DateEdited, 
+		ED.UserIDEdited, 
+		ED.UseBillingEntity, 
+		ED.AllOffice, 
+		ED.CreateCHAlert,
+		ED.CHEventDesc,
+		ED.ChOtherInfo,
+		ED.AllEWServiceType, 
+		ED.AllCaseType, 
+		ED.AllService, 
+		ED.AllSLARuleDetail,
+		ISNULL(C.CaseNbr, -1) AS CaseNbr ,
+		CL.ClientCode ,
+		CO.ParentCompanyID ,
+		CL.CompanyCode ,
+		C.DoctorCode ,
+		C.PlaintiffAttorneyCode ,
+		C.DefenseAttorneyCode ,
+		C.DefParaLegal ,
+		BCL.ClientCode AS BillClientCode ,
+		BCO.ParentCompanyID AS BillParentCompanyID ,
+		BCL.CompanyCode AS BillCompanyCode
+    FROM    tblExceptionDefinition AS ED
+            LEFT OUTER JOIN tblCase AS C ON C.CaseNbr = @CaseNbr
+            LEFT OUTER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
+            LEFT OUTER JOIN tblCompany AS CO ON CL.CompanyCode = CO.CompanyCode
+            LEFT OUTER JOIN tblClient AS BCL ON BCL.ClientCode = ISNULL(C.BillClientCode, C.ClientCode)
+            LEFT OUTER JOIN tblCompany AS BCO ON BCO.CompanyCode = BCL.CompanyCode
+			LEFT OUTER JOIN tblEmployer AS ER ON ER.EmployerID = C.EmployerID
+			LEFT OUTER JOIN tblEWParentEmployer AS PE ON PE.EWParentEmployerID = ER.EWParentEmployerID
+			LEFT OUTER JOIN tblSLARule AS  SLA ON SLA.SLARuleID = C.SLARuleID 
+			LEFT OUTER JOIN tblSLARuleDetail AS SLADET ON SLADET.SLARuleID = SLA.SLARuleID 
+    WHERE   ED.Status = 'Active' AND ED.ExceptionID = @ExceptionID
+			AND
+			(
+				( ED.Entity = 'CA' 
+					AND C.CaseNbr IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+				)
+				OR
+				( ED.Entity = 'CS'
+	                OR ( ED.Entity = 'PC'
+	                    AND ( CO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                        
+	                    OR  BCO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        )
+	                    )
+	                OR ( ED.Entity = 'CO'
+	                    AND ( CL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                        
+	                    OR  BCL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        )
+	                    )
+	                OR ( ED.Entity = 'CL'
+	                    AND ( CL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND ISNULL(ED.UseBillingEntity, 0) = 0
+	                       
+	                    OR  BCL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND ISNULL(ED.UseBillingEntity, 0) = 1
+	                        )
+	                    )
+	                OR ( ED.Entity = 'DR'
+	        			AND ( C.DoctorCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	                OR ( ED.Entity = 'AT'
+	                    AND ( C.PlaintiffAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                    
+						OR C.DefenseAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        )
+	                    )
+	                OR ( ED.Entity = 'PE'
+	                    AND ( ER.EWParentEmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	                OR ( ED.Entity = 'ER'
+	                    AND ( C.EmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	            )
+			)
+            AND ( ED.AllOffice = 1
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = C.OfficeCode )
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = @OfficeCode )
+                )
+            AND ( ED.AllCaseType = 1
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = C.CaseType )
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = @CaseTypeCode )
+                )
+            AND 
+				( ED.AllService = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = @ServiceCode )
+				)
+			AND
+				( ED.AllEWServiceType = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = @ServiceCode )
+				)
+            AND ( ( ED.StatusCode = -1
+                    AND ( ED.ExceptionID <> 18
+                            OR ISNULL(ED.StatusCodeValue, 1) = @EnterLeave
+                        )
+                    )
+                    OR ( ED.StatusCode = @StatusCode
+                        AND ED.StatusCodeValue = @EnterLeave
+                        )
+                )
+			AND 
+				( ED.AllSLARuleDetail = 1
+					OR SLADET.SLARuleDetailID IN (SELECT SLARuleDetailID 
+					                                FROM tblExceptionDefSLARuleDetail 
+												   WHERE SLARuleDetailID = @SLARuleDetailID 
+												     AND ExceptionDefID = ED.ExceptionDefID)
+				)
+
+    SET @Err = @@Error;
+
+    RETURN @Err;
+END;
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
+GO
+IF @@TRANCOUNT>0 BEGIN
+PRINT N'The transacted portion of the database update succeeded.'
+COMMIT TRANSACTION
+END
+ELSE PRINT N'The transacted portion of the database update failed.'
+GO
+DROP TABLE #tmpErrors
+GO
+PRINT N'Update complete.';
+
+
+GO
+-- Issue 11469 - patch existing exception triggers to set "Type" value for "Case"
+UPDATE tblExceptionList SET [Type] = 'Case' WHERE ExceptionID IN (1,2,3,5,6,10,11,12,13,14,15,16,17,18,19,20,22,25,26,27,28,29,30,31)
+GO
+
+
+-- Issue 11439 - add rows to tblCodes to add in office contact department types and values to be used in cboDepartment combo box for office Contacts
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Accounting', '1')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Bill Review', '7')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Customer Service', '2')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Medical Records', '3')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'QA', '4')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Scheduling', '5')
+INSERT INTO tblCodes (Category, SubCategory, Value) VALUES ('OfficeContactDeptCombo', 'Other', '6')
+GO 
+
+-- Issue 11469 - create new security token
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES ('CSExcept','Case Exception - Add/Edit/Delete','2020-02-11')
+GO
+
+-- Issue 11156 - Making company inactive, add new user function for company status change
+insert into tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+values ('CompanyStatusChange', 'Company - Status Change', getdate())
