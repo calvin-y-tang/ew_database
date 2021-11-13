@@ -1,0 +1,23 @@
+﻿CREATE TABLE [dbo].[tblWebNotification](
+	[WebNotificationID] [int]	IDENTITY(1,1) NOT NULL,
+	[NotificationType]			VARCHAR (30),
+	[EntityID]					INT NULL,
+	[EntityType]				VARCHAR (50) NULL,
+	[IMECentricCode]			INT NULL,
+	[UserType]					CHAR (2) NULL,
+	[WebUserID]					INT NULL,
+	[WebUserCompanyName]		VARCHAR (100) NULL,
+	[WebUserFirstName]			VARCHAR (50) NULL,
+	[WebUserLastName]			VARCHAR (50) NULL,
+	[WebUserEmailAddress]		VARCHAR (200) NULL,
+	[ToEmailAddress]			VARCHAR (200) NULL,
+	[FromEmailAddress]			VARCHAR (200) NULL,
+	[NotificationSubject]		VARCHAR (1000) NULL,
+	[NotificationDetail]		VARCHAR (max) NULL,
+	[ErrorMessage]				VARCHAR (500) NULL,
+	[DateAdded]					SMALLDATETIME NULL,
+	[UserIdAdded]				VARCHAR (100) NULL,
+	[NotificationSent]			BIT NULL,
+	[NotificationSentDate]		SMALLDATETIME NULL,
+	CONSTRAINT [PK_tblWebNotification] PRIMARY KEY CLUSTERED ([WebNotificationID] ASC)
+);

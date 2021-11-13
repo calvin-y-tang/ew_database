@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[tblCCAddress] (
+    [ccCode]         INT          IDENTITY (1, 1) NOT NULL,
+    [Prefix]         VARCHAR (5)  NULL,
+    [LastName]       VARCHAR (50) NULL,
+    [FirstName]      VARCHAR (50) NULL,
+    [Company]        VARCHAR (70) NULL,
+    [Address1]       VARCHAR (50) NULL,
+    [Address2]       VARCHAR (50) NULL,
+    [City]           VARCHAR (50) NULL,
+    [State]          VARCHAR (2)  NULL,
+    [Zip]            VARCHAR (15) NULL,
+    [Phone]          VARCHAR (15) NULL,
+    [PhoneExtension] VARCHAR (15) NULL,
+    [Fax]            VARCHAR (15) NULL,
+    [Email]          VARCHAR (70) NULL,
+    [Status]         VARCHAR (10) CONSTRAINT [DF_tblCCAddress_Status] DEFAULT ('Active') NULL,
+    [UserIDAdded]    VARCHAR (15) NULL,
+    [DateAdded]      DATETIME     NULL,
+    [UserIDEdited]   VARCHAR (15) NULL,
+    [DateEdited]     DATETIME     NULL,
+    [OfficeCode]     INT          NULL,
+    [WebUserID]      INT          NULL,
+    [OldKey]         INT          NULL,
+    CONSTRAINT [PK_tblCCAddress] PRIMARY KEY CLUSTERED ([ccCode] ASC)
+);
+
