@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>IMECentricMaster</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{df2c17a6-4f7b-4503-a71b-e244666039b2}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>IMECentricMaster</RootNamespace>
+    <AssemblyName>IMECentricMaster</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Compare" />
+    <Folder Include="Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compare\DefaultCompareOptions.scmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\ConcurSAE.sql" />
+    <Build Include="Tables\ConfList.sql" />
+    <Build Include="Tables\ConfListMessage.sql" />
+    <Build Include="Tables\ConfSMSMessage.sql" />
+    <Build Include="Tables\ConfWaiver.sql" />
+    <Build Include="Tables\CRNMasterID.sql" />
+    <Build Include="Tables\DB.sql" />
+    <Build Include="Tables\DPSJobFile.sql" />
+    <Build Include="Tables\ESReferralDetail.sql" />
+    <Build Include="Tables\ESReferralHdr.sql" />
+    <Build Include="Tables\EWAccreditation.sql" />
+    <Build Include="Tables\EWAR.sql" />
+    <Build Include="Tables\EWAuthor.sql" />
+    <Build Include="Tables\EWBudget.sql" />
+    <Build Include="Tables\EWBudgetFlashCategory.sql" />
+    <Build Include="Tables\EWBulkBilling.sql" />
+    <Build Include="Tables\EWBusLine.sql" />
+    <Build Include="Tables\EWClient.sql" />
+    <Build Include="Tables\EWClientDB.sql" />
+    <Build Include="Tables\EWClientImport.sql" />
+    <Build Include="Tables\EWCompany.sql" />
+    <Build Include="Tables\EWCompanyCoverLetter.sql" />
+    <Build Include="Tables\EWCompanyDB.sql" />
+    <Build Include="Tables\EWCompanyNetwork.sql" />
+    <Build Include="Tables\EWCompanyType.sql" />
+    <Build Include="Tables\EWCoverLetter.sql" />
+    <Build Include="Tables\EWCoverLetterBusLine.sql" />
+    <Build Include="Tables\EWCoverLetterClientSpecData.sql" />
+    <Build Include="Tables\EWCoverLetterCompanyName.sql" />
+    <Build Include="Tables\EWCoverLetterQuestion.sql" />
+    <Build Include="Tables\EWCoverLetterState.sql" />
+    <Build Include="Tables\EWDegree.sql" />
+    <Build Include="Tables\EWDoctor.sql" />
+    <Build Include="Tables\EWDoctorAccreditation.sql" />
+    <Build Include="Tables\EWDoctorBusLine.sql" />
+    <Build Include="Tables\EWDoctorDB.sql" />
+    <Build Include="Tables\EWDoctorDocument.sql" />
+    <Build Include="Tables\EWDoctorNetwork.sql" />
+    <Build Include="Tables\EWDoctorSpecialty.sql" />
+    <Build Include="Tables\EWDrDocType.sql" />
+    <Build Include="Tables\EWExchangeRate.sql" />
+    <Build Include="Tables\EWFacility.sql" />
+    <Build Include="Tables\EWFacilityGroup.sql" />
+    <Build Include="Tables\EWFacilityGroupCategory.sql" />
+    <Build Include="Tables\EWFacilityGroupDetail.sql" />
+    <Build Include="Tables\EWFacilityGroupSummary.sql" />
+    <Build Include="Tables\EWFaxCoverPage.sql" />
+    <Build Include="Tables\EWFaxCoverPageDB.sql" />
+    <Build Include="Tables\EWFeeZone.sql" />
+    <Build Include="Tables\EWFlashAR.sql" />
+    <Build Include="Tables\EWFlashCategory.sql" />
+    <Build Include="Tables\EWFlashFinancial.sql" />
+    <Build Include="Tables\EWFlashForecast.sql" />
+    <Build Include="Tables\EWFlashInfo.sql" />
+    <Build Include="Tables\EWFolderDef.sql" />
+    <Build Include="Tables\EWFolderDefDB.sql" />
+    <Build Include="Tables\EWFolderType.sql" />
+    <Build Include="Tables\EWGLAcct.sql" />
+    <Build Include="Tables\EWGLAcctCategory.sql" />
+    <Build Include="Tables\EWInputSource.sql" />
+    <Build Include="Tables\EWLocation.sql" />
+    <Build Include="Tables\EWNamePrefix.sql" />
+    <Build Include="Tables\EWNetwork.sql" />
+    <Build Include="Tables\EWParentCompany.sql" />
+    <Build Include="Tables\EWParentCompanyDocuments.sql" />
+    <Build Include="Tables\EWParentCompanyNetwork.sql" />
+    <Build Include="Tables\EWParentEmployer.sql" />
+    <Build Include="Tables\EWPostingPeriod.sql" />
+    <Build Include="Tables\EWSecurityProfile.sql" />
+    <Build Include="Tables\EWServiceType.sql" />
+    <Build Include="Tables\EWSpecialty.sql" />
+    <Build Include="Tables\EWState.sql" />
+    <Build Include="Tables\EWTimeZone.sql" />
+    <Build Include="Tables\EWTimeZoneAdjustmentRule.sql" />
+    <Build Include="Tables\EWTransDept.sql" />
+    <Build Include="Tables\EWWebUser.sql" />
+    <Build Include="Tables\EWWebUserAccount.sql" />
+    <Build Include="Tables\EWWorkingDay.sql" />
+    <Build Include="Tables\GPClient.sql" />
+    <Build Include="Tables\GPCompany.sql" />
+    <Build Include="Tables\GPDB.sql" />
+    <Build Include="Tables\GPGLAccount.sql" />
+    <Build Include="Tables\GPInvoice.sql" />
+    <Build Include="Tables\GPInvoiceAdjustment.sql" />
+    <Build Include="Tables\GPInvoiceEDIStatus.sql" />
+    <Build Include="Tables\GPManualPayment.sql" />
+    <Build Include="Tables\GPMerge.sql" />
+    <Build Include="Tables\GPOPSubType.sql" />
+    <Build Include="Tables\GPServiceItem.sql" />
+    <Build Include="Tables\GPState.sql" />
+    <Build Include="Tables\GPTempVendorVoucher.sql" />
+    <Build Include="Tables\GPTerms.sql" />
+    <Build Include="Tables\GPVendor.sql" />
+    <Build Include="Tables\GPVendorCheckRequest.sql" />
+    <Build Include="Tables\GPVoucher.sql" />
+    <Build Include="Tables\GPVoucherAdjustment.sql" />
+    <Build Include="Tables\InfoAuditEntity.sql" />
+    <Build Include="Tables\InfoAuditLog.sql" />
+    <Build Include="Tables\InfoBrand.sql" />
+    <Build Include="Tables\InfoBurndown.sql" />
+    <Build Include="Tables\InfoBusUnitWindowsGroup.sql" />
+    <Build Include="Tables\InfoCollection.sql" />
+    <Build Include="Tables\InfoConfig.sql" />
+    <Build Include="Tables\InfoDocument.sql" />
+    <Build Include="Tables\InfoDocumentCategory.sql" />
+    <Build Include="Tables\InfoDocumentCheckout.sql" />
+    <Build Include="Tables\InfoDocumentType.sql" />
+    <Build Include="Tables\InfoFeeZoneRegion.sql" />
+    <Build Include="Tables\InfoHREmployee.sql" />
+    <Build Include="Tables\InfoHREmployeeInfoDocument.sql" />
+    <Build Include="Tables\InfoIssue.sql" />
+    <Build Include="Tables\InfoIssueCollection.sql" />
+    <Build Include="Tables\InfoIssueDoc.sql" />
+    <Build Include="Tables\InfoIssueStatus.sql" />
+    <Build Include="Tables\InfoLauncher.sql" />
+    <Build Include="Tables\InfoLauncherBusUnit.sql" />
+    <Build Include="Tables\InfoLauncherUpdate.sql" />
+    <Build Include="Tables\InfoLayout.sql" />
+    <Build Include="Tables\InfoLogUsage.sql" />
+    <Build Include="Tables\InfoNonWorkingDay.sql" />
+    <Build Include="Tables\InfoProduct.sql" />
+    <Build Include="Tables\InfoRelease.sql" />
+    <Build Include="Tables\InfoReleaseIssue.sql" />
+    <Build Include="Tables\InfoScanSetting.sql" />
+    <Build Include="Tables\InfoScanSettingWorkstation.sql" />
+    <Build Include="Tables\InfoSchemaField.sql" />
+    <Build Include="Tables\InfoSchemaTable.sql" />
+    <Build Include="Tables\InfoSecurityGroup.sql" />
+    <Build Include="Tables\InfoSecurityGroupToken.sql" />
+    <Build Include="Tables\InfoSecurityToken.sql" />
+    <Build Include="Tables\InfoUser.sql" />
+    <Build Include="Tables\InfoUserActivity.sql" />
+    <Build Include="Tables\InfoUserEWFacilityGroup.sql" />
+    <Build Include="Tables\InfoUserLauncher.sql" />
+    <Build Include="Tables\InfoUserSecurityGroup.sql" />
+    <Build Include="Tables\InfoWindowsDomain.sql" />
+    <Build Include="Tables\ISAuthorTemplate.sql" />
+    <Build Include="Tables\ISBuild.sql" />
+    <Build Include="Tables\ISBuildRevision.sql" />
+    <Build Include="Tables\ISContact.sql" />
+    <Build Include="Tables\ISCustomer.sql" />
+    <Build Include="Tables\ISDataTransportProfile.sql" />
+    <Build Include="Tables\ISElectronicService.sql" />
+    <Build Include="Tables\ISEncryptionKey.sql" />
+    <Build Include="Tables\ISExtIntegration.sql" />
+    <Build Include="Tables\ISIntegration.sql" />
+    <Build Include="Tables\ISIntegrationLog.sql" />
+    <Build Include="Tables\ISOperation.sql" />
+    <Build Include="Tables\ISQueue.sql" />
+    <Build Include="Tables\ISSchedule.sql" />
+    <Build Include="Tables\ISServiceLog.sql" />
+    <Build Include="Tables\ISSetting.sql" />
+    <Build Include="Tables\ISSVNBranch.sql" />
+    <Build Include="Tables\ISSync.sql" />
+    <Build Include="Tables\ISSyncDB.sql" />
+    <Build Include="Tables\ISSyncTable.sql" />
+    <Build Include="Tables\ISTable.sql" />
+    <Build Include="Tables\NDBAuditEntity.sql" />
+    <Build Include="Tables\NDBAuditLog.sql" />
+    <Build Include="Tables\NDBDrDocTypeMapping.sql" />
+    <Build Include="Tables\NDBSetting.sql" />
+    <Build Include="Tables\NDBUser.sql" />
+    <Build Include="Tables\TransReportFile.sql" />
+    <Build Include="Tables\TransSFTPProfile.sql" />
+    <Build Include="Tables\WebEvent.sql" />
+    <Build Include="Tables\WebLogUsage.sql" />
+    <Build Include="Tables\WebNotification.sql" />
+    <Build Include="Tables\WebPortalLoginHandler.sql" />
+    <Build Include="Tables\WebSupportRequest.sql" />
+  </ItemGroup>
+</Project>

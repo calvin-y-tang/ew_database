@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[EWFolderDefDB] (
+    [FolderID] INT NOT NULL,
+    [DBID]     INT NOT NULL,
+    CONSTRAINT [PK_EWFolderDefDB] PRIMARY KEY CLUSTERED ([FolderID] ASC, [DBID] ASC)
+);
+

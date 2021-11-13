@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[ISTable] (
+    [TableID] INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [Name]    VARCHAR (100) NULL,
+    CONSTRAINT [PK_ISTable] PRIMARY KEY CLUSTERED ([TableID] ASC)
+);
+

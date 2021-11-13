@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[GPVoucherAdjustment] (
+    [PrimaryKey]       INT          IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [SourceID]         INT          NULL,
+    [FormatVersion]    INT          NOT NULL,
+    [ProcessedFlag]    BIT          NOT NULL,
+    [ExportDate]       DATETIME     NOT NULL,
+    [AdjNo]            VARCHAR (15) NOT NULL,
+    [AdjDate]          DATETIME     NOT NULL,
+    [DocumentNo]       VARCHAR (15) NULL,
+    [GPFacilityID]     VARCHAR (3)  NOT NULL,
+    [GPNaturalAccount] VARCHAR (5)  NOT NULL,
+    [GPGLAccount]      VARCHAR (16) NOT NULL,
+    [GPVendorID]       VARCHAR (15) NOT NULL,
+    [ClaimNo]          VARCHAR (50) NULL,
+    [CaseNo]           VARCHAR (15) NULL,
+    [Examinee]         VARCHAR (50) NULL,
+    [BatchNo]          VARCHAR (15) NOT NULL,
+    [TaxTotal]         MONEY        NULL,
+    [AdjAmount]        MONEY        NOT NULL,
+    [ReasonCode]       INT          NULL,
+    [Comment]          VARCHAR (30) NULL,
+    [Employer]         VARCHAR (70) NULL,
+    CONSTRAINT [PK_GPVoucherAdjustment] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
+);
+
