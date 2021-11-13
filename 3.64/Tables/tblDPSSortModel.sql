@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[tblDPSSortModel] (
+    [SortModelID]      INT          IDENTITY (1, 1) NOT NULL,
+    [Description]      VARCHAR (50) NULL,
+    [ExtSortModelCode] VARCHAR (30) NULL,
+    CONSTRAINT [PK_tblDPSSortModel] PRIMARY KEY CLUSTERED ([SortModelID] ASC)
+);
+

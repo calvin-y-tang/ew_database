@@ -1,0 +1,1147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>IMECentricDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{1a636d4e-5584-4e25-9e02-662c789b97da}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>IMECentricDB</RootNamespace>
+    <AssemblyName>IMECentricDB</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <SuppressTSqlWarnings>71558</SuppressTSqlWarnings>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Tables\" />
+    <Folder Include="Views\" />
+    <Folder Include="Functions\" />
+    <Folder Include="Stored Procedures\" />
+    <Folder Include="Compare" />
+    <Folder Include="Data" />
+    <Folder Include="Snapshots" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\tblCompany.sql" />
+    <Build Include="Tables\tblTaxTable.sql" />
+    <Build Include="Tables\tblAll.sql" />
+    <Build Include="Tables\tblDoctorOffice.sql" />
+    <Build Include="Tables\tblEWClient.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblCaseHistory.sql" />
+    <Build Include="Tables\tblCaseSpecialty.sql" />
+    <Build Include="Tables\tblEWCompany.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblUserGroup.sql" />
+    <Build Include="Tables\tblPublishOnWeb.sql" />
+    <Build Include="Tables\tblCaseAccredidation.sql" />
+    <Build Include="Tables\tblEWWebUser.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblEWFacilityGroup.sql" />
+    <Build Include="Tables\tblRptStatus.sql" />
+    <Build Include="Tables\tblEWFacilityGroupCategory.sql" />
+    <Build Include="Tables\tblCaseOtherParty.sql" />
+    <Build Include="Tables\tblEWFacilityGroupDetail.sql" />
+    <Build Include="Tables\tblNamePrefix.sql" />
+    <Build Include="Tables\tblKeyWord.sql" />
+    <Build Include="Tables\tblEWFacilityGroupSummary.sql" />
+    <Build Include="Tables\tblLocation.sql" />
+    <Build Include="Tables\tblControl.sql" />
+    <Build Include="Tables\tblDoctorAuthor.sql" />
+    <Build Include="Tables\tblAcctDetail.sql" />
+    <Build Include="Tables\tblEWUnitOfMeasure.sql" />
+    <Build Include="Tables\tblHCAIBatch.sql" />
+    <Build Include="Tables\tblCase.sql" />
+    <Build Include="Tables\tblClientDefDocument.sql" />
+    <Build Include="Tables\tblPOPBVoucher.sql" />
+    <Build Include="Tables\tblInvoiceAttachments.sql" />
+    <Build Include="Tables\tblWebNotifyReason.sql" />
+    <Build Include="Tables\tblEWDrDocType.sql" />
+    <Build Include="Tables\tblCaseType.sql" />
+    <Build Include="Tables\tblFRCategory.sql" />
+    <Build Include="Tables\tblHCAIInsurer.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblApptStatus.sql" />
+    <Build Include="Tables\tblTaxState.sql" />
+    <Build Include="Tables\tblOtherPartyType.sql" />
+    <Build Include="Tables\tblHCAIProvider.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblCaseAppt.sql" />
+    <Build Include="Tables\tblWebUser.sql" />
+    <Build Include="Tables\tblCompanyDefDocument.sql" />
+    <Build Include="Tables\tblCaseApptPanel.sql" />
+    <Build Include="Tables\tblRptMEINotification.sql" />
+    <Build Include="Tables\tblCanceledBy.sql" />
+    <Build Include="Tables\tblFeeDetailAbeton.sql" />
+    <Build Include="Tables\tblCaseDefDocument.sql" />
+    <Build Include="Tables\tblCasePeerBill.sql" />
+    <Build Include="Tables\tblTranscription.sql" />
+    <Build Include="Tables\tblCaseTrans.sql" />
+    <Build Include="Tables\tblAbetonProviderFees.sql" />
+    <Build Include="Tables\tblTreatingDoctor.sql" />
+    <Build Include="Tables\tblMerge.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblGPInvoice.sql" />
+    <Build Include="Tables\tblScanSetting.sql" />
+    <Build Include="Tables\tblCaseOtherTreatingDoctor.sql" />
+    <Build Include="Tables\tblMergeLog.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblDoctorReason.sql" />
+    <Build Include="Tables\tblUser.sql" />
+    <Build Include="Tables\tblExamineeCC.sql" />
+    <Build Include="Tables\tblICDCode.sql" />
+    <Build Include="Tables\tblWebQRRequest.sql" />
+    <Build Include="Tables\tblGPVoucher.sql" />
+    <Build Include="Tables\tblWebPasswordHistory.sql" />
+    <Build Include="Tables\tblRecordActions.sql" />
+    <Build Include="Tables\tblWebQRConfig.sql" />
+    <Build Include="Tables\tblWebUserStatus.sql" />
+    <Build Include="Tables\tblClientType.sql" />
+    <Build Include="Tables\tblState.sql" />
+    <Build Include="Tables\tblScanSettingWorkstation.sql" />
+    <Build Include="Tables\tblWebActivation.sql" />
+    <Build Include="Tables\tblRecordHistory.sql" />
+    <Build Include="Tables\tblDoctorTemplate.sql" />
+    <Build Include="Tables\tblUserDefined.sql" />
+    <Build Include="Tables\tblTranscriptionStatus.sql" />
+    <Build Include="Tables\tblEWSecurityProfile.sql" />
+    <Build Include="Tables\tblBlank.sql" />
+    <Build Include="Tables\tblServiceOffice.sql" />
+    <Build Include="Tables\tblWebEventsOverride.sql" />
+    <Build Include="Tables\tblHCAIControl.sql" />
+    <Build Include="Tables\tblCaseTypeOffice.sql" />
+    <Build Include="Tables\tblIMEData.sql" />
+    <Build Include="Tables\tblDoctorBusLine.sql" />
+    <Build Include="Tables\tblDegree.sql" />
+    <Build Include="Tables\tblWebUserAccount.sql" />
+    <Build Include="Tables\tblDoctorLocation.sql" />
+    <Build Include="Tables\tblAuditLog.sql" />
+    <Build Include="Tables\tblExceptionDefinition.sql" />
+    <Build Include="Tables\tblEWAuditEntity.sql" />
+    <Build Include="Tables\tblDoctor.sql" />
+    <Build Include="Tables\tblDoctorKeyWord.sql" />
+    <Build Include="Tables\tblDoctorFeeSchedule.sql" />
+    <Build Include="Tables\tblServices.sql" />
+    <Build Include="Tables\tblAcctHeader.sql" />
+    <Build Include="Tables\tblCaseIssue.sql" />
+    <Build Include="Tables\tblEWFolderType.sql" />
+    <Build Include="Tables\tblCasePanel.sql" />
+    <Build Include="Tables\tblEWGLAcct.sql" />
+    <Build Include="Tables\tblLanguage.sql" />
+    <Build Include="Tables\tblExceptionList.sql" />
+    <Build Include="Tables\tblEWFlashCategory.sql" />
+    <Build Include="Tables\tblEWGLAcctCategory.sql" />
+    <Build Include="Tables\tblEWCompanyType.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblLabelFile.sql" />
+    <Build Include="Tables\tblUserFunction.sql" />
+    <Build Include="Tables\tblGPInvoiceEDIStatus.sql" />
+    <Build Include="Tables\tblEWServiceType.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblEWNetwork.sql" />
+    <Build Include="Tables\tblBatch.sql" />
+    <Build Include="Tables\tblEWFeeZone.sql" />
+    <Build Include="Tables\tblEWBusLine.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblTranscriptionJob.sql" />
+    <Build Include="Tables\tblAcctingTrans.sql" />
+    <Build Include="Tables\tblFeeDetail.sql" />
+    <Build Include="Tables\tblCompanyNetwork.sql" />
+    <Build Include="Tables\tblCaseICDRequest.sql" />
+    <Build Include="Tables\tblDocument.sql" />
+    <Build Include="Tables\tblCaseNF10.sql" />
+    <Build Include="Tables\tblDoctorNetwork.sql" />
+    <Build Include="Tables\tblCodes.sql" />
+    <Build Include="Tables\tblCaseProblem.sql" />
+    <Build Include="Tables\tblCompanyNF10Template.sql" />
+    <Build Include="Tables\tblEWBulkBilling.sql" />
+    <Build Include="Tables\tblEWLocation.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblProviderType.sql" />
+    <Build Include="Tables\tblProduct.sql" />
+    <Build Include="Tables\tblDrDoNotUse.sql" />
+    <Build Include="Tables\tblTranscriptionJobDictation.sql" />
+    <Build Include="Tables\tblDoctorSpecialty.sql" />
+    <Build Include="Tables\tblPriority.sql" />
+    <Build Include="Tables\tblRelatedParty.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblGroupFunction.sql" />
+    <Build Include="Tables\tblClaimInfo.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblWebEvents.sql" />
+    <Build Include="Tables\tblSyncLogs.sql" />
+    <Build Include="Tables\tblCaseRelatedParty.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblQueueForms.sql" />
+    <Build Include="Tables\tblObtainmentTypeDetail.sql" />
+    <Build Include="Tables\tblExaminee.sql" />
+    <Build Include="Tables\tblZipCode.sql" />
+    <Build Include="Tables\tblNonWorkDays.sql" />
+    <Build Include="Tables\tblEWInputSource.sql" />
+    <Build Include="Tables\tblSpecialty.sql" />
+    <Build Include="Tables\tblUserSecurity.sql" />
+    <Build Include="Tables\tblDoctorSchedule.sql" />
+    <Build Include="Tables\tblCustomerData.sql" />
+    <Build Include="Tables\tblDoctorScheduleSummary.sql" />
+    <Build Include="Tables\tblMessageToken.sql" />
+    <Build Include="Tables\tblProblem.sql" />
+    <Build Include="Tables\tblEWFaxCoverPage.sql" />
+    <Build Include="Tables\tblQueues.sql" />
+    <Build Include="Tables\tblRecordStatus.sql" />
+    <Build Include="Tables\tblDoctorCheckRequest.sql" />
+    <Build Include="Tables\tblActions.sql" />
+    <Build Include="Tables\tblEWFaxCoverPageDB.sql" />
+    <Build Include="Tables\tblDoctorDocuments.sql" />
+    <Build Include="Tables\tblEWWebUserAccount.sql" />
+    <Build Include="Tables\tblWebQueues.sql" />
+    <Build Include="Tables\tblIssue.sql" />
+    <Build Include="Tables\tblFacility.sql" />
+    <Build Include="Tables\tblSetting.sql" />
+    <Build Include="Tables\tblObtainmentType.sql" />
+    <Build Include="Tables\tblEWCoverLetter.sql" />
+    <Build Include="Tables\tblOffice.sql" />
+    <Build Include="Tables\tblFRCategorySetup.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblCCAddress.sql" />
+    <Build Include="Tables\tblEWCoverLetterClientSpecData.sql" />
+    <Build Include="Tables\tblLogUsage.sql" />
+    <Build Include="Tables\tblCaseDocuments.sql" />
+    <Build Include="Tables\tblCompanyCoverLetter.sql" />
+    <Build Include="Tables\tblEWPostingPeriod.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblUserActivity.sql" />
+    <Build Include="Tables\tblEWCoverLetterCompanyName.sql" />
+    <Build Include="Tables\tblVenue.sql" />
+    <Build Include="Tables\tblEWExchangeRate.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblClient.sql" />
+    <Build Include="Tables\tblEWCoverLetterState.sql" />
+    <Build Include="Tables\tblEWAccreditation.sql" />
+    <Build Include="Tables\tblTerms.sql" />
+    <Build Include="Tables\tblEWParentCompany.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblEWCoverLetterBusLine.sql" />
+    <Build Include="Tables\tblDoctorAccreditation.sql" />
+    <Build Include="Tables\tblUserOffice.sql" />
+    <Build Include="Tables\tblEWCoverLetterQuestion.sql" />
+    <Build Include="Tables\tblEWFolderDef.sql" />
+    <Build Include="Tables\tblStandardCaseHistoryNotes.sql" />
+    <Build Include="Tables\tblRecordsObtainment.sql" />
+    <Build Include="Tables\tblCaseUnknownClient.sql" />
+    <Build Include="Tables\tblEWTransDept.sql" />
+    <Build Include="Tables\tblRecordsObtainmentDetail.sql" />
+    <Build Include="Tables\tblWebCompany.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblEWFacility.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="Tables\tblFeeHeader.sql" />
+    <Build Include="Tables\tblTempVendorVoucher.sql" />
+    <Build Include="Views\vw_EDIFileAttachments.sql" />
+    <Build Include="Views\vw_WebCaseSummary.sql" />
+    <Build Include="Views\vw_WebCaseSummaryExt.sql" />
+    <Build Include="Views\vw_WebCoverLetterInfo.sql" />
+    <Build Include="Views\vw30DaySchedule.sql" />
+    <Build Include="Views\vwAbetonCompanyFees.sql" />
+    <Build Include="Views\vwAbetonProviderFees.sql" />
+    <Build Include="Views\vwAcctDocuments.sql" />
+    <Build Include="Views\vwAcctException.sql" />
+    <Build Include="Views\vwAcctingSummary.sql" />
+    <Build Include="Views\vwAcctRegisterTax.sql" />
+    <Build Include="Views\vwApptHoldRpt.sql" />
+    <Build Include="Views\vwApptLog.sql" />
+    <Build Include="Views\vwApptLogByAppt.sql" />
+    <Build Include="Views\vwApptLogByApptDocs.sql" />
+    <Build Include="Views\vwApptLogDocs.sql" />
+    <Build Include="Views\vwApptsByMth.sql" />
+    <Build Include="Views\vwAssocCases.sql" />
+    <Build Include="Views\vwCancelAppt.sql" />
+    <Build Include="Views\vwCase.sql" />
+    <Build Include="Views\vwCaseAppt.sql" />
+    <Build Include="Views\vwCaseCC.sql" />
+    <Build Include="Views\vwCaseHistoryFollowUp.sql" />
+    <Build Include="Views\vwCaseIssue.sql" />
+    <Build Include="Views\vwCaseMonitorDetail.sql" />
+    <Build Include="Views\vwCaseOpenServices.sql" />
+    <Build Include="Views\vwCaseOtherContacts.sql" />
+    <Build Include="Views\vwCaseOtherParty.sql" />
+    <Build Include="Views\vwCasePanel.sql" />
+    <Build Include="Views\vwCaseProblem.sql" />
+    <Build Include="Views\vwCaseServices.sql" />
+    <Build Include="Views\vwCaseSummary.sql" />
+    <Build Include="Views\vwCaseSummaryWithSecurity.sql" />
+    <Build Include="Views\vwCaseTrans.sql" />
+    <Build Include="Views\vwCCExport.sql" />
+    <Build Include="Views\vwCCs.sql" />
+    <Build Include="Views\vwClaimNbrCheck.sql" />
+    <Build Include="Views\vwClient.sql" />
+    <Build Include="Views\vwClientDefaults.sql" />
+    <Build Include="Views\vwClientExport.sql" />
+    <Build Include="Views\vwClientExportColumns.sql" />
+    <Build Include="Views\vwClientWebAcct.sql" />
+    <Build Include="Views\vwDoctorDocument.sql" />
+    <Build Include="Views\vwDoctorExport.sql" />
+    <Build Include="Views\vwDoctorExportColumns.sql" />
+    <Build Include="Views\vwDoctorFeeSchedule.sql" />
+    <Build Include="Views\vwDoctorKeyword.sql" />
+    <Build Include="Views\vwDoctorScheduleSummary.sql" />
+    <Build Include="Views\vwDocument.sql" />
+    <Build Include="Views\vwDocumentAccting.sql" />
+    <Build Include="Views\vwDrSchedule.sql" />
+    <Build Include="Views\vwEDIExportSummary.sql" />
+    <Build Include="Views\vwExamineeCases.sql" />
+    <Build Include="Views\vwExamineeRecordHistory.sql" />
+    <Build Include="Views\vwExceptionDefinitionListing.sql" />
+    <Build Include="Views\vwExportSummary.sql" />
+    <Build Include="Views\vwFeeDetail.sql" />
+    <Build Include="Views\vwFees.sql" />
+    <Build Include="Views\vwIMOLateCancel.sql" />
+    <Build Include="Views\vwInvoiceAttachmentGuidance.sql" />
+    <Build Include="Views\vwLibertyExport.sql" />
+    <Build Include="Views\vwMatrixClientExport.sql" />
+    <Build Include="Views\vwMatrixTDExport.sql" />
+    <Build Include="Views\vwOpenDrSchedule.sql" />
+    <Build Include="Views\vwPatientCCs.sql" />
+    <Build Include="Views\vwPDFCaseData.sql" />
+    <Build Include="Views\vwPDFDoctorData.sql" />
+    <Build Include="Views\vwPDFInvData.sql" />
+    <Build Include="Views\vwPDFInvDetData.sql" />
+    <Build Include="Views\vwPDFLocationData.sql" />
+    <Build Include="Views\vwPDFOverride.sql" />
+    <Build Include="Views\vwPDFStaticData.sql" />
+    <Build Include="Views\vwProfit.sql" />
+    <Build Include="Views\vwProfitDocs.sql" />
+    <Build Include="Views\vwRecordsToInvoice.sql" />
+    <Build Include="Views\vwReferralbyMonthAppt.sql" />
+    <Build Include="Views\vwReferralbyMonthApptDocs.sql" />
+    <Build Include="Views\vwReferralbyMonthDateReceived.sql" />
+    <Build Include="Views\vwReferralbyMonthDateReceivedDocs.sql" />
+    <Build Include="Views\vwRegister.sql" />
+    <Build Include="Views\vwRegisterTotal.sql" />
+    <Build Include="Views\vwReportTATRpt.sql" />
+    <Build Include="Views\vwReportTATRptDocs.sql" />
+    <Build Include="Views\vwRptCancelDetail.sql" />
+    <Build Include="Views\vwRptCancelDetailDocs.sql" />
+    <Build Include="Views\vwRptMEINotification.sql" />
+    <Build Include="Views\vwRptNoShowDetail.sql" />
+    <Build Include="Views\vwRptNoShowDetailDocs.sql" />
+    <Build Include="Views\vwRptOutstandingAuthorizations.sql" />
+    <Build Include="Views\vwRptOutstandingRecords.sql" />
+    <Build Include="Views\vwSpecialServices.sql" />
+    <Build Include="Views\vwStatusAppt.sql" />
+    <Build Include="Views\vwStatusNew.sql" />
+    <Build Include="Views\vwUpdateLastStatus.sql" />
+    <Build Include="Views\vwUserSecurity.sql" />
+    <Build Include="Views\vwVoucherSelect.sql" />
+    <Build Include="Functions\fnGetDoctorDocumentPath.sql" />
+    <Build Include="Functions\fnDateValue.sql" />
+    <Build Include="Functions\GetZipDistanceMiles.sql" />
+    <Build Include="Functions\fnIsWorkDay.sql" />
+    <Build Include="Functions\fnGetTATString.sql" />
+    <Build Include="Functions\fnGetTATMins.sql" />
+    <Build Include="Stored Procedures\proc_Queues_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_GetIssueComboItems.sql" />
+    <Build Include="Stored Procedures\spOtherParty.sql" />
+    <Build Include="Stored Procedures\proc_GetCompanyComboItems.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetDegreeComboItems.sql" />
+    <Build Include="Stored Procedures\proc_SetLoginDateByWebUserID.sql" />
+    <Build Include="Stored Procedures\proc_Keyword_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_GetProblemComboItems.sql" />
+    <Build Include="Stored Procedures\proc_Queues_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Problem_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\spRptDrDistribution.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_AdminCheckDupeWebUser.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralsByClaimantAndClaim.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_GetApptCount.sql" />
+    <Build Include="Stored Procedures\proc_GetSpecialtyComboItems.sql" />
+    <Build Include="Stored Procedures\sp_tblsynclogs.sql" />
+    <Build Include="Stored Procedures\proc_WebQueues_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_tblSyncLogsInsert.sql" />
+    <Build Include="Stored Procedures\proc_GetDoctorLocationsAndScheduleWithSpec.sql" />
+    <Build Include="Stored Procedures\proc_Services_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseSpecialty_Insert.sql" />
+    <Build Include="Stored Procedures\proc_tblCCAddressUpdate.sql" />
+    <Build Include="Stored Procedures\proc_CaseSpecialty_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Company_LoadByEWCompanyID.sql" />
+    <Build Include="Stored Procedures\proc_GetFirstAvailApptByLocation.sql" />
+    <Build Include="Stored Procedures\proc_GetRecordStatusComboItems.sql" />
+    <Build Include="Stored Procedures\spRptDoctorListing.sql" />
+    <Build Include="Stored Procedures\proc_EWCoverLetter_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetFirstAvailApptByDoctor.sql" />
+    <Build Include="Stored Procedures\spInsertActionTableRecords.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_EWCoverLetterClientSpecData_LoadByEWCoverLetterID.sql" />
+    <Build Include="Stored Procedures\proc_GetOfficeComboItems.sql" />
+    <Build Include="Stored Procedures\proc_GetClientDetailsByUserIDNew.sql" />
+    <Build Include="Stored Procedures\proc_EWCoverLetterClientSpecData_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CalcNonWorkDay.sql" />
+    <Build Include="Stored Procedures\proc_Location_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CaseAccredidation_Insert.sql" />
+    <Build Include="Stored Procedures\proc_EWCoverLetterCompanyName_LoadByEWCoverLetterID.sql" />
+    <Build Include="Stored Procedures\proc_CaseAccredidation_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_EWCoverLetterQuestion_LoadByEWCoverLetterID.sql" />
+    <Build Include="Stored Procedures\proc_tblWebUserUpdate.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByWebUserIDAndLastLoginDate.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_EWCoverLetterQuestion_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_WebUser_LoadByEWWebUserID.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_EWFolderDef_LoadByName.sql" />
+    <Build Include="Stored Procedures\proc_GetDoctorLocationsAndSchedule.sql" />
+    <Build Include="Stored Procedures\proc_Location_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetSuperUserAvailUserListItemsNew.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetEWCoverLetterComboItems.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSummaryByWebStatusDesc.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetMostRecentCoverLetterRecord.sql" />
+    <Build Include="Stored Procedures\proc_AdminWebUserUpdate.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_Update.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSummarySinceLastLoginDate.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\spAttorneyCases.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByWebUserIDAndLastLoginDate.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebQueues_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Examinee_LoadByName.sql" />
+    <Build Include="Stored Procedures\proc_tblcaseissueInsert.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_LoadByName.sql" />
+    <Build Include="Stored Procedures\proc_tblcaseproblemInsert.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByCaseNbrAndType.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralDocsNew.sql" />
+    <Build Include="Stored Procedures\proc_tblCCAddressInsert.sql" />
+    <Build Include="Stored Procedures\spExamineeCases.sql" />
+    <Build Include="Stored Procedures\proc_GetPrefixComboItems.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralDocs.sql" />
+    <Build Include="Stored Procedures\spRptFlashReport.sql" />
+    <Build Include="Stored Procedures\proc_CCAddressCheckForDupe.sql" />
+    <Build Include="Stored Procedures\proc_GetLatLon.sql" />
+    <Build Include="Stored Procedures\spCompanyCases.sql" />
+    <Build Include="Stored Procedures\proc_tblCompanyUpdate.sql" />
+    <Build Include="Stored Procedures\proc_GetZipDistanceInMiles.sql" />
+    <Build Include="Stored Procedures\proc_tblPublishOnWebInsert.sql" />
+    <Build Include="Stored Procedures\proc_tblPublishOnWebUpdate.sql" />
+    <Build Include="Stored Procedures\proc_tblHCAIBatch_Insert.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetStateComboItems.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseAccredidationByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_LoadByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_ClientDefDocument_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_ClientDefDocument_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_ClientDefDocument_LoadByClientCode.sql" />
+    <Build Include="Stored Procedures\proc_CaseDefDocument_Delete.sql" />
+    <Build Include="Stored Procedures\spClientCases.sql" />
+    <Build Include="Stored Procedures\proc_CaseDefDocument_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseDefDocument_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_WebQRRequest_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseDefDocument_Update.sql" />
+    <Build Include="Stored Procedures\proc_WebQRRequest_Insert.sql" />
+    <Build Include="Stored Procedures\proc_User_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_WebQRConfig_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseDefDocument_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedule_Delete.sql" />
+    <Build Include="Stored Procedures\proc_WebPasswordHistory_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedule_Insert.sql" />
+    <Build Include="Stored Procedures\proc_AreNPCasesPresentByUser.sql" />
+    <Build Include="Stored Procedures\proc_WebPasswordHistory_Delete.sql" />
+    <Build Include="Stored Procedures\proc_GetWebUserData.sql" />
+    <Build Include="Stored Procedures\proc_CaseAppt_Delete.sql" />
+    <Build Include="Stored Procedures\proc_WebPasswordHistory_Insert.sql" />
+    <Build Include="Stored Procedures\proc_GetWebUserPassword.sql" />
+    <Build Include="Stored Procedures\proc_CaseAppt_Insert.sql" />
+    <Build Include="Stored Procedures\proc_WebPasswordHistory_Update.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedule_Update.sql" />
+    <Build Include="Stored Procedures\proc_CaseAppt_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_WebPasswordHistory_LoadByWebUserID.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedule_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Client_LoadByUserIDAndEmail.sql" />
+    <Build Include="Stored Procedures\proc_GetDoctorScheduleByDocCodeAndDate.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedule_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CaseReason_LoadByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_WebActivation_Delete.sql" />
+    <Build Include="Stored Procedures\proc_GetWebUserUserName.sql" />
+    <Build Include="Stored Procedures\proc_CaseSpecialty_LoadByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_WebActivation_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetSuperUserGridItems.sql" />
+    <Build Include="Stored Procedures\proc_WebUser_LoadByUserID.sql" />
+    <Build Include="Stored Procedures\proc_Transcription_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetAdminReferralSummaryNew.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebActivation_Insert.sql" />
+    <Build Include="Stored Procedures\proc_WebActivation_Update.sql" />
+    <Build Include="Stored Procedures\proc_WebActivation_LoadByWebUserID.sql" />
+    <Build Include="Stored Procedures\proc_EWFolderDef_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_EWSecurityProfile_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetMMISummaryNew.sql" />
+    <Build Include="Stored Procedures\proc_EWSecurityProfile_LoadByCompanyCode.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSummaryNew.sql" />
+    <Build Include="Stored Procedures\proc_CaseProblem_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseType_LoadAllOrderByCode.sql" />
+    <Build Include="Stored Procedures\proc_ICD_GetDescByCode.sql" />
+    <Build Include="Stored Procedures\proc_CaseType_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_Delete.sql" />
+    <Build Include="Stored Procedures\proc_CaseProblem_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CaseProblem_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_WebUser_Insert.sql" />
+    <Build Include="Stored Procedures\proc_HCAIControl_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_IMEData_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseIssuesByCase.sql" />
+    <Build Include="Stored Procedures\proc_User_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseProblem_Update.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseICDRequestsByCase.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_FixWebUsers.sql" />
+    <Build Include="Stored Procedures\proc_Client_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_ValidateAdminUser.sql" />
+    <Build Include="Stored Procedures\proc_CaseICDRequest_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Client_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseICDRequest_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_Office_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseICDRequest_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_Delete.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_UpdateViewed.sql" />
+    <Build Include="Stored Procedures\proc_CaseICDRequest_Delete.sql" />
+    <Build Include="Stored Procedures\proc_Office_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_Insert.sql" />
+    <Build Include="Stored Procedures\proc_Company_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseType_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseProblemsByCase.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_Services_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_GetClientSubordinates.sql" />
+    <Build Include="Stored Procedures\proc_RequestNextTranscriptionJob.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_Delete.sql" />
+    <Build Include="Stored Procedures\proc_Specialty_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_Update.sql" />
+    <Build Include="Stored Procedures\proc_Examinee_Delete.sql" />
+    <Build Include="Stored Procedures\proc_Issue_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_tblWebUserAccountUpdate.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_LoadByStatusCode.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_Delete.sql" />
+    <Build Include="Stored Procedures\proc_tblActionsInsert.sql" />
+    <Build Include="Stored Procedures\proc_Problem_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_Specialty_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetDefaultOffice.sql" />
+    <Build Include="Stored Procedures\proc_Examinee_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_LoadByTranscriptionJobID.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_Insert.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_LoadByTransCode.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_tblWebUserAccountInsert.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_Insert.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_WebUser_Delete.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJob_Update.sql" />
+    <Build Include="Stored Procedures\proc_IMEException.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_Update.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJobDictation_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_Delete.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByCaseNbrAndWebUserID.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_TranscriptionJobDictation_Update.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_Insert.sql" />
+    <Build Include="Stored Procedures\proc_Examinee_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_TranscriptionJobDictation_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseVerifyAccessNP.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetSpecialtyByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_Update.sql" />
+    <Build Include="Stored Procedures\proc_WebUser_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadExprtGridByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_CaseIssue_Delete.sql" />
+    <Build Include="Stored Procedures\proc_CaseRelatedParty_Insert.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_CaseDocument_LoadExprtGridByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_CaseRelatedParty_LoadAll.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_IMECase_UpdateDateEdited.sql" />
+    <Build Include="Stored Procedures\spCaseReports.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_CaseIssue_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseRelatedParty_LoadByPrimaryKey.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_IMECase_UpdateTransCode.sql" />
+    <Build Include="Stored Procedures\spCaseDocuments.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_ExamineeCheckForDupe.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_TranscriptionJobDictation_LoadByTranscriptionJobID.sql" />
+    <Build Include="Stored Procedures\proc_CaseIssue_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_IMECase_Delete.sql" />
+    <Build Include="Stored Procedures\proc_getActiveCases.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_Examinee_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseVerifyAccess.sql" />
+    <Build Include="Stored Procedures\proc_tblCompanyInsert.sql" />
+    <Build Include="Stored Procedures\proc_Examinee_Update.sql" />
+    <Build Include="Stored Procedures\proc_CaseIssue_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSearch.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetLanguageComboItems.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_CaseIssue_Update.sql" />
+    <Build Include="Stored Procedures\proc_WebUserAccount_Delete.sql" />
+    <Build Include="Stored Procedures\proc_IMECase_DeleteComplete.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_CaseProblem_Delete.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_GetActiveDoctors.sql" />
+    <Build Include="Stored Procedures\proc_GetNewBatchNbr.sql" />
+    <Build Include="Stored Procedures\proc_EWTransDept_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseTypeComboItems.sql" />
+    <Build Include="Stored Procedures\spDoctorCases.sql" />
+    <Build Include="Stored Procedures\proc_tblExamineeUpdate.sql" />
+    <Build Include="Stored Procedures\proc_RelatedPartyCheckForDupe.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_IMECase_Insert.sql" />
+    <Build Include="Stored Procedures\spCaseHistory.sql" />
+    <Build Include="Stored Procedures\proc_WebUserAccount_Insert.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_Delete.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_IMECase_Update.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_GetDocuments.sql" />
+    <Build Include="Stored Procedures\proc_CheckAssignedPendingTranscriptionsByTransCode.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_Insert.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebUser_Update.sql" />
+    <Build Include="Stored Procedures\proc_WebUserAccount_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_tblWebUserInsert.sql" />
+    <Build Include="Stored Procedures\proc_GetNextAvailableTranscription.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_LoadAll.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_AdminGetWebUserDataByWebUserID.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_IMECase_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_LoadByPrimaryKey.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebUserAccount_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_Update.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_tblSyncLogsUpdate.sql" />
+    <Build Include="Stored Procedures\proc_IMECase_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Company_LoadAll.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\spCase_GetDocumentPath.sql" />
+    <Build Include="Stored Procedures\proc_CoverLetterGetBookmarkValuesByCase.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetSuperUserComboItems.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebUser_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_GetSuperUserSelUserListItems.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_AdminGetUserGrid.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebUser_CheckIfSupervisor.sql" />
+    <Build Include="Stored Procedures\proc_WebUserAccount_Update.sql" />
+    <Build Include="Stored Procedures\proc_GetDoctorScheduleByDate.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_getActiveAdminCases.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseDetails.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_WebUserSubordinate_Delete.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByCaseNbrAndWebUserID.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetExamineeComboItems.sql" />
+    <Build Include="Stored Procedures\proc_Client_IsPhotoRqd.sql" />
+    <Build Include="Stored Procedures\proc_GetProviderSearch.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_Issue_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_GetSuperUserAvailUserListItems.sql">
+      <AnsiNulls>Off</AnsiNulls>
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="Stored Procedures\proc_GetServiceComboItems.sql" />
+    <Build Include="Stored Procedures\proc_GetExamineeComboItemsByWebUserIDNew.sql" />
+    <Build Include="Stored Procedures\proc_ProviderType_LoadAll.sql" />
+    <Build Include="Stored Procedures\proc_tblExamineeInsert.sql" />
+    <Build Include="Stored Procedures\web_GetCaseDocumentPath.sql" />
+    <None Include="Data\NextRelease.sql" />
+    <Build Include="Tables\tblExceptionDefOffice.sql" />
+    <Build Include="Tables\tblExceptionDefEntity.sql" />
+    <Build Include="Tables\tblCompanyCPTCode.sql" />
+    <Build Include="Tables\tblProductCPTCode.sql" />
+    <Build Include="Views\vwAcctMonitorDetail.sql" />
+    <Build Include="Functions\fnGetCaseDocumentPath.sql" />
+    <Build Include="Views\vwAcctingParam.sql" />
+    <Build Include="Views\vwSedgwickClientInformation.sql" />
+    <Build Include="Views\vwSedgwickClaimRecords.sql" />
+    <Build Include="Views\vwSedgwickClaimContactInformation.sql" />
+    <Build Include="Functions\fnGetCaseDocument.sql" />
+    <Build Include="Tables\tblCompanyOffice.sql" />
+    <Build Include="Tables\tblClientOffice.sql" />
+    <Build Include="Tables\tblCCAddressOffice.sql" />
+    <Build Include="Tables\tblFacilityOffice.sql" />
+    <Build Include="Tables\tblDocumentOffice.sql" />
+    <Build Include="Tables\tblLocationOffice.sql" />
+    <Build Include="Tables\tblFolderOffice.sql" />
+    <Build Include="Stored Procedures\proc_Control_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_Client_GetDefaultOffice.sql" />
+    <Build Include="Views\vwTranscriptionTracker.sql" />
+    <Build Include="Views\vwFeeScheduleRpt.sql" />
+    <Build Include="Functions\fnGetTranscriptionDocumentPath.sql" />
+    <Build Include="Tables\tblReferralAssignmentRule.sql" />
+    <Build Include="Tables\tblEWTimeZoneAdjustmentRule.sql" />
+    <Build Include="Tables\tblEWTimeZone.sql" />
+    <Build Include="Functions\fnGetUTCOffset.sql" />
+    <Build Include="Functions\fnGetLastWeekdayInMonth.sql" />
+    <Build Include="Functions\fnGetFirstWeekdayInMonth.sql" />
+    <Build Include="Tables\tblServiceWorkflowQueueDocument.sql" />
+    <Build Include="Tables\tblServiceWorkflowQueue.sql" />
+    <Build Include="Tables\tblServiceWorkflow.sql" />
+    <Build Include="Views\vwServiceWorkflowQueueDocument.sql" />
+    <Build Include="Views\vwServiceWorkflowQueue.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByWebUserIDAndLastLoginDateCount.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByWebUserIDAndLastLoginDateCount.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSummarySinceLastLoginDateCount.sql" />
+    <Build Include="Stored Procedures\proc_CaseType_LoadComboByOfficeCode.sql" />
+    <Build Include="Stored Procedures\proc_Service_LoadComboByOfficeCode.sql" />
+    <Build Include="Stored Procedures\proc_GetDoctorScheduleDatesByDoctorCode.sql" />
+    <Build Include="Stored Procedures\proc_CheckForWebEventOverride.sql" />
+    <Build Include="Stored Procedures\proc_LoadWebEventsByDescription.sql" />
+    <Build Include="Stored Procedures\proc_GetDefaultOfficeByDefaultFlag.sql" />
+    <Build Include="Stored Procedures\proc_GetDefaultOfficeByDefaultFlagByMin.sql" />
+    <Build Include="Stored Procedures\web_GetTransJobDocumentPath.sql" />
+    <Build Include="Stored Procedures\proc_GetSaveDateTimeByOffice.sql" />
+    <Build Include="Stored Procedures\proc_GetSaveDateTimeByEWTimeZoneID.sql" />
+    <Build Include="Stored Procedures\proc_CCAddress_GetDefaultOffice.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_GetDefaultOffice.sql" />
+    <Build Include="Tables\tblProductOffice.sql" />
+    <Build Include="Tables\tblFeeHeaderOffice.sql" />
+    <Build Include="Views\vwFeeDetailAbeton.sql" />
+    <Build Include="Tables\tblEWParentCompanyDocuments.sql" />
+    <Build Include="Tables\tblCompanyDocuments.sql" />
+    <Build Include="Stored Procedures\web_GetCaseDocumentPathExisting.sql" />
+    <Build Include="Views\vwWALI.sql" />
+    <Build Include="Views\vwScheduleViewer.sql" />
+    <Build Include="Views\vwRptMEIDoctorSchedulebyLocation.sql" />
+    <Build Include="Views\vwRptMEIDoctorSchedulebyDoctor.sql" />
+    <Build Include="Views\vwRptDoctorScheduleLocationDoctor.sql" />
+    <Build Include="Views\vwRptDoctorScheduleLocation.sql" />
+    <Build Include="Views\vwRptDoctorScheduleDoctor.sql" />
+    <Build Include="Views\vwRptDaySheet.sql" />
+    <Build Include="Stored Procedures\proc_GetMostUsedOffice.sql" />
+    <Build Include="Tables\tblWebNotification.sql" />
+    <Build Include="Stored Procedures\proc_WebNotification_Insert.sql" />
+    <Build Include="Stored Procedures\proc_WebNotification_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_WebNotification_Update.sql" />
+    <Build Include="Tables\tblAcctMargin.sql" />
+    <Build Include="Tables\tblEWParentEmployer.sql" />
+    <Build Include="Tables\tblEmployer.sql" />
+    <Build Include="Tables\tblEmployerAddress.sql" />
+    <Build Include="Tables\tblCaseReviewItem.sql" />
+    <Build Include="Tables\tblConfirmationRule.sql" />
+    <Build Include="Tables\tblConfirmationRuleDetail.sql" />
+    <Build Include="Tables\tblConfirmationMessage.sql" />
+    <Build Include="Tables\tblConfirmationList.sql" />
+    <Build Include="Tables\tblConfirmationBatch.sql" />
+    <Build Include="Tables\tblConfirmationSetup.sql" />
+    <Build Include="Tables\tblConfirmationDoctor.sql" />
+    <Build Include="Tables\tblConfirmationLocation.sql" />
+    <Build Include="Tables\tblConfirmationResult.sql" />
+    <Build Include="Tables\tblDoctorCancelationPolicy.sql" />
+    <Build Include="Stored Procedures\proc_GetParentCompany.sql" />
+    <Build Include="Tables\tblServiceDoNotUse.sql" />
+    <Build Include="Stored Procedures\proc_CaseReviewItem_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CaseReviewItem_LoadByPrimaryKey.sql" />
+    <Build Include="Stored Procedures\proc_CaseReviewItem_Update.sql" />
+    <Build Include="Tables\tblTATCalculationMethod.sql" />
+    <Build Include="Tables\tblTATCalculationGroupDetail.sql" />
+    <Build Include="Tables\tblTATCalculationGroup.sql" />
+    <Build Include="Tables\tblSLARuleDetail.sql" />
+    <Build Include="Tables\tblSLARuleCondition.sql" />
+    <Build Include="Tables\tblSLARule.sql" />
+    <Build Include="Tables\tblCaseSLARuleDetail.sql" />
+    <Build Include="Tables\tblDataField.sql" />
+    <Build Include="Tables\tblTranscriptionJobFile.sql" />
+    <Build Include="Tables\tblExternalCommunications.sql" />
+    <Build Include="Stored Procedures\proc_GetExternalCommunication.sql" />
+    <Build Include="Tables\tblTATCalculationMethodEvent.sql" />
+    <Build Include="Tables\tblSLAExceptionGroup.sql" />
+    <Build Include="Tables\tblSLAException.sql" />
+    <Build Include="Tables\tblEvent.sql" />
+    <Build Include="Stored Procedures\proc_OfficeGetWebDocPrintSaveFlag.sql" />
+    <Build Include="Tables\tblOfficeDPSSortModel.sql" />
+    <Build Include="Tables\tblDPSSortModel.sql" />
+    <Build Include="Tables\tblDPSBundleCaseDocument.sql" />
+    <Build Include="Tables\tblDPSBundle.sql" />
+    <Build Include="Tables\tblDoctorDPSSortModel.sql" />
+    <Build Include="Views\vwDPSCases.sql" />
+    <Build Include="Tables\tblDPSStatus.sql" />
+    <Build Include="Tables\tblServiceIncludeExclude.sql" />
+    <Build Include="Stored Procedures\proc_EDIDetermination.sql" />
+    <Build Include="Tables\tblAddressAbbreviation.sql" />
+    <Build Include="Tables\tblDPSPriority.sql" />
+    <Build Include="Functions\fnGetOfficeDateTime.sql" />
+    <Build Include="Views\vwInvoiceView.sql" />
+    <Build Include="Views\vwInvoiceDetailsView.sql" />
+    <Build Include="Tables\tblConfirmationStatus.sql" />
+    <Build Include="Tables\tblCaseDocType.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseDocTypeComboItems.sql" />
+    <Build Include="Views\vwConfirmationResultsReport.sql" />
+    <Build Include="Stored Procedures\proc_GetStatusFromServiceWorkflow.sql" />
+    <Build Include="Views\vwGBClaimRecords.sql" />
+    <Build Include="Tables\tblWebReferralForm.sql" />
+    <Build Include="Tables\tblWebReferralFormProblem.sql" />
+    <Build Include="Tables\tblWebReferralFormRule.sql" />
+    <Build Include="Tables\tblWebReferralFormSpecialty.sql" />
+    <Build Include="Tables\tblWebQueuesV2.sql" />
+    <Build Include="Stored Procedures\proc_GetPublishOnWebRecordsByCaseNbr.sql" />
+    <Build Include="Views\vwSLURequirementDetails_Verizon.sql" />
+    <Build Include="Tables\tblServicesJurisdictions.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_CheckForDupe.sql" />
+    <Build Include="Stored Procedures\proc_IMECase_CheckForDupe.sql" />
+    <Build Include="Stored Procedures\proc_CaseUpdateICDCodeFields.sql" />
+    <Build Include="Stored Procedures\proc_Company_IsCaseAcknowledgment.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_CheckIfExists.sql" />
+    <Build Include="Stored Procedures\proc_UpdateCaseStatus.sql" />
+    <Build Include="Stored Procedures\proc_GetServWorkflowId.sql" />
+    <Build Include="Tables\tblExamineeAddresses.sql" />
+    <Build Include="Tables\tblNotify.sql" />
+    <Build Include="Tables\tblNotifyEvent.sql" />
+    <Build Include="Tables\tblNotifyMethod.sql" />
+    <Build Include="Tables\tblNotifyAudience.sql" />
+    <Build Include="Tables\tblNotifyPreference.sql" />
+    <Build Include="Tables\tblNotifyDetail.sql" />
+    <Build Include="Stored Procedures\proc_GetOfficeInfoByUserCode.sql" />
+    <Build Include="Stored Procedures\proc_IsGBArchClaim.sql" />
+    <Build Include="Tables\tblOfficeContact.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedulePortalCalendarDays.sql" />
+    <Build Include="Stored Procedures\proc_DoctorSchedulePortalCalendarMonth.sql" />
+    <Build Include="Tables\tblWebUserChangeRequest.sql" />
+    <Build Include="Tables\tblCaseContactRequest.sql" />
+    <Build Include="Tables\tblQuestionRule.sql" />
+    <Build Include="Tables\tblQuestionSet.sql" />
+    <Build Include="Tables\tblQuestionSetDetail.sql" />
+    <Build Include="Tables\tblIssueQuestion.sql" />
+    <Build Include="Tables\tblCaseIssueQuestion.sql" />
+    <Build Include="Tables\tblDoctorRecommend.sql" />
+    <Build Include="Tables\tblBusinessRuleCondition.sql" />
+    <Build Include="Tables\tblBusinessRule.sql" />
+    <Build Include="Stored Procedures\spGetBusinessRules.sql" />
+    <Build Include="Tables\tblDoctorDrAssistant.sql" />
+    <Build Include="Tables\tblDrAssistant.sql" />
+    <Build Include="Stored Procedures\proc_DoctorAssistant_LoadByPrimaryKey.sql" />
+    <Build Include="Tables\tblWebReferral.sql" />
+    <Build Include="Tables\tblSession.sql" />
+    <Build Include="Tables\tblLock.sql" />
+    <Build Include="Stored Procedures\spLock_Create.sql" />
+    <Build Include="Tables\tblCaseDocumentsDicom.sql" />
+    <Build Include="Tables\tblCaseDocumentTransfer.sql" />
+    <Build Include="Tables\tblWebDictationStatus.sql" />
+    <Build Include="Tables\tblCancelReasonGroup.sql" />
+    <Build Include="Tables\tblCancelReasonDetail.sql" />
+    <Build Include="Tables\tblTempData.sql" />
+    <Build Include="Views\vwCaseReExam.sql" />
+    <Build Include="Tables\tblFilePattern.sql" />
+    <Build Include="Tables\tblFolderFilePattern.sql" />
+    <Build Include="Tables\tblDoctorMargin.sql" />
+    <Build Include="Tables\tblDoctorSearchResult.sql" />
+    <Build Include="Stored Procedures\spDoctorSearch.sql" />
+    <Build Include="Views\vwDoctorSearchResult.sql" />
+    <Build Include="Tables\tblDoctorSearchWeightedCriteria.sql" />
+    <Build Include="Tables\tblDPSNote.sql" />
+    <Build Include="Views\vwCaseDocuments.sql" />
+    <Build Include="Views\vwDoctorSchedule.sql" />
+    <Build Include="Views\vwServiceWorkflow.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_LoadByTableKeyTableType.sql" />
+    <Build Include="Tables\tblCaseEnvelope.sql" />
+    <Build Include="Tables\tblCompanyCertifiedMail.sql" />
+    <Build Include="Views\vwCertifiedMailCases.sql" />
+    <Build Include="Tables\tblWebMobileUser.sql" />
+    <Build Include="Stored Procedures\proc_CasePeerBill_Insert.sql" />
+    <Build Include="Stored Procedures\proc_CasePeerBill_LoadByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_CasePeerBill_LoadByPrimaryKey.sql" />
+    <Build Include="Tables\tblProblemArea.sql" />
+    <Build Include="Tables\tblProblemDetail.sql" />
+    <Build Include="Tables\tblEmployerDefDocument.sql" />
+    <Build Include="Tables\tblCustomerFeeHeader.sql" />
+    <Build Include="Tables\tblCustomerFeeDetail.sql" />
+    <Build Include="Tables\tblQuoteStatus.sql" />
+    <Build Include="Tables\tblOutOfNetworkReason.sql" />
+    <Build Include="Tables\tblAcctQuote.sql" />
+    <Build Include="Views\vwQuoteApproval.sql" />
+    <Build Include="Stored Procedures\proc_CustomerData_LoadByTableKey.sql" />
+    <Build Include="Stored Procedures\proc_CustomerData_Insert.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSummaryNewProgressive.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralSearchProgressive.sql" />
+    <Build Include="Stored Procedures\proc_GetApptCountByCase.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByCaseNbrProgressive.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByCaseNbrProgressive.sql" />
+    <Build Include="Views\vwNotaryApproval.sql" />
+    <Build Include="Stored Procedures\proc_Info_Hartford_MgtRpt_InitData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Hartford_MgtRpt_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Hartford_MgtRpt_PatchData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Hartford_MgtRpt.sql" />
+    <Build Include="Stored Procedures\proc_GetActiveCasesProgressive.sql" />
+    <Build Include="Stored Procedures\proc_GetVenueComboItems.sql" />
+    <Build Include="Views\vwRptProgressiveReferral.sql" />
+    <Build Include="Views\vwRptProgressiveReExam.sql" />
+    <Build Include="Views\vwRptProgressivePeerSummary.sql" />
+    <Build Include="Views\vwRptProgressiveIMESummary.sql" />
+    <Build Include="Views\vwRptProgressiveClosedCaseSummary.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByWebUserIDAndLastLoginDateCountProgressive.sql" />
+    <Build Include="Stored Procedures\proc_CaseDocuments_LoadByWebUserIDAndLastLoginDateProgressive.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByWebUserIDAndViewed.sql" />
+    <Build Include="Stored Procedures\proc_CaseHistory_LoadByWebUserIDAndViewedCount.sql" />
+    <Build Include="Stored Procedures\proc_Info_Progressive_MgtRpt.sql" />
+    <Build Include="Stored Procedures\proc_Info_Progressive_MgtRpt_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Progressive_MgtRpt_PatchData.sql" />
+    <Build Include="Stored Procedures\proc_LoadCaseSearchProgressive.sql" />
+    <Build Include="Stored Procedures\proc_GetCaseDetailsProgressive.sql" />
+    <Build Include="Stored Procedures\proc_GetExamineeAddressesByChartNbr.sql" />
+    <Build Include="Stored Procedures\proc_ExamineeAddress_Insert.sql" />
+    <Build Include="Stored Procedures\proc_Client_LoadByParentCompany.sql" />
+    <Build Include="Stored Procedures\proc_ProblemArea_LoadByProblemCode.sql" />
+    <Build Include="Stored Procedures\proc_GetClientsByCompany.sql" />
+    <Build Include="Views\vwCaseReports.sql" />
+    <Build Include="Views\vwFileManagerAttachedDocument.sql" />
+    <Build Include="Views\vwRptProgressiveUpcomingAppt.sql" />
+    <Build Include="Stored Procedures\proc_ExamineeUpdatePrimaryAddress.sql" />
+    <Build Include="Stored Procedures\proc_Info_Liberty_BulkBilling.sql" />
+    <Build Include="Stored Procedures\proc_Info_Liberty_BulkBilling_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Liberty_BulkBilling_PatchData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt.sql" />
+    <Build Include="Stored Procedures\proc_Info_Generic_MgtRpt_PatchData.sql" />
+    <Build Include="Stored Procedures\proc_RelatedParty_LoadByCaseNbr.sql" />
+    <Build Include="Stored Procedures\proc_Info_Travelers_MgtRpt.sql" />
+    <Build Include="Stored Procedures\proc_Info_Travelers_MgtRpt_QueryData.sql" />
+    <Build Include="Stored Procedures\proc_Info_Travelers_MgtRpt_PatchData.sql" />
+    <Build Include="Tables\tblWebActionLink.sql" />
+    <Build Include="Tables\tblWebActionLinkItem.sql" />
+    <Build Include="Stored Procedures\proc_GetDocumentShareByGuid.sql" />
+    <Build Include="Stored Procedures\proc_GetOfficeFacilityInfo.sql" />
+    <Build Include="Tables\tblParamPropertyGroup.sql" />
+    <Build Include="Tables\tblParamProperty.sql" />
+    <Build Include="Stored Procedures\proc_CancelCase.sql" />
+    <Build Include="Views\vwRptProgressiveRptWebLog.sql" />
+    <Build Include="Functions\fnGetBusinessDays.sql" />
+    <Build Include="Views\vwRptProgressivePeerBills.sql" />
+    <Build Include="Tables\tblCustomerMapping.sql" />
+    <Build Include="Stored Procedures\proc_CheckForExamineeDupeProgressive.sql" />
+    <Build Include="Functions\fnParseKeyValueStringForKey.sql" />
+    <Build Include="Functions\fnGetParamValue.sql" />
+    <Build Include="Tables\tblExceptionDefCaseType.sql" />
+    <Build Include="Tables\tblExceptionDefEWServiceType.sql" />
+    <Build Include="Tables\tblExceptionDefService.sql" />
+    <Build Include="Stored Procedures\proc_GetProgressiveClientCodeByName.sql" />
+    <Build Include="Tables\tblQuoteRule.sql" />
+    <Build Include="Tables\tblAcctQuoteFee.sql" />
+    <Build Include="Tables\tblQuoteFeeConfig.sql" />
+    <Build Include="Tables\tblQuoteHandling.sql" />
+    <Build Include="Functions\fnIsAddressComplete.sql" />
+    <Build Include="Views\vwCaseDocMailEntities.sql" />
+    <Build Include="Tables\tblWorkstation.sql" />
+    <Build Include="Tables\tblExceptionDefSLARuleDetail.sql" />
+    <Build Include="Tables\tblStorage.sql" />
+    <Build Include="Tables\tblConfiguration.sql" />
+    <Build Include="Stored Procedures\proc_PublishOnWeb_LoadByTableKeyTableTypeNoUserCode.sql" />
+    <Build Include="Views\vwMedicalRecordsDue.sql" />
+    <Build Include="Tables\tblFSGroup.sql" />
+    <Build Include="Tables\tblFSDetailCondition.sql" />
+    <Build Include="Tables\tblFSDetail.sql" />
+    <Build Include="Tables\tblFSHeader.sql" />
+    <Build Include="Tables\tblFSEntity.sql" />
+    <Build Include="Tables\tblStorageRetentionRule.sql" />
+    <Build Include="Stored Procedures\proc_GetReferralHistoryByClaimAndCompany.sql" />
+    <Build Include="Tables\tblWebPortalVersionRule.sql" />
+    <Build Include="Tables\tblFSHeaderSetup.sql" />
+    <Build Include="Tables\tblFSDetailSetup.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_Header.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_Detail.sql" />
+    <Build Include="Stored Procedures\spFeeSched_SyncTableData_DetailCondition.sql" />
+    <Build Include="Views\vwRptDoctorSchedule.sql" />
+    <Build Include="Views\vwRptDoctorScheduleSlot.sql" />
+    <Build Include="Views\vwRptDaySheetNew.sql" />
+    <Build Include="Views\vwCaseWebReservedAppts.sql" />
+    <Build Include="Tables\tblCaseApptRequest.sql" />
+    <Build Include="Tables\tblCaseApptRequestStatus.sql" />
+    <Build Include="Tables\tblDoctorBlockTimeSlotStatus.sql" />
+    <Build Include="Tables\tblDoctorBlockTimeDay.sql" />
+    <Build Include="Tables\tblDoctorBlockTimeSlot.sql" />
+    <Build Include="Tables\tblSSOProfile.sql" />
+    <Build Include="Stored Procedures\proc_Doctor_GetDaySheetData.sql" />
+    <Build Include="Stored Procedures\spDoctorSearchNew.sql" />
+    <Build Include="Views\vwDrSchedGetBlockTimeAppts.sql" />
+    <Build Include="Views\vwDrSchedGetNonBlockTimeAppt.sql" />
+    <Build Include="Tables\tblAutoProvisionLog.sql" />
+    <Build Include="Views\vwAutoProvisions.sql" />
+    <Build Include="Tables\tblElectronicMessage.sql" />
+    <Build Include="Stored Procedures\sp_VacancyReport.sql" />
+    <Build Include="Views\vwDoctorBlockTimeScheduleSummary.sql" />
+    <Build Include="Tables\tblOCRDocument.sql" />
+    <Build Include="Tables\tblCaseRecRetrieval.sql" />
+    <Build Include="Tables\tblCaseRecRetrievalDocument.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compare\Snapshots.scmp" />
+    <None Include="Compare\IMECentricEW.scmp" />
+    <None Include="Compare\IMECentricDevelopment.scmp" />
+    <None Include="Snapshots\CustomRepository.dacpac" />
+    <None Include="Compare\DefaultCompareOptions.scmp" />
+    <None Include="Data\OneTime.sql" />
+    <None Include="Data\FutureRelease.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\110\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\110\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+    <ArtifactReference Include="Snapshots\CustomRepository.dacpac">
+      <HintPath>Snapshots\CustomRepository.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>CustomRepository</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+  </ItemGroup>
+</Project>

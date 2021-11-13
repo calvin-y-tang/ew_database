@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[tblFSDetailSetup] (
+    [FSDetailSetupID] INT           IDENTITY (1, 1) NOT NULL,
+    [FSHeaderSetupID] INT           NOT NULL,
+    [FSDetailID]      INT           NULL,
+    [ProcessOrder]    INT           NULL,
+    [FeeUnit]         INT           NULL,
+    [FeeAmt]          MONEY         NULL,
+    [NSFeeAmt1]       MONEY         NULL,
+    [NSFeeAmt2]       MONEY         NULL,
+    [NSFeeAmt3]       MONEY         NULL,
+    [LateCancelAmt]   MONEY         NULL,
+    [CancelDays]      INT           NULL,
+    [DateAdded]       DATETIME      NULL,
+    [UserIDAdded]     VARCHAR (30)  NULL,
+    [DateEdited]      DATETIME      NULL,
+    [UserIDEdited]    VARCHAR (30)  NULL,
+    [BusLine]         VARCHAR (MAX) NULL,
+    [ServiceType]     VARCHAR (MAX) NULL,
+    [Service]         VARCHAR (MAX) NULL,
+    [Product]         VARCHAR (MAX) NULL,
+    [FeeZone]         VARCHAR (MAX) NULL,
+    [Specialty]       VARCHAR (MAX) NULL,
+	[Doctor]		  VARCHAR (MAX) NULL,
+	[ExamLocation]    VARCHAR (MAX) NULL,
+    CONSTRAINT [PK_tblFSDetailSetup] PRIMARY KEY CLUSTERED ([FSDetailSetupID] ASC)
+);
+

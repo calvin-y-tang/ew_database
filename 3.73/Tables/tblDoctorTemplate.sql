@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[tblDoctorTemplate] (
+    [LocationCode] INT          NOT NULL,
+    [StartTime]    DATETIME     NOT NULL,
+    [Duration]     INT          NULL,
+    [Monday]       VARCHAR (10) NULL,
+    [MondayOff]    BIT          CONSTRAINT [DF_tblDoctorTemplate_MondayOff] DEFAULT ((0)) NULL,
+    [Tuesday]      VARCHAR (10) NULL,
+    [TuesdayOff]   BIT          CONSTRAINT [DF_tblDoctorTemplate_TuesdayOff] DEFAULT ((0)) NULL,
+    [Wednesday]    VARCHAR (10) NULL,
+    [WednesdayOff] BIT          CONSTRAINT [DF_tblDoctorTemplate_WednesdayOff] DEFAULT ((0)) NULL,
+    [Thursday]     VARCHAR (10) NULL,
+    [ThursdayOff]  BIT          CONSTRAINT [DF_tblDoctorTemplate_ThursdayOff] DEFAULT ((0)) NULL,
+    [Friday]       VARCHAR (10) NULL,
+    [FridayOff]    BIT          CONSTRAINT [DF_tblDoctorTemplate_FridayOff] DEFAULT ((0)) NULL,
+    [Saturday]     VARCHAR (10) NULL,
+    [SaturdayOff]  BIT          CONSTRAINT [DF_tblDoctorTemplate_SaturdayOff] DEFAULT ((0)) NULL,
+    [Sunday]       VARCHAR (10) NULL,
+    [SundayOff]    BIT          CONSTRAINT [DF_tblDoctorTemplate_SundayOff] DEFAULT ((0)) NULL,
+    [UserIDAdded]  VARCHAR (15) NULL,
+    [DateAdded]    DATETIME     NULL,
+    [UserIDEdited] VARCHAR (15) NULL,
+    [DateEdited]   DATETIME     NULL,
+    [DoctorCode]   INT          NOT NULL,
+    CONSTRAINT [PK_tblDoctorTemplate] PRIMARY KEY CLUSTERED ([LocationCode] ASC, [StartTime] ASC, [DoctorCode] ASC)
+);
+

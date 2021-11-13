@@ -1,0 +1,612 @@
+﻿
+
+IF (SELECT OBJECT_ID('tempdb..#tmpErrors')) IS NOT NULL DROP TABLE #tmpErrors
+GO
+CREATE TABLE #tmpErrors (Error int)
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+GO
+BEGIN TRANSACTION
+GO
+PRINT N'Dropping [dbo].[DF_tblOCRDocument_Priority]...';
+
+
+GO
+ALTER TABLE [dbo].[tblOCRDocument] DROP CONSTRAINT [DF_tblOCRDocument_Priority];
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblCompany]...';
+
+
+GO
+ALTER TABLE [dbo].[tblCompany]
+    ADD [AllowMedIndex]     BIT NULL,
+        [ShowFinancialInfo] BIT NULL,
+        [AllowScheduling]   BIT NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblDPSPriority]...';
+
+
+GO
+ALTER TABLE [dbo].[tblDPSPriority]
+    ADD [OCRPriority] INT NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblEWParentCompany]...';
+
+
+GO
+SET QUOTED_IDENTIFIER ON;
+
+SET ANSI_NULLS OFF;
+
+
+GO
+ALTER TABLE [dbo].[tblEWParentCompany]
+    ADD [AllowMedIndex]     BIT NULL,
+        [ShowFinancialInfo] BIT NULL,
+        [AllowScheduling]   BIT NULL;
+
+
+GO
+SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblOCRDocument]...';
+
+
+GO
+ALTER TABLE [dbo].[tblOCRDocument]
+    ADD [DateReadyOCR] DATETIME NULL,
+        [DateSent]     DATETIME NULL,
+        [DateReceived] DATETIME NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblPOPBVoucher]...';
+
+
+GO
+ALTER TABLE [dbo].[tblPOPBVoucher] ALTER COLUMN [CaseDoctorCode] INT NOT NULL;
+
+
+GO
+ALTER TABLE [dbo].[tblPOPBVoucher]
+    ADD [DoctorCode2] INT             NULL,
+        [Percentage2] DECIMAL (10, 2) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[PK_tblPOPBVoucher]...';
+
+
+GO
+ALTER TABLE [dbo].[tblPOPBVoucher]
+    ADD CONSTRAINT [PK_tblPOPBVoucher] PRIMARY KEY CLUSTERED ([CaseDoctorCode] ASC);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblWebUser]...';
+
+
+GO
+ALTER TABLE [dbo].[tblWebUser]
+    ADD [AllowMedIndex] BIT CONSTRAINT [DF_tblWebUser_AllowMedIndex] DEFAULT ((0)) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[tblCaseDocuments_AfterUpdate_TRG]...';
+
+
+GO
+
+CREATE TRIGGER [dbo].[tblCaseDocuments_AfterUpdate_TRG]
+	ON [dbo].[tblCaseDocuments] 
+AFTER UPDATE
+AS 
+BEGIN
+     -- DEV NOTE: the inserted table has "new" row (or updated data) while
+     --   the deleted table has the "old" row (or original data). For now, 
+     --   we want to do an insert in the OCRDoc table when a CaseDoc row 
+	 --		has its CaseDocTypeID modified and it does not already exist 
+	 --		in the OCRDoc table.
+
+	 SET NOCOUNT OFF
+
+     DECLARE @iCount AS INT
+     DECLARE @caseDocID AS INT 
+     DECLARE @newCaseDocID AS INT
+     DECLARE @origCaseDocID AS INT 
+     DECLARE @userID AS VARCHAR(20)
+
+     DECLARE curCaseDoc CURSOR FOR
+          SELECT ins.SeqNo, ins.CaseDocTypeID AS NewCaseDocID, del.CaseDocTypeID as OrigCaseDocID, ins.UserIDAdded
+            FROM inserted AS ins
+                      INNER JOIN deleted AS del ON del.SeqNo = ins.SeqNo
+     OPEN curCaseDoc
+     FETCH NEXT FROM curCaseDoc INTO @caseDocID, @newCaseDocID, @origCaseDocID, @userID
+     WHILE @@FETCH_STATUS = 0
+     BEGIN
+          IF @newCaseDocID <> @origCaseDocID
+          BEGIN
+               IF (SELECT COUNT(*) FROM tblOCRDocument WHERE CaseDocID = @caseDocID) = 0
+               BEGIN
+                    INSERT INTO tblOCRDocument (CaseDocID, OCRStatusID, DateAdded, UserIDAdded, Source)
+                                VALUES(@caseDocID, 10, GETDATE(), @userID, 'UpdateTrigger')
+               END
+          END
+          FETCH NEXT FROM curCaseDoc INTO @caseDocID, @newCaseDocID, @origCaseDocID, @userID
+     END
+     CLOSE curCaseDoc
+     DEALLOCATE curCaseDoc
+END
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwCaseSummary]...';
+
+
+GO
+ALTER VIEW vwCaseSummary
+AS
+    SELECT 
+            tblCase.CaseNbr ,
+            tblExaminee.LastName + ', ' + tblExaminee.FirstName AS ExamineeName ,
+            tblClient.LastName + ', ' + tblClient.FirstName AS ClientName ,
+            tblUser.LastName + ', ' + tblUser.FirstName AS SchedulerName ,
+            tblCompany.IntName AS CompanyName ,
+            tblCase.Priority ,
+            tblCase.ApptDate ,
+            tblCase.Status ,
+            tblCase.DateAdded ,
+            tblCase.ClaimNbr ,
+            tblCase.DoctorLocation ,
+            tblCase.ApptTime ,
+            tblCase.ShowNoShow ,
+            tblCase.TransCode ,
+            tblCase.RptStatus ,
+            tblLocation.Location ,
+            tblCase.DateEdited ,
+            tblCase.UserIDEdited ,
+            tblCase.ApptSelect ,
+            tblClient.Email AS AdjusterEmail ,
+            tblClient.Fax AS AdjusterFax ,
+            tblCase.MarketerCode ,
+            tblCase.RequestedDoc ,
+            tblCase.InvoiceDate ,
+            tblCase.InvoiceAmt ,
+            tblCase.DateDrChart ,
+            tblCase.DrChartSelect ,
+            tblCase.INQASelect ,
+            tblCase.INTransSelect ,
+            tblCase.BilledSelect ,
+            tblCase.AwaitTransSelect ,
+            tblCase.ChartPrepSelect ,
+            tblCase.ApptRptsSelect ,
+            tblCase.transReceived ,
+            tblTranscription.TransCompany ,
+            tblCase.ServiceCode ,
+            tblQueues.StatusDesc ,
+            tblCase.MiscSelect ,
+            tblCase.UserIDAdded ,
+            tblServices.ShortDesc AS Service ,
+            tblCase.DoctorCode ,
+            tblClient.CompanyCode ,
+            tblCase.VoucherAmt ,
+            tblCase.VoucherDate ,
+            tblCase.OfficeCode ,
+            tblCase.QARep ,
+            tblCase.SchedulerCode ,
+            DATEDIFF(day, tblCase.LastStatuschg, GETDATE()) AS IQ ,
+			DATEDIFF(day, tblCase.DateEdited, GETDATE()) AS DSE,
+            tblCase.LastStatusChg ,
+            tblCase.PanelNbr ,
+            tblCase.CommitDate ,
+            tblCase.MasterSubCase ,
+            tblCase.MasterCaseNbr ,
+            tblCase.CertMailNbr ,
+            tblCase.WebNotifyEmail ,
+            tblCase.PublishOnWeb ,
+            CASE WHEN tblCase.PanelNbr IS NULL
+                 THEN tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName,
+                                                         ' ')
+                 ELSE tblCase.DoctorName
+            END AS DoctorName ,
+            tblCase.Datemedsrecd ,
+            tblCase.sInternalCaseNbr ,
+            tblCase.DoctorSpecialty ,
+            tblCase.USDDate1 ,
+            tblqueues.FunctionCode ,
+            tblCase.Casetype ,
+            tblCase.ForecastDate ,
+            tblCase.ExternalDueDate ,
+            tblCase.InternalDueDate ,
+			tblCase.ReExam ,
+			tblCase.ReExamDate ,
+			tblCase.ReExamProcessed,
+			tblCase.ReExamNoticePrinted,
+            tblCase.DateCompleted ,
+            tblCase.DateCanceled ,
+            tblCase.EWReferralType ,
+            tblCase.EWReferralEWFacilityID ,
+            tblCase.ClaimNbrExt ,
+            tblLocation.Addr1 AS LocationAddr1 ,
+            tblLocation.Addr2 AS LocationAddr2 ,
+            tblLocation.City AS LocationCity ,
+            tblLocation.State AS LocationState ,
+            tblLocation.Zip AS LocationZip , 
+			tblCase.ExtCaseNbr, 
+			tblCase.AwaitingScheduling,
+			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID, 
+			tblCase.Jurisdiction, 
+			CaseType.ShortDesc AS CaseTypeDesc,
+			tblServices.EWServiceTypeID
+    FROM    tblCase
+            INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
+            INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
+            INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
+            LEFT OUTER JOIN tblCompany ON tblCompany.CompanyCode = tblClient.CompanyCode
+            LEFT OUTER JOIN tblTranscription ON tblCase.transCode = tblTranscription.transCode
+            LEFT OUTER JOIN tblLocation ON tblCase.DoctorLocation = tblLocation.LocationCode
+            LEFT OUTER JOIN tblDoctor ON tblCase.DoctorCode = tblDoctor.DoctorCode
+            LEFT OUTER JOIN tblUser ON tblCase.SchedulerCode = tblUser.UserID
+            LEFT OUTER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
+			LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = tblCase.BillClientCode
+			LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
+			LEFT OUTER JOIN tblCaseType AS CaseType ON CaseType.Code = tblCase.CaseType
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwMedicalRecordsDue]...';
+
+
+GO
+
+ALTER VIEW [dbo].[vwMedicalRecordsDue]
+AS
+SELECT C.CaseNbr,
+       C.ExtCaseNbr,
+       CO.IntName AS CompanyName,
+       ISNULL(EE.LastName, '') + ', ' + ISNULL(EE.FirstName, '') AS ExamineeName,
+	   CASE WHEN ISNULL(DR.LastName,'') <> '' THEN DR.LastName + ', ' + ISNULL(DR.FirstName, '') ELSE '' END AS DoctorName,
+	   LO.Location,
+       C.DoctorLocation,
+       C.MarketerCode,
+       C.SchedulerCode,
+       C.QARep,
+       C.ApptDate,
+	   SE.[Description] AS ServiceDesc,
+       C.ClientCode,
+       C.Status,
+       C.DoctorCode,
+       CL.CompanyCode,
+       C.OfficeCode,
+	   C.CaseType,
+	   C.ServiceCode,
+	   C.ExternalDueDate,
+	   C.DateMedsRecd,
+	   C.DrMedRecsDueDate,
+	   C.InternalDueDate,
+	   C.DrChartSelect,
+	   C.DateDrChart,
+	   C.DateEdited,
+       C.UserIDEdited,
+	   C.LastStatusChg,
+       DATEDIFF(DAY, GETDATE(), C.DrMedRecsDueDate) AS DaysTillDue,
+       DATEDIFF(day, C.LastStatuschg, GETDATE()) AS IQ ,
+       DATEDIFF(DAY, c.DateEdited, GETDATE()) AS DSE ,
+	   ISNULL(BillCompany.ParentCompanyID, CO.ParentCompanyID) AS ParentCompanyID,
+	   Q.StatusDesc,
+	   Q.FunctionCode
+ FROM tblCase AS C
+ INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
+ INNER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
+ INNER JOIN tblCompany AS CO ON CO.CompanyCode = CL.CompanyCode
+ INNER JOIN tblServices AS SE ON SE.ServiceCode = C.ServiceCode
+ INNER JOIN tblQueues AS Q ON Q.StatusCode=C.Status
+ LEFT OUTER JOIN tblDoctor AS DR ON DR.DoctorCode = C.DoctorCode
+ LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = C.BillClientCode
+ LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
+ LEFT OUTER JOIN tblLocation AS LO ON LO.LocationCode = C.DoctorLocation
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwStatusAppt]...';
+
+
+GO
+ALTER VIEW vwStatusAppt
+AS
+    SELECT  tblCase.CaseNbr ,
+            tblExaminee.LastName + ', ' + tblExaminee.FirstName AS examineename ,
+            tblClient.LastName + ', ' + tblClient.FirstName AS clientname ,
+            tblUser.LastName + ', ' + tblUser.FirstName AS schedulername ,
+            tblCompany.IntName AS companyname ,
+            tblCase.Priority ,
+            tblCase.ApptDate ,
+            tblCase.Status ,
+            tblCase.DateAdded ,
+            tblCase.ClaimNbr ,
+            tblCase.DoctorLocation ,
+            tblCase.ApptTime ,
+            tblCase.ShowNoShow ,
+            tblCase.TransCode ,
+            tblCase.RptStatus ,
+            tblLocation.Location ,
+            tblCase.DateEdited ,
+            tblCase.UserIDEdited ,
+            tblCase.ApptSelect ,
+            tblClient.Email AS clientemail ,
+            tblClient.Fax AS clientfax ,
+            tblCase.MarketerCode ,
+            tblCase.RequestedDoc ,
+            tblCase.InvoiceDate ,
+            tblCase.InvoiceAmt ,
+            tblCase.DateDrChart ,
+            tblCase.DrChartSelect ,
+            tblCase.InQASelect ,
+            tblCase.InTransSelect ,
+            tblCase.BilledSelect ,
+            tblCase.AwaitTransSelect ,
+            tblCase.ChartPrepSelect ,
+            tblCase.ApptRptsSelect ,
+            tblCase.TransReceived ,
+            tblTranscription.TransCompany ,
+            tblServices.ShortDesc AS service ,
+            tblCase.DoctorCode ,
+            tblClient.CompanyCode ,
+            tblCase.OfficeCode ,
+            tblCase.SchedulerCode ,
+            tblCase.QARep ,
+            DATEDIFF(DAY, tblCase.LastStatusChg, GETDATE()) AS IQ ,
+            DATEDIFF(DAY, tblCase.DateEdited, GETDATE()) AS DSE ,
+            tblCase.LastStatusChg ,
+            CASE WHEN tblCase.PanelNbr IS NULL
+                 THEN tblDoctor.LastName + ', ' + ISNULL(tblDoctor.FirstName,
+                                                         ' ')
+                 ELSE tblCase.DoctorName
+            END AS doctorname ,
+            tblCase.PanelNbr ,
+            tblQueues.FunctionCode ,
+            tblCase.ServiceCode ,
+            tblCase.CaseType , 
+			tblCase.ExtCaseNbr, 
+			ISNULL(BillCompany.ParentCompanyID, tblCompany.ParentCompanyID) AS ParentCompanyID,
+			ISNULL(tblCaseAppt.ApptAttendance, '') as ApptAttendance
+    FROM    tblCase
+            INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
+            INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
+            INNER JOIN tblQueues ON tblCase.Status = tblQueues.StatusCode
+			LEFT OUTER JOIN tblCaseAppt ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
+            LEFT OUTER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
+            LEFT OUTER JOIN tblCompany ON tblCompany.CompanyCode = tblClient.CompanyCode
+			LEFT OUTER JOIN tblClient AS BillClient ON BillClient.ClientCode = tblCase.BillClientCode
+			LEFT OUTER JOIN tblCompany AS BillCompany ON BillCompany.CompanyCode = BillClient.CompanyCode
+            LEFT OUTER JOIN tblTranscription ON tblCase.TransCode = tblTranscription.TransCode
+            LEFT OUTER JOIN tblLocation ON tblCase.DoctorLocation = tblLocation.LocationCode
+            LEFT OUTER JOIN tblDoctor ON tblCase.DoctorCode = tblDoctor.DoctorCode
+            LEFT OUTER JOIN tblUser ON tblCase.SchedulerCode = tblUser.UserID
+                                       AND tblUser.UserType = 'SC'
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
+GO
+IF @@TRANCOUNT>0 BEGIN
+PRINT N'The transacted portion of the database update succeeded.'
+COMMIT TRANSACTION
+END
+ELSE PRINT N'The transacted portion of the database update failed.'
+GO
+DROP TABLE #tmpErrors
+GO
+PRINT N'Update complete.';
+
+
+GO
+-- Issue 11595 Data Patch for Making Portal Fields Reqd/Optional by Web Users
+  UPDATE tblCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
+  UPDATE tblWebUser Set AllowMedIndex = 0
+  UPDATE tblEWParentCompany Set AllowMedIndex = 0, AllowScheduling = 0, ShowFinancialInfo = 1
+
+
+
+
+UPDATE U SET U.OCRPriority=P.RowNbr
+FROM tblDPSPriority AS U
+INNER JOIN
+(SELECT ROW_NUMBER() OVER (ORDER BY DueDateHours) AS RowNbr, DPSPriorityID, Name FROM tblDPSPriority) AS P ON P.DPSPriorityID = U.DPSPriorityID
+GO
+
+
+INSERT INTO tblUserFunction
+( FunctionCode, FunctionDesc )
+VALUES
+( 'ProcessRapidPay', 'Accounting - Rapid Pay')
+GO
+
+
+-- Issue 11566 - patch data for OCR priority
+UPDATE tblOCRDocument SET Priority = NULL WHERE  Priority = 0 AND OCRStatusID IN (10, 20, 30, 35)
+GO
+
