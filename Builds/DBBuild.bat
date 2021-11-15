@@ -7,8 +7,8 @@ rem Last Revision 2021/11/12
 
 
 rem Manually set version information here
-set lastVer=3.94
-set nextVer=3.95
+set lastVer=3.93
+set nextVer=3.94
 
 echo Building %nextVer%...
 
@@ -29,7 +29,7 @@ rem Create the DacPac files
 
 
 rem Copy DacPac files into Temp folder
-if not exist "%baseFld%" mkdir "%baseFld"
+if not exist "%baseFld%" mkdir "%baseFld%"
 del "%baseFld%\*.*" /q
 copy "%projFld%\bin\Debug\*.dacpac" "%baseFld%\*.dacpac"
 ren "%baseFld%\IMECentricDB.dacpac" "nextVer.dacpac"
