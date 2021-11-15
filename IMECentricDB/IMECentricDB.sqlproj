@@ -1144,7 +1144,6 @@
     <Build Include="Tables\tblTask.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Compare\Snapshots.scmp" />
     <None Include="Compare\IMECentricEW.scmp" />
     <None Include="Compare\IMECentricDevelopment.scmp" />
     <None Include="Snapshots\CustomRepository.dacpac" />
