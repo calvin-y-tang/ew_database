@@ -7,8 +7,8 @@ rem Last Revision 2021/11/12
 
 
 rem Manually set version information here
-set lastVer=3.93
-set nextVer=3.94
+set lastVer=3.94
+set nextVer=3.95
 
 echo Building %nextVer%...
 
@@ -16,13 +16,13 @@ echo Building %nextVer%...
 
 
 rem EXE/Folder Location
-set msbEXE="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"
-set sqlEXE="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\150\SqlPackage.exe"
+set msbEXE="C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\MSBuild.exe"
+set sqlEXE="C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\150\SqlPackage.exe"
 
-set    projFld=P:\Projects\Database\IMECentricDB
-set    baseFld=P:\Projects\Database\Builds\Temp
-set  dacPacFld=P:\Projects\Database\Builds\IMECentricDB
-set scriptsFld=P:\Projects\Database\Builds\IMECentricDB
+set    projFld=E:\Database\IMECentricDB
+set    baseFld=E:\Database\Builds\Temp
+set  dacPacFld=E:\Database\Builds\IMECentricDB
+set scriptsFld=E:\Database\Builds\IMECentricDB
 
 rem Create the DacPac files
 %msbEXE% "%projFld%\IMECentricDB.sqlproj" -t:rebuild
@@ -49,3 +49,8 @@ copy "%baseFld%\nextVer.dacpac" "%dacPacFld%\Release %nextVer%.dacpac"
 
 rem Clean up Temp folder
 del "%baseFld%\*.*" /q
+
+
+rem Done
+pause
+
