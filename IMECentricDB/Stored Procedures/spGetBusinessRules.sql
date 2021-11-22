@@ -13,11 +13,14 @@ BEGIN
 
 	SET NOCOUNT ON
 
+    IF OBJECT_ID('tempdb..##tmp_GetBusinessRules') IS NOT NULL DROP TABLE ##tmp_GetBusinessRules
+
 	DECLARE @groupDigits INT
 
 	SET @groupDigits = 10000000
 
-	SELECT * FROM (
+	SELECT * INTO ##tmp_GetBusinessRules
+	FROM (
 	SELECT BR.BusinessRuleID, BR.Category, BR.Name,
 	 ROW_NUMBER() OVER (PARTITION BY BR.BusinessRuleID ORDER BY tmpBR.GroupID*@groupDigits+(CASE tmpBR.EntityType WHEN 'SW' THEN 4 WHEN 'PC' THEN 3 WHEN 'CO' THEN 2 WHEN 'CL' THEN 1 ELSE 9 END)*1000000+tmpBR.ProcessOrder) AS RowNbr,
 	 tmpBR.BusinessRuleConditionID,
@@ -27,7 +30,8 @@ BEGIN
 	 tmpBR.Param4,
 	 tmpBR.Param5,
 	 tmpBR.EntityType,
-	 tmpBR.ProcessOrder
+	 tmpBR.ProcessOrder,
+	 tmpBR.Skip
 	FROM
 	(
 	SELECT 1 AS GroupID, BRC.*
@@ -67,4 +71,9 @@ BEGIN
 	) AS sortedBR
 	WHERE sortedBR.RowNbr=1
 	ORDER BY sortedBR.BusinessRuleID
+
+	DELETE FROM ##tmp_GetBusinessRules WHERE Skip = 1
+
+	SELECT * FROM ##tmp_GetBusinessRules
+
 END
