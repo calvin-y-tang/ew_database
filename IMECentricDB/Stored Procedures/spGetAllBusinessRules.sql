@@ -13,7 +13,10 @@ BEGIN
 
 	SET NOCOUNT ON
 
-	SELECT distinct * FROM (
+    IF OBJECT_ID('tempdb..##tmp_GetAllBusinessRules') IS NOT NULL DROP TABLE ##tmp_GetAllBusinessRules
+
+	SELECT distinct * INTO ##tmp_GetAllBusinessRules
+	FROM (
 	SELECT BR.BusinessRuleID, BR.Category, BR.Name,	 
 	 tmpBR.BusinessRuleConditionID,
 	 tmpBR.Param1,
@@ -22,7 +25,8 @@ BEGIN
 	 tmpBR.Param4,
 	 tmpBR.Param5,
 	 tmpBR.EntityType,
-	 tmpBR.ProcessOrder
+	 tmpBR.ProcessOrder,
+	 tmpBR.Skip
 	FROM
 	(
 		SELECT 1 AS GroupID, BRC.*
@@ -62,4 +66,10 @@ BEGIN
 	
 	) AS sortedBR	
 	ORDER BY sortedBR.BusinessRuleID, sortedBR.ProcessOrder
+
+	DELETE FROM ##tmp_GetAllBusinessRules WHERE Skip = 1
+
+	SELECT * FROM ##tmp_GetAllBusinessRules
+
+
 END
