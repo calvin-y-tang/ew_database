@@ -1,7 +1,14 @@
 
 
- -- Issue 12418 - Hartford resend quote approvals a 2nd time then approve - adding business rules to add resend date
- INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
+ -- Issue 12418 - Hartford resend quote - updating Allstate BR's to add Param2 for Quote InNetwork Required Value
+
+ UPDATE tblBusinessRule SET Param2Desc = 'QuoteInNetworkValue' WHERE BusinessRuleID = 154
+
+ UPDATE tblBusinessRuleCondition SET Param2 = '0' WHERE BusinessRuleID = 154 And EntityID = 4
+
+ -- Issue 12418 - Hartford resend quote approvals a 2nd time then approve - adding business rules to add resend date for Hartford
+
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
 UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
 VALUES('PC', 30, 2, 1, 154, GetDate(), 'Admin', NULL, NULL,    NULL, 3, NULL, 'CA', '8', NULL, NULL, NULL, NULL, 1)
 
