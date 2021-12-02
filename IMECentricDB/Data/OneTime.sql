@@ -9,10 +9,17 @@ VALUES (3020,'LibertyXML NY-MCMC', 'LibertyXML', 1, '\\dev4.ew.domain.local\ISIn
 
  GO
 
-INSERT INTO ISSchedule
- (Name, Task, Type, Interval, Weekdays, Time, StartDate, Param)
-VALUES ('LibertyXML NY-MCMC', 'LibertyXML', 'm', 2, '1111111', '1900-01-01 06:00:00', '2020-11-01 00:00:00', 
- 'DBID=23;UnknownClientCode=791347;ParentCompanyID=31;DefaultOfficeCode=28;Tags=UseMCMCOffice')
 
- GO
+ -- Issue 12441 - changes to ExtIntegrations for automatic fee quote distributions - new input parameters
+  update ISExtIntegration set Param = 'DBID=23;PCID=4;AttachQuote=true;Subject=Second Request - %ClaimNbr% - %ExamineeName% IME Quote;Body=Dear %ClientFirstName%,<br /><br />This is a second request for the quote approval originally sent to you on %CaseDocDateAdded%. <br /><br />This request will serve as acknowledgement and approval of the quote (attached). <br /><br />If you have any questions, please contact our office at %OfficePhone%'
+  where ExtIntegrationID = 6000
+
+  GO
+
+  insert into ISExtIntegration (ExtIntegrationID, Name, Type, Active, NotifyEmail, Param)
+  Values (6001, 'Hartford Fee Quote Dist', 'FeeQuoteDist', 1, 'terri.lyde@examworks.com',
+  'DBID=23;PCID=30;AttachQuote=true;Subject=Second Request - %ClaimNbr% - %ExamineeName% IME Quote;Body=Dear %ClientFirstName%,<br /><br />This is a second request for the quote approval originally sent to you on %CaseDocDateAdded%. <br /><br />This request will serve as acknowledgement and approval of the quote (attached). <br /><br />If you have any questions, please contact our office at %OfficePhone%')
+
+  GO
+
 
