@@ -21,6 +21,7 @@ SET @xml = CAST('<X>' + REPLACE(@ewFacilityIdList, @delimiter, '</X><X>') + '</X
 print 'Facility ID List: ' + @ewFacilityIdLIst
 
 SELECT
+	'ExamWorks' as Vendor,
     ewf.[DBID],
 	ah.HeaderId,
 	ah.SeqNo,
@@ -39,13 +40,13 @@ SELECT
 	isnull(SPL.PrimarySpecialty, isnull(CA.SpecialtyCode, C.DoctorSpecialty)) as "Specialty",	
 	SPL.SubSpecialty AS "SubSpecialty",	
 	ISNULL(d.lastname, '') + ', ' + ISNULL(d.firstname, '') as "ProviderName",
-	CONVERT(CHAR(4), EWBL.EWBusLineID) as "LOB",
+	CONVERT(CHAR(14), EWBL.EWBusLineID) as "LOB",
 	C.ClaimNbr as "ClaimNumber",
 	E.LastName as "ClaimantLastName",
 	E.FirstName as "ClaimantFirstName",
 	ISNULL(AH.ServiceState, C.Jurisdiction) as "ServiceState",
 	s.EWServiceTypeID as "ServiceTypeID",
-	S.Description as "ServiceType",
+	S.Description as "ServiceType",	
 	EWBL.Name as "CoverageType",
 	CONVERT(VARCHAR(32), 'NA') as "LitOrAppeal",
 	C.DateOfInjury as "DOI",
