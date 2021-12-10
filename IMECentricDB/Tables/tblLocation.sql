@@ -55,20 +55,37 @@ CREATE TRIGGER tblLocation_AfterUpdate_TRG
 AFTER UPDATE
 AS
 BEGIN
-	SET NOCOUNT OFF
+	SET NOCOUNT ON
 	DECLARE @LocationCode INT
 	SELECT @LocationCode=Inserted.LocationCode FROM Inserted
 
+	-- Update GeoData
 	IF UPDATE(Zip)
-	BEGIN
-		UPDATE tblLocation SET GeoData=
-		(SELECT TOP 1 geography::STGeomFromText('POINT(' + CONVERT(VARCHAR(100),Z.fLongitude) +' '+ CONVERT(VARCHAR(100),Z.fLatitude)+')',4326)
-		FROM tblZipCode AS Z WHERE Z.sZip=tblLocation.Zip)
-		FROM Inserted
-		WHERE tblLocation.LocationCode = @LocationCode
-	END
+		BEGIN
+			UPDATE tblLocation SET GeoData=
+			(SELECT TOP 1 geography::STGeomFromText('POINT(' + CONVERT(VARCHAR(100),Z.fLongitude) +' '+ CONVERT(VARCHAR(100),Z.fLatitude)+')',4326)
+			FROM tblZipCode AS Z WHERE Z.sZip=tblLocation.Zip)
+			FROM Inserted
+			WHERE tblLocation.LocationCode = @LocationCode
+		END
+
+     -- delete this facility from tblTaxAddress if an address field has changed - Addr1, Addr2, City, State, Zip
+	DELETE FROM tblTaxAddress 
+	WHERE TableType = 'LC' AND TableKey IN 
+	(SELECT inserted.LocationCode
+	   FROM  inserted
+	   INNER JOIN deleted
+	   ON inserted.LocationCode = deleted.LocationCode
+	   WHERE deleted.Addr1 <> inserted.Addr1 
+	   OR deleted.Addr2 <> inserted.Addr2 
+	   OR deleted.City <> inserted.City 
+	   OR deleted.State <> inserted.State 
+	   OR deleted.Zip <> inserted.Zip
+	)
+
 END
 GO
+
 CREATE TRIGGER tblLocation_AfterInsert_TRG 
   ON tblLocation
 AFTER INSERT

@@ -47,7 +47,7 @@ GO
 
 CREATE TRIGGER [dbo].[tblEWFacility_AfterUpdate_TRG]
 	ON [dbo].[tblEWFacility] 
-AFTER UPDATE, DELETE
+AFTER UPDATE
 AS 
 
 BEGIN
@@ -57,23 +57,14 @@ SET NOCOUNT ON
 
 DELETE FROM tblTaxAddress 
 WHERE TableType = 'OF' AND TableKey IN 
-
-(SELECT inserted.EWFacilityID
+(SELECT DISTINCT inserted.EWFacilityID
    FROM  inserted
    INNER JOIN deleted
    ON inserted.EWFacilityID = deleted.EWFacilityID
-   WHERE deleted.Address <> inserted.Address OR deleted.City <> inserted.City OR deleted.State <> inserted.State OR deleted.Zip <> inserted.Zip
-
-   UNION
-
-   SELECT DISTINCT
-     CASE 
-	   WHEN inserted.EWFacilityID IS NULL THEN deleted.EWFacilityID -- deleted row
-       ELSE 0
-       END
-  FROM  deleted
-  FULL OUTER JOIN inserted
-   ON inserted.EWFacilityID = deleted.EWFacilityID
+   WHERE deleted.Address <> inserted.Address 
+   OR deleted.City <> inserted.City 
+   OR deleted.State <> inserted.State 
+   OR deleted.Zip <> inserted.Zip
 )
 
 END
