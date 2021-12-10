@@ -1142,6 +1142,7 @@
     <Build Include="Views\vwGetWebActionLinkURLInfo.sql" />
     <Build Include="Tables\tblTaxAddress.sql" />
     <Build Include="Tables\tblTask.sql" />
+    <Build Include="Tables\tblLog.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />

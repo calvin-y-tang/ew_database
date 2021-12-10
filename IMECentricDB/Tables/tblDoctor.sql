@@ -129,10 +129,33 @@ CREATE NONCLUSTERED INDEX [IX_tblDoctor_LastNameFirstNameMiddleInitial]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblDoctor_DictationAuthorID]
     ON [dbo].[tblDoctor]([DictationAuthorID] ASC);
-
-
 GO
+
 CREATE NONCLUSTERED INDEX [IX_tblDoctor_DoctorCode]
     ON [dbo].[tblDoctor]([DoctorCode] ASC)
     INCLUDE([LastName], [FirstName], [MiddleInitial], [Credentials]);
+GO
+
+CREATE TRIGGER [dbo].[tblDoctor_AfterUpdate_TRG]
+    ON [dbo].[tblDoctor]
+AFTER UPDATE
+AS
+BEGIN
+    
+    SET NOCOUNT ON
+
+    DELETE 
+    FROM tblTaxAddress 
+    WHERE TableType = 'DR' 
+      AND TableKey IN (SELECT DISTINCT ins.DoctorCode 
+                        FROM inserted AS ins
+                                  INNER JOIN deleted as del ON del.DoctorCode = ins.DoctorCode
+                       WHERE ins.Addr1 <> del.Addr1 
+                          OR ins.Addr2 <> del.Addr2 
+                          OR ins.City <> del.City
+                          OR ins.State <> del.State 
+                          OR ins.Zip <> del.Zip)
+
+END
+GO
 
