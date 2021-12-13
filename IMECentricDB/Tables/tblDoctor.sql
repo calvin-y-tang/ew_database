@@ -150,11 +150,11 @@ BEGIN
       AND TableKey IN (SELECT DISTINCT ins.DoctorCode 
                         FROM inserted AS ins
                                   INNER JOIN deleted as del ON del.DoctorCode = ins.DoctorCode
-                       WHERE ins.Addr1 <> del.Addr1 
-                          OR ins.Addr2 <> del.Addr2 
-                          OR ins.City <> del.City
-                          OR ins.State <> del.State 
-                          OR ins.Zip <> del.Zip)
+                       WHERE ISNULL(ins.Addr1, '') <> ISNULL(del.Addr1, '')
+                          OR ISNULL(ins.Addr2, '') <> ISNULL(del.Addr2, '') 
+                          OR ISNULL(ins.City, '') <> ISNULL(del.City, '')
+                          OR ISNULL(ins.State, '') <> ISNULL(del.State, '') 
+                          OR ISNULL(ins.Zip, '') <> ISNULL(del.Zip, ''))
 
 END
 GO
