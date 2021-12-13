@@ -76,11 +76,11 @@ BEGIN
 	   FROM  inserted
 	   INNER JOIN deleted
 	   ON inserted.LocationCode = deleted.LocationCode
-	   WHERE deleted.Addr1 <> inserted.Addr1 
-	   OR deleted.Addr2 <> inserted.Addr2 
-	   OR deleted.City <> inserted.City 
-	   OR deleted.State <> inserted.State 
-	   OR deleted.Zip <> inserted.Zip
+	   WHERE ISNULL(deleted.Addr1, '') <> ISNULL(inserted.Addr1, '')
+	   OR ISNULL(deleted.Addr2, '') <> ISNULL(inserted.Addr2, '')
+	   OR ISNULL(deleted.City, '') <> ISNULL(inserted.City, '')
+	   OR ISNULL(deleted.State, '') <> ISNULL(inserted.State, '')
+	   OR ISNULL(deleted.Zip, '') <> ISNULL(inserted.Zip, '')
 	)
 
 END
