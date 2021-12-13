@@ -61,10 +61,10 @@ WHERE TableType = 'OF' AND TableKey IN
    FROM  inserted
    INNER JOIN deleted
    ON inserted.EWFacilityID = deleted.EWFacilityID
-   WHERE deleted.Address <> inserted.Address 
-   OR deleted.City <> inserted.City 
-   OR deleted.State <> inserted.State 
-   OR deleted.Zip <> inserted.Zip
+   WHERE ISNULL(deleted.Address, '') <> ISNULL(inserted.Address, '') 
+   OR ISNULL(deleted.City, '') <> ISNULL(inserted.City, '') 
+   OR ISNULL(deleted.State, '') <> ISNULL(inserted.State, '') 
+   OR ISNULL(deleted.Zip, '') <> ISNULL(inserted.Zip, '')
 )
 
 END
