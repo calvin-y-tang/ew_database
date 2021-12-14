@@ -7,3 +7,6 @@ VALUES(155, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL
 GO
 
 
+-- Issue 12443 - new token for In/Out of Network
+INSERT INTO tblMessageToken ([Name]) VALUES ('@QuoteNetworkYN@')
+GO
