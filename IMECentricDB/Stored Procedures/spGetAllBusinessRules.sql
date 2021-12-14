@@ -13,9 +13,8 @@ BEGIN
 
 	SET NOCOUNT ON
 
-    IF OBJECT_ID('tempdb..##tmp_GetAllBusinessRules') IS NOT NULL DROP TABLE ##tmp_GetAllBusinessRules
 
-	SELECT distinct * INTO ##tmp_GetAllBusinessRules
+	SELECT distinct * INTO #tmp_GetAllBusinessRules
 	FROM (
 	SELECT BR.BusinessRuleID, BR.Category, BR.Name,	 
 	 tmpBR.BusinessRuleConditionID,
@@ -67,9 +66,9 @@ BEGIN
 	) AS sortedBR	
 	ORDER BY sortedBR.BusinessRuleID, sortedBR.ProcessOrder
 
-	DELETE FROM ##tmp_GetAllBusinessRules WHERE Skip = 1
+	DELETE FROM #tmp_GetAllBusinessRules WHERE Skip = 1
 
-	SELECT * FROM ##tmp_GetAllBusinessRules
+	SELECT * FROM #tmp_GetAllBusinessRules
 
 
 END
