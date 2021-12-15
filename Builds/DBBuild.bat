@@ -1,14 +1,14 @@
 rem @echo off
 
 
-rem Require VS2019, SSMS
+rem Require VS2017, SSMS
 rem Last Revision 2021/11/12
 
 
 
 rem Manually set version information here
-set lastVer=3.94
-set nextVer=3.95
+set lastVer=3.95
+set nextVer=3.96
 
 echo Building %nextVer%...
 
