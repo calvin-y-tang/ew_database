@@ -7,8 +7,8 @@ rem Last Revision 2021/11/12
 
 
 rem Manually set version information here
-set lastVer=3.95
-set nextVer=3.96
+set lastVer=3.96
+set nextVer=3.97
 
 echo Building %nextVer%...
 
