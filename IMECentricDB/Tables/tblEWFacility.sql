@@ -43,5 +43,33 @@
     CONSTRAINT [PK_tblEWFacility] PRIMARY KEY CLUSTERED ([EWFacilityID] ASC)
 );
 
+GO
+
+CREATE TRIGGER [dbo].[tblEWFacility_AfterUpdate_TRG]
+	ON [dbo].[tblEWFacility] 
+AFTER UPDATE
+AS 
+
+BEGIN
+     -- DEV NOTE: if an address field has changed - Address, City, State, Zip
+	 -- delete this facility from tblTaxAddress
+SET NOCOUNT ON
+
+DELETE FROM tblTaxAddress 
+WHERE TableType = 'OF' AND TableKey IN 
+(SELECT DISTINCT inserted.EWFacilityID
+   FROM  inserted
+   INNER JOIN deleted
+   ON inserted.EWFacilityID = deleted.EWFacilityID
+   WHERE ISNULL(deleted.Address, '') <> ISNULL(inserted.Address, '') 
+   OR ISNULL(deleted.City, '') <> ISNULL(inserted.City, '') 
+   OR ISNULL(deleted.State, '') <> ISNULL(inserted.State, '') 
+   OR ISNULL(deleted.Zip, '') <> ISNULL(inserted.Zip, '')
+)
+
+END
+GO
+
+
 
 

@@ -50,22 +50,24 @@ FROM ##tmp_HartfordInvoices as hi
 
 Print 'Fixing up Line of Business'
 UPDATE hi SET hi.LOB = CASE hi.LOB
-						WHEN '1' THEN 'PL'
-						WHEN '2' THEN 'PL'
-						WHEN '3' THEN 'P&C'
-						WHEN '4' THEN 'GBC'
-						WHEN '5' THEN 'PL'
-						ELSE ''
+						WHEN '1' THEN 'Liability'
+						WHEN '2' THEN 'Auto'
+						WHEN '3' THEN 'Work Comp'
+						WHEN '4' THEN 'Group Benefits'
+						WHEN '5' THEN 'Auto'
+						ELSE 'Work Comp'
                        END
 FROM ##tmp_HartfordInvoices as hi
 
 
 Print 'Fixing up Coverage Types'
 UPDATE hi SET hi.CoverageType = CASE 
-									WHEN hi.CoverageType = 'Workers Comp' THEN 'WC'
-									WHEN hi.CoverageType like '%auto%' THEN 'Auto'
-									WHEN hi.CoverageType = 'Liability' THEN 'Auto'
+									WHEN hi.CoverageType = 'Workers Comp' THEN 'Work Comp'
+									WHEN hi.CoverageType like 'First Party Auto' THEN 'AMC'
+									WHEN hi.CoverageType like 'Third Party Auto' THEN 'Auto Lit'
+									WHEN hi.CoverageType = 'Liability' THEN 'Liability'
 									WHEN hi.CoverageType = 'Disability' THEN 'LTD'									
+									WHEN hi.CoverageType = 'Other' AND hi.ServiceTypeID = 3 THEN 'ABI'
 									ELSE 'Other'
 								END
 from ##tmp_HartfordInvoices as hi

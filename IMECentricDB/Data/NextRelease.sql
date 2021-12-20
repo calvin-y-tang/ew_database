@@ -1,23 +1,12 @@
+-- Issue 12326 - to set TaxHandling to "non-default" value (enables processing for TX Sales Tax Lookup)
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES (155, 'SetInvoiceTaxHandling', 'Accounting', 'Return Tax State to set desired taxHandling', 1, 1801, 0, 'TaxHandling', 'TaxState', NULL, NULL, NULL, 0)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES(155, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, '2', 'TX', NULL, NULL, NULL)
+GO
 
 
- -- Issue 12418 - Hartford resend quote - updating Allstate BR's to add Param2 for Quote InNetwork Required Value
-
- UPDATE tblBusinessRule SET Param2Desc = 'QuoteInNetworkValue' WHERE BusinessRuleID = 154
-
- UPDATE tblBusinessRuleCondition SET Param2 = '0' WHERE BusinessRuleID = 154 And EntityID = 4
-
- -- Issue 12418 - Hartford resend quote approvals a 2nd time then approve - adding business rules to add resend date for Hartford
-
-INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
-UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
-VALUES('PC', 30, 2, 1, 154, GetDate(), 'Admin', NULL, NULL,    NULL, 3, NULL, 'CA', '8', NULL, NULL, NULL, NULL, 1)
-
-INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
-UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
-VALUES('PC', 30, 2, 1, 154, GetDate(), 'Admin', NULL, NULL,    NULL, 3, NULL, 'TX', '8', NULL, NULL, NULL, NULL, 1)
-
-INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
-UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
-VALUES('PC', 30, 2, 2, 154, GetDate(), 'Admin', NULL, NULL,    NULL, NULL, NULL, NULL, '8', NULL, NULL, NULL, NULL, 0)
-
+-- Issue 12443 - new token for In/Out of Network
+INSERT INTO tblMessageToken ([Name]) VALUES ('@QuoteNetworkYN@')
 GO
