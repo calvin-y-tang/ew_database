@@ -1,25 +1,21 @@
-﻿
--- Issue 12422 - added new integration for Liberty referrals with a required NY MCMC office
+﻿--IMECentricEW only
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES(155, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, '2', 'TX', NULL, NULL, NULL)
+GO
 
-INSERT INTO IMECentricMaster.dbo.ISExtIntegration
- (ExtIntegrationID, Name, Type, Active, SrcPath, DestPath, Param)
-VALUES (3020,'LibertyXML NY-MCMC', 'LibertyXML', 1, '\\dev4.ew.domain.local\ISIntegrations\ERP\Liberty\XMLInput_MCMC',
- '\\dev4.ew.domain.local\ISIntegrations\ERP\Liberty\New\',
- 'DBID=23;UnknownClientCode=791347;ParentCompanyID=31;DefaultOfficeCode=28;Tags=UseMCMCOffice')
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
+UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
+VALUES('PC', 30, 2, 1, 161, GetDate(), 'Admin', NULL, NULL,    NULL, 3, NULL, 'CA', Null, NULL, NULL, NULL, NULL, 1)
+GO
 
- GO
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
+UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
+VALUES('PC', 30, 2, 1, 161, GetDate(), 'Admin', NULL, NULL,    NULL, 3, NULL, 'TX', Null, NULL, NULL, NULL, NULL, 1)
+GO
 
-
- -- Issue 12441 - changes to ExtIntegrations for automatic fee quote distributions - new input parameters
-  update ISExtIntegration set Param = 'DBID=23;PCID=4;AttachQuote=true;Subject=Second Request - %ClaimNbr% - %ExamineeName% IME Quote;Body=Dear %ClientFirstName%,<br /><br />This is a second request for the quote approval originally sent to you on %CaseDocDateAdded%. <br /><br />This request will serve as acknowledgement and approval of the quote (attached). <br /><br />If you have any questions, please contact our office at %OfficePhone%'
-  where ExtIntegrationID = 6000
-
-  GO
-
-  insert into ISExtIntegration (ExtIntegrationID, Name, Type, Active, NotifyEmail, Param)
-  Values (6001, 'Hartford Fee Quote Dist', 'FeeQuoteDist', 1, 'terri.lyde@examworks.com',
-  'DBID=23;PCID=30;AttachQuote=true;Subject=Second Request - %ClaimNbr% - %ExamineeName% IME Quote;Body=Dear %ClientFirstName%,<br /><br />This is a second request for the quote approval originally sent to you on %CaseDocDateAdded%. <br /><br />This request will serve as acknowledgement and approval of the quote (attached). <br /><br />If you have any questions, please contact our office at %OfficePhone%')
-
-  GO
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, 
+UserIDAdded, DateEdited, UserIDEdited,   OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip)
+VALUES('PC', 30, 2, 2, 161, GetDate(), 'Admin', NULL, NULL,    NULL, NULL, NULL, NULL, Null, NULL, NULL, NULL, NULL, 0)
+GO
 
 
