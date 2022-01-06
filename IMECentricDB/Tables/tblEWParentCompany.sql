@@ -31,6 +31,7 @@ CREATE TABLE [dbo].[tblEWParentCompany] (
 	[RecordRetrievalMethod]          INT         NULL,
     [RequireOutofNetworkReason]      BIT         CONSTRAINT [DF_tblEWParentCompany_RequireOutofNetworkReason] DEFAULT (0),
     [RequireExamineeDOB]             BIT         CONSTRAINT [DF_tblEWParentCompany_RequireExamineeDOB] DEFAULT (0),
+    [RequireInOutNetworkInvoice]     BIT         CONSTRAINT [DF_tblEWParentCompany_RequireInOutNetworkInvoice] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_tblEWParentCompany] PRIMARY KEY CLUSTERED ([ParentCompanyID] ASC)
 );
 
