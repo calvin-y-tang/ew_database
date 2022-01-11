@@ -81,6 +81,8 @@
     [TaxAmount7]            MONEY           NULL,
     [TaxAmount8]            MONEY           NULL,
     [TaxHandling]           INT             NULL,
+    [InNetwork]             BIT             NULL,
+    [OutOfNetworkReasonID]  INT             NULL,
     CONSTRAINT [PK_tblAcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 
