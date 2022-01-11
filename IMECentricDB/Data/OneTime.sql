@@ -23,3 +23,19 @@ VALUES (3020,'LibertyXML NY-MCMC', 'LibertyXML', 1, '\\dev4.ew.domain.local\ISIn
   GO
 
 
+
+-- ISSUE 12300 - Add langugage Preference to web user maintenance - set language choices per DBID; set default langugage choice for users to english
+  -- Apply to DB NYRC  - DBID = 18
+INSERT INTO tblSetting (Name, Value) VALUES ('WebUserLanguageChoices', ';110;1;')
+GO
+
+-- Apply to all other DB’s
+INSERT INTO tblSetting (Name, Value) VALUES ('WebUserLanguageChoices', ';110;')
+GO
+
+-- Apply to all DB’s
+UPDATE tblWebUser SET LanguageIDPreference = 110
+GO
+
+
+
