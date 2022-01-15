@@ -201,7 +201,8 @@ SELECT
   CONVERT(VARCHAR(128),NULL) AS ClientCustomerName,
   C.ClaimNbrExt as ClaimNoExt,
   CONVERT(VARCHAR(32), NULL) as FeeQuoteAmount,
-  CONVERT(VARCHAR(64), NULL) AS OutOfNetworkReason
+  CONVERT(VARCHAR(64), NULL) AS OutOfNetworkReason,
+  CONVERT(VARCHAR(12), 'N/A') AS MedRecPages 
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
