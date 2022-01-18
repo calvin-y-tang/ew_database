@@ -31,5 +31,5 @@ VALUES(222, 'tblCaseAppt', 'DateShowNoShowLetterSent', 'Client Notified Show/No 
       (223, 'tblCase', 'TATExamDateToNotifyShowNoShow', NULL) 
 GO
 INSERT INTO tblTATCalculationMethod(TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend)
-VALUES(24, 208, 222, 'Day', 223, 0)
+VALUES(24, 208, 222, 'Hour', 223, 0)
 GO
