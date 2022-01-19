@@ -33,3 +33,9 @@ GO
 INSERT INTO tblTATCalculationMethod(TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend)
 VALUES(24, 208, 222, 'Hour', 223, 0)
 GO
+INSERT INTO tblTATCalculationGroupDetail
+VALUES(1, 24, 17),
+      (2, 24, 17),
+      (3, 24, 17),
+      (4, 24, 17)
+GO
