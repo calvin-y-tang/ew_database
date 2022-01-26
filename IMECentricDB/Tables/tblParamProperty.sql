@@ -8,5 +8,6 @@
 	[AllowedValues]        VARCHAR(200) NULL,
 	[DateAdded]            DATETIME NOT NULL, 
     [UserIDAdded]          VARCHAR(15) NOT NULL, 
+	[Visible]              BIT         CONSTRAINT [DF_tblParamProperty_Visible] DEFAULT ((1)) NULL, 
     CONSTRAINT [PK_tblParamProperty] PRIMARY KEY CLUSTERED ([ParamPropertyID] ASC)
 )

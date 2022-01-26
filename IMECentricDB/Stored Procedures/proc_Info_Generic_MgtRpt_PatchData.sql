@@ -179,6 +179,7 @@ UPDATE gi SET gi.FeeQuoteAmount = CASE (ISNULL(gi.InvApptStatus, gi.ApptStatus))
 				  WHERE tbl.ROWNUM = 1
 
 -- custom Sedgwick handling for customer data values
+print 'Custom Sedgwick Handling for Customer data values'
  UPDATE ginv SET 
 		ginv.ClaimUniqueId		= dbo.fnGetParamValue(CD.[Param], 'ClaimUniqueId'),
 		ginv.CMSClaimNumber		= dbo.fnGetParamValue(CD.[Param], 'CMSClaimNumber'),
@@ -188,6 +189,17 @@ UPDATE gi SET gi.FeeQuoteAmount = CASE (ISNULL(gi.InvApptStatus, gi.ApptStatus))
    FROM ##tmp_GenericInvoices as ginv
 	    INNER JOIN tblCustomerData as CD on CD.TableType = 'tblCase' AND CD.TableKey = ginv.CaseNbr AND CD.CustomerName = 'Sedgwick CMS'
    WHERE ginv.ParentCompanyID = 44
+
+-- get medrec page counts
+print 'Get Medical Page Counts'
+UPDATE geninv SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT(VARCHAR(12), tblCD.Pages))
+   FROM ##tmp_GenericInvoices as geninv
+		INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY CD.CaseNbr ORDER BY CD.SeqNo DESC) as ROWNUM,
+					CD.CaseNbr,
+					CD.Pages
+					FROM tblCaseDocuments as CD
+					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = geninv.CaseNbr
+		WHERE tblCD.ROWNUM = 1
 
 -- return the main table
 print 'return final query results'
