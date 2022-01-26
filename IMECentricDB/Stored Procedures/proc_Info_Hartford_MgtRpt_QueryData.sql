@@ -66,7 +66,40 @@ SELECT
 	CONVERT(VARCHAR(300), NULL) as SecondaryException,
 	CONVERT(VARCHAR(32), NULL) as SecondaryDriver,
 	CONVERT(VARCHAR(800), NULL) as Comments,
-	c.DoctorReason 
+	c.DoctorReason,
+	ISNULL(ca.ApptTime, c.ApptTime) as "DateRescheduled",
+	ISNULL(ca.ApptTime, c.ApptTime) as "SchedulingComplete",
+	C.TATAwaitingScheduling as "RescheduledSchedulingTAT",
+	C.TATReport as "ReportDelvred",
+	isnull([PeerReview],0) as DiagViewFee,
+	isnull([AddReview], 0) as ExcessRecFee,
+    isnull([Diag], 0) as DiagTestingFee,
+    -- note: if you add/remove categories from the "other" list below, make sure you update the other service description list in patch data
+    (isnull([Interpret],0) + isnull([Trans],0) + isnull([BillReview],0) + isnull([Legal],0) + isnull([Processing],0) + isnull([Nurse],0)
+	+ isnull(ft.[Phone],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
+	+ isnull([Rehab],0)	+ isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other,
+	0 AS [SurveillanceReviewFee],
+	'' as [ClaimantMileagePrepay],
+	0 as RushFee,
+	ft.[No Show],
+	ft.Other as OtherFee,
+	CONVERT(VARCHAR(12), 'N/A') as MedRecPages, 
+	case APS.ApptStatusID
+		 when 101 then 'No Show'
+	     when 102 then 'Unable to Examine'
+		 when 51  then 'Late Cancel'
+		 when 100 then 		 
+			case EWS.EWServiceTypeID
+			     when 1 then 
+					case S.ShortDesc
+						when 'FCE' then 'FCE'
+					    else 'IME took place'
+				 end
+				 when 8 then 'Addendum Complete'
+			     when 3 then 'MRR Complete'
+			end	
+		 else ''
+	end as ReferralStatus
 INTO ##tmp_HartfordInvoices
 FROM tblAcctHeader as AH
 	inner join tblClient as cli on AH.ClientCode = cli.ClientCode
@@ -99,6 +132,55 @@ FROM tblAcctHeader as AH
 		   where tEWFC.Mapping3 = 'FeeAmount'
 		   group by tAD.HeaderID
 		  ) LI on AH.HeaderID = LI.HeaderID
+LEFT OUTER JOIN
+(
+  select Pvt.*
+  from (
+    select
+      AD.HeaderID,
+      isnull(case when EWFC.Mapping5 = 'FeeAmount' and AH.ApptStatusID in (51,102) then 'Late Canceled'
+                  when EWFC.Mapping5 = 'FeeAmount' and AH.ApptStatusID = 101 then 'No Show'
+                  else EWFC.Mapping5 end, 'Other') as FeeColumn,
+      AD.ExtendedAmount	
+    from tblCase as C
+    inner join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'
+    inner join tblAcctDetail as AD on AH.HeaderID = AD.HeaderID
+    inner join tblProduct as P on P.ProdCode = AD.ProdCode
+    inner join tblCaseType as CT on C.CaseType = CT.Code
+    inner join tblFRCategory as FRC on C.CaseType = FRC.CaseType and AD.ProdCode = FRC.ProductCode
+    inner join tblEWFlashCategory as EWFC on FRC.EWFlashCategoryID = EWFC.EWFlashCategoryID
+    left outer join tblApptStatus as A on A.ApptStatusID = AH.ApptStatusID
+  ) as tmp
+  pivot
+  (
+    sum(ExtendedAmount) --aggregrate function that give the value for the columns from FeeColumn
+    for FeeColumn in (  --list out the values in FeeColumn that need to be a column
+      [FeeAmount],
+      [No Show],
+      [Late Canceled],
+      [Interpret],
+      [Trans],
+      [Diag],
+      [BillReview],
+      [PeerReview],
+      [Addendum],
+      [Legal],
+      [Processing],
+      [Nurse],
+      [Phone],
+      [MSA],
+      [Clinical],
+      [Tech],
+      [Medicare],
+      [OPO],
+      [Rehab],
+      [AddReview],
+      [AdminFee],
+      [FacFee],
+      [Other])
+  ) as Pvt
+) as FT on FT.HeaderID = AH.HeaderID
+
 WHERE (AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate)
       AND (AH.DocumentType = 'IN')
       AND (AH.DocumentStatus = 'Final')
