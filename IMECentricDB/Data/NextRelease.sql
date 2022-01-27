@@ -25,3 +25,18 @@ DELETE
  WHERE Name = 'ApptLetterContentType'
 GO 
 
+-- IMEC-12321 - new SLA Metric Exam Date to Client Notified Show/No Show
+INSERT INTO tblDataField(DataFieldID, TableName, FieldName, Descrip)
+VALUES(222, 'tblCaseAppt', 'DateShowNoShowLetterSent', 'Client Notified Show/No Show'), 
+      (223, 'tblCase', 'TATExamDateToNotifyShowNoShow', NULL) , 
+      (224, 'tblCase', 'ApptTime', 'Appt Time')
+GO
+INSERT INTO tblTATCalculationMethod(TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend)
+VALUES(24, 224, 222, 'Hour', 223, 0)
+GO
+INSERT INTO tblTATCalculationGroupDetail
+VALUES(1, 24, 17),
+      (2, 24, 17),
+      (3, 24, 17),
+      (4, 24, 17)
+GO
