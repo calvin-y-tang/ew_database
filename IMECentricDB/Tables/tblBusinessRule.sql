@@ -12,6 +12,7 @@
     [Param4Desc]       VARCHAR (20)  NULL,
     [Param5Desc]       VARCHAR (20)  NULL,
     [BrokenRuleAction] INT           NOT NULL,
+    [Param6Desc]       VARCHAR(20)   NULL, 
     CONSTRAINT [PK_tblBusinessRule] PRIMARY KEY CLUSTERED ([BusinessRuleID] ASC)
 );
 
