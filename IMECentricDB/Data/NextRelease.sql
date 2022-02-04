@@ -12,3 +12,7 @@ VALUES(162, 'PC', 30, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NUL
       (162, 'PC', 30, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'BusinessRuleBookmark1', 'True', 'True', NULL, NULL, 0, 'Transportation and/or Translation services have been requested for this appointment - you will be contacted by the vendor Albors & Alnet for coordination of these services.  If you have questions regarding this/these service(s), please contact Albors & Alnet at 800-785-8634.')
 GO
 
+-- IMEC-12531
+INSERT INTO tblUserFunction 
+VALUES('DynamicBookmarkAddEdit', 'Dynamic Bookmarks - Add/Edit', GetDate())
+GO
