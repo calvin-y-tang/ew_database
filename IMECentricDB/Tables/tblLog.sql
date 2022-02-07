@@ -7,7 +7,8 @@
     [Message]      VARCHAR(1024) NULL,
     [ErrorMessage] VARCHAR(2048) NULL,
     [StackTrace]   VARCHAR(MAX)  NULL,
-    [UserID]       VARCHAR(20)   NULL    
+    [UserID]       VARCHAR(20)   NULL, 
+    [SessionID]    VARCHAR(50)   NULL,
     CONSTRAINT [PK_tblLog] PRIMARY KEY CLUSTERED ([LogID] ASC)
 )
 GO
