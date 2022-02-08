@@ -107,13 +107,8 @@ SELECT
   ISNULL(inv.CaseApptID, c.CaseApptID) as CaseApptID,
   CA.ApptTime as [ApptDate],
   C.RptFinalizedDate,
-  C.RptSentDate,
-  case S.EWServiceTypeID
-    when 2 then C.DateMedsRecd
-    when 3 then C.DateMedsRecd
-    when 4 then C.DateMedsRecd
-    when 5 then C.DateMedsRecd
-  end as DateMedsReceived,
+  C.RptSentDate,    
+  C.DateMedsRecd as DateMedsReceived,
   C.OCF25Date,
   c.TATAwaitingScheduling,  
   c.TATEnteredToAcknowledged,

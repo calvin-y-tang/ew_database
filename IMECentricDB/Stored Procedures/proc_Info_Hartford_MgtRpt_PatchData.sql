@@ -28,8 +28,8 @@ UPDATE hi SET hi.SubSpecialty = isnull(ssm.NewSpecialtyName, hi.SubSpecialty)
 Print 'Fixing up Service Types'
 UPDATE hi SET hi.ServiceType = CASE 
 								WHEN hi.ServiceTypeID = 1 THEN 'IME'
-								WHEN hi.ServiceTypeID = 2 THEN 'MRR'
-								WHEN hi.ServiceTypeID = 3 THEN 'MRR'
+								WHEN hi.ServiceTypeID = 2 THEN 'Addendum - MRR'
+								WHEN hi.ServiceTypeID = 3 THEN 'Addendum - MRR'
 								WHEN hi.ServiceTypeID = 4 THEN 'MRR'
 								WHEN hi.ServiceTypeID = 5 THEN 'MRR'
 								WHEN hi.ServiceTypeID = 6 THEN 'MRR'
@@ -132,6 +132,17 @@ UPDATE hi SET PrimaryDriver = CASE
 									WHEN hi.SecondaryException = 'NA' THEN 'NA'
                                  END
 FROM ##tmp_HartfordInvoices as hi
+
+-- get medrec page counts
+print 'Get Medical Page Counts'
+UPDATE hi SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT(VARCHAR(12), tblCD.Pages))
+   FROM ##tmp_HartfordInvoices as hi
+		INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY CD.CaseNbr ORDER BY CD.SeqNo DESC) as ROWNUM,
+					CD.CaseNbr,
+					CD.Pages
+					FROM tblCaseDocuments as CD
+					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = hi.CaseNbr
+		WHERE tblCD.ROWNUM = 1
 
 -- return file result set
 select * 
