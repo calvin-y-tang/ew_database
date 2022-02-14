@@ -3,7 +3,7 @@
 	@endDate Date,
 	@ewFacilityIdList VarChar(255),
 	@companyCodeList VarChar(255)
-AS
+AS 
 SET NOCOUNT ON
 
 IF OBJECT_ID('tempdb..##tmp_GenericInvoices') IS NOT NULL DROP TABLE ##tmp_GenericInvoices
@@ -162,12 +162,19 @@ SELECT
   CONVERT(VARCHAR(32), NULL) as AttyConfirmationStatus,
   CONVERT(INT, NULL) as AttyCallAttempts,  
   CONVERT(MONEY, NULL) AS   FeeDetailExam,
+  CONVERT(INT,   NULL) AS   FeeDetailExamUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailBillReview,
+  CONVERT(INT,   NULL) AS   FeeDetailBillRvwUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailPeer,
+  CONVERT(INT,   NULL) AS   FeeDetailPeerUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailAdd,
+  CONVERT(INT,   NULL) AS   FeeDetailAddUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailLegal,
+  CONVERT(INT,   NULL) AS   FeeDetailLegalUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailProcServ,
+  CONVERT(INT,   NULL) AS   FeeDetailProvServUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailDiag,
+  CONVERT(INT,   NULL) AS   FeeDetailDiagUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailNurseServ,
   CONVERT(MONEY, NULL) AS   FeeDetailPhone,
   CONVERT(MONEY, NULL) AS   FeeDetailMSA,
@@ -177,10 +184,15 @@ SELECT
   CONVERT(MONEY, NULL) AS   FeeDetailOPO,
   CONVERT(MONEY, NULL) AS   FeeDetailRehab,
   CONVERT(MONEY, NULL) AS   FeeDetailAddRev,
+  CONVERT(INT,   NULL) AS   FeeDetailAddRevUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailTrans,
+  CONVERT(INT,   NULL) AS   FeeDetailTransUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailMileage,
+  CONVERT(INT,   NULL) AS   FeeDetailMileageUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailTranslate,
+  CONVERT(INT,   NULL) AS   FeeDetailTranslateUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailAdminFee,
+  CONVERT(INT,   NULL) AS   FeeDetailAdminFeeUnit,
   CONVERT(MONEY, NULL) AS   FeeDetailFacFee,
   CONVERT(MONEY, NULL) AS   FeeDetailOther,
   ISNULL(C.InsuringCompany, '') as InsuringCompany,
