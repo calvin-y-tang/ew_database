@@ -7,4 +7,8 @@ CREATE TABLE [dbo].[tblNonWorkDaysOffice] (
     CONSTRAINT [PK_tblNonWorkDaysOffice] PRIMARY KEY CLUSTERED ([NonWorkDay] ASC, [OfficeCode] ASC)
 );
 
+GO
+CREATE NONCLUSTERED INDEX [IX_tblNonWorkDaysOffice_Description]
+    ON [dbo].[tblNonWorkDaysOffice]([Description] ASC);
+
 
