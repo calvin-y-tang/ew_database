@@ -1,7 +1,4 @@
-﻿
-
-
-GO
+﻿GO
 
 IF (SELECT OBJECT_ID('tempdb..#tmpErrors')) IS NOT NULL DROP TABLE #tmpErrors
 GO
@@ -12,6 +9,60 @@ GO
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 GO
 BEGIN TRANSACTION
+GO
+PRINT N'Creating [dbo].[tblNonWorkDaysOffice]...';
+
+
+GO
+CREATE TABLE [dbo].[tblNonWorkDaysOffice] (
+    [NonWorkDay]  DATETIME     NOT NULL,
+    [OfficeCode]  INT          NOT NULL,
+    [DateAdded]   DATETIME     NULL,
+    [UserIDAdded] VARCHAR (50) NULL,
+    [Description] VARCHAR (25) NULL,
+    CONSTRAINT [PK_tblNonWorkDaysOffice] PRIMARY KEY CLUSTERED ([NonWorkDay] ASC, [OfficeCode] ASC)
+);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[tblNonWorkDaysOffice].[IX_tblNonWorkDaysOffice_Description]...';
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblNonWorkDaysOffice_Description]
+    ON [dbo].[tblNonWorkDaysOffice]([Description] ASC);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
 GO
 PRINT N'Altering [dbo].[proc_Info_Generic_MgtRpt_PatchData]...';
 
