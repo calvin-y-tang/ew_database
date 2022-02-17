@@ -1143,6 +1143,7 @@
     <Build Include="Tables\tblTaxAddress.sql" />
     <Build Include="Tables\tblTask.sql" />
     <Build Include="Tables\tblLog.sql" />
+    <Build Include="Tables\tblNonWorkDaysOffice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
