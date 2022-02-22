@@ -1,14 +1,26 @@
 
--- IMEC-12442 add Conflict of interest business rule and security token
-INSERT INTO tblUserFunction 
-VALUES('ConflictOfInterestOverride', 'Appointments - Conflict of Interest Override', GetDate())
+-- IMEC-12589 - rework business rules for Conflict of Interest
+DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = 163
 GO
-INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-VALUES (163, 'ApptConflictOfInterest', 'Case', 'Scheduling a case check for a conflict of interest', 1, 1101, 1, 'IncludeServiceTypeID', 'SubFormToDisplay', NULL, NULL, 'Override Sec Token', 0, NULL)
-GO
--- ONLY FOR INECentricEW Database
 INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, NULL, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, NULL, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, NULL, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL)
+VALUES (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 1, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 2, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 3, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 4, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 5, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 10, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 1, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 2, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 3, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 4, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 5, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 10, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 1, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 2, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 3, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 4, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 5, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
+       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 10, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL)
 GO
