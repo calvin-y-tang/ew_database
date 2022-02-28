@@ -144,6 +144,32 @@ UPDATE hi SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT(VAR
 					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = hi.CaseNbr
 		WHERE tblCD.ROWNUM = 1
 
+
+-- update the main table with the most recent quote information
+print 'Get Most recent FeeQuote for Case'
+UPDATE hi SET hi.InitialQuoteAmount = CASE (ISNULL(hi.InvApptStatus, hi.ApptStatus))
+									WHEN 'Late Canceled'	THEN tbl.LateCancelAmt
+									WHEN 'Canceled'			THEN tbl.NoShowAmt
+									WHEN 'No Show'			THEN tbl.NoShowAmt
+									ELSE
+										CASE
+											WHEN tbl.ApprovedAmt IS NOT NULL THEN tbl.ApprovedAmt
+											ELSE ISNULL(tbl.FeeAmtTo, tbl.FeeAmtFrom)
+										END
+									END	          
+  FROM ##tmp_HartfordInvoices as hi
+	INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY AQ.CaseNbr, AQ.DoctorCode ORDER BY AQ.AcctQuoteID DESC) as ROWNUM,
+					AQ.CaseNbr,
+					AQ.DoctorCode,
+					CONVERT(VARCHAR(12), AQ.LateCancelAmt)	AS LateCancelAmt,
+					CONVERT(VARCHAR(12), AQ.NoShowAmt)		AS NoShowAmt,		
+					CONVERT(VARCHAR(12), AQ.FeeAmtFrom)		AS FeeAmtFrom,
+					CONVERT(VARCHAR(12), AQ.FeeAmtTo)		AS FeeAmtTo,
+					CONVERT(VARCHAR(12), AQ.ApprovedAmt)	AS ApprovedAmt					
+	              FROM tblAcctQuote as AQ 				      
+			      WHERE AQ.QuoteType = 'IN') as tbl ON tbl.CaseNbr = hi.CaseNbr AND tbl.DoctorCode = hi.DoctorCode
+				  WHERE tbl.ROWNUM = 1
+
 -- return file result set
 select * 
 	from ##tmp_HartfordInvoices

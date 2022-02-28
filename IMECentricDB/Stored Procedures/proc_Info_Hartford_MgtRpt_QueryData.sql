@@ -99,7 +99,14 @@ SELECT
 			     when 3 then 'MRR Complete'
 			end	
 		 else ''
-	end as ReferralStatus
+	end as ReferralStatus,
+	AHAS.Name as InvApptStatus,
+	CONVERT(MONEY, NULL) as InitialQuoteAmount,
+	CASE 
+		WHEN (AH.DrOpType = 'DR') THEN AH.DrOpCode		
+		ELSE NULL
+	END as DoctorCode
+
 INTO ##tmp_HartfordInvoices
 FROM tblAcctHeader as AH
 	inner join tblClient as cli on AH.ClientCode = cli.ClientCode
@@ -116,8 +123,10 @@ FROM tblAcctHeader as AH
 	left outer join tblCompany as CO on AH.CompanyCode = CO.CompanyCode
 	left outer join tblEWParentCompany as EWPC on CO.ParentCompanyID = EWPC.ParentCompanyID
 	left outer join tblEWFacilityGroupSummary as EFGS on AH.EWFacilityID = EFGS.EWFacilityID
+	left outer join tblCaseAppt as AHCA on AH.CaseApptID = AHCA.CaseApptID
+	left outer join tblApptStatus as AHAS on AHCA.ApptStatusID = AHAS.ApptStatusID
 	left outer join tblCaseAppt as CA on ISNULL(AH.CaseApptID, C.CaseApptID) = CA.CaseApptID
-	left outer join tblApptStatus as APS on ISNULL(AH.ApptStatusID, C.ApptStatusID) = APS.ApptStatusID
+	left outer join tblApptStatus as APS on ISNULL(AH.ApptStatusID, C.ApptStatusID) = APS.ApptStatusID	
 	left outer join tblDoctor as D on ISNULL(CA.DoctorCode, C.DoctorCode) = D.DoctorCode
 	left outer join tblSpecialty as SPL on ISNULL(CA.SpecialtyCode, C.DoctorSpecialty) = SPL.SpecialtyCode		  
 	left join
