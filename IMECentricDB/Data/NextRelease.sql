@@ -9,4 +9,8 @@ INSERT INTO tblConfirmationResult (ResultCode, Description, IsSuccessful, Handle
 VALUES('OptOut', 'Add phone to Do Not Call List', 0, 3, 1)
 GO
 
-
+-- IMEC-12570 - new security tokens for Confirmation Do Not Call form.
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES('ConfirmationDoNotCallAdd', 'Confirmtion - Do Not Call Add/Edit', GETDATE()), 
+      ('ConfirmationDoNotCallDel', 'Confirmtion - Do Not Call Delete', GETDATE())
+GO
