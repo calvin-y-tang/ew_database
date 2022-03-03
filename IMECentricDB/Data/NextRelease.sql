@@ -1,26 +1,21 @@
-
--- IMEC-12589 - rework business rules for Conflict of Interest
-DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = 163
+-- IMEC-12561 - add new status for Confirmation Calls
+INSERT INTO tblConfirmationStatus(ConfirmationStatusID, Name)
+VALUES(113, 'Skipped Do Not Call')
 GO
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 1, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 2, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 3, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 4, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 5, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 23, NULL, 10, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
 
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 1, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 2, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 3, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 4, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 5, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 24, NULL, 10, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
 
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 1, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 2, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 3, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 4, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 5, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL),
-       (163, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 25, NULL, 10, NULL, '1,2,3,4,5,10', 'subfrmConflictOfInterest', NULL, NULL, 'ConflictOfInterestOverride', 0, NULL)
+-- IMEC-12559 - need to add the "OptOut" option to Confirmation Results
+INSERT INTO tblConfirmationResult (ResultCode, Description, IsSuccessful, HandleMethod, ConfirmationSystemID)
+VALUES('OptOut', 'Add phone to Do Not Call List', 0, 3, 1)
 GO
+
+-- IMEC-12570 - new security tokens for Confirmation Do Not Call form.
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES('ConfirmationDoNotCallAdd', 'Confirmtion - Do Not Call Add/Edit', GETDATE()), 
+      ('ConfirmationDoNotCallDel', 'Confirmtion - Do Not Call Delete', GETDATE())
+GO
+
+
+-- IMEC-12587 - code clean-up removing this setting since it is no longer being used
+  DELETE FROM tblSetting WHERE NAME = 'UseOldAttachExternalCaseDoc'
+
