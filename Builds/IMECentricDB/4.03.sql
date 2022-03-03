@@ -231,3 +231,6 @@ GO
 -- IMEC-12587 - code clean-up removing this setting since it is no longer being used
   DELETE FROM tblSetting WHERE NAME = 'UseOldAttachExternalCaseDoc'
 
+-- IMEC-12589 - ensure Param1 is NULL for Conflict of Interest Business rule
+UPDATE tblBusinessRuleCondition SET Param1 = null WHERE BusinessRuleID = 163
+GO
