@@ -14,3 +14,8 @@ INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
 VALUES('ConfirmationDoNotCallAdd', 'Confirmtion - Do Not Call Add/Edit', GETDATE()), 
       ('ConfirmationDoNotCallDel', 'Confirmtion - Do Not Call Delete', GETDATE())
 GO
+
+
+-- IMEC-12587 - code clean-up removing this setting since it is no longer being used
+  DELETE FROM tblSetting WHERE NAME = 'UseOldAttachExternalCaseDoc'
+
