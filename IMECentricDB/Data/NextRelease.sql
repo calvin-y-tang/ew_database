@@ -14,3 +14,7 @@ VALUES(155, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', 32, NULL, 
 GO
 
 
+-- IMEC-12520 - code clean up to remove all the old doctor scheduling
+ DELETE FROM tblSetting WHERE Name = 'UseNewDoctorScheduling'
+ GO
+
