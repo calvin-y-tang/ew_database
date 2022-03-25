@@ -19,7 +19,7 @@
     [ParentCompanyID] INT           NULL,
     [SourceID]        INT           NULL,
     [AcctingEmail]    VARCHAR (70)  NULL,
-    [EWCompanyTypeID] INT           NULL,
+    [EWCompanyTypeID] VARCHAR (70)  NULL,
     CONSTRAINT [PK_GPCompany] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
