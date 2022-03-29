@@ -107,3 +107,29 @@ begin
 	
 end
 GO
+
+
+-- Database: EW_IME_CENTRIC
+-- Catalog : EWDataRepository
+-- Table   : AcctHeader
+-- Issue   : IMEC-12654 Add new ClientRefNo2 column to table AcctHeader
+use [EWDataRepository]
+
+if not exists (select 1 from sys.columns where object_id = OBJECT_ID(N'[EWDataRepository].[dbo].[AcctHeader]') and [name] = 'ClientRefNo2')
+begin	
+	alter table AcctHeader add [ClientRefNo2] varchar(50)
+end
+go
+
+
+-- Database: EW_IME_CENTRIC
+-- Catalog : [IMECentricMaster]
+-- Table   : GPInvoice
+-- Issue   : IMEC-12654 Add new ClientRefNo2 column to table GPInvoice
+use [IMECentricMaster]
+
+if not exists (select 1 from sys.columns where object_id = OBJECT_ID(N'[IMECentricMaster].[dbo].[GPInvoice]') and [name] = 'ClientRefNo2')
+begin	
+	alter table GPInvoice add [ClientRefNo2] varchar(50)
+end
+go
