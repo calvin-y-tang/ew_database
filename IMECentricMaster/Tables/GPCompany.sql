@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[GPCompany] (
+﻿CREATE TABLE [dbo].[GPCompany] (
     [PrimaryKey]      INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [FormatVersion]   INT           NOT NULL,
     [ProcessedFlag]   BIT           NOT NULL,
