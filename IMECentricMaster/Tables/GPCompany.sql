@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[GPCompany] (
+﻿CREATE TABLE [dbo].[GPCompany] (
     [PrimaryKey]      INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [FormatVersion]   INT           NOT NULL,
     [ProcessedFlag]   BIT           NOT NULL,
@@ -19,7 +19,6 @@ CREATE TABLE [dbo].[GPCompany] (
     [ParentCompanyID] INT           NULL,
     [SourceID]        INT           NULL,
     [AcctingEmail]    VARCHAR (70)  NULL,
-    [EWCompanyTypeID] INT           NULL,
     CONSTRAINT [PK_GPCompany] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 

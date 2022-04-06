@@ -63,8 +63,6 @@
     [TaxAmount6]       MONEY           NULL,
     [TaxAmount7]       MONEY           NULL,
     [TaxAmount8]       MONEY           NULL,
-    [CaseDocID]        INT             NULL,
-	[ClientRefNo2]     VARCHAR (50)    NULL,
     CONSTRAINT [PK_AcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 

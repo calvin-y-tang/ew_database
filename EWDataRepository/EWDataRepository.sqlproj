@@ -88,7 +88,6 @@
     <Build Include="Tables\EWGLAcct.sql" />
     <Build Include="Tables\AcctHeader.sql" />
     <Build Include="Tables\AcctManualPayment.sql" />
-    <Build Include="Tables\CompanyPrepay.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\DefaultCompareOptions.scmp" />
