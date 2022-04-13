@@ -232,5 +232,6 @@
     <Build Include="Tables\WebNotification.sql" />
     <Build Include="Tables\WebPortalLoginHandler.sql" />
     <Build Include="Tables\WebSupportRequest.sql" />
+    <Build Include="Tables\GPCompanyPrepay.sql" />
   </ItemGroup>
 </Project>
