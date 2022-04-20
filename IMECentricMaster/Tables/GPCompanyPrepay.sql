@@ -6,7 +6,7 @@
     [SourceID]		  INT			NULL,
 	[CheckNo]		  VARCHAR(20)	NOT NULL,
 	[CheckDate]		  DATETIME		NOT NULL,
-	[Comment]		  VARCHAR		NULL,
+	[Comment]		  VARCHAR(30)	NULL,
 	[GPFacilityID]	  VARCHAR(3)	NOT NULL,
 	[GPLocationID]	  VARCHAR(3)	NULL,
 	[GPCustomerID]	  VARCHAR(15)	NOT NULL,
