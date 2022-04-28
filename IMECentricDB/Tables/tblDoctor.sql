@@ -110,6 +110,15 @@
     [DaysheetFaxNbr]               VARCHAR (15) NULL,
 	[Prepayment]                   INT          NULL,
 	[UseLocEmailForDaySheet]	   BIT		    CONSTRAINT [DF_tblDoctor_UseLocEmailForDaySheet] DEFAULT (0) NOT NULL,
+    [IsMDorDO]                     BIT          NULL,
+	[URAC]                         BIT          NULL,
+	[CertificationStatusID]        INT          NULL,
+	[CertificationStatusName]      VARCHAR (50) NULL,
+	[ActiveTreatingName]           VARCHAR (20) NULL,
+	[PracticeTreatingPercentage]   DECIMAL (9, 5) NULL,
+	[PracticeOtherPercentage]      DECIMAL (9, 5) NULL,
+	[MeetsLookbackThreshold]       BIT NULL,
+	[RetirementDate]               DATETIME NULL,
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 

@@ -5,7 +5,7 @@ CREATE TABLE [dbo].[CompanyPrepay] (
 	[SourceID]          INT         NULL,
 	[CheckNo]           VARCHAR(20) NULL,
 	[CheckDate]         DATETIME    NULL,
-	[Comment]           VARCHAR     NULL,
+	[Comment]           VARCHAR(30) NULL,
 	[EWFacilityID]      INT         NULL,
 	[EWLocationID]      INT         NULL,
 	[CompanyID]         INT			NULL,
