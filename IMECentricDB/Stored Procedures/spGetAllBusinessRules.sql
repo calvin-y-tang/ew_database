@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE dbo.spGetAllBusinessRules
 (
-	@eventID INT,
+    @eventID INT,
     @clientCode INT,
     @billClientCode INT,
     @officeCode INT,
@@ -13,7 +13,7 @@ BEGIN
 
 	SET NOCOUNT ON
 
-	SELECT DISTINCT * 
+	SELECT DISTINCT *, ROW_NUMBER() OVER (PARTITION BY BusinessRuleID ORDER BY BusinessRuleID, ProcessOrder ASC ) AS RuleOrder 
 	INTO #tmp_GetAllBusinessRules
 	FROM (
 			SELECT BR.BusinessRuleID, BR.Category, BR.Name,	 
@@ -65,8 +65,20 @@ BEGIN
 	) AS sortedBR	
 	ORDER BY sortedBR.BusinessRuleID, sortedBR.ProcessOrder
 
-	DELETE FROM #tmp_GetAllBusinessRules WHERE Skip = 1
-
-	SELECT * FROM #tmp_GetAllBusinessRules
+	SELECT BusinessRuleID, 
+		   Category, 
+		   Name,	 
+		   BusinessRuleConditionID,
+		   Param1,
+		   Param2,
+		   Param3,
+		   Param4,
+		   Param5,
+		   EntityType,
+		   ProcessOrder,
+		   Skip, 
+		   Param6 
+	FROM #tmp_GetAllBusinessRules
+	WHERE RuleOrder = 1 AND Skip = 0
 
 END
