@@ -68,6 +68,7 @@
     [DocumentTaxAmount7] MONEY           NULL,
     [DocumentTaxAmount8] MONEY           NULL,
     [ClientRefNo2]       VARCHAR (50)    NULL,
+    [ObjectID]           VARCHAR (30)    NULL,
     CONSTRAINT [PK_GPInvoice] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
