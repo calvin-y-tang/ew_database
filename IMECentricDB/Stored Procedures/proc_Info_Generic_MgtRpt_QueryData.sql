@@ -1,4 +1,4 @@
-﻿CREATE OR ALTER PROCEDURE [dbo].[proc_Info_Generic_MgtRpt_QueryData]
+﻿CREATE PROCEDURE [dbo].[proc_Info_Generic_MgtRpt_QueryData]
 	@startDate Date,
 	@endDate Date,
 	@ewFacilityIdList VarChar(255),
