@@ -9,7 +9,6 @@ SET NOCOUNT ON
 IF OBJECT_ID('tempdb..##tmp_GenericInvoices') IS NOT NULL DROP TABLE ##tmp_GenericInvoices
 print 'Gather main data set ...'
 
-
 DECLARE @xml XML
 DECLARE @xmlCompany XML
 DECLARE @delimiter CHAR(1) = ','
@@ -20,18 +19,24 @@ print 'Facility ID List: ' + @ewFacilityIdList;
 print 'Company Code List: ' + @companyCodeList;
 
 WITH SLADetailsCTE AS
-	(SELECT se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '') as SLAReason, sla.CaseNbr 
-	   FROM tblCaseSLARuleDetail as sla 
-			 LEFT OUTER JOIN tblSLAException as se on sla.SLAExceptionID = se.SLAExceptionID 
-			 INNER JOIN tblCase as c on sla.CaseNbr = c.CaseNbr 
-			 INNER JOIN tblAcctHeader as ah on c.CaseNbr = ah.CaseNbr 
-			 INNER JOIN tblClient as cli on cli.ClientCode = ah.ClientCode 
-			 INNER JOIN tblCompany as com on com.CompanyCode = cli.CompanyCode 
-	 WHERE ((LEN(se.Descrip) > 0) OR (LEN(sla.Explanation) > 0)) 
-  		  AND (AH.DocumentType = 'IN' 
-		  AND AH.DocumentStatus = 'Final' 
-		  AND AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate) 
-	 GROUP BY (se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '')), sla.CaseNbr ) 
+(SELECT DF1.Descrip + ' to ' + DF2.Descrip + ': ' + se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '') as SLAReason, sla.CaseNbr
+  FROM tblCaseSLARuleDetail as sla
+LEFT OUTER JOIN tblSLAException as se on sla.SLAExceptionID = se.SLAExceptionID
+LEFT OUTER JOIN tblSLARuleDetail as srd on sla.SLARuleDetailID = srd.SLARuleDetailID
+LEFT OUTER JOIN tblTATCalculationMethod as tcm on srd.TATCalculationMethodID = tcm.TATCalculationMethodID
+LEFT OUTER JOIN tblDataField as DF1 on tcm.StartDateFieldID = DF1.DataFieldID
+LEFT OUTER JOIN tblDataField as DF2 on tcm.EndDateFieldID = DF2.DataFieldID
+INNER JOIN tblCase as c on sla.CaseNbr = c.CaseNbr
+INNER JOIN tblAcctHeader as ah on c.CaseNbr = ah.CaseNbr
+INNER JOIN tblClient as cli on cli.ClientCode = ah.ClientCode
+INNER JOIN tblCompany as com on com.CompanyCode = cli.CompanyCode
+WHERE ((LEN(se.Descrip) > 0) OR (LEN(sla.Explanation) > 0))
+  AND (AH.DocumentType = 'IN'
+  AND AH.DocumentStatus = 'Final'
+  AND AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate)
+  AND (COM.ParentCompanyID = 60)
+GROUP BY (DF1.Descrip + ' to ' + DF2.Descrip + ': ' + se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '')), sla.CaseNbr
+)
 SELECT
   Inv.EWFacilityID,
   Inv.HeaderID,
