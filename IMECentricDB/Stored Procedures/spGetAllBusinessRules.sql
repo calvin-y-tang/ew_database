@@ -79,6 +79,6 @@ BEGIN
 		   Skip, 
 		   Param6 
 	FROM #tmp_GetAllBusinessRules
-	WHERE RuleOrder = 1 AND Skip = 0
+	WHERE Skip = 0
 
 END
