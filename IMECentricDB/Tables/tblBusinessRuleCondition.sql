@@ -18,7 +18,7 @@
     [Param3]                  VARCHAR (50) NULL,
     [Param4]                  VARCHAR (50) NULL,
     [Param5]                  VARCHAR (50) NULL,
-    [Skip]                    Bit          NULL,
+    [Skip]                    Bit          CONSTRAINT [DF_tblBusinessRuleCondition_Skip] DEFAULT ((0)) NULL,
     [Param6]                  VARCHAR(MAX) NULL, 
     CONSTRAINT [PK_tblBusinessRuleCondition] PRIMARY KEY CLUSTERED ([BusinessRuleConditionID] ASC)
 );
