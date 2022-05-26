@@ -33,8 +33,7 @@ INNER JOIN tblCompany as com on com.CompanyCode = cli.CompanyCode
 WHERE ((LEN(se.Descrip) > 0) OR (LEN(sla.Explanation) > 0))
   AND (AH.DocumentType = 'IN'
   AND AH.DocumentStatus = 'Final'
-  AND AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate)
-  AND (COM.ParentCompanyID = 60)
+  AND AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate)  
 GROUP BY (DF1.Descrip + ' to ' + DF2.Descrip + ': ' + se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '')), sla.CaseNbr
 )
 SELECT

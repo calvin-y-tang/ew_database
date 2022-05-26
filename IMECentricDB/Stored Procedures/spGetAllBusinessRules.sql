@@ -65,6 +65,21 @@ BEGIN
 	) AS sortedBR	
 	ORDER BY sortedBR.BusinessRuleID, sortedBR.ProcessOrder
 
+	-- need to remove duplicate rules (same BusinessRuleConditionID)
+	DELETE bizRules 
+      FROM (SELECT BusinessRuleConditionID, 
+               ROW_NUMBER() OVER (PARTITION BY BusinessRuleConditionID ORDER BY RuleOrder ASC) AS ROWNUM
+              FROM #tmp_GetAllBusinessRules) AS bizRules
+	 WHERE bizRules.RowNum > 1
+
+    -- remove rules that have a condition that is set to skip
+	DELETE 
+      FROM #tmp_GetAllBusinessRules
+      WHERE BusinessRuleID IN (SELECT BusinessRuleID
+                                 FROM #tmp_GetAllBusinessRules
+                                WHERE skip = 1)
+
+	-- do not return rules that are set to be "skipped"
 	SELECT BusinessRuleID, 
 		   Category, 
 		   Name,	 
@@ -79,6 +94,6 @@ BEGIN
 		   Skip, 
 		   Param6 
 	FROM #tmp_GetAllBusinessRules
-	WHERE RuleOrder = 1 AND Skip = 0
+	WHERE Skip = 0
 
 END
