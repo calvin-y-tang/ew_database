@@ -48,7 +48,7 @@ BEGIN
 
 <labelControl id="Lbl_112200" getEnabled="Ribbon_GetEnabled" label="Examinee" tag="None|None|None" />
 
-<comboBox id="Cbx_CaseSearch" getEnabled="Ribbon_GetEnabled" tag="None|None|None" sizeString="123456789012345" getItemCount="Ribbon_ComboBoxGetItemCount" getItemID="Ribbon_ComboBoxGetItemID" getItemLabel="Ribbon_ComboBoxGetItemLabel" onChange="Ribbon_ComboBoxOnChange" showLabel="false">
+<comboBox id="Cbx_CaseSearch" getEnabled="Ribbon_GetEnabled" tag="None|None|None" sizeString="12345678" getItemCount="Ribbon_ComboBoxGetItemCount" getItemID="Ribbon_ComboBoxGetItemID" getItemLabel="Ribbon_ComboBoxGetItemLabel" onChange="Ribbon_ComboBoxOnChange" showLabel="false">
 </comboBox>
 <splitButton id="Spb_112400" getEnabled="Ribbon_GetEnabled" tag="None|None|None" size="large">
 <button id="Btn_112410" getEnabled="Ribbon_GetEnabled" label="Case Search" getImage="Ribbon_GetImage" tag="None|Call_RibbonCaseSearch|File_Custom-Case Search.png" onAction="Ribbon_ButtonAction" />
@@ -124,18 +124,6 @@ BEGIN
 <button id="Btn_115100" getEnabled="Ribbon_GetEnabled" label="Info*Centric" getImage="Ribbon_GetImage" tag="None|Call_RunInfoCentric|File_InfoCentric.png" onAction="Ribbon_ButtonAction" size="large" />
 
 <button id="Btn_115200" getEnabled="Ribbon_GetEnabled" label="DICOM Extractor" getImage="Ribbon_GetImage" tag="None|Call_RunInfoCentric|Mso_FilePackageForCD" onAction="Ribbon_ButtonAction" size="large" />
-
-</group>
-<group id="Grp_116000" getVisible="Ribbon_GetVisible" label="Frequent Used">
-<button id="Btn_116100" getEnabled="Ribbon_GetEnabled" label="FQU" getImage="Ribbon_GetImage" tag="None|None|Mso_TableEffectsCellBevelGallery" onAction="Ribbon_ButtonAction" size="normal" />
-
-<button id="Btn_116200" getEnabled="Ribbon_GetEnabled" label="FQU" getImage="Ribbon_GetImage" tag="None|None|Mso_TableEffectsCellBevelGallery" onAction="Ribbon_ButtonAction" size="normal" />
-
-<button id="Btn_116300" getEnabled="Ribbon_GetEnabled" label="FQU" getImage="Ribbon_GetImage" tag="None|None|Mso_TableEffectsCellBevelGallery" onAction="Ribbon_ButtonAction" size="normal" />
-
-<button id="Btn_116400" getEnabled="Ribbon_GetEnabled" label="FQU" getImage="Ribbon_GetImage" tag="None|None|Mso_TableEffectsCellBevelGallery" onAction="Ribbon_ButtonAction" size="normal" />
-
-<button id="Btn_116500" getEnabled="Ribbon_GetEnabled" label="FQU" getImage="Ribbon_GetImage" tag="None|None|Mso_TableEffectsCellBevelGallery" onAction="Ribbon_ButtonAction" size="normal" />
 
 </group>
 <group id="Grp_117000" getVisible="Ribbon_GetVisible" label="Exit">
