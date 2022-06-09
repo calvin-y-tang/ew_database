@@ -59,6 +59,7 @@ AS
             tblClient.CompanyCode ,
             tblCase.QARep ,
             tblCase.PanelNbr ,
+            tblCase.Status,
             DATEDIFF(DAY, tblAcctingTrans.LastStatusChg, GETDATE()) AS IQ ,
             tblCase.MasterSubCase ,
             tblqueues_1.StatusDesc AS CaseStatus ,
