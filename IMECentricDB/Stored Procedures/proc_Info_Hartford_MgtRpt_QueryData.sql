@@ -73,13 +73,13 @@ SELECT
 	C.TATReport as "ReportDelvred",
 	isnull([PeerReview],0) as DiagViewFee,
 	isnull([AddReview], 0) as ExcessRecFee,
-    isnull([Diag], 0) as DiagTestingFee,
+    isnull([Diag], 0) as DiagTestingFee,	
     -- note: if you add/remove categories from the "other" list below, make sure you update the other service description list in patch data
     (isnull([Interpret],0) + isnull([Trans],0) + isnull([BillReview],0) + isnull([Legal],0) + isnull([Processing],0) + isnull([Nurse],0)
 	+ isnull(ft.[Phone],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
 	+ isnull([Rehab],0)	+ isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other,
 	0 AS [SurveillanceReviewFee],
-	'' as [ClaimantMileagePrepay],
+	isnull([Mileage], 0) as [ClaimantMileagePrepay],
 	0 as RushFee,
 	ft.[No Show],
 	ft.Other as OtherFee,
@@ -169,6 +169,7 @@ LEFT OUTER JOIN
       [Late Canceled],
       [Interpret],
       [Trans],
+	  [Mileage],
       [Diag],
       [BillReview],
       [PeerReview],

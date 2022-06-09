@@ -1146,6 +1146,7 @@
     <Build Include="Tables\tblNonWorkDaysOffice.sql" />
     <Build Include="Tables\tblConfirmationDoNotCall.sql" />
     <Build Include="Tables\tblTaxExemptCompanyEmployer.sql" />
+    <Build Include="Functions\fnGetRibbonXML.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
