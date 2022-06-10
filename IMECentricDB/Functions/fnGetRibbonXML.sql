@@ -127,7 +127,7 @@ BEGIN
 <group id="Grp_115000" getVisible="Ribbon_GetVisible" label="Apps">
 <button id="Btn_115100" getEnabled="Ribbon_GetEnabled" label="Info*Centric" getImage="Ribbon_GetImage" tag="None|Call_RunInfoCentric|File_InfoCentric.png" onAction="Ribbon_ButtonAction" size="large" />
 
-<button id="Btn_115200" getEnabled="Ribbon_GetEnabled" label="DICOM Extractor" getImage="Ribbon_GetImage" tag="DicomExtractor|Call_RunInfoCentric|Mso_FilePackageForCD" onAction="Ribbon_ButtonAction" size="large" />
+<button id="Btn_115200" getEnabled="Ribbon_GetEnabled" label="DICOM Extractor" getImage="Ribbon_GetImage" tag="DicomExtractor|Call_RunDicomExtractor|Mso_FilePackageForCD" onAction="Ribbon_ButtonAction" size="large" />
 
 </group>
 </tab>

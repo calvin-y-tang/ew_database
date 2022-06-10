@@ -93,8 +93,11 @@
     [ApptRequestStatusCode]     INT              NULL,
     [ApptRequestDoctorReasonID] INT              NULL,
     [DirIcon]                   VARCHAR (70)     NULL,
-    CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC)
+    [DirDicomExtractor]         VARCHAR (70)     NULL,
+    CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC) WITH (FILLFACTOR = 90)
 );
+
+
 
 
 
