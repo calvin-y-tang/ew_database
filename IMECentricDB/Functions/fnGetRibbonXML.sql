@@ -15,9 +15,13 @@ BEGIN
 	SET @header='<?xml version="1.0"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="Ribbon_OnLoad">
 
-	<ribbon startFromScratch="%startFromScratch%">
+	<ribbon startFromScratch="false">
+
 		<tabs>
+%startFromScratch%
+
 %content%
+
 		</tabs>
 	</ribbon>
 </customUI>
@@ -37,7 +41,7 @@ BEGIN
 
 <button id="Btn_111600" getEnabled="Ribbon_GetEnabled" label="File Manager" getImage="Ribbon_GetImage" tag="FileManager|Open_frmFileManager|File_File Manager.png" onAction="Ribbon_ButtonAction" size="large" />
 
-<button id="Btn_111700" getEnabled="Ribbon_GetEnabled" label="Scanning" getImage="Ribbon_GetImage" tag="DefaultInvisible|Call_OpenCaseSearchForScanning|File_scanner.png" onAction="Ribbon_ButtonAction" size="large" />
+<button id="Btn_Scan" getEnabled="Ribbon_GetEnabled" screentip="Scan" label="Scanning" getImage="Ribbon_GetImage" tag="DefaultDisabled|Call_OpenCaseSearchForScanning|File_scanner.png" onAction="Ribbon_ButtonAction" size="large" />
 
 <separator id="Spr_111800" />
 <button id="Btn_111900" getEnabled="Ribbon_GetEnabled" screentip="Add/Edit Cases" label="New Case" getImage="Ribbon_GetImage" tag="None|Open_frmexamineeselection|File_Custom-Case.png" onAction="Ribbon_ButtonAction" size="large" />
@@ -123,11 +127,7 @@ BEGIN
 <group id="Grp_115000" getVisible="Ribbon_GetVisible" label="Apps">
 <button id="Btn_115100" getEnabled="Ribbon_GetEnabled" label="Info*Centric" getImage="Ribbon_GetImage" tag="None|Call_RunInfoCentric|File_InfoCentric.png" onAction="Ribbon_ButtonAction" size="large" />
 
-<button id="Btn_115200" getEnabled="Ribbon_GetEnabled" label="DICOM Extractor" getImage="Ribbon_GetImage" tag="None|Call_RunInfoCentric|Mso_FilePackageForCD" onAction="Ribbon_ButtonAction" size="large" />
-
-</group>
-<group id="Grp_117000" getVisible="Ribbon_GetVisible" label="Exit">
-<button id="Btn_117300" getEnabled="Ribbon_GetEnabled" getImage="Ribbon_GetImage" tag="None|Call_ExitIMEC|Mso_PrintPreviewClose" onAction="Ribbon_ButtonAction" size="large" />
+<button id="Btn_115200" getEnabled="Ribbon_GetEnabled" label="DICOM Extractor" getImage="Ribbon_GetImage" tag="DicomExtractor|Call_RunDicomExtractor|Mso_FilePackageForCD" onAction="Ribbon_ButtonAction" size="large" />
 
 </group>
 </tab>
@@ -339,9 +339,16 @@ BEGIN
 '
 	
 	IF @startFromScratch = 1
-		SELECT @xml = REPLACE(@header, '%startFromScratch%', 'true')
+		SELECT @xml = REPLACE(@header, '%startFromScratch%', '
+		    <tab idMso="TabHomeAccess" visible="false" />
+			<tab idMso="TabCreate" visible="false" />
+			<tab idMso="TabExternalData" visible="false" />
+			<tab idMso="TabDatabaseTools" visible="false" />
+			<tab idMso="TabSourceControl" visible="false" />
+			<tab idMso="TabAddIns" visible="false" />
+')
 	ELSE
-		SELECT @xml = REPLACE(@header, '%startFromScratch%', 'false')
+		SELECT @xml = REPLACE(@header, '%startFromScratch%', '')
 
 	SET @xml = REPLACE(@xml, '%content%', @content)
 
