@@ -31,4 +31,6 @@ UPDATE tblControl SET DirDicomExtractor='\\EWISApp1.ew.domain.local\Deploy\Dicom
 GO
 
 
-
+-- issue 12851 - make frmStatusHCAIExport an accounting form
+UPDATE tblQueues SET SubType = 'Accting' WHERE FormToOpen = 'frmStatusHCAIExport'
+GO
