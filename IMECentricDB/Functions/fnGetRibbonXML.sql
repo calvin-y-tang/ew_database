@@ -57,7 +57,7 @@ BEGIN
 <splitButton id="Spb_112400" getEnabled="Ribbon_GetEnabled" tag="None|None|None" size="large">
 <button id="Btn_112410" getEnabled="Ribbon_GetEnabled" label="Case Search" getImage="Ribbon_GetImage" tag="None|Call_RibbonCaseSearch|File_Case Search.png" onAction="Ribbon_ButtonAction" />
 
-<menu id="Mnu_112420" getEnabled="Ribbon_GetEnabled" getImage="Ribbon_GetImage" tag="None|None|File_17-pic.bmp" itemSize="large">
+<menu id="Mnu_112420" getEnabled="Ribbon_GetEnabled" tag="None|None|None" itemSize="large">
 <button id="Btn_112421" getEnabled="Ribbon_GetEnabled" label="Advance Search" getImage="Ribbon_GetImage" tag="None|Call_OpenCaseSearch|File_Cases.png" onAction="Ribbon_ButtonAction" />
 
 </menu>
