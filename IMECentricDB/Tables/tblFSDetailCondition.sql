@@ -8,4 +8,6 @@
 	CONSTRAINT [PK_tblFSDetailCondition] PRIMARY KEY CLUSTERED ([FSDetailConditionID] ASC)
 )
 
--- TODOJP: Do we need to create the UNIQUE INDEX CONSTRAINT? (Noticed it was not present in IMECEW).
+GO
+CREATE INDEX [IX_tblFSDetailCondition_Includes] ON [tblFSDetailCondition] ([FSDetailID], [ConditionTable])  INCLUDE ([ConditionKey]) WITH (FILLFACTOR=100);
+GO
