@@ -303,15 +303,11 @@ BEGIN
 
 </group>
 <group id="Grp_154000" getVisible="Ribbon_GetVisible" label="Custom">
-<button id="Btn_154100" getEnabled="Ribbon_GetEnabled" label="Canadian Custom Program" showImage="false" tag="None|Open_frmCACustomMenu|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_154300" getEnabled="Ribbon_GetEnabled" label="Progressive" showImage="false" tag="RptProgressiveRpts|Call_MMenuReportsProgressiveReports|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_154400" getEnabled="Ribbon_GetEnabled" label="Notification Report" showImage="false" tag="CustomMEIProgram|Open_frmMEINotificationParams|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_154500" getEnabled="Ribbon_GetEnabled" label="Doctor Schedules" showImage="false" tag="None|Open_frmDoctorsSchedParams|None" onAction="Ribbon_ButtonAction" size="normal" />
-
-<button id="Btn_154600" getEnabled="Ribbon_GetEnabled" label="Excel Exports" showImage="false" tag="None|Open_frmMEIExportParams|None" onAction="Ribbon_ButtonAction" size="normal" />
 </group>
 
 </tab>
