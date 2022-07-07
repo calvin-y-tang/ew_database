@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 -- Sprint 87
 
@@ -34,3 +35,7 @@ GO
 -- issue 12851 - make frmStatusHCAIExport an accounting form
 UPDATE tblQueues SET SubType = 'Accting' WHERE FormToOpen = 'frmStatusHCAIExport'
 GO
+=======
+
+-- Sprint 88
+>>>>>>> develop
