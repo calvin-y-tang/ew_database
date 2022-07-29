@@ -61,7 +61,7 @@ AS
 				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
 
 				LEFT JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = C.CaseApptID
-				INNER JOIN tblDoctor AS DR ON DR.DoctorCode = ISNULL(CA.DoctorCode, CAP.DoctorCode)
+                INNER JOIN tblDoctor AS DR ON DR.DoctorCode = IIF(CA.DoctorCode IS NULL OR CA.DoctorCode = 0, CAP.DoctorCode, CA.DoctorCode)
 				INNER JOIN tblLocation AS L ON CA.LocationCode = L.LocationCode
 
 				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
