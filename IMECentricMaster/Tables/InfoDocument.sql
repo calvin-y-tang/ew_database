@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[InfoDocument] (
     [DocumentID]     INT          IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [Description]    VARCHAR (70) NULL,
-    [Filename]       VARCHAR (75) NULL,
+    [Filename]       VARCHAR (255) NULL,
     [FolderID]       INT          NULL,
     [SubFolder]      VARCHAR (25) NULL,
     [DocumentTypeID] INT          NULL,
