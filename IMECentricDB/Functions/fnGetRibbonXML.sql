@@ -193,6 +193,8 @@ BEGIN
 <group id="Grp_123000" getVisible="Ribbon_GetVisible" label="Document/Report">
 <button id="Btn_123100" getEnabled="Ribbon_GetEnabled" label="Document Maintenance" getImage="Ribbon_GetImage" tag="None|Open_FrmDocumentMaintenance|Mso_FileSaveAsWordDocx" onAction="Ribbon_ButtonAction" size="large" />
 
+<button id="Btn_123150" getEnabled="Ribbon_GetEnabled" label="Dynamic Bookmark" showImage="false" tag="None|Open_frmBusRuleDynamicBookmark|None" onAction="Ribbon_ButtonAction" size="normal" />
+
 <button id="Btn_123200" getEnabled="Ribbon_GetEnabled" label="Med Record Action" showImage="false" tag="None|Open_frmRecordActions|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_123300" getEnabled="Ribbon_GetEnabled" label="Med Record Status" showImage="false" tag="None|Open_frmRecordStatus|None" onAction="Ribbon_ButtonAction" size="normal" />
