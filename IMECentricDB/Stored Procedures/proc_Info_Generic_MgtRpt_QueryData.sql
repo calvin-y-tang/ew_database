@@ -44,6 +44,7 @@ SELECT
   Inv.DocumentDate as InvoiceDate,
   C.CaseNbr,
   C.ExtCaseNbr,
+  C.MasterCaseNbr,
   isnull(PC.Name, 'Other') as ParentCompany,
   CO.CompanyCode as CompanyID,
   CO.IntName as CompanyInt,
@@ -213,7 +214,9 @@ SELECT
   C.ClaimNbrExt as ClaimNoExt,
   CONVERT(VARCHAR(32), NULL) as FeeQuoteAmount,
   CONVERT(VARCHAR(64), NULL) AS OutOfNetworkReason,
-  CONVERT(VARCHAR(12), 'N/A') AS MedRecPages 
+  CONVERT(VARCHAR(12), 'N/A') AS MedRecPages,
+  CONVERT(BIT, NULL) AS AddendumNeeded,
+  C.[Status] as CaseStatus
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
