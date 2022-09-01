@@ -10,6 +10,6 @@ GO
 INSERT INTO dbo.tblSetting (Name, Value)
 VALUES (
 'DBConnCommandTimeoutExtended', 
-'120' 
+'1800' 
 )
 GO
