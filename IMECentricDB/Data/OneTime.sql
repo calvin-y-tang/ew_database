@@ -9,7 +9,7 @@ GO
 
 INSERT INTO dbo.tblSetting (Name, Value)
 VALUES (
-'DBConnCommandTimeoutExtended', 
+'FeeSchedSyncTimeout', 
 '1800' 
 )
 GO
