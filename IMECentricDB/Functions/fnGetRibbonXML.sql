@@ -259,7 +259,7 @@ BEGIN
 
 <button id="Btn_141700" getEnabled="Ribbon_GetEnabled" label="Quote Rule" showImage="false" tag="None|Call_MMenuListsAccountingQuoteRule|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_141800" getEnabled="Ribbon_GetEnabled" label="Tax Excempt" showImage="false" tag="None|Call_MMenuListsTaxExemptCompanyEmployer|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_141800" getEnabled="Ribbon_GetEnabled" label="Tax Exempt" showImage="false" tag="None|Call_MMenuListsTaxExemptCompanyEmployer|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_141802" getEnabled="Ribbon_GetEnabled" label="Tax Tables" showImage="false" tag="None|Open_frmTaxTable|None" onAction="Ribbon_ButtonAction" size="normal" />
 
