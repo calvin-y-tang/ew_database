@@ -225,6 +225,22 @@ UPDATE geninv SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT
 					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = geninv.CaseNbr
 		WHERE tblCD.ROWNUM = 1
 
+-- addendum 
+print 'Flag addendums'
+UPDATE tmp SET tmp.AddendumNeeded = 1
+  FROM ##tmp_GenericInvoices as tmp
+where CaseNbr in (
+select GI.MasterCaseNbr
+	from ##tmp_GenericInvoices as GI
+		inner join tblCase as C on (GI.MasterCaseNbr = C.CaseNbr) AND (C.DoctorCode = GI.DoctorID)
+	where (GI.ServiceType = 'Addendum')
+	  and ((GI.MasterCaseNbr is not null) and (GI.CaseNbr <> GI.MasterCaseNbr))
+	  and (GI.CaseStatus <> 9)
+)
+UPDATE gi SET gi.AddendumNeeded = 0
+  FROM ##tmp_GenericInvoices as gi
+WHERE gi.AddendumNeeded IS NULL
+
 -- return the main table
 print 'return final query results'
 SELECT * 

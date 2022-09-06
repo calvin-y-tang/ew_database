@@ -37,8 +37,14 @@ BEGIN
 <separator id="Spr_111300" />
 <button id="Btn_111400" getEnabled="Ribbon_GetEnabled" screentip="Transcription Tracker" label="Transcription" getImage="Ribbon_GetImage" tag="TransTracker|Open_frmTranscriptionTracker|File_Headphones.png" onAction="Ribbon_ButtonAction" size="large" />
 
-<button id="Btn_111500" getEnabled="Ribbon_GetEnabled" label="Confirmation" getImage="Ribbon_GetImage" tag="None|Call_ToolbarConfirmation|Mso_AutoDial" onAction="Ribbon_ButtonAction" size="large" />
+<splitButton id="Spb_111500" getEnabled="Ribbon_GetEnabled" tag="None|None|None" size="large">
+<menu id="Mnu_111510" getEnabled="Ribbon_GetEnabled" tag="None|None|None" itemSize="large">
+<button id="Btn_111511" getEnabled="Ribbon_GetEnabled" label="Confirmation" getImage="Ribbon_GetImage" tag="None|Call_ToolbarConfirmation|Mso_AutoDial" onAction="Ribbon_ButtonAction" />
 
+<button id="Btn_111512" getEnabled="Ribbon_GetEnabled" label="Do Not Call" getImage="Ribbon_GetImage" tag="None|Call_MMenuListsConfirmationDoNotCall|Mso_FilePermissionRestrictMenu" onAction="Ribbon_ButtonAction" />
+
+</menu>
+</splitButton>
 <button id="Btn_111600" getEnabled="Ribbon_GetEnabled" label="File Manager" getImage="Ribbon_GetImage" tag="FileManager|Open_frmFileManager|File_File Manager.png" onAction="Ribbon_ButtonAction" size="large" />
 
 <button id="Btn_Scan" getEnabled="Ribbon_GetEnabled" screentip="Scan" label="Scanning" getImage="Ribbon_GetImage" tag="DefaultDisabled|Call_OpenCaseSearchForScanning|File_scanner.png" onAction="Ribbon_ButtonAction" size="large" />
@@ -193,6 +199,8 @@ BEGIN
 <group id="Grp_123000" getVisible="Ribbon_GetVisible" label="Document/Report">
 <button id="Btn_123100" getEnabled="Ribbon_GetEnabled" label="Document Maintenance" getImage="Ribbon_GetImage" tag="None|Open_FrmDocumentMaintenance|Mso_FileSaveAsWordDocx" onAction="Ribbon_ButtonAction" size="large" />
 
+<button id="Btn_123150" getEnabled="Ribbon_GetEnabled" label="Dynamic Bookmark" showImage="false" tag="None|Open_frmBusRuleDynamicBookmark|None" onAction="Ribbon_ButtonAction" size="normal" />
+
 <button id="Btn_123200" getEnabled="Ribbon_GetEnabled" label="Med Record Action" showImage="false" tag="None|Open_frmRecordActions|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_123300" getEnabled="Ribbon_GetEnabled" label="Med Record Status" showImage="false" tag="None|Open_frmRecordStatus|None" onAction="Ribbon_ButtonAction" size="normal" />
@@ -251,7 +259,9 @@ BEGIN
 
 <button id="Btn_141700" getEnabled="Ribbon_GetEnabled" label="Quote Rule" showImage="false" tag="None|Call_MMenuListsAccountingQuoteRule|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_141800" getEnabled="Ribbon_GetEnabled" label="Tax Tables" showImage="false" tag="None|Open_frmTaxTable|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_141800" getEnabled="Ribbon_GetEnabled" label="Tax Exempt" showImage="false" tag="None|Call_MMenuListsTaxExemptCompanyEmployer|None" onAction="Ribbon_ButtonAction" size="normal" />
+
+<button id="Btn_141802" getEnabled="Ribbon_GetEnabled" label="Tax Tables" showImage="false" tag="None|Open_frmTaxTable|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_141900" getEnabled="Ribbon_GetEnabled" label="Terms" showImage="false" tag="None|Open_frmTerms|None" onAction="Ribbon_ButtonAction" size="normal" />
 
