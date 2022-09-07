@@ -23,10 +23,3 @@ VALUES (144, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
        (144, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL),
        (144, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 6, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL)
 GO
--- update existing business rule to require DateMedsSentToDr on case save
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES (130, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 2, NULL, 'txtDateMedsSentToDr', 'Date Meds To Dr is required.', NULL, NULL, NULL, 0, NULL),
-       (130, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 3, NULL, 'txtDateMedsSentToDr', 'Date Meds To Dr is required.', NULL, NULL, NULL, 0, NULL),
-       (130, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 4, NULL, 'txtDateMedsSentToDr', 'Date Meds To Dr is required.', NULL, NULL, NULL, 0, NULL),
-       (130, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 5, NULL, 'txtDateMedsSentToDr', 'Date Meds To Dr is required.', NULL, NULL, NULL, 0, NULL),
-       (130, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 6, NULL, 'txtDateMedsSentToDr', 'Date Meds To Dr is required.', NULL, NULL, NULL, 0, NULL)
