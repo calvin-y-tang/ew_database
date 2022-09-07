@@ -285,6 +285,8 @@ CREATE TABLE [dbo].[tblCase] (
     [TimeReviewingRecords]             VARCHAR (20)     NULL,
     [Tags]                             VARCHAR (1000)   NULL,
     [TATExamDateToNotifyShowNoShow]    INT              NULL,
+    [DateMedsSentToDr]                 DATETIME         NULL,
+    [TATDateMedsSentToDrToRptSentDate] INT              NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
