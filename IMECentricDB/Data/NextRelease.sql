@@ -23,3 +23,14 @@ VALUES (144, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
        (144, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL),
        (144, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, 6, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL)
 GO
+
+-- IMEC-13009 update some Sentry document gen/dist business rules.
+UPDATE tblBusinessRuleCondition 
+   SET ewbuslineid = 3, 
+       EWServiceTypeID = 1
+ WHERE BusinessRuleID IN (109,110) 
+   AND EntityType = 'PC' 
+   AND EntityID = 46
+   AND Param2 = 'WCClaimTechStPtEast@sentry.com'
+GO
+
