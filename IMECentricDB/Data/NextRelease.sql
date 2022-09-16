@@ -34,3 +34,16 @@ UPDATE tblBusinessRuleCondition
    AND Param2 = 'WCClaimTechStPtEast@sentry.com'
 GO
 
+-- IMEC-12998 add DRType code list and patch existing tblDoctor data
+INSERT INTO tblCodes(Category, SubCategory, Value)
+VALUES('DRType_CRN', 'Contractor/Professional', 100),
+      ('DRType_CRN', 'Employee', 50),
+      ('DRType_IMEC', 'Fake', 0),
+      ('DRType_IMEC', 'Other', 10)
+GO
+UPDATE tblDoctor 
+   SET DRType = IIF(ISNULL(EWParentDocID,0) = 0, 10, 100)
+WHERE OPType = 'DR'
+GO
+
+
