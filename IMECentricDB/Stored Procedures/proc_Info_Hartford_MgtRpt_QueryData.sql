@@ -69,7 +69,7 @@ SELECT
 	c.DoctorReason,
 	ISNULL(ca.ApptTime, c.ApptTime) as "DateRescheduled",
 	ISNULL(ca.ApptTime, c.ApptTime) as "SchedulingComplete",
-	C.TATAwaitingScheduling as "RescheduledSchedulingTAT",
+	ISNULL(C.TATAwaitingScheduling, 0) / 8 as "RescheduledSchedulingTAT",
 	C.TATReport as "ReportDelvred",
 	isnull([PeerReview],0) as DiagViewFee,
 	isnull([AddReview], 0) as ExcessRecFee,
