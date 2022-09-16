@@ -46,4 +46,14 @@ UPDATE tblDoctor
 WHERE OPType = 'DR'
 GO
 
-
+-- IMEC-13010 - update dynamic bookmark business rule details (add ParentEmployer)
+UPDATE tblBusinessRule
+   SET Param4Desc = 'ParentEmployerID'
+ WHERE BusinessRuleID = 162
+GO
+UPDATE tblBusinessRuleCondition
+   SET Param2 = ISNULL(Param2, 'False'),
+       Param3 = ISNULL(Param3, 'False'),
+       Param4 = ISNULL(Param4, '-1')
+where BusinessRuleID = 162
+GO
