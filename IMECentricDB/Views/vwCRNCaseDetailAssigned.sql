@@ -1,8 +1,4 @@
-﻿/*
-	this view is called by a CRN nightly process	
-*/
-
-CREATE VIEW [dbo].[vwCRNCaseDetailAssigned]
+﻿CREATE VIEW vwCRNCaseDetailAssigned
 AS 
 SELECT  d.DoctorCode AS ReviewerID, 
 		ca.CaseNbr AS CaseID, 
