@@ -15,6 +15,7 @@ SELECT DSR.PrimaryKey,
        BTS.StartTime,
 
        DR.LastName + ', ' + ISNULL(DR.FirstName, '') AS DoctorName,
+       DR.LastName + IIF(ISNULL(DR.Suffix, '') = '', '', ' (' + DR.Suffix + ')')  + ', ' + ISNULL(DR.FirstName, '') AS DoctorNameSuffix,
        DR.Prepaid,
        DR.Status,
        DR.Credentials,
