@@ -41,11 +41,18 @@ AS
                      ELSE ISNULL(C.DoctorName, '')
                    END
             END AS DoctorName ,
+
             Case AT.DrOpType
                 WHEN 'OP' THEN ATDr.CompanyName
 				ELSE ISNULL(ATDr.lastName, '') + ', '
                      + ISNULL(ATDr.firstName, '')
             END AS DrOpName ,
+
+            Case AT.DrOpType
+                WHEN 'OP' THEN ATDr.CompanyName
+				ELSE ATDr.LastName + IIF(ISNULL(ATDr.Suffix, '') = '', '', ' (' + ATDr.Suffix + ')')  
+                + ', ' + ISNULL(ATDr.FirstName, '')
+            END AS DrOpNameSuffix ,
 
             COM.CompanyCode ,
             BCOM.CompanyCode AS BillCompanyCode ,
