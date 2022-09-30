@@ -17,6 +17,7 @@
 	[MonetaryUnit]    INT			NULL,
 	[User]            VARCHAR(25)	NULL,
 	[Office]		  VARCHAR(15)	NULL,
+	[Status]		  INT			NULL DEFAULT ((0)),
     CONSTRAINT [PK_GPCompanyPrepay] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 GO

@@ -120,6 +120,7 @@
 	[MeetsLookbackThreshold]       BIT            NULL,
 	[RetirementDate]               DATETIME       NULL,
     [DRType]                       INT            NULL,
+    [Suffix]                       VARCHAR(128)   NULL,
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 
