@@ -16,6 +16,7 @@ CREATE TABLE [dbo].[tblSpecialty] (
     [NUCCTaxonomyCode]   VARCHAR (16) NULL,
     [PrimarySpecialty]   VARCHAR (50) NULL,
     [SubSpecialty]       VARCHAR (50) NULL,
+    [ControlledByIMEC]   BIT          CONSTRAINT [DF_tblSpecialty_ControlledByIMEC] DEFAULT (0) NULL, 
     CONSTRAINT [PK_tblSpecialty] PRIMARY KEY CLUSTERED ([EWSpecialtyID] ASC)
 );
 
