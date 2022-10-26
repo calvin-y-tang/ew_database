@@ -1,8 +1,9 @@
 ﻿CREATE VIEW vwClientDefaults
 AS
-   SELECT  CL.marketercode AS ClientMarketer ,
+   SELECT   CL.marketercode AS ClientMarketer ,
+            COM.CompanyCode, 
             COM.IntName ,
-		  ISNULL(COM.EWCompanyID, 0) AS EWCompanyID, 
+		    ISNULL(COM.EWCompanyID, 0) AS EWCompanyID, 
             CL.ReportPhone ,
             CL.Priority ,
             CL.ClientCode ,
@@ -45,9 +46,9 @@ AS
             CLO.OfficeCode AS DefOfficeCode ,
             ISNULL(CL.marketercode, COM.marketercode) AS marketer ,
             COM.Jurisdiction ,
-		  CL.CreateCvrLtr|COM.CreateCvrLtr As CreateCvrLtr, 
-		  ISNULL(PC.RequireInOutNetwork, 0) AS RequireInOutNetwork,
-			COM.ParentCompanyID,
+		    CL.CreateCvrLtr|COM.CreateCvrLtr As CreateCvrLtr, 
+		    ISNULL(PC.RequireInOutNetwork, 0) AS RequireInOutNetwork,
+            COM.ParentCompanyID,
 			PC.Name As EWParentCompanyName,
 			PC.EWNetworkID
     FROM    tblClient AS CL

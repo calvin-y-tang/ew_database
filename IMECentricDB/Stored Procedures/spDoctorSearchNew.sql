@@ -30,6 +30,9 @@
 	@ClientCode AS INT = NULL,	
 	@CompanyCode AS INT = NULL,
 	@ParentCompanyID AS INT = NULL,
+	@ThirdPartyParentCompanyID AS INT = NULL, 
+	@BillClientCompanyCode AS INT = NULL,
+	@BillClientCode AS INT = NULL, 
 	@EWBusLineID AS INT = NULL,
 	@EWServiceTypeID AS INT = NULL,
 	
@@ -172,6 +175,13 @@ FROM
 	IF @ClientCode IS NOT NULL
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CL'' AND Code=@_ClientCode)'
 
+	IF @ThirdPartyParentCompanyID IS NOT NULL
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''PC'' AND Code=@_ThirdPartyParentCompanyID)'
+	IF @BillClientCompanyCode IS NOT NULL
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CO'' AND Code=@_BillClientCompanyCode)'
+	IF @BillClientCode IS NOT NULL
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CL'' AND Code=@_BillClientCode)'
+
 	IF @LocationCode IS NOT NULL
 		SET @strWhere = @strWhere + ' AND @_LocationCode = L.LocationCode'
 	IF ISNULL(@City,'')<>''
@@ -213,6 +223,9 @@ FROM
 			@_ParentCompanyID INT,	
 			@_CompanyCode INT,		
 			@_ClientCode INT,			
+			@_ThirdPartyParentCompanyID INT,	
+			@_BillClientCompanyCode INT,		
+			@_BillClientCode INT,			
 			@_Proximity INT,
 			@_FirstName VARCHAR(50),
 			@_LastName VARCHAR(50)
@@ -241,6 +254,9 @@ FROM
 			@_ParentCompanyID = @ParentCompanyID,
 			@_CompanyCode = @CompanyCode,
 			@_ClientCode = @ClientCode,
+			@_ThirdPartyParentCompanyID = @ThirdPartyParentCompanyID,
+			@_BillClientCompanyCode = @BillClientCompanyCode,
+			@_BillClientCode = @BillClientCode,
 			@_Proximity = @Proximity,
 			@_FirstName = @FirstName,
 			@_LastName = @LastName
