@@ -15,7 +15,6 @@
     [Priority]               INT          NULL,
     [Responsible]            VARCHAR (50) NULL,
     [NextAction]             VARCHAR (50) NULL,
-    [CalculateForExam]       INT          NULL, 
     CONSTRAINT [PK_tblSLARuleDetail] PRIMARY KEY CLUSTERED ([SLARuleDetailID] ASC)
 );
 
