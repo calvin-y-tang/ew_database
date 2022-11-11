@@ -1148,6 +1148,7 @@
     <Build Include="Tables\tblTaxExemptCompanyEmployer.sql" />
     <Build Include="Functions\fnGetRibbonXML.sql" />
     <Build Include="Views\vwCRNCaseDetailAssigned.sql" />
+    <Build Include="Tables\tblCCAddressEntity.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
