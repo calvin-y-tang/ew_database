@@ -52,7 +52,7 @@ CREATE TABLE [dbo].[tblCase] (
     [ServiceCode]                      INT              NULL,
     [IssueCode]                        INT              NULL,
     [DoctorCode]                       INT              NULL,
-    [WCBNbr]                           VARCHAR (50)     NULL,
+    [WCBNbr]                           VARCHAR (110)    NULL,
     [SpecialInstructions]              TEXT             NULL,
     [USDVarChar1]                      VARCHAR (50)     NULL,
     [USDVarChar2]                      VARCHAR (50)     NULL,
