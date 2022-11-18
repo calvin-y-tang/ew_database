@@ -1,27 +1,149 @@
 -- Sprint 98
 
 -- IMEC-13207 - new biz rules for Sentry WC Peer Reviews and WC Record Reviews
--- Wokers Comp Peer Review
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-     SELECT BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, GETDATE(), UserIDAdded, GETDATE(), UserIDEdited, OfficeCode, EWBusLineID, 2, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6
-       FROM tblBusinessRuleCondition 
-       WHERE BusinessRuleID IN (109,110) 
-         AND EntityType = 'PC' 
-         AND EntityID = 46
-         AND EWBusLineID = 3 
-         AND EWServiceTypeID = 1
-         AND Param2 = 'WCClaimTechStPtEast@sentry.com'
+-- Generate Documents
+DELETE 
+  FROM tblBusinessRuleCondition 
+ WHERE BusinessRuleID = 109
+   AND EntityType = 'PC' 
+   AND EntityID = 46
 GO
--- Workers Comp Record Review
 INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-     SELECT BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, GETDATE(), UserIDAdded, GETDATE(), UserIDEdited, OfficeCode, EWBusLineID, 3, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6
-       FROM tblBusinessRuleCondition 
-       WHERE BusinessRuleID IN (109,110) 
-         AND EntityType = 'PC' 
-         AND EntityID = 46
-         AND EWBusLineID = 3 
-         AND EWServiceTypeID = 1
-         AND Param2 = 'WCClaimTechStPtEast@sentry.com'
+VALUES(109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (109,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL)
+GO
+-- Distribute Documents
+DELETE 
+  FROM tblBusinessRuleCondition 
+ WHERE BusinessRuleID = 110
+   AND EntityType = 'PC' 
+   AND EntityID = 46
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES(110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (110,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL)
+GO
+-- Distribute Reports
+DELETE 
+  FROM tblBusinessRuleCondition 
+ WHERE BusinessRuleID = 111
+   AND EntityType = 'PC' 
+   AND EntityID = 46
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES(111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,1,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,2,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Referral Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Appointment Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Quote Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Fee Approval Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'WCClaimTechStPtEast@sentry.com','','Medical Records Request',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','IME Cite Letter',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Appointment Delay',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Reschedule Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Attendance Confirmation',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','No Show Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','Cancellation Notice',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'ClaimsMail@sentry.com','','IME Report Cover Sheet',NULL,0,NULL),
+    (111,'PC',46,2,1,GETDATE(),'Admin',GETDATE(),'Admin',NULL,3,3,NULL,1,'SentryMbrMgmt@sentry.com','','Invoice Status Inquiries',NULL,0,NULL)
 GO
 
 -- IMEC-13184 business rules for allstate client validation prior to scheduling
