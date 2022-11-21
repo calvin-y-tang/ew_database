@@ -36,7 +36,7 @@
 	@issuecode int = NULL,
 	@doctorcode int = NULL,
 	@DoctorName varchar(100) = NULL,
-	@WCBNbr varchar(50) = NULL,
+	@WCBNbr varchar(110) = NULL,
 	@specialinstructions text = NULL,
 	@sreqspecialty varchar(50) = NULL,
 	@doctorspecialty varchar(50) = NULL,
