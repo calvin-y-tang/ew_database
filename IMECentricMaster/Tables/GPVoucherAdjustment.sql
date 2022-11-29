@@ -20,6 +20,12 @@
     [ReasonCode]       INT          NULL,
     [Comment]          VARCHAR (30) NULL,
     [Employer]         VARCHAR (70) NULL,
+    [DocumentTaxCode1] VARCHAR (10) NULL,
+	[DocumentTaxCode2] VARCHAR (10) NULL,
+	[DocumentTaxCode3] VARCHAR (10) NULL,
+	[DocumentTaxAmount1] MONEY NULL,
+	[DocumentTaxAmount2] MONEY NULL,
+	[DocumentTaxAmount3] MONEY NULL
     CONSTRAINT [PK_GPVoucherAdjustment] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
