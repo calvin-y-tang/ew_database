@@ -1,5 +1,8 @@
 ﻿-- Sprint 98
 
+USE [EWDataRepository]
+GO
+
 -- IMEC-13215 - new source record for Ducore
 INSERT INTO EWDataRepository.dbo.Source
 (
@@ -15,6 +18,21 @@ VALUES
     91, -- EWFacilityID - int
     NULL  -- Contact_Email - varchar(200)
 )
+GO
+
+
+-- IMEC-13215 - new fields for the GPVoucherAdjustment table to support Tax Codes 1,2,3 and Tax Amount 1,2,3
+USE [IMECentricMaster]
+GO
+
+ALTER TABLE [dbo].[GPVoucherAdjustment]
+Add
+	[DocumentTaxCode1] [VARCHAR](10) NULL,
+	[DocumentTaxCode2] [VARCHAR](10) NULL,
+	[DocumentTaxCode3] [VARCHAR](10) NULL,
+	[DocumentTaxAmount1] [MONEY] NULL,
+	[DocumentTaxAmount2] [MONEY] NULL,
+	[DocumentTaxAmount3] [MONEY] NULL
 GO
 
 
