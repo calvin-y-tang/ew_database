@@ -1,19 +1,18 @@
--- Sprint 99
+-- Sprint 100
 
--- IMEC-13222 - modify business rule to allow for EWFacility matching and override
+-- IMEC-31247 - Guard Rules for sending email to "Other" 
+-- Update existing rule for Amtrust
 UPDATE tblBusinessRule
-   SET Param3Desc = 'EWFacIDNormTaxes'
- WHERE BusinessRuleID = 155
- GO
-UPDATE tblBusinessRuleCondition
-   SET Param3 = ';5;'
- WHERE BusinessRuleID = 155
- GO
-
- -- IMEC-13241 - add travelers business rule to allow Doctor Reason to be filtered to defined items
-INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-VALUES (147, 'SetDoctorReasonChoices', 'Appointment', 'Set list of available choices for Doctor Reason', 1, 1101, 0, 'AllowedSelections', NULL, NULL, NULL, NULL, 0, NULL)
+   SET Param2Desc = 'ForQuoteDocument'
+ WHERE BusinessRuleID = 160
 GO
+UPDATE tblBusinessRuleCondition
+   SET Param2 = 'YES'
+ WHERE BusinessRuleID = 160
+GO
+-- create new rules for Guard Insurance
 INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES (147, 'PC', 52, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, '1,4', NULL, NULL, NULL, NULL, 0, NULL)
+VALUES (10, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'guardclaimsteam@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
+       (11, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'guardclaimsteam@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
+       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'guardclaimsteam@guard.com', NULL, NULL, NULL, NULL, 0, NULL)
 GO
