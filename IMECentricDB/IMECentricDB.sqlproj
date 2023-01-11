@@ -1149,6 +1149,9 @@
     <Build Include="Functions\fnGetRibbonXML.sql" />
     <Build Include="Views\vwCRNCaseDetailAssigned.sql" />
     <Build Include="Tables\tblCCAddressEntity.sql" />
+    <Build Include="Views\vwAcctRegister.sql" />
+    <Build Include="Views\vwApptLog2.sql" />
+    <Build Include="Views\vwApptLogByAppt2.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
