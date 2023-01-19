@@ -287,7 +287,7 @@ BEGIN
 </tab>
 <tab id="Tab_150000" getVisible="Ribbon_GetVisible" label="Report">
 <group id="Grp_151000" getVisible="Ribbon_GetVisible" label="Appointment">
-<button id="Btn_151100" getEnabled="Ribbon_GetEnabled" label="Appointment Log" showImage="false" tag="None|Open_FrmApptLogParams|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_151100" getEnabled="Ribbon_GetEnabled" label="Appointment Log" showImage="false" tag="None|Open_FrmApptLogParams2|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_151200" getEnabled="Ribbon_GetEnabled" screentip="Appointments on Hold Report" label="Appointments on Hold" showImage="false" tag="None|Open_frmApptOnHoldParams|None" onAction="Ribbon_ButtonAction" size="normal" />
 

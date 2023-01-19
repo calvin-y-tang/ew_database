@@ -44,7 +44,10 @@ SELECT
 	C.ClaimNbr as "ClaimNumber",
 	E.LastName as "ClaimantLastName",
 	E.FirstName as "ClaimantFirstName",
-	ISNULL(AH.ServiceState, C.Jurisdiction) as "ServiceState",
+	CASE 
+		WHEN FZ.StateCode = 'NY' THEN IIF(FZ.Name = 'New York (Downstate)', 'NY-downstate', 'NY-upstate')
+		ELSE ISNULL(AH.ServiceState, C.Jurisdiction) 
+	END as "ServiceState",
 	s.EWServiceTypeID as "ServiceTypeID",
 	S.Description as "ServiceType",	
 	EWBL.Name as "CoverageType",
@@ -52,7 +55,7 @@ SELECT
 	C.DateOfInjury as "DOI",
 	ISNULL(ca.datereceived, c.DateReceived) as "ReferralDate",
 	ISNULL(ca.datereceived, c.DateReceived) as "DateReceived",
-	ISNULL(ca.datereceived, c.DateReceived) as "DateScheduled",
+	ca.datereceived as "DateScheduled",
 	ISNULL(ca.ApptTime, c.ApptTime) as "ExamDate",
 	ISNULL(c.RptSentDate, c.RptFinalizedDate) as "ReportDelivered",
 	NULL as "TotalDays",
@@ -84,6 +87,7 @@ SELECT
 	ft.[No Show],
 	ft.Other as OtherFee,
 	CONVERT(VARCHAR(12), 'N/A') as MedRecPages, 
+	CONVERT(VARCHAR(32), 
 	case APS.ApptStatusID
 		 when 101 then 'No Show'
 	     when 102 then 'Unable to Examine'
@@ -99,13 +103,27 @@ SELECT
 			     when 3 then 'MRR Complete'
 			end	
 		 else ''
-	end as ReferralStatus,
+	end) as ReferralStatus,
 	AHAS.Name as InvApptStatus,
 	CONVERT(MONEY, NULL) as InitialQuoteAmount,
 	CASE 
 		WHEN (AH.DrOpType = 'DR') THEN AH.DrOpCode		
 		ELSE NULL
-	END as DoctorCode
+	END as DoctorCode,
+	c.MasterCaseNbr,
+	c.DateReceived as CaseAdded,
+	CAST(NULL as datetime) as FirstScheduled,
+	CAST(NULL as datetime) as LastScheduled,
+	CAST(NULL as datetime) as tmpFirstMedsReceived,
+	CAST(NULL as datetime) as FirstMedsReceived,
+	CAST(NULL as datetime) as FirstSharedMedsReceived,
+	CAST(NULL as datetime) as tmpLastMedsReceived,
+	CAST(NULL as datetime) as LastMedsReceived,
+	CAST(NULL as datetime) as LastSharedMedsReceived,
+	CAST(NULL as datetime) as LastMedIndexFinalDate,
+	CAST(NULL as int) as MedIndexPages,
+	CAST(NULL as int) as Pages,
+	CAST(NULL as int) as SharedPages
 
 INTO ##tmp_HartfordInvoices
 FROM tblAcctHeader as AH
@@ -124,6 +142,7 @@ FROM tblAcctHeader as AH
 	left outer join tblEWParentCompany as EWPC on CO.ParentCompanyID = EWPC.ParentCompanyID
 	left outer join tblEWFacilityGroupSummary as EFGS on AH.EWFacilityID = EFGS.EWFacilityID
 	left outer join tblCaseAppt as AHCA on AH.CaseApptID = AHCA.CaseApptID
+	left outer join tblEWFeeZone as FZ on C.EWFeeZoneID = FZ.EWFeeZoneID
 	left outer join tblApptStatus as AHAS on AHCA.ApptStatusID = AHAS.ApptStatusID
 	left outer join tblCaseAppt as CA on ISNULL(AH.CaseApptID, C.CaseApptID) = CA.CaseApptID
 	left outer join tblApptStatus as APS on ISNULL(AH.ApptStatusID, C.ApptStatusID) = APS.ApptStatusID	
