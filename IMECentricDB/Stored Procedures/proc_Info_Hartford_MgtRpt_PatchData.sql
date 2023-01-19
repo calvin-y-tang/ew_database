@@ -36,6 +36,7 @@ UPDATE hi SET hi.ServiceType = CASE
 								WHEN hi.ServiceTypeID = 7 THEN 'Other'
 								WHEN hi.ServiceTypeID = 8 THEN 'Addendum - IME'
 								WHEN hi.ServiceTypeID = 9 THEN 'Other'
+								WHEN hi.ServiceTypeID = 10 THEN 'IME'
 								ELSE 'Other'
 							  END
 FROM ##tmp_HartfordInvoices as hi
@@ -76,7 +77,7 @@ Print 'Fixing up Network and Juris TAT'
 UPDATE hi SET hi.InOutNetwork = CASE 
 									WHEN hi.InOutNetwork = '1' THEN 'Out'
 									WHEN hi.InOutNetwork = '2' THEN 'In'
-									ELSE ''
+									ELSE 'N/A'
 								END,
 		      hi.JurisTAT = CASE 
 								WHEN hi.ServiceVariance > 0 THEN 'No'
@@ -134,15 +135,15 @@ UPDATE hi SET PrimaryDriver = CASE
 FROM ##tmp_HartfordInvoices as hi
 
 -- get medrec page counts
-print 'Get Medical Page Counts'
-UPDATE hi SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT(VARCHAR(12), tblCD.Pages))
-   FROM ##tmp_HartfordInvoices as hi
-		INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY CD.CaseNbr ORDER BY CD.SeqNo DESC) as ROWNUM,
-					CD.CaseNbr,
-					CD.Pages
-					FROM tblCaseDocuments as CD
-					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = hi.CaseNbr
-		WHERE tblCD.ROWNUM = 1
+--print 'Get Medical Page Counts'
+--UPDATE hi SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT(VARCHAR(12), tblCD.Pages))
+--   FROM ##tmp_HartfordInvoices as hi
+--		INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY CD.CaseNbr ORDER BY CD.SeqNo DESC) as ROWNUM,
+--					CD.CaseNbr,
+--					CD.Pages
+--					FROM tblCaseDocuments as CD
+--					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = hi.CaseNbr
+--		WHERE tblCD.ROWNUM = 1
 
 
 -- update the main table with the most recent quote information
@@ -169,6 +170,113 @@ UPDATE hi SET hi.InitialQuoteAmount = CASE (ISNULL(hi.InvApptStatus, hi.ApptStat
 	              FROM tblAcctQuote as AQ 				      
 			      WHERE AQ.QuoteType = 'IN') as tbl ON tbl.CaseNbr = hi.CaseNbr AND tbl.DoctorCode = hi.DoctorCode
 				  WHERE tbl.ROWNUM = 1
+
+-- 
+-- Determine the meds received date
+--
+
+--get date first scheduled
+Update T
+set t.FirstScheduled = (select top 1 ca.dateadded from tblcaseappt ca where ca.casenbr = t.casenbr order by ca.caseapptid) 
+from ##tmp_HartfordInvoices as T
+
+--get date last scheduled
+Update T
+set t.LastScheduled = (select top 1 ca.dateadded from tblcaseappt ca where ca.casenbr = t.casenbr order by ca.caseapptid desc) 
+from ##tmp_HartfordInvoices as T
+
+--Determine date of last MedIndexFinal Med Rec File
+update T
+set t.LastMedIndexFinalDate = (select top 1 cd.dateadded 
+								 from tblcasedocuments cd with (NOLOCK) 
+								where cd.casenbr = t.casenbr  
+								  and cd.description like '%MedIndex%' 
+								order by cd.dateadded desc),
+t.MedIndexpages = (select top 1 cd.pages 
+				     from tblcasedocuments cd with (NOLOCK) 
+					where cd.casenbr = t.casenbr   
+					  and cd.description like '%MedIndex%' 
+					 order by cd.dateadded desc)
+from ##tmp_HartfordInvoices as T
+
+--Determine the last Medical Record file Added to the case that is not called Referral File and is not added by EWIS (DPS)
+update T
+set t.LastMedsReceived = (select top 1 cd.dateadded 
+                            from tblcasedocuments cd with (NOLOCK) 
+						   where cd.casenbr = t.casenbr 
+						     and cd.CaseDocTypeID in (7,8,9,10,11) 
+							 and cd.useridadded <> 'EWIS' 
+							 and cd.[description] <> 'Referral File' 
+						   order by cd.dateadded desc),
+t.pages = (select sum(cd.pages) 
+             from tblcasedocuments cd with (NOLOCK) 
+            where cd.casenbr = t.casenbr 
+			  and cd.CaseDocTypeID in (7,8,9,10,11) 
+			  and cd.useridadded <> 'EWIS' 
+			  and cd.[description] <> 'Referral File'  
+            group by cd.casenbr)
+from ##tmp_HartfordInvoices as T
+
+--Determine the last shared medical record file added to the case that is not called Referral File and is not added by EWIS (DPS)
+update T
+set t.LastSharedMedsReceived = (select top 1 cd.dateadded 
+                                  from tblcasedocuments cd with (NOLOCK) 
+                                 where cd.mastercasenbr = t.Mastercasenbr 
+								   and cd.shareddoc = 1 
+								   and cd.CaseDocTypeID in (7,8,9,10,11) 
+								   and cd.useridadded <> 'EWIS' 
+								   and cd.[description] <> 'Referral File'  
+							  order by cd.dateadded Desc),
+t.sharedpages =  (select sum(cd.pages) 
+					from tblcasedocuments cd with (NOLOCK) 
+				   where cd.mastercasenbr = t.Mastercasenbr 
+				     and cd.shareddoc = 1 
+					 and cd.CaseDocTypeID in (7,8,9,10,11) 
+					 and cd.useridadded <> 'EWIS' 
+					 and cd.[description] <> 'Referral File'  
+			    group by cd.mastercasenbr)
+from ##tmp_HartfordInvoices as T
+
+--If No medical records exist on the case but shared medical records exist, use the date of the last shared medical records
+Update T
+set t.LastMedsReceived = case when t.Lastmedsreceived is null and t.LastSharedMedsReceived is not null then t.LastSharedMedsReceived else t.LastMedsReceived end
+from ##tmp_HartfordInvoices as T
+
+--If no medical record files exist but there is a MedIndexFinalDate, use that date for LastMedsReceived
+Update T
+set t.LastMedsReceived = case when t.Lastmedsreceived is null and t.LastMedIndexFinalDate is not null then t.LastMedIndexFinalDate else t.lastMedsreceived end
+from ##tmp_HartfordInvoices as T
+
+--If the LastMedsReceived date is before the current case was added, then make the LastMedsReceived = case date added.  This is caused mostly by shared med rec files from other cases.
+Update T
+set t.LastMedsReceived = case when t.Lastmedsreceived  < t.caseadded then t.caseadded else t.Lastmedsreceived end
+from ##tmp_HartfordInvoices as T
+
+-- patch date scheduled 
+Update t
+  set t.DateScheduled = case 
+							when t.ServiceType = 'MRR' then t.LastMedsReceived 
+							else ISNULL(t.DateScheduled, t.FirstScheduled) 
+						end
+from ##tmp_HartfordInvoices as t
+
+-- patch data rescheduled to null if only 1 appt
+update t
+	set t.DateRescheduled = IIF(t.LastScheduled = t.FirstScheduled, NULL, t.DateRescheduled)
+from ##tmp_HartfordInvoices as t
+
+-- patch referral status
+update t
+	set t.ReferralStatus =  case
+								when ServiceTypeID = 2 then 'Addendum Completed'
+								when ServiceTypeID = 3 then 'Addendum Completed'
+								when ServiceTypeID = 8 then 'Addendum Completed'
+								when ServiceTypeID = 4 then 'MRR Completed'
+								when ServiceTypeID = 5 then 'MRR Completed'
+								when ServiceTypeID = 6 then 'MRR Completed'
+								else t.ReferralStatus
+							end
+from ##tmp_HartfordInvoices as t
 
 -- return file result set
 select * 
