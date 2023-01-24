@@ -23,6 +23,7 @@ end
 else
 begin
  select @Month2 = @Month + 1
+ select @Year2 = @Year
 end
 
 set @dateMonthYear = CONVERT(varchar(4), @Year) + '/' + CONVERT(varchar(2), @Month) +'/01'
