@@ -2,10 +2,15 @@
 CREATE VIEW vwApptLogByAppt2
 AS
     SELECT
+        tblCase.CaseNbr,
+        '' AS DateAdded,
+        tblCase.DateAdded AS CaseDateAdded,
+        tblCase.ApptTime,
         tblCase.ApptDate,
         tblCaseType.ShortDesc AS [Case Type],
         tblCase.DoctorName AS Doctor,
         tblClient.FirstName+' '+tblClient.LastName AS Client,
+        ISNULL(tblClient.Phone1, '')+' '+ISNULL(tblClient.Phone1Ext, '') AS clientphone,
         tblCompany.IntName AS Company,
         tblCase.DoctorLocation,
         tblLocation.Location,
@@ -17,24 +22,15 @@ AS
         tblDoctor.DoctorCode,
         tblCase.ClientCode,
         tblCompany.CompanyCode,
-        '' AS DateAdded,
-        tblCase.DateAdded AS CaseDateAdded,
-        ISNULL(tblClient.Phone1, '')+' '+ISNULL(tblClient.Phone1Ext, '') AS clientphone,
-        tblCase.ApptTime,
-        tblCase.CaseNbr,
         tblCase.Priority,
         tblCase.CommitDate,
-        tblCase.Status,
         tblCase.ServiceCode,
         tblServices.ShortDesc,
         tblSpecialty.Description AS Specialty,
         tblCase.OfficeCode,
         tblOffice.Description AS OfficeName,
-        GETDATE() AS today,
         tblCase.QARep AS QARepcode,
-        tblCase.HearingDate,
         tblCase.CaseType,
-        tblCase.PanelNbr,
         tblCase.MasterSubCase,
         (
          SELECT TOP 1
@@ -48,12 +44,10 @@ AS
             tblCaseAppt.CaseApptID DESC
         ) AS PreviousApptTime,
         tblDoctor.ProvTypeCode,
-        tblDoctor.Phone AS DoctorPhone,
-        tblDoctor.LastName+', '+tblDoctor.FirstName AS DoctorSortName,
+        tblCase.ExtCaseNbr,
+        tblCase.HearingDate,
         tblCase.ExternalDueDate,
-        tblCase.InternalDueDate,
-        tblCase.ForecastDate,
-        tblCase.ExtCaseNbr
+        tblCase.InternalDueDate
     FROM
         tblCase
     INNER JOIN tblClient ON tblCase.ClientCode=tblClient.ClientCode
@@ -90,7 +84,6 @@ AS
         tblCase.CaseNbr,
         tblCase.Priority,
         tblCase.CommitDate,
-        tblCase.Status,
         tblCase.ServiceCode,
         tblServices.ShortDesc,
         tblSpecialty.Description,
@@ -99,13 +92,12 @@ AS
         tblCase.QARep,
         tblCase.HearingDate,
         tblCase.CaseType,
-        tblCase.PanelNbr,
         tblCase.MasterSubCase,
         tblDoctor.ProvTypeCode,
         tblDoctor.Phone,
         tblDoctor.LastName+', '+tblDoctor.FirstName,
         tblCase.ExternalDueDate,
         tblCase.InternalDueDate,
-        tblCase.ForecastDate,
         tblCase.CaseApptID,
         tblCase.ExtCaseNbr
+

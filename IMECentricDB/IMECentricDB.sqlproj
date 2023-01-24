@@ -1152,6 +1152,7 @@
     <Build Include="Views\vwAcctRegister.sql" />
     <Build Include="Views\vwApptLog2.sql" />
     <Build Include="Views\vwApptLogByAppt2.sql" />
+    <Build Include="Stored Procedures\spRptFlashReport 2.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
