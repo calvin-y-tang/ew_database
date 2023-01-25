@@ -275,7 +275,7 @@ BEGIN
 
 </group>
 <group id="Grp_143000" getVisible="Ribbon_GetVisible" label="Report/Export">
-<button id="Btn_143300" getEnabled="Ribbon_GetEnabled" label="Flash Report" showImage="false" tag="None|Open_frmFlashReportParams2|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_143300" getEnabled="Ribbon_GetEnabled" label="Flash Report" showImage="false" tag="None|Open_frmFlashReportParams|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 <button id="Btn_143400" getEnabled="Ribbon_GetEnabled" label="Invoice Register" showImage="false" tag="None|Open_FrmInvoiceRegister|None" onAction="Ribbon_ButtonAction" size="normal" />
 
