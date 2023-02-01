@@ -17,6 +17,9 @@ VALUES -- Using PCID = 324 because that is the PCID for Lowes in Production DBs.
        (130, 'CO', 80982, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'PA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 80982, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'DC', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 80982, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'DE', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
+       -- McCandlish Holton - VA Richmond
+       (130, 'CO', 80981, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'VA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
+       (130, 'CO', 80981, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'VA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Hepler Broom - Chicago, IL
        (130, 'CO', 80992, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'IL', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 80992, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'IL', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
@@ -35,9 +38,9 @@ VALUES -- Using PCID = 324 because that is the PCID for Lowes in Production DBs.
        -- Mayer, LLP-TX Houston
        (130, 'CO', 78110, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 78110, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       -- Mayer, LLP-TX-San Antoio
-       (130, 'CO', 78110, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       (130, 'CO', 78110, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
+       ---- Mayer, LLP-TX-San Antoio
+       (130, 'CO', 80990, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
+       (130, 'CO', 80990, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Johnson & Jones, P.C.
        (130, 'CO', 80991, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'OK', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 80991, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'OK', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
@@ -84,11 +87,6 @@ VALUES -- Using PCID = 324 because that is the PCID for Lowes in Production DBs.
        -- Tharpe & Howell - CA Sherman Oaks
        (130, 'CO', 27451, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'CA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 27451, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'CA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       -- Taylor Wellons Politz Duhe, APLC - LA New Orleans
-       (130, 'CO', 75903, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'LA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       (130, 'CO', 75903, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'LA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       (130, 'CO', 75903, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'MS', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       (130, 'CO', 75903, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'MS', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Stott & Harrington PC - AL Birmingham
        (130, 'CO', 80994, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'AL', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        (130, 'CO', 80994, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'AL', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
