@@ -20,7 +20,7 @@ VALUES -- Using PCID = 324 because that is the PCID for Lowes in Production DBs.
        -- Davis, Rothwell, Earle & Xóchihua - OR Portland
        (130, 'CO', 36404, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'OR', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Quattlebaum, Grooms, & Tull PLLC
-       (130, 'CO', 81001, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'OR', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
+       (130, 'CO', 81001, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'AR', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Peavler Briscoe - TX Grapevine
        (130, 'CO', 81000, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'TX', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Mayer, LLP-TX Dallas
@@ -58,7 +58,6 @@ VALUES -- Using PCID = 324 because that is the PCID for Lowes in Production DBs.
        (130, 'CO', 80999, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'HI', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Tharpe & Howell - CA Sherman Oaks
        (130, 'CO', 27451, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'CA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
-       (130, 'CO', 27451, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 5, NULL, 'CA', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Stott & Harrington PC - AL Birmingham
        (130, 'CO', 80994, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 1, NULL, 'AL', 'cboEmployer', NULL, NULL, NULL, NULL, 0, NULL),
        -- Spicer Rudstrom PLLC - TN Nashville,  Spicer Rudstrom PLLC - TN Memphis
