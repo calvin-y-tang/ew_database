@@ -275,25 +275,25 @@ BEGIN
 
 </group>
 <group id="Grp_143000" getVisible="Ribbon_GetVisible" label="Report/Export">
-<button id="Btn_143300" getEnabled="Ribbon_GetEnabled" label="Flash Report" showImage="false" tag="None|Open_frmFlashReportParams2|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_143400" getEnabled="Ribbon_GetEnabled" label="Flash Report" showImage="false" tag="None|Open_frmFlashReportParams2|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_143400" getEnabled="Ribbon_GetEnabled" label="Invoice Register" showImage="false" tag="None|Open_FrmInvoiceRegister|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_143500" getEnabled="Ribbon_GetEnabled" label="Invoice Register" showImage="false" tag="None|Open_FrmInvoiceRegister|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_143500" getEnabled="Ribbon_GetEnabled" label="Voucher Register" showImage="false" tag="None|Open_FrmVoucherRegister|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_143600" getEnabled="Ribbon_GetEnabled" label="Voucher Register" showImage="false" tag="None|Open_FrmVoucherRegister|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_143600" getEnabled="Ribbon_GetEnabled" screentip="Print Fee Schedule Listing" label="Fee Schedule Listing" showImage="false" tag="None|Open_frmFeeSchedRptParam|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_143700" getEnabled="Ribbon_GetEnabled" screentip="Print Fee Schedule Listing" label="Fee Schedule Listing" showImage="false" tag="None|Open_frmFeeSchedRptParam|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 </group>
 </tab>
 <tab id="Tab_150000" getVisible="Ribbon_GetVisible" label="Report">
 <group id="Grp_151000" getVisible="Ribbon_GetVisible" label="Appointment">
-<button id="Btn_151100" getEnabled="Ribbon_GetEnabled" label="Appointment Log" showImage="false" tag="None|Open_FrmApptLogParams2|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_151200" getEnabled="Ribbon_GetEnabled" label="Appointment Log" showImage="false" tag="None|Open_FrmApptLogParams2|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_151200" getEnabled="Ribbon_GetEnabled" screentip="Appointments on Hold Report" label="Appointments on Hold" showImage="false" tag="None|Open_frmApptOnHoldParams|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_151300" getEnabled="Ribbon_GetEnabled" screentip="Appointments on Hold Report" label="Appointments on Hold" showImage="false" tag="None|Open_frmApptOnHoldParams|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_151400" getEnabled="Ribbon_GetEnabled" screentip="Run Cancelled Cases Report" label="Cancelled Appts" showImage="false" tag="None|Open_frmCancelCase|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_151500" getEnabled="Ribbon_GetEnabled" screentip="Run Cancelled Cases Report" label="Cancelled Appts" showImage="false" tag="None|Open_frmCancelCase|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_151500" getEnabled="Ribbon_GetEnabled" label="Confirmation Result" showImage="false" tag="None|Call_MMenuReportsAppointmentConfirmationResult|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_151600" getEnabled="Ribbon_GetEnabled" label="Confirmation Result" showImage="false" tag="None|Call_MMenuReportsAppointmentConfirmationResult|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 </group>
 <group id="Grp_152000" getVisible="Ribbon_GetVisible" label="Doctor">
@@ -301,7 +301,7 @@ BEGIN
 
 <button id="Btn_152300" getEnabled="Ribbon_GetEnabled" label="Doctor Schedules" showImage="false" tag="None|Call_MMenuReportsDoctorRptDoctorsScheds|None" onAction="Ribbon_ButtonAction" size="normal" />
 
-<button id="Btn_152500" getEnabled="Ribbon_GetEnabled" label="Schedule Summary" showImage="false" tag="None|Open_FrmDoctorScheduleSummary|None" onAction="Ribbon_ButtonAction" size="normal" />
+<button id="Btn_152700" getEnabled="Ribbon_GetEnabled" label="Schedule Summary" showImage="false" tag="None|Open_FrmDoctorScheduleSummary2|None" onAction="Ribbon_ButtonAction" size="normal" />
 
 </group>
 <group id="Grp_153000" getVisible="Ribbon_GetVisible" label="Export">
