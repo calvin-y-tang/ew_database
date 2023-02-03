@@ -1,5 +1,13 @@
 ﻿-- Sprint 103
 
+-- CRN - add column to track specialties coming from CRN
+USE IMECentricMaster
+GO
+ALTER TABLE EWDoctorSpecialty ADD [MasterReviewerSpecialtyID] INT NULL
+GO
+
+
+
 -- IMEC-13313 - add new business rules to require Employer for PC=Lowes and other specific Companies.
 USE IMECentricEW 
 GO 
