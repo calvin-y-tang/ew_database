@@ -4,12 +4,6 @@
 	@useEditDate Bit	
 AS
 SET NOCOUNT ON
-DECLARE @xml XML
-DECLARE @delimiter CHAR(1) = ','
-SET @xml = CAST('<X>' + REPLACE(@ewFacilityIdList, @delimiter, '</X><X>') + '</X>' AS XML)
-
-print 'Facility ID List: ' + @ewFacilityIdLIst
-
 IF OBJECT_ID('tempdb..##Temp_MedacaCases') IS NOT NULL DROP TABLE ##Temp_MedacaCases
 
 SELECT
