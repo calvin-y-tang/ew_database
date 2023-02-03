@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[proc_Info_Medaca_MgtRpt_QueryData]
 	@startDate Date,
 	@endDate Date,
-	@useEditDate Bit	
+	@dateFilter INT
 AS
 SET NOCOUNT ON
 IF OBJECT_ID('tempdb..##Temp_MedacaCases') IS NOT NULL DROP TABLE ##Temp_MedacaCases
@@ -47,7 +47,8 @@ from tblcase c with (nolock)
 	inner join tblservices s with (nolock) on s.ServiceCode = c.ServiceCode
 	left join tblemployer emp with (nolock) on emp.EmployerID = c.EmployerID
 	left join tbluser sh with (nolock) on sh.userid = c.schedulercode
-where 
-	IIF(@useEditDate = 1, c.dateedited, c.DateReceived) >= @startDate and c.dateedited < @endDate	
+where 	
+	CONVERT(DATE, IIF(@dateFilter = 2, c.dateedited, c.DateReceived)) >= @startDate
+		and CONVERT(DATE, IIF(@dateFilter = 2, c.dateedited, c.DateReceived)) <= @endDate
 
 SET NOCOUNT OFF
