@@ -10,7 +10,7 @@
 	@ReferringProviderTIN varchar(11) = NULL,
 	@ProviderName varchar(50) = NULL,
 	@ProviderTIN varchar(11) = NULL,
-	@ProviderSpecialtyCode varchar(50) = NULL,
+	@ProviderSpecialtyCode varchar(500) = NULL,
 	@ServiceRendered varchar(250) = NULL,
 	@CPTCode varchar(50) = NULL,
 	@BillAmountApproved money = NULL,

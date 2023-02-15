@@ -9,7 +9,7 @@
     [ReferringProviderTIN]  VARCHAR (11)  NULL,
     [ProviderName]          VARCHAR (50)  NULL,
     [ProviderTIN]           VARCHAR (11)  NULL,
-    [ProviderSpecialtyCode] VARCHAR (50)  NULL,
+    [ProviderSpecialtyCode] VARCHAR (500) NULL,
     [ServiceRendered]       VARCHAR (250) NULL,
     [CPTCode]               VARCHAR (50)  NULL,
     [BillAmountApproved]    MONEY         NULL,

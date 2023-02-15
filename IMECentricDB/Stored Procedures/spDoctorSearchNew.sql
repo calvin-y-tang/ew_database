@@ -23,7 +23,7 @@
 	@ProximityZip AS VARCHAR(10) = NULL,
 
     @KeyWordIDs AS VARCHAR(100) = NULL,
-    @Specialties AS VARCHAR(200) = NULL,
+    @Specialties AS VARCHAR(3000) = NULL,
     @EWAccreditationID AS INT = NULL,
 	@OfficeCode AS INT = NULL,	
 

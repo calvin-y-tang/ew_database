@@ -2,7 +2,7 @@
 CREATE PROCEDURE [dbo].[proc_CaseSpecialty_Insert]
 (
 	@casenbr int,
-	@Specialtycode varchar(50),
+	@Specialtycode varchar(500),
 	@dateadded datetime = NULL,
 	@useridadded varchar(30) = NULL
 )
