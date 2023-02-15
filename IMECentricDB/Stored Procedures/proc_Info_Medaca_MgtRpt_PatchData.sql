@@ -24,11 +24,6 @@ UPDATE T
 	INNER JOIN tblCustomerData as CD on T.casenbr = CD.TableKey AND CD.TableType = 'tblCase' and CustomerName = 'Medaca'
 
 UPDATE T 
-	set T.[TMHAService] = [dbo].[fnGetParamValue](CD.Param, 'TMHAService=')
-	FROM ##Temp_MedacaCases as T
-	INNER JOIN tblCustomerData as CD on T.casenbr = CD.TableKey AND CD.TableType = 'tblCase' and CustomerName = 'Medaca'
-
-UPDATE T 
 	set T.[GPContactDate] = [dbo].[fnGetParamValue](CD.Param, 'GPContactDate=')
 	FROM ##Temp_MedacaCases as T
 	INNER JOIN tblCustomerData as CD on T.casenbr = CD.TableKey AND CD.TableType = 'tblCase' and CustomerName = 'Medaca'
@@ -94,8 +89,8 @@ Select
 	isnull([EHQ-Rcvd],'') as [EHQ-Rcvd],
 	isnull([EHQ-Sent],'') as [EHQ-Sent],
 	isnull([TMHARecommend],'') as [TMHARecommend],
-	isnull([TMHARequestSent],'') as [TMHARequestSent],
-	isnull([TMHAService],'') as [TMHAService],
+	isnull([TMHARequestSent],'') as [TMHARequestSent],	
+	isnull(convert(varchar, [TMHAService],101),'') as [TMHAService],
 	case when [TMHARescheduled] > 1 then 'Yes' else 'No' end as [TMHARescheduled],
 	Case when [TMHACancelled] > 1 then 'Yes' else 'No' end as [TMHACancelled],
 	case when [TMHARescheduled] > 1 then isnull(convert(varchar,[TMHARescheduledDate],101),'') else '' end  as [TMHARescheduledDate],
