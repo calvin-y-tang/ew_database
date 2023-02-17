@@ -1,8 +1,11 @@
--- Sprint 103
+-- Sprint 104
 
--- IMEC-13360 -- need to remove security token to ensure it is not going to be used.
-DELETE FROM tblUserFunction WHERE FunctionCode = 'DoctorSpecialtyEdit'
+-- IMEC-13365 - only allow CV Dr Document Type to be set for Publish to Web
+ UPDATE tblEWDrDocType
+   SET AllowPublishOnWeb = 1
+ WHERE EWDrDocTypeID = 5
 GO
-DELETE FROM tblGroupFunction WHERE FunctionCode = 'DoctorSpecialtyEdit'
+UPDATE tblEWDrDocType
+   SET AllowPublishOnWeb = 0
+ WHERE EWDrDocTypeID <> 5
 GO
-

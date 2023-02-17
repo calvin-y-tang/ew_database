@@ -5,7 +5,7 @@
 	@ApptTime datetime,
 	@DoctorCode int = NULL,
 	@LocationCode int = NULL,
-	@SpecialtyCode varchar(50) = NULL,
+	@SpecialtyCode varchar(500) = NULL,
 	@ApptStatusId int,
 	@DateAdded datetime = NULL,
 	@DateReceived datetime = NULL,

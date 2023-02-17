@@ -4,7 +4,7 @@ CREATE TABLE [dbo].[tblCaseAppt] (
     [ApptTime]                 DATETIME      NOT NULL,
     [DoctorCode]               INT           NULL,
     [LocationCode]             INT           NULL,
-    [SpecialtyCode]            VARCHAR (50)  NULL,
+    [SpecialtyCode]            VARCHAR (500) NULL,
     [ApptStatusID]             INT           NOT NULL,
     [DateAdded]                DATETIME      NULL,
     [UserIDAdded]              VARCHAR (15)  NULL,

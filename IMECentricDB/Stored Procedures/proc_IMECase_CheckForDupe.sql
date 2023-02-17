@@ -9,7 +9,7 @@
 	@FirstName varchar(50),
 	@LastName varchar(50),
 	@ClientCode int,
-	@SReqSpecialty varchar(50)
+	@SReqSpecialty varchar(500)
 )
 AS
 BEGIN

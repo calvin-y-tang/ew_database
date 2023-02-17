@@ -25,7 +25,7 @@ SELECT
 	convert(varchar, null) as 'Claims Received Date',
 	convert(varchar, null) as 'TMHARecommend',
 	convert(varchar, null) as 'TMHARequestSent',
-	convert(varchar, null) as 'TMHAService',
+	c.ApptDate as 'TMHAService',
 	convert(int, null) as 'TMHARescheduled' ,
 	convert(bit, null) as 'TMHACancelled' ,
 	convert(datetime, null) as 'TMHARescheduledDate' ,

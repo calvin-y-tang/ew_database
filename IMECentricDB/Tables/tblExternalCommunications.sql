@@ -8,7 +8,7 @@ CREATE TABLE [dbo].[tblExternalCommunications]
     [CaseHistoryID]     INT            NULL,
     [UserID]            VARCHAR (15)   NULL,
     [DoctorCode]        INT            NULL,
-    [DoctorSpecialty]   VARCHAR (50)   NULL,
+    [DoctorSpecialty]   VARCHAR (500)  NULL,
     [ApptDateTime]      DATETIME       NULL,
     [DateCanceled]      DATETIME       NULL,
     [CaseHistoryType]   VARCHAR (20)   NULL,

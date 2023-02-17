@@ -24,11 +24,6 @@ UPDATE T
 	INNER JOIN tblCustomerData as CD on T.casenbr = CD.TableKey AND CD.TableType = 'tblCase' and CustomerName = 'Medaca'
 
 UPDATE T 
-	set T.[TMHAService] = [dbo].[fnGetParamValue](CD.Param, 'TMHAService=')
-	FROM ##Temp_MedacaCases as T
-	INNER JOIN tblCustomerData as CD on T.casenbr = CD.TableKey AND CD.TableType = 'tblCase' and CustomerName = 'Medaca'
-
-UPDATE T 
 	set T.[GPContactDate] = [dbo].[fnGetParamValue](CD.Param, 'GPContactDate=')
 	FROM ##Temp_MedacaCases as T
 	INNER JOIN tblCustomerData as CD on T.casenbr = CD.TableKey AND CD.TableType = 'tblCase' and CustomerName = 'Medaca'
@@ -87,28 +82,27 @@ Select
 	[Client Location],
 	[Group Number],
 	[Claim Number],
-	isnull([Group or Employer],'') as 'Group or Employer',
+	isnull([Group or Employer],'') as [Group or Employer],
 	[Case Manager 1],
 	[Disability Date],
 	isnull(convert(varchar,[Claims Received Date],101),'') as [Claims Received Date],
-	isnull([EHQ-Rcvd],'') as 'Scales In',
-	isnull([EHQ-Sent],'') as 'Scales Out',
-
-	isnull([TMHARecommend],'') as 'TMHA Recommend (Yes/No)',
-	isnull([TMHARequestSent],'') as 'Service Request Date',
-	isnull([TMHAService],'') as 'TMHA Date',
-	case when [TMHARescheduled] > 1 then 'Yes' else 'No' end as 'TMHA Rescheduled',
-	Case when [TMHACancelled] > 1 then 'Yes' else 'No' end as 'TMHA Cancelled',
-	case when [TMHARescheduled] > 1 then isnull(convert(varchar,TMHARescheduledDate,101),'') else '' end  as 'TMHA Rescheduled Date',
+	isnull([EHQ-Rcvd],'') as [EHQ-Rcvd],
+	isnull([EHQ-Sent],'') as [EHQ-Sent],
+	isnull([TMHARecommend],'') as [TMHARecommend],
+	isnull([TMHARequestSent],'') as [TMHARequestSent],	
+	isnull(convert(varchar, [TMHAService],101),'') as [TMHAService],
+	case when [TMHARescheduled] > 1 then 'Yes' else 'No' end as [TMHARescheduled],
+	Case when [TMHACancelled] > 1 then 'Yes' else 'No' end as [TMHACancelled],
+	case when [TMHARescheduled] > 1 then isnull(convert(varchar,[TMHARescheduledDate],101),'') else '' end  as [TMHARescheduledDate],
 	isnull(convert(varchar,[Final Sent],101),'') as 'Final Sent',
 	isnull(Diagnosis,'') as Diagnosis,
-	isnull([GP Contact],'') as 'GP Contact',
-	isnull([GPContactDate],'') as 'Date GP Contact',
+	isnull([GP Contact],'') as [GP Contact],
+	isnull([GPContactDate],'') as [GPContactDate],
 	isnull(Psychiatrist,'') as Psychiatrist,
-	isnull(convert(varchar,[GP Comm Fax Received],101),'') as 'GP Comm Fax Received',
+	isnull(convert(varchar,[GP Comm Fax Received],101),'') as [GP Comm Fax Received],
 	isnull([RTWDate],'') as RTWDate,
 	isnull(RTWExplained,'') as RTWExplained,
-	convert(varchar,ServiceFileModified,101) as 'Service File Last Modified'
+	convert(varchar,ServiceFileModified,101) as ServiceFileModified
 from ##Temp_MedacaCases
 order by [Referral Date]
 

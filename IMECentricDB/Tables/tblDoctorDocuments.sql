@@ -12,7 +12,7 @@
     [EWDoctorDocumentID]       INT           NULL,
     [EWDoctorID]               INT           NULL,
     [EWDrDocTypeID]            INT           NULL,
-    [SpecialtyCode]            VARCHAR (50)  NULL,
+    [SpecialtyCode]            VARCHAR (500) NULL,
     [EWAccreditationID]        INT           NULL,
     [State]                    VARCHAR (2)   NULL,
     [LicenseNbr]               VARCHAR (50)  NULL,
