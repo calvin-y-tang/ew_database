@@ -233,5 +233,6 @@
     <Build Include="Tables\WebPortalLoginHandler.sql" />
     <Build Include="Tables\WebSupportRequest.sql" />
     <Build Include="Tables\GPCompanyPrepay.sql" />
+    <Build Include="Tables\ISMapping.sql" />
   </ItemGroup>
 </Project>
