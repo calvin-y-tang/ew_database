@@ -44,7 +44,7 @@ BEGIN
 
 	DECLARE @strSQL NVARCHAR(max), @strWhere NVARCHAR(max) = ''
 	DECLARE @strDrSchCol NVARCHAR(max), @strDrSchFrom NVARCHAR(max) = ''
-	DECLARE @lstSpecialties VARCHAR(200)
+	DECLARE @lstSpecialties VARCHAR(3000)
 	DECLARE @lstKeywordIDs VARCHAR(100)
 	DECLARE @geoEE GEOGRAPHY
     DECLARE @distanceConv FLOAT
@@ -194,7 +194,7 @@ FROM
 			@_County VARCHAR(50) ,
 			@_Degree VARCHAR(50) ,
 			@_lstKeyWordIDs VARCHAR(100) ,
-			@_lstSpecialties VARCHAR(200) ,
+			@_lstSpecialties VARCHAR(3000) ,
 			@_PanelExam BIT ,
 			@_ProvTypeCode INT ,		
 			@_EWAccreditationID INT,	
@@ -259,7 +259,7 @@ FROM
 				SELECT ', '+ CAST(DS.SpecialtyCode AS VARCHAR)
 				FROM tblDoctorSpecialty DS
 				WHERE DS.DoctorCode=DSR.DoctorCode
-				FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(300)'),1,2,'')),'')
+				FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(3000)'),1,2,'')),'')
 		 FROM tblDoctorSearchResult AS DSR
 		 WHERE DSR.SessionID=@tmpSessionID
 		SET QUOTED_IDENTIFIER ON
