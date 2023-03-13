@@ -40,7 +40,8 @@ AS
               ORDER BY  tblCaseAppt.CaseApptID DESC
             ) AS PreviousApptTime ,
             '' AS ProvTypeCode , 
-			tblCase.ExtCaseNbr 
+			tblCase.ExtCaseNbr,
+			tblCase.Status 
     FROM    vwCaseAppt
             INNER JOIN tblCase ON vwCaseAppt.CaseNbr = tblCase.CaseNbr
             INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
