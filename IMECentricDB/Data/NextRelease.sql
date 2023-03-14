@@ -13,3 +13,8 @@ DELETE
    AND EntityID = 2
    AND EWBusLineID = 5
 GO
+
+--  IMEC-13439 - create new tblSetting Entry to allow use of expiration date.
+INSERT INTO tblSetting(Name, Value)
+VALUES('UseSpecialtyExpirationDate', 'False')
+GO
