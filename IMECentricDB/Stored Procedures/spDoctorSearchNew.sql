@@ -56,6 +56,17 @@ BEGIN
 	DECLARE @AvgMargin AS DECIMAL(8, 2)
 	DECLARE @MaxCaseCount AS DECIMAL(8, 2)
 
+	DECLARE @useSpecialtyExpire AS VARCHAR(10)
+	DECLARE @strWhereSpecialtyExpire AS VARCHAR(1000)
+
+	-- Get tblSetting that determines when Expiration date is checked for license and specialty
+	SET @strWhereSpecialtyExpire = ''
+	SET @useSpecialtyExpire = ISNULL((SELECT value FROM tblSetting WHERE Name = 'UseSpecialtyExpirationDate'), 'False')
+	IF @useSpecialtyExpire = 'True'
+	BEGIN
+		SET @strWhereSpecialtyExpire = ' AND (CAST(ExpireDate AS DATE) > CAST(GETDATE() AS DATE) OR ExpireDate IS NULL) '
+	END
+
 	--Defalt Values
 	SET @tmpSessionID = ISNULL(@SessionID, NEWID())
 
@@ -151,22 +162,48 @@ FROM
 
 	IF ISNULL(@RequirePracticingDoctors,0)=1
 		SET @strWhere = @strWhere + ' AND DR.PracticingDoctor = 1'
+
 	IF ISNULL(@RequireLicencedInExamState,0)=1
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorDocuments WHERE EWDrDocTypeID = 11 AND State = @_State)'
+	BEGIN
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN 
+			(SELECT DISTINCT DoctorCode 
+			  FROM tblDoctorDocuments 
+			 WHERE EWDrDocTypeID = 11 
+			   AND State = @_State ' + 
+			   @strWhereSpecialtyExpire + ')'
+	END
+
+	-- DEV NOTE: When board cert is required we need to check for a matching Doctor Document
 	IF ISNULL(@RequireBoardCertified,0)=1
 	BEGIN
 		IF @Specialties IS NOT NULL
-			SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorDocuments WHERE EWDrDocTypeID = 2 AND PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties)>0)'
+			SET @strWhere = @strWhere + ' AND DR.DoctorCode IN 
+				(SELECT DISTINCT DoctorCode 
+				   FROM tblDoctorDocuments 
+				  WHERE EWDrDocTypeID = 2 
+				    AND PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties) > 0 ' + 
+					@strWhereSpecialtyExpire + ' )'
 		ELSE
-			SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorDocuments WHERE EWDrDocTypeID = 2)'
+			SET @strWhere = @strWhere + ' AND DR.DoctorCode IN 
+				(SELECT DISTINCT DoctorCode 
+				   FROM tblDoctorDocuments 
+				  WHERE EWDrDocTypeID = 2 ' + 
+				  @strWhereSpecialtyExpire + ' )'
+	END
+	-- DEV NOTE: when board cert is required this exclude specialties that do not have a Doctor Document.
+	--           when board cert is NOT required doctors with these specialties are included.
+	IF @Specialties IS NOT NULL
+	BEGIN
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN 
+			(SELECT DISTINCT DoctorCode 
+				FROM tblDoctorSpecialty 
+				WHERE PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties) > 0)'
 	END
 
 	IF @EWAccreditationID IS NOT NULL
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DoctorCode FROM tblDoctorAccreditation WHERE EWAccreditationID = @_EWAccreditationID)'
 	IF @KeyWordIDs IS NOT NULL
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorKeyWord WHERE PATINDEX(''%;;''+ CONVERT(VARCHAR, KeywordID)+'';;%'', @_lstKeywordIDs)>0)'
-	IF @Specialties IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorSpecialty WHERE PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties)>0)'
 
 	IF @ParentCompanyID IS NOT NULL
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''PC'' AND Code=@_ParentCompanyID)'
