@@ -24,6 +24,7 @@ AS
             tblCompany.CompanyCode ,
             tblCase.Priority ,
             tblCase.CommitDate ,
+			tblCase.Status , 
             tblCase.ServiceCode ,
             tblServices.ShortDesc ,
             vwCaseAppt.Specialties AS Specialty ,
@@ -40,8 +41,7 @@ AS
               ORDER BY  tblCaseAppt.CaseApptID DESC
             ) AS PreviousApptTime ,
             '' AS ProvTypeCode , 
-			tblCase.ExtCaseNbr,
-			tblCase.Status 
+			tblCase.ExtCaseNbr
     FROM    vwCaseAppt
             INNER JOIN tblCase ON vwCaseAppt.CaseNbr = tblCase.CaseNbr
             INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
