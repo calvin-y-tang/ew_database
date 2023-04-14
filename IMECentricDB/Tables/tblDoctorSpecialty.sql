@@ -8,9 +8,8 @@
     [MasterReviewerSpecialtyID] INT           NULL,
     CONSTRAINT [PK_tblDoctorSpecialty] PRIMARY KEY CLUSTERED ([SpecialtyCode] ASC, [DoctorCode] ASC)
 );
-
-
 GO
+
 CREATE TRIGGER tblDoctorSpecialty_AfterInsert_TRG 
   ON tblDoctorSpecialty
 AFTER INSERT
