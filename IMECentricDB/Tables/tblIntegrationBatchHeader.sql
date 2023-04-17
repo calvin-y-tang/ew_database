@@ -1,11 +1,10 @@
 CREATE TABLE [dbo].[tblIntegrationBatchHeader] (
     [PrimaryKey]             INT             IDENTITY (1, 1) NOT NULL,
-	[ProcessName]            VARCHAR(50)     NULL,
+	[ProcessName]            VARCHAR(25)     NULL,
     [BatchNbr]               INT             NULL,
-	[TableType]              VARCHAR(50)     NULL,
-    [TableKey]               INT             NOT NULL,
-	[Param]                  VARCHAR(100)    NULL,
+    [BatchStatus]            VARCHAR (15)    NULL,
+    [DateProcessed]          DATETIME        NULL,
     [DateAdded]              DATETIME        NULL,
-    [UserIDAdded]            VARCHAR (50)    NULL,
+    [UserIDAdded]            VARCHAR (15)    NULL,
     CONSTRAINT [PK_tblIntegrationBatchHeader] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );

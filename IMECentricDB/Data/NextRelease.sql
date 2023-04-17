@@ -1,7 +1,4 @@
--- Sprint 107
+-- Sprint 108
 
--- IMEC-13437
-INSERT INTO tblUserFunction
-VALUES ('DoctorEditStatus', 'Doctor - Edit Status', GETDATE())
-GO
+
 
