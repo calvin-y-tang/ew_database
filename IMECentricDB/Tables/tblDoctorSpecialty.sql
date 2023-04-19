@@ -21,24 +21,34 @@ BEGIN
     --      in Master.EWDoctorSpecialty
 
     DECLARE @cnt INT
+    DECLARE @crnIsActive as VARCHAR(128)
 
-    SET @cnt = (SELECT COUNT(*) 
-                  FROM Inserted AS I
-                         INNER JOIN tblDoctor AS D ON D.DoctorCode = I.DoctorCode
-                 WHERE D.EWDoctorID IS NOT NULL)
-
-    IF @cnt > 0 
+    -- check CRNISActive setting; default to TRUE when NULL or not 
+    -- present to match functionality in IMEC code
+    SET @crnIsActive = ISNULL((SELECT ISNULL(Value, 'True') FROM tblSetting WHERE Name = 'CRNIsActive'), 'True')
+    
+    IF @crnIsActive = 'True'
     BEGIN
-         INSERT INTO IMECentricMaster.dbo.EWDoctorSpecialty (EWDoctorID, EWSpecialtyID, UserIDAdded, DateAdded)
-             SELECT D.EWDoctorID, Sp.EWSpecialtyID, I.UserIDAdded, I.DateAdded 
-               FROM Inserted AS I
-                       INNER JOIN tblDoctor AS D ON D.DoctorCode = I.DoctorCode
-                       INNER JOIN tblSpecialty AS Sp ON Sp.SpecialtyCode = I.SpecialtyCode
-                       LEFT OUTER JOIN IMECentricMaster.dbo.EWDoctorSpecialty AS EWDrSp ON EWDrSp.EWSpecialtyID = Sp.EWSpecialtyID 
-                                                                                       AND EWDrSp.EWDoctorID = D.EWDoctorID
-              WHERE D.EWDoctorID IS NOT NULL
-                AND EWDrSp.EWDoctorID IS NULL
-     END
+         -- CRNISActive is True; check if doctor(s) have an EWDoctorID; 
+         -- only sync when there is an EWDoctorID present
+         SET @cnt = (SELECT COUNT(*) 
+                       FROM Inserted AS I
+                              INNER JOIN tblDoctor AS D ON D.DoctorCode = I.DoctorCode
+                      WHERE D.EWDoctorID IS NOT NULL)
+
+         IF @cnt > 0 
+         BEGIN
+              INSERT INTO IMECentricMaster.dbo.EWDoctorSpecialty (EWDoctorID, EWSpecialtyID, UserIDAdded, DateAdded)
+                  SELECT D.EWDoctorID, Sp.EWSpecialtyID, I.UserIDAdded, I.DateAdded 
+                    FROM Inserted AS I
+                            INNER JOIN tblDoctor AS D ON D.DoctorCode = I.DoctorCode
+                            INNER JOIN tblSpecialty AS Sp ON Sp.SpecialtyCode = I.SpecialtyCode
+                            LEFT OUTER JOIN IMECentricMaster.dbo.EWDoctorSpecialty AS EWDrSp ON EWDrSp.EWSpecialtyID = Sp.EWSpecialtyID 
+                                                                                            AND EWDrSp.EWDoctorID = D.EWDoctorID
+                   WHERE D.EWDoctorID IS NOT NULL
+                     AND EWDrSp.EWDoctorID IS NULL
+          END
+    END
 END
 GO
 
@@ -51,22 +61,32 @@ BEGIN
     --      from Master.EWDoctorSpecialty
 
     DECLARE @cnt INT
+    DECLARE @crnIsActive as VARCHAR(128)
 
-    SET @cnt = (SELECT COUNT(*) 
-                  FROM Deleted AS D
-                         INNER JOIN tblDoctor AS Dr ON D.DoctorCode = D.DoctorCode
-                 WHERE Dr.EWDoctorID IS NOT NULL)
-
-    IF @cnt > 0 
+    -- check CRNISActive setting; default to TRUE when NULL or not 
+    -- present to match functionality in IMEC code
+    SET @crnIsActive = ISNULL((SELECT ISNULL(Value, 'True') FROM tblSetting WHERE Name = 'CRNIsActive'), 'True')
+    
+    IF @crnIsActive = 'True'
     BEGIN
+         -- CRNISActive is True; check if doctor(s) have an EWDoctorID; 
+         -- only sync when there is an EWDoctorID present
+         SET @cnt = (SELECT COUNT(*) 
+                       FROM Deleted AS D
+                              INNER JOIN tblDoctor AS Dr ON D.DoctorCode = D.DoctorCode
+                      WHERE Dr.EWDoctorID IS NOT NULL)
 
-         DELETE EWDrSp
-           FROM IMECentricMaster.dbo.EWDoctorSpecialty AS EWDrSp
-                   INNER JOIN tblSpecialty AS Sp ON Sp.EWSpecialtyID = EWDrSp.EWSpecialtyID
-                   INNER JOIN tblDoctor AS Dr ON Dr.EWDoctorID = EWDrSp.EWDoctorID
-                   INNER JOIN Deleted AS D ON D.SpecialtyCode = Sp.SpecialtyCode 
-                                          AND D.DoctorCode = Dr.DoctorCode
-     END
+         IF @cnt > 0 
+         BEGIN
+
+              DELETE EWDrSp
+                FROM IMECentricMaster.dbo.EWDoctorSpecialty AS EWDrSp
+                        INNER JOIN tblSpecialty AS Sp ON Sp.EWSpecialtyID = EWDrSp.EWSpecialtyID
+                        INNER JOIN tblDoctor AS Dr ON Dr.EWDoctorID = EWDrSp.EWDoctorID
+                        INNER JOIN Deleted AS D ON D.SpecialtyCode = Sp.SpecialtyCode 
+                                               AND D.DoctorCode = Dr.DoctorCode
+         END
+    END
 END
 GO
 
