@@ -38,8 +38,8 @@ BEGIN
 
          IF @cnt > 0 
          BEGIN
-              INSERT INTO IMECentricMaster.dbo.EWDoctorSpecialty (EWDoctorID, EWSpecialtyID, UserIDAdded, DateAdded)
-                  SELECT D.EWDoctorID, Sp.EWSpecialtyID, I.UserIDAdded, I.DateAdded 
+              INSERT INTO IMECentricMaster.dbo.EWDoctorSpecialty (EWDoctorID, EWSpecialtyID, UserIDAdded, DateAdded, MasterReviewerSpecialtyID)
+                  SELECT D.EWDoctorID, Sp.EWSpecialtyID, I.UserIDAdded, I.DateAdded, I.MasterReviewerSpecialtyID 
                     FROM Inserted AS I
                             INNER JOIN tblDoctor AS D ON D.DoctorCode = I.DoctorCode
                             INNER JOIN tblSpecialty AS Sp ON Sp.SpecialtyCode = I.SpecialtyCode
