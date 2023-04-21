@@ -85,6 +85,8 @@ BEGIN
 
 <button id="Btn_113313" getEnabled="Ribbon_GetEnabled" label="Reassign Doctor Schedule" getImage="Ribbon_GetImage" tag="None|Open_frmReAssignDoctor|Mso_AddOrRemoveAttendees" onAction="Ribbon_ButtonAction" />
 
+<button id="Btn_113314" getEnabled="Ribbon_GetEnabled" label="Add New CRN Doctor" tag="DoctorCRNAdd|Call_MMenuAddCRNDoctor|None" onAction="Ribbon_ButtonAction" />
+
 </menu>
 </splitButton>
 <button id="Btn_113400" getEnabled="Ribbon_GetEnabled" label="Exam Location" getImage="Ribbon_GetImage" tag="None|Open_frmLocationMaintenance|File_EWFacility Groups.png" onAction="Ribbon_ButtonAction" size="large" />
