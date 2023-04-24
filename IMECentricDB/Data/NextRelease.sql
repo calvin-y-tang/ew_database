@@ -9,4 +9,14 @@ VALUES (156, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL,
         (156, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, 'WA', 'RushReport', NULL, NULL, NULL, NULL, 0, NULL)
 GO
 
+-- IMEC-13523 patch data in tblEWDrDocType
+UPDATE tblEWDrDocType
+   SET ControlledByIMEC = 0
+WHERE EWDrDocTypeID IN (2,4,5,6,11)
+GO
+
+UPDATE tblEWDrDocType
+   SET ControlledByIMEC = 1
+WHERE EWDrDocTypeID IN (1,3,7,8,9,10,12,13,14,15,16)
+GO
 

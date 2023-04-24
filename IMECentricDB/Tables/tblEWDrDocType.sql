@@ -10,6 +10,7 @@
     [AllowLicenseNbr]    INT          NULL,
     [AllowAccreditation] INT          NULL,
     [AllowPublishOnWeb]  BIT          NULL,
+    [ControlledByIMEC]   BIT          CONSTRAINT [DF_tblEWDrDocType_ControlledByIMEC] DEFAULT (0) NULL, 
     CONSTRAINT [PK_tblEWDrDocType] PRIMARY KEY CLUSTERED ([EWDrDocTypeID] ASC)
 );
 
