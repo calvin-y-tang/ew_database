@@ -94,6 +94,7 @@
     [ApptRequestDoctorReasonID] INT              NULL,
     [DirIcon]                   VARCHAR (70)     NULL,
     [DirDicomExtractor]         VARCHAR (70)     NULL,
+    [OPVendorGPEntityPrefix] VARCHAR(3) NULL, 
     CONSTRAINT [PK_tblControl] PRIMARY KEY CLUSTERED ([InstallID] ASC) WITH (FILLFACTOR = 90)
 );
 
