@@ -1,66 +1,83 @@
-﻿-- Sprint 109
+﻿--
+-- Sprint 110
+--
 
+/* Execute this section against SQLSERVER7 */
 
--- // new table in EWData Repository - to handle the InvoiceUpdate.txt file for the DR process
-USE [EWDataRepository]
+-- ExamWorks US
+USE [IMECentricEW]
+UPDATE tblControl SET VendorGPEntityPrefix = 999, OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
 GO
 
-SET ANSI_NULLS ON
+-- FirstChoice
+USE [IMECentricFCE]
+UPDATE tblControl SET VendorGPEntityPrefix = 999, OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
 GO
 
-SET QUOTED_IDENTIFIER ON
+-- Landmark
+USE [IMECentricLandMark]
+UPDATE tblControl SET VendorGPEntityPrefix = 999, OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
 GO
 
-CREATE TABLE [dbo].[AcctInvoiceUpdate](
-	[AcctInvoiceUpdateID] [INT] IDENTITY(1,1) NOT NULL,
-	[FormatVersion] [INT] NULL,
-	[ExportDate] [DATETIME] NULL,
-	[SourceID] [INT] NULL,
-	[InvoiceNo] [VARCHAR](15) NULL,
-	[EWFacilityID] [INT] NULL,
-	[CompanyID] [VARCHAR](11) NULL,
-	[OldClientID] [VARCHAR](15) NULL,
-	[NewClientID] [VARCHAR](15) NULL,
-	[ClaimNo] [VARCHAR](50) NULL,
-	[CaseNo] [VARCHAR](15) NULL,
-	[BatchNo] [INT] NULL,
-	[EventDate] [DATETIME] NULL,
-	[EventType] [INT] NULL,
-	[GPExportStatus] [INT] NULL,
-	CONSTRAINT [PK_AcctInvoiceUpdate] PRIMARY KEY CLUSTERED ([AcctInvoiceUpdateID] ASC)
-)
+-- MCMC
+USE [IMECentricMCMC]
+UPDATE tblControl SET VendorGPEntityPrefix = 999, OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+-- IMECentricMedicolegal
+USE [IMECentricMedicolegal]
+UPDATE tblControl SET VendorGPEntityPrefix = 999, OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricPOPB]
+UPDATE tblControl SET VendorGPEntityPrefix = 999, OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+/* Execute this section against SQLSERVER3-CA */
+USE [IMECentricCVS]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricDirectIME]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricIMAS]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricKRA]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricMakos]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricMatrix]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricNYRC]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricMedylex]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricSOMA]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricMedaca]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
+GO
+
+USE [IMECentricEWCA]
+UPDATE tblControl SET OPVendorGPEntityPrefix = (SELECT VendorGPEntityPrefix FROM tblControl)
 GO
 
 
 
--- // new table in IMECentricMaster - to handle the data from AcctInvoiceUpdate for the DR-GP process
-USE [IMECentricMaster]
-GO
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[GPInvoiceUpdate](
-	[PrimaryKey] [int] IDENTITY(1,1) NOT NULL,
-	[FormatVersion] [int] NULL,
-	[ProcessedFlag] [BIT] NOT NULL,
-	[ExportDate] [datetime] NULL,
-	[SourceID] [int] NULL,
-	[InvoiceNo] [varchar](15) NULL,
-	[EWFacilityID] [int] NULL,
-	[GPFacilityID] [varchar](3) NULL,
-	[CompanyID] [varchar](11) NULL,
-	[GPCustomerID] [varchar](15) NULL,
-	[OldClientID] [varchar](15) NULL,
-	[NewClientID] [varchar](15) NULL,
-	[ClaimNo] [varchar](50) NULL,
-	[CaseNo] [varchar](15) NULL,
-	[BatchNo] [varchar](15) NULL,
-	[EventDate] [datetime] NULL,
-	[EventType] [int] NULL,
-	CONSTRAINT [PK_GPInvoiceUpdate] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
-)
-GO
