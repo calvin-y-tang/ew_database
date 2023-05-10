@@ -32,6 +32,7 @@
     [MaintenanceAccessLevel] INT              CONSTRAINT [DF_tblUser_MaintenanceAccessLevel] DEFAULT ((0)) NOT NULL, 
     [UserVersion]			 INT			  CONSTRAINT [DF_tblUser_UserVersion] DEFAULT ((1)) NOT NULL, 
 	[RestrictToFavorites]    BIT              CONSTRAINT [DF_tblUser_RestrictToFavorites] DEFAULT ((0)) NOT NULL,
+    [Unattended]             BIT              CONSTRAINT [DF_tblUser_Unattended] DEFAULT ((0)) NOT NULL, 
     CONSTRAINT [PK_tblUser] PRIMARY KEY ([SeqNo])
 );
 
