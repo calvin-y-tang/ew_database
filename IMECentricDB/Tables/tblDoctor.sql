@@ -123,6 +123,7 @@
     [Suffix]                       VARCHAR(128)   NULL,
     [CRNStatus]                    VARCHAR (10)   NULL,
     [SavedStatus]                  VARCHAR (10)   NULL,
+    [OriginalDoctorCode]           INT            NULL,
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 
