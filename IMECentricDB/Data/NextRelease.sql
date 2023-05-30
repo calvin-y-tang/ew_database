@@ -17,3 +17,5 @@ INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, Proces
 VALUES('PC', 31, 2, 2, 165, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, '5000', 'LimitInvoiceAmountOverride', NULL, NULL, NULL, 0, NULL)
 GO
 
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded) VALUES ('LimitInvoiceAmountOverride', 'Accounting - Override Quote Approval on Invoice', GETDATE())
+GO
