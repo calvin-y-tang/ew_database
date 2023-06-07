@@ -26,7 +26,8 @@ BEGIN
 			 tmpBR.EntityType,
 			 tmpBR.ProcessOrder,
 			 tmpBR.Skip, 
-			 tmpBR.Param6
+			 tmpBR.Param6,
+			 tmpBR.ExcludeJurisdiction
 			FROM
 				 (SELECT 1 AS GroupID, BRC.*
 					FROM tblBusinessRuleCondition AS BRC
@@ -61,7 +62,11 @@ BEGIN
 				AND (tmpBR.OfficeCode IS NULL OR tmpBR.OfficeCode = @officeCode)
 				AND (tmpBR.EWBusLineID IS NULL OR tmpBR.EWBusLineID = CT.EWBusLineID)
 				AND (tmpBR.EWServiceTypeID IS NULL OR tmpBR.EWServiceTypeID = S.EWServiceTypeID)
-				AND (tmpBR.Jurisdiction Is Null Or tmpBR.Jurisdiction = @jurisdiction)
+				AND (
+				    (ISNULL(tmpBR.ExcludeJurisdiction, 0) <> 1 AND (tmpBR.Jurisdiction Is Null Or tmpBR.Jurisdiction = @jurisdiction))
+				    OR  
+					(ISNULL(tmpBR.ExcludeJurisdiction, 0) = 1 AND tmpBR.Jurisdiction <> @jurisdiction)
+					)
 	) AS sortedBR	
 	ORDER BY sortedBR.BusinessRuleID, sortedBR.ProcessOrder
 
@@ -92,7 +97,8 @@ BEGIN
 		   EntityType,
 		   ProcessOrder,
 		   Skip, 
-		   Param6 
+		   Param6 ,
+		   ExcludeJurisdiction
 	FROM #tmp_GetAllBusinessRules
 	WHERE Skip = 0
 
