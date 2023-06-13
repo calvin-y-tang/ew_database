@@ -6,6 +6,7 @@
     [UserIDAdded] VARCHAR (30)      NULL,
     [Reason]      VARCHAR (100)     NULL,
     [Note]        VARCHAR (1000)    NULL,
-    CONSTRAINT [PK_tblDrDoNotUse] PRIMARY KEY CLUSTERED ([Code] ASC, [Type] ASC, [DoctorCode] ASC)
+    [CaseType]    INT               CONSTRAINT [DF_tblDrDoNotUse_CaseType] DEFAULT (-1) NOT NULL,
+    CONSTRAINT [PK_tblDrDoNotUse] PRIMARY KEY CLUSTERED ([Code] ASC, [Type] ASC, [DoctorCode] ASC, [CaseType] ASC)
 );
 
