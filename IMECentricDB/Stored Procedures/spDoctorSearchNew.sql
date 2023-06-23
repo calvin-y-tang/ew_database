@@ -38,7 +38,8 @@
 	
 	@FirstName AS VARCHAR(50) = NULL,
 	@LastName AS VARCHAR(50) = NULL,
-	@UserID AS VARCHAR(15) = NULL
+	@UserID AS VARCHAR(15) = NULL, 
+	@CaseType AS INT = NULL
 )
 AS
 BEGIN
@@ -55,6 +56,7 @@ BEGIN
 	DECLARE @returnValue INT
 	DECLARE @AvgMargin AS DECIMAL(8, 2)
 	DECLARE @MaxCaseCount AS DECIMAL(8, 2)
+	DECLARE @DNUCaseTypeWhere VARCHAR(64)
 
 	DECLARE @useSpecialtyExpire AS VARCHAR(10)
 	DECLARE @strWhereSpecialtyExpire AS VARCHAR(1000)
@@ -205,19 +207,21 @@ FROM
 	IF @KeyWordIDs IS NOT NULL
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorKeyWord WHERE PATINDEX(''%;;''+ CONVERT(VARCHAR, KeywordID)+'';;%'', @_lstKeywordIDs)>0)'
 
+	SET @DNUCaseTypeWhere = IIF(@CaseType IS NULL OR @CaseType = -1, NULL, ' AND (CaseType = -1 OR CaseType = ' + CAST(@CaseType AS VARCHAR(5)) + ') ' )
+
 	IF @ParentCompanyID IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''PC'' AND Code=@_ParentCompanyID)'
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''PC'' AND Code=@_ParentCompanyID ' + IIF(@DNUCaseTypeWhere IS NULL, '', @DNUCaseTypeWhere) + ')'
 	IF @CompanyCode IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CO'' AND Code=@_CompanyCode)'
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CO'' AND Code=@_CompanyCode ' + IIF(@DNUCaseTypeWhere IS NULL, '', @DNUCaseTypeWhere) + ')'
 	IF @ClientCode IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CL'' AND Code=@_ClientCode)'
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CL'' AND Code=@_ClientCode ' + IIF(@DNUCaseTypeWhere IS NULL, '', @DNUCaseTypeWhere) + ')'
 
 	IF @ThirdPartyParentCompanyID IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''PC'' AND Code=@_ThirdPartyParentCompanyID)'
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''PC'' AND Code=@_ThirdPartyParentCompanyID ' + IIF(@DNUCaseTypeWhere IS NULL, '', @DNUCaseTypeWhere) + ')'
 	IF @BillClientCompanyCode IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CO'' AND Code=@_BillClientCompanyCode)'
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CO'' AND Code=@_BillClientCompanyCode ' + IIF(@DNUCaseTypeWhere IS NULL, '', @DNUCaseTypeWhere) + ')'
 	IF @BillClientCode IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CL'' AND Code=@_BillClientCode)'
+		SET @strWhere = @strWhere + ' AND DR.DoctorCode NOT IN (SELECT DISTINCT DoctorCode from tblDrDoNotUse WHERE Type=''CL'' AND Code=@_BillClientCode ' + IIF(@DNUCaseTypeWhere IS NULL, '', @DNUCaseTypeWhere) + ')'
 
 	IF @LocationCode IS NOT NULL
 		SET @strWhere = @strWhere + ' AND @_LocationCode = L.LocationCode'
