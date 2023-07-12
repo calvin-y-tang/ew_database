@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[tblOutOfNetworkReason] (
     [OutOfNetworkReasonID] INT          IDENTITY (1, 1) NOT NULL,
-    [Description]          VARCHAR (32) NOT NULL,
+    [Description]          VARCHAR (64) NOT NULL,
     [DateAdded]            DATETIME     NOT NULL,
     [UserIDAdded]          VARCHAR (15) NOT NULL,
     [DateEdited]           DATETIME     NULL,
