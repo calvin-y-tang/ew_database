@@ -50,6 +50,7 @@
 	[WebCompanyID]				INT				 NULL,
     [NotificationEmailFromAddress] VARCHAR(250) NULL, 
     [DoctorAdminEmail] VARCHAR(250) NULL, 
+    [MedRecNotifyEmail] VARCHAR(255) NULL, 
     CONSTRAINT [PK_tblOffice] PRIMARY KEY CLUSTERED ([OfficeCode] ASC) WITH (FILLFACTOR = 90)
 );
 
