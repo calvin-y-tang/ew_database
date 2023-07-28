@@ -156,6 +156,8 @@ BEGIN
 
 <button id="Btn_122120" getEnabled="Ribbon_GetEnabled" label="Rule" showImage="false" tag="None|Call_MMenuListsConfirmationRule|None" onAction="Ribbon_ButtonAction" />
 
+<button id="Btn_122125" getEnabled="Ribbon_GetEnabled" label="Rule Testing" showImage="false" tag="None|Call_MMenuListsConfirmationRuleTesting|None" onAction="Ribbon_ButtonAction" />
+
 <button id="Btn_122130" getEnabled="Ribbon_GetEnabled" label="Message" showImage="false" tag="None|Call_MMenuListsConfirmationMessage|None" onAction="Ribbon_ButtonAction" />
 
 <button id="Btn_122140" getEnabled="Ribbon_GetEnabled" label="Result" showImage="false" tag="None|Call_MMenuListsConfirmationResult|None" onAction="Ribbon_ButtonAction" />

@@ -287,6 +287,11 @@ CREATE TABLE [dbo].[tblCase] (
     [TATExamDateToNotifyShowNoShow]    INT              NULL,
     [DateMedsSentToDr]                 DATETIME         NULL,
     [TATDateMedsSentToDrToRptSentDate] INT              NULL,
+    [RPAMedRecRequestDate]             DATETIME         NULL, 
+    [RPAMedRecUploadAckDate]           DATETIME         NULL, 
+    [RPAMedRecUploadAckUserID]         VARCHAR(20)      NULL, 
+    [RPAMedRecUploadStatus]            VARCHAR(15)      NULL, 
+    [RPAMedRecCompleteDate]            DATETIME         NULL, 
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
