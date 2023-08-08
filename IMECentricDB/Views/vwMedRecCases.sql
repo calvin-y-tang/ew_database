@@ -4,6 +4,8 @@ AS
 			C.CaseNbr,
 			C.ExtCaseNbr, 
 			DATEDIFF(DAY, C.LastStatusChg, GETDATE()) AS IQ,
+			DATEDIFF(DAY, c.RPAMedRecRequestDate, GETDATE()) AS IQReq,
+			DATEDIFF(DAY, c.RPAMedRecCompleteDate, GETDATE()) AS IQComp,
 			E.FirstName + ' ' + E.LastName AS ExamineeName,
 			Com.IntName AS CompanyName,
 			D.FirstName + ' ' + D.LastName AS DoctorName,
