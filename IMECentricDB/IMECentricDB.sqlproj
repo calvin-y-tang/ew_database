@@ -1156,6 +1156,8 @@
     <Build Include="Stored Procedures\proc_Info_Medaca_MgtRpt.sql" />
     <Build Include="Stored Procedures\proc_Info_Medaca_MgtRpt_QueryData.sql" />
     <Build Include="Stored Procedures\proc_Info_Medaca_MgtRpt_PatchData.sql" />
+    <Build Include="Views\vwMedRecCases.sql" />
+    <Build Include="Stored Procedures\pr_USTMedExtraction.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
