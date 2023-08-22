@@ -86,7 +86,13 @@ SELECT
 	+ isnull(ft.[Phone],0) + isnull([MSA],0) + isnull([Clinical],0) + isnull([Tech],0) + isnull([Medicare],0) + isnull([OPO],0) 
 	+ isnull([Rehab],0)	+ isnull([AddReview],0) + isnull([AdminFee],0) + isnull([FacFee],0) + isnull([Other],0)) as Other,
   ST.Name as ServiceDescription,
-  CONVERT(VARCHAR(4096), NULL) as OtherServiceDescription
+  CONVERT(VARCHAR(4096), NULL) as OtherServiceDescription,
+  CASE C.MasterSubCase 
+    WHEN 'S' THEN 1
+    ELSE 0
+  END [IsSubCase],
+  C.MasterCaseNbr,
+  CONVERT(VARCHAR(64), NULL) as MasterCaseService
 INTO ##tmp_LibertyInvoices
 FROM tblAcctHeader as AH
 	INNER JOIN tblCase as C on AH.CaseNbr = C.CaseNbr
