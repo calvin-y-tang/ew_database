@@ -100,6 +100,13 @@ UPDATE ui SET ui.OtherServiceDescription =   stuff((select '; ' + LongDesc from 
          for XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '')
   FROM ##tmp_LibertyInvoices as ui
 
+print 'update the master case service'
+UPDATE ui SET ui.MasterCaseService = SVC.Description
+  FROM ##tmp_LibertyInvoices as ui
+	INNER JOIN tblCase as C on ui.MasterCaseNbr = C.CaseNbr
+	INNER JOIN tblServices as SVC on C.ServiceCode = SVC.ServiceCode	
+  WHERE (ui.IsSubCase = 1) and (ui.MasterCaseNbr IS NOT NULL)
+
 -- return the main table
 SELECT * 
   FROM ##tmp_LibertyInvoices
