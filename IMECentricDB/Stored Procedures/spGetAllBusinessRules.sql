@@ -101,5 +101,6 @@ BEGIN
 		   ExcludeJurisdiction
 	FROM #tmp_GetAllBusinessRules
 	WHERE Skip = 0
+	ORDER BY BusinessRuleID, ProcessOrder
 
 END
