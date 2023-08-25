@@ -136,11 +136,20 @@ BEGIN
 
 		UNION 
 
-		SELECT FSDetailID, 'tblLocation', NULL, TRIM(C.value)  
+		SELECT FSDetailID, 'tblLocationCity', NULL, TRIM(C.value)  
 		  FROM tblFSDetailSetup
 					CROSS APPLY STRING_SPLIT(ExamLocationCity, ',') AS C
 		 WHERE FSHeaderSetupID = @iHdrSetupID
 		   AND C.value IS NOT NULL
+
+		UNION 
+
+		SELECT FSDetailID, 'tblLocationCounty', NULL, TRIM(C.value)  
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(ExamLocationCounty, ',') AS C
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND C.value IS NOT NULL
+
 	
 	-- cleanup Detail table for items no longer part of setup table
 	DELETE tblFSDetail
