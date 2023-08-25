@@ -1,5 +1,12 @@
 -- Sprint 117
 
+-- IMEC-13683 - need a data conversion/update for exisitng entries in tblFSDetailCondition tied to ExamLocation City
+UPDATE tblFSDetailCondition
+   SET ConditionTable = 'tblLocationCity'
+ WHERE ConditionTable = 'tblLocation' 
+   AND ConditionValue IS NOT NULL
+GO
+
 -- IMEC-13607 Guard Business Rules
 -- Distribute Document
 DELETE FROM tblBusinessRuleCondition where BusinessRuleID = 10
