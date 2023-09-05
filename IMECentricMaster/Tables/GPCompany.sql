@@ -20,6 +20,7 @@ CREATE TABLE [dbo].[GPCompany] (
     [SourceID]        INT           NULL,
     [AcctingEmail]    VARCHAR (70)  NULL,
     [EWCompanyTypeID] INT           NULL,
+    [CustomerType]    VARCHAR (100) NULL,
     CONSTRAINT [PK_GPCompany] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
