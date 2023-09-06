@@ -26,6 +26,8 @@ CREATE TABLE [dbo].[tblExternalCommunications]
     [TransmitFileName]  VARCHAR (256)  NULL,
     [AckFileName]       VARCHAR (256)  NULL,
     [BulkBillingID]     INT            NULL,
+    [EntityType] VARCHAR(32) NULL, 
+    [EntityID] VARCHAR(64) NULL, 
     CONSTRAINT [PK_tblExternalCommunications] PRIMARY KEY CLUSTERED ([CommunicationID] ASC)
 )
 
