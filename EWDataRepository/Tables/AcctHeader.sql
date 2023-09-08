@@ -66,6 +66,12 @@
     [CaseDocID]        INT             NULL,
 	[ClientRefNo2]     VARCHAR (50)    NULL,
     [ObjectID]         VARCHAR (30)    NULL,
+    [InsuredName]      VARCHAR (100)   NULL,
+    [CaseName]         VARCHAR (200)   NULL,
+    [LitCaseNo]        VARCHAR (100)   NULL,
+    [LocationName]     VARCHAR (100)   NULL,
+    [LocationState]    VARCHAR (2)     NULL,
+    [LocationType]     VARCHAR (30)    NULL,
     CONSTRAINT [PK_AcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 

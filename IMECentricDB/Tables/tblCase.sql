@@ -472,8 +472,11 @@ CREATE NONCLUSTERED INDEX [IX_tblCase_PlaintiffAttorneyCode]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCase_OfficeCode]
     ON [dbo].[tblCase]([OfficeCode] ASC)
-    INCLUDE([ChartNbr], [DoctorLocation], [ClientCode], [SchedulerCode], [Status], [CaseType], [ApptDate], [ClaimNbr], [PlaintiffAttorneyCode], [DefenseAttorneyCode], [ServiceCode], [DoctorCode], [DoctorSpecialty], [RecCode], [DoctorName], [CertMailNbr], [Jurisdiction], [TransCode], [DefParaLegal], [VenueID], [LanguageID], [ApptStatusID], [CaseApptID], [CertMailNbr2], [ExtCaseNbr], [EmployerID], [EmployerAddressID]);
-
+    INCLUDE([ChartNbr], [DoctorLocation], [ClientCode], [SchedulerCode], [Status], [CaseType], [ApptDate], 
+            [ClaimNbr], [PlaintiffAttorneyCode], [DefenseAttorneyCode], [ServiceCode], [DoctorCode], 
+            [DoctorSpecialty], [RecCode], [DoctorName], [CertMailNbr], [Jurisdiction], [TransCode], [DefParaLegal], 
+            [VenueID], [LanguageID], [ApptStatusID], [CaseApptID], [CertMailNbr2], [ExtCaseNbr], [EmployerID], 
+            [EmployerAddressID], [RPAMedRecRequestDate], [RPAMedRecUploadAckDate], [RPAMedRecUploadStatus]);
 
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCase_DefParaLegal]
@@ -483,4 +486,3 @@ CREATE NONCLUSTERED INDEX [IX_tblCase_DefParaLegal]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCase_DefenseAttorneyCode]
     ON [dbo].[tblCase]([DefenseAttorneyCode] ASC);
-
