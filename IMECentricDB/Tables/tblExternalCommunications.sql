@@ -26,22 +26,17 @@ CREATE TABLE [dbo].[tblExternalCommunications]
     [TransmitFileName]  VARCHAR (256)  NULL,
     [AckFileName]       VARCHAR (256)  NULL,
     [BulkBillingID]     INT            NULL,
-    [EntityType] VARCHAR(2) NULL, 
-    [EntityID] VARCHAR(64) NULL, 
+    [EntityType]        VARCHAR(2)     NULL, 
+    [EntityID]          VARCHAR(64)    NULL, 
+    [DateProcessed]     DATETIME       NULL, 
     CONSTRAINT [PK_tblExternalCommunications] PRIMARY KEY CLUSTERED ([CommunicationID] ASC)
 )
-
-GO
 
 GO
 CREATE NONCLUSTERED INDEX [IX_tblExternalCommunications_CaseNbrCaseHistoryID]
     ON [dbo].[tblExternalCommunications]([CaseNbr] ASC, [CaseHistoryID] ASC);
 
-
-GO
-CREATE NONCLUSTERED INDEX [IX_tblExternalCommunications_BulkBillingIDCommunicationSent]
-    ON [dbo].[tblExternalCommunications]([BulkBillingID] ASC, [CommunicationSent] ASC);
-
 GO 
 CREATE NONCLUSTERED INDEX [IX_tblExternalCommunications_EntityCommunicationSent]
-    ON [dbo].[tblExternalCommunications]([EntityType] ASC, [EntityID] ASC, [CommunicationSent] ASC);
+    ON [dbo].[tblExternalCommunications]([EntityType] ASC, [EntityID] ASC, [DateProcessed] ASC)
+    INCLUDE([CommunicationSent]);
