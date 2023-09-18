@@ -13,3 +13,8 @@ GO
 INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
 VALUES (116, 'PC', 9, 2, 3, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'NewCase;', 'EntityType=PC;EntityID=9', NULL, NULL, NULL, 0, NULL)
 GO
+
+-- IMEC-13820 add new security token for edit doctor notes
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES('DoctorEditNotes', 'Doctor - Edit Notes (Notes/QANotes/RecordReqNotes)', GETDATE())
+GO
