@@ -35,6 +35,7 @@ CREATE TABLE [dbo].[tblWebUser] (
 	[AllowMedIndex]          BIT           CONSTRAINT [DF_tblWebUser_AllowMedIndex] DEFAULT ((0)) NULL,
 	[RecordRetrievalMethod]  INT           CONSTRAINT [DF_tblWebUser_RecordRetrievalMethod] DEFAULT ((0)) NULL,
     [LanguageIDPreference]   INT           CONSTRAINT [DF_tblWebUser_LanguageIDPreference] DEFAULT ((110)) NULL,
+    [MFAEmailAddr]           VARCHAR (70)  NULL,
     CONSTRAINT [PK_tblWebUser] PRIMARY KEY CLUSTERED ([WebUserID] ASC) WITH (FILLFACTOR = 90)
 );
 
