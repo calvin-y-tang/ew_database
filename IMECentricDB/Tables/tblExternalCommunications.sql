@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[tblExternalCommunications]
     [BusUnitGroupID]    INT            NULL,
     [CommunicationSent] DATETIME       NULL,
     [CommunicationAck]  DATETIME       NULL,
-    [LastError]         VARCHAR (1024) NULL,
+    [LastError]         VARCHAR (2048) NULL,
     [Overridden]        BIT            NULL,
     [TransmitFileName]  VARCHAR (256)  NULL,
     [AckFileName]       VARCHAR (256)  NULL,
