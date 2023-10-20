@@ -125,6 +125,7 @@
     [SavedStatus]                  VARCHAR (10)   NULL,
     [OriginalDoctorCode]           INT            NULL,
     [LastCRNFederationDate]        DATETIME       NULL,
+    [CreatedByEmail]               VARCHAR (70)   NULL,
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 
