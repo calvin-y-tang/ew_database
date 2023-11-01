@@ -13,3 +13,11 @@ INSERT INTO IMECentricMaster.dbo.ISQueue (ScheduleID, Name, Task, RunDateTime, P
 Values(@schedID, 'RunSQL - Clear RPA Processing', 'RunSQL', '2023-11-01 00:01:00', 'DBIDs="23;25";SQLFile="E:\EWIntegrationServer\SQLScripts\ClearRPAProcessingQueuesql.sql";EmailAlways=false')
 GO
 
+-- IMEC-13937 - add new report type on Reports tab of case
+USE IMECentricEW
+
+INSERT INTO tblCaseDocType (ShortDesc, Description, TypeCategory, PublishOnWeb, FilterKey)
+Values ('Draft Report', 'Draft Report', 'Report', 1, 'Report')
+
+GO
+
