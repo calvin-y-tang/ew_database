@@ -13,6 +13,19 @@ INSERT INTO IMECentricMaster.dbo.ISQueue (ScheduleID, Name, Task, RunDateTime, P
 Values(@schedID, 'RunSQL - Clear RPA Processing', 'RunSQL', '2023-11-01 00:01:00', 'DBIDs="23;25";SQLFile="E:\EWIntegrationServer\SQLScripts\ClearRPAProcessingQueuesql.sql";EmailAlways=false')
 GO
 
+
+-- IMEC-13910 - RPA Use Case 3 - Progressive Medical Records
+
+UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 2 WHERE Name = 'RPA Ext Doc'
+
+INSERT INTO IMECentricMaster.dbo.ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param, GroupNo, SeqNo)
+VALUES ('RPA Ext Doc - PROG', 'ExtDocIntake', 'm', 5, '1111111', '1900-01-01 01:00:00', '2023-11-01 00:00:00', 
+'IntakeFolderID=10009997;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;"',
+560, 1)
+
+GO
+
+
 -- IMEC-13937 - add new report type on Reports tab of case
 USE IMECentricEW
 
@@ -20,4 +33,6 @@ INSERT INTO tblCaseDocType (ShortDesc, Description, TypeCategory, PublishOnWeb, 
 Values ('Draft Report', 'Draft Report', 'Report', 1, 'Report')
 
 GO
+
+
 
