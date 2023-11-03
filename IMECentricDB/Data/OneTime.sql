@@ -23,7 +23,7 @@ USE IMECentricMaster
 GO
 
 INSERT INTO ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param)
-VALUES ('DeleteDPSFilesCancelledFolder', 'DeleteFiles', 'W', 0, '1111111', '1900-01-01 22:00:00', '2023-10-01 00:00:00', 'SrcPath="\\imecdocs5.ew.domain.local\ISIntegrations\DPS\mi-Clinic\IMEC\Cancelled\";Filename=*.*;DeleteType=1')
+VALUES ('DeleteDPSFilesCancelledFolder', 'DeleteFiles', 'W', 0, '1111111', '1900-01-01 22:00:00', '2023-10-01 00:00:00', 'SrcPath="\\dev4.ew.domain.local\ISIntegrations\DPS\mi-Clinic\IMEC\Cancelled\";Filename=*.*;DeleteType=1')
 
 GO
 
