@@ -13,14 +13,14 @@ INSERT INTO IMECentricMaster.dbo.ISQueue (ScheduleID, Name, Task, RunDateTime, P
 Values(@schedID, 'RunSQL - Clear RPA Processing', 'RunSQL', '2023-11-01 00:01:00', 'DBIDs="23;25";SQLFile="E:\EWIntegrationServer\SQLScripts\ClearRPAProcessingQueuesql.sql";EmailAlways=false')
 GO
 
-
 -- IMEC-13910 - RPA Use Case 3 - Progressive Medical Records
-
-UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 2 WHERE Name = 'RPA Ext Doc'
+USE [IMECentricMaster]
+UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 2 WHERE ScheduleID = 372
+UPDATE IMECentricMaster.dbo.ISQueue SET SeqNo = 2 WHERE ScheduleID = 372
 
 INSERT INTO IMECentricMaster.dbo.ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param, GroupNo, SeqNo)
 VALUES ('RPA Ext Doc - PROG', 'ExtDocIntake', 'm', 5, '1111111', '1900-01-01 01:00:00', '2023-11-01 00:00:00', 
-'IntakeFolderID=10009997;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;"',
+'IntakeFolderID=332;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;"',
 560, 1)
 
 GO
