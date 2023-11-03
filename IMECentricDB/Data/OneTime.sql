@@ -22,17 +22,11 @@ INSERT INTO IMECentricMaster.dbo.ISSchedule (Name, Task, Type, Interval, WeekDay
 VALUES ('RPA Ext Doc - PROG', 'ExtDocIntake', 'm', 5, '1111111', '1900-01-01 01:00:00', '2023-11-01 00:00:00', 
 'IntakeFolderID=332;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;"',
 560, 1)
-
 GO
-
 
 -- IMEC-13937 - add new report type on Reports tab of case
 USE IMECentricEW
 
 INSERT INTO tblCaseDocType (ShortDesc, Description, TypeCategory, PublishOnWeb, FilterKey)
 Values ('Draft Report', 'Draft Report', 'Report', 1, 'Report')
-
 GO
-
-
-
