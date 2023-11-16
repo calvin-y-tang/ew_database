@@ -40,26 +40,22 @@ SELECT  DISTINCT
         CA.DateEdited ,
         CA.UserIDEdited ,
         CA.LastStatusChg ,
+
         CAST(CASE WHEN CA.DoctorCode IS NULL THEN 1 ELSE 0 END AS BIT) AS IsPanel,
-        (STUFF((
-        SELECT '\'+ CAST(DoctorCode AS VARCHAR) FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID
-          FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(100)'),1,1,'')) AS DoctorCodes,
-        (STUFF((
-        SELECT '\'+DoctorName FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID
-          FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(300)'),1,1,'')) AS DoctorNames,
-        (STUFF((
-        SELECT '\'+DoctorNameLF FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID
-          FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(300)'),1,1,'')) AS DoctorNamesLF,
-        (STUFF((
-        SELECT '\'+ SpecialtyCode FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID
-          FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(300)'),1,1,'')) AS Specialties,
-          CA.DateReceived, 
-          FZ.Name AS FeeZoneName,
-		  C.OfficeCode,
-		  CA.AwaitingScheduling
+        
+        (SELECT STRING_AGG(DoctorCode, '\')  FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID) AS DoctorCodes,
+        (SELECT STRING_AGG(DoctorName, '\') FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID) AS DoctorNames,
+        (SELECT STRING_AGG(DoctorNameLF, '\') FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID) AS DoctorNamesLF,
+        (SELECT STRING_AGG(SpecialtyCode, '\') FROM allDoctors WHERE AllDoctors.CaseApptID=CA.CaseApptID) AS Specialties,
+
+        CA.DateReceived, 
+        FZ.Name AS FeeZoneName,
+        C.OfficeCode,
+        CA.AwaitingScheduling
+
      FROM tblCaseAppt AS CA
-	 INNER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr
-     INNER JOIN tblApptStatus AS S ON CA.ApptStatusID = S.ApptStatusID
-     LEFT OUTER JOIN tblCanceledBy AS CB ON CA.CanceledByID=CB.CanceledByID
-     LEFT OUTER JOIN tblLocation AS L ON CA.LocationCode=L.LocationCode
-     LEFT OUTER JOIN tblEWFeeZone AS FZ ON CA.EWFeeZoneID = FZ.EWFeeZoneID
+	        INNER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr
+            INNER JOIN tblApptStatus AS S ON CA.ApptStatusID = S.ApptStatusID
+            LEFT OUTER JOIN tblCanceledBy AS CB ON CA.CanceledByID=CB.CanceledByID
+            LEFT OUTER JOIN tblLocation AS L ON CA.LocationCode=L.LocationCode
+            LEFT OUTER JOIN tblEWFeeZone AS FZ ON CA.EWFeeZoneID = FZ.EWFeeZoneID
