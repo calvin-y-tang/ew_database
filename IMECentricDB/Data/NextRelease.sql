@@ -1,6 +1,8 @@
--- Sprint 122
+-- Sprint 123
 
--- IMEC-13839 - new setting to configure a delay that is applied when inserting logo into header of an Invoice 
-INSERT INTO tblSetting (Name, Value)
-VALUES('WordAutomationLogoInsertDelay', '500')
+
+-- IMEC-13930 - O365 Changes for Xmedius Faxing feature.
+INSERT INTO tblSetting(Name, Value)
+VALUES('FaxSysFormat', 'Default'),
+      ('FaxPhonePrefix','91')
 GO

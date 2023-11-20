@@ -65,7 +65,7 @@
     [DirVoicePlayer]            VARCHAR (70)     NULL,
     [DirIMECentricHelper]       VARCHAR (70)     NULL,
     [CbxWaitInterval]           INT              NULL,
-    [XMediusFaxPrefix]          VARCHAR (10)     NULL,
+    [XMediusFaxPrefix]          VARCHAR (32)     NULL,
     [UseUDF]                    BIT              CONSTRAINT [DF_tblControl_UseUDF] DEFAULT ((0)) NOT NULL,
     [NewReferralStatusCode]     INT              CONSTRAINT [DF_tblControl_NewReferralStatusCode] DEFAULT ((10)) NOT NULL,
     [EWTimeZoneID]              INT              NULL,
