@@ -83,6 +83,7 @@
     [TaxHandling]           INT             NULL,
     [InNetwork]             BIT             NULL,
     [OutOfNetworkReasonID]  INT             NULL,
+    [InvTaxCalcMethod]      INT             CONSTRAINT [DF_tblAcctHeader_InvTaxCalcMethod] DEFAULT (0) NULL,
     CONSTRAINT [PK_tblAcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 
