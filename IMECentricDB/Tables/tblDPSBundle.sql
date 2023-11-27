@@ -34,6 +34,7 @@
     [DPSBundleTypeID]     INT           NULL,
     [CaseData]            VARCHAR (MAX) NULL,
     [CancelReason]        VARCHAR (100) NULL,
+    [UserIDAcknowledged]  VARCHAR (15)  NULL,
     CONSTRAINT [PK_tblDPSBundle] PRIMARY KEY CLUSTERED ([DPSBundleID] ASC)
 );
 
