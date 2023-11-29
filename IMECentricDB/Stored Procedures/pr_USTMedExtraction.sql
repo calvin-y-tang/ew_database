@@ -180,40 +180,40 @@ SELECT * into #Temp_RPACasesToPull from (
 		
 	) as Tmp
 
-	Select 
-	SystemKeyVal,
-	Keyword,
-	Jurisdiction,
-	Claim#,
-	AltCaseIds,
-	ClaimantFirstName,
-	ClaimantLastName,
-	ExamDate,
-	Case when CurrentCaseLastDownload <> '01/01/1900' then CurrentCaseLastDownload
-		 when mastercasenbr is not null and service = 'Re-Evaluation' and PreviousCaseLastDownload is not null then PreviousCaseLastDownload
---		 when mastercasenbr is not null and service = 'Re-Evaluation' and  PreviousCaseApptDate is not null then PreviousCaseApptDate
-	else '01/01/1900'
-	end as StartDate,
+	-- remove the unwanted records from the temp table before we return the final result and update 
+	DELETE FROM #Temp_RPACasesToPull WHERE ((keyword = 'ICASE') and (ISNULL(TRIM(ReferralID), '') = ''))
 
-	isnull(ReferralID,'') as ReferralID,
-	CustomerURL,
-	EmailAlertTo,
-	Office
-	--,mapping1
-	--,DaysInAdvance
-	--,SelectDate
-	--,Service
-	
+	SELECT
+		SystemKeyVal,
+		Keyword,
+		Jurisdiction,
+		Claim#,
+		AltCaseIds,
+		ClaimantFirstName,
+		ClaimantLastName,
+		ExamDate,
+		Case when CurrentCaseLastDownload <> '01/01/1900' then CurrentCaseLastDownload
+			 when mastercasenbr is not null and service = 'Re-Evaluation' and PreviousCaseLastDownload is not null then PreviousCaseLastDownload
+	--		 when mastercasenbr is not null and service = 'Re-Evaluation' and  PreviousCaseApptDate is not null then PreviousCaseApptDate
+		else '01/01/1900'
+		end as StartDate,
+		isnull(ReferralID,'') as ReferralID,
+		CustomerURL,
+		EmailAlertTo,
+		Office
+		--,mapping1
+		--,DaysInAdvance
+		--,SelectDate
+		--,Service
+	from #Temp_RPACasesToPull	
+	Order by BaseUtcOffsetSec desc, Mapping1 desc	
 
-from #Temp_RPACasesToPull
-where not ((keyword = 'ICASE') and (ISNULL(TRIM(ReferralID), '') = ''))
-Order by BaseUtcOffsetSec desc, Mapping1 desc
-
-update c
-	set RPAMedRecRequestDate = getdate(),
-	    RPAMedRecUploadStatus = 'Processing'
-	From tblcase c
-	inner join #Temp_RPACasesToPull rpa on rpa.casenbr = c.casenbr
+	-- update records
+	UPDATE c
+		set RPAMedRecRequestDate = getdate(),
+			RPAMedRecUploadStatus = 'Processing'
+		From tblcase c
+		inner join #Temp_RPACasesToPull rpa on rpa.casenbr = c.casenbr
 
 END
 GO
