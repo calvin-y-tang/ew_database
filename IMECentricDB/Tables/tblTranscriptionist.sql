@@ -9,6 +9,7 @@ CREATE TABLE [dbo].[tblTranscriptionist] (
 	[UserIDAdded]        VARCHAR (15) NULL,
 	[UserIDEdited]       VARCHAR (15) NULL,
 	[TransCode]          INT          NULL,
+	[WebUserID]          INT          NULL,
     CONSTRAINT [PK_tblTranscriptionist] PRIMARY KEY CLUSTERED ([TranscriptionistID] ASC) WITH (FILLFACTOR = 90),
 	CONSTRAINT [FK_tblTranscriptionist_tblTranscription] FOREIGN KEY ([TransCode]) REFERENCES [dbo].[tblTranscription] ([TransCode])
 );
@@ -21,6 +22,10 @@ CREATE NONCLUSTERED INDEX [IX_tblTranscriptionist_Email]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblTranscriptionist_TranscriptionistID]
     ON [dbo].tblTranscriptionist(TranscriptionistID ASC);
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblTranscriptionist_WebUserID]
+    ON [dbo].tblTranscriptionist(WebUserID ASC);
 
 GO
 CREATE NONCLUSTERED INDEX [IX_tblTranscriptionist_TransCode]
