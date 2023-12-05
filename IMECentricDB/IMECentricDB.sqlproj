@@ -1159,6 +1159,7 @@
     <Build Include="Views\vwMedRecCases.sql" />
     <Build Include="Stored Procedures\pr_USTMedExtraction.sql" />
     <Build Include="Stored Procedures\sp_CreateExternalCommunications.sql" />
+    <Build Include="Tables\tblTranscriptionist.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
