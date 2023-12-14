@@ -3,7 +3,7 @@
 
 -- IMEC-13883 - Allow multiple transcriptionist - setting to set subform visibility
 INSERT INTO tblSetting (Name, Value)
-VALUES ('ShowTranscriptionists', 'True')
+VALUES ('ShowTranscriptionists', 'False')
 GO
 
 -- IMEC-13883 - Data patch to copy trans companies to transcriptionist
