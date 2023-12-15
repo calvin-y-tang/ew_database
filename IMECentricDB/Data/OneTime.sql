@@ -15,3 +15,16 @@ USE CustomRepository
 ALTER TABLE SedgwickClaimRecord 
 ADD ClaimantWorkPhone VARCHAR(20) NULL, ClaimantMobilePhone VARCHAR(20) NULL
 GO
+
+-- IMEC-13966 - enhance CRN Mapping to be DB Specific; include support for EW & FCE DBs
+ALTER TABLE IMECentricMaster.dbo.ISMapping add DBID INT NULL
+GO
+UPDATE IMECentricMaster.dbo.ISMapping 
+   SET DBID = 23
+ WHERE MappingName <> 'systemid' and MappingType = 'CRN'
+GO
+INSERT INTO IMECentricMaster.dbo.ISMapping(MappingType, MappingName, SrcValue, SrcDescrip, DstValue, DstDescrip, DBID)
+     SELECT MappingType, MappingName, SrcValue, SrcDescrip, DstValue, DstDescrip, 25
+       FROM IMECentricMaster.dbo.ISMapping 
+      WHERE DBID = 23
+ GO

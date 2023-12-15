@@ -7,6 +7,7 @@
 	[SrcDescrip]  [varchar](500) NULL,
 	[DstValue]    [varchar](500) NULL,
 	[DstDescrip]  [varchar](500) NULL,
+	[DBID]        INT            NULL,
     CONSTRAINT [PK_ISMapping] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 
