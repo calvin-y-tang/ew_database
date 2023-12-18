@@ -28,3 +28,10 @@ INSERT INTO IMECentricMaster.dbo.ISMapping(MappingType, MappingName, SrcValue, S
        FROM IMECentricMaster.dbo.ISMapping 
       WHERE DBID = 23
  GO
+
+ -- IMEC-13883 - Allow multiple transcriptionist - clean up tblWebUser of orphaned transcription companys
+DELETE FROM tblWebUser WHERE WebuserID IN 
+ (SELECT W.WebUserID FROM tblWebUser AS W
+  LEFT JOIN tblTranscription AS T ON W.IMECentricCode = T.TransCode
+  WHERE (W.UserType = 'TR' AND W.WebUserID <> T.WebUserID) OR (W.UserType = 'TR' AND W.WebUserID IS NOT NULL AND T.WebUserID IS NULL))
+GO
