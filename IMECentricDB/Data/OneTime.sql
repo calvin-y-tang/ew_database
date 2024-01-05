@@ -9,6 +9,10 @@ INSERT INTO ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, P
 VALUES ('RPA Ext Doc - Liberty', 'ExtDocIntake', 'm', 5, '1111111', '1900-01-01 01:00:00', '2024-01-01 00:00:00', 
 'IntakeFolderID=332;FileNameFormat=dbid-intrnlCaseNbr-keyword-datetime-casedoctypename-status;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*LibertyiCase*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription="Meds Uploaded";AdditionalActions="RPA=UpdateCaseForRPA;Email1=EmailForCaseNbrErr;"',
 560, 4)
-
-
 GO
+
+-- IMEC-13980 - Update RPA task for Progressive to add an extra Action to email someone when there is a problem
+UPDATE ISSchedule SET Param = 'IntakeFolderID=332;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;Email=EmailForCaseNbrErr;"' 
+WHERE ScheduleID = 377
+GO
+
