@@ -10,3 +10,8 @@ INSERT INTO tblSetting (Name, Value)
 VALUES ('EmailForCaseNbrErr_RPA_Prog', 'william.cecil@examworks.com;liabilitydocuments@examworks.com')
 GO
 
+-- IMEC-12979 - Add setting for the number of times the code tries to copy the documents before failing
+INSERT INTO tblSetting (Name, Value)
+VALUES ('EnvelopRecopyAttemptCount', '3')
+GO
+
