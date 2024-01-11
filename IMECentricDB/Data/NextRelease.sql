@@ -16,6 +16,7 @@ VALUES ('EnvelopRecopyAttemptCount', '3')
 GO
 
 -- IMEC-13610 - data patch for Liberty referrals missing NotiCaseReferral data in tblCustomerData.Param
+USE IMECentricEW
 UPDATE tblCustomerData SET Param = Param + ';NotiCaseReferral="0"'
 WHERE TableType = 'tblCase' AND CustomerName = 'Liberty Mutual' AND Param NOT LIKE '%NotiCase%'
 GO
