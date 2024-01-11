@@ -1,5 +1,13 @@
 ﻿-- Sprint 127
 
+
+-- IMEC-13610 - data patch for Liberty referrals missing NotiCaseReferral data in tblCustomerData.Param
+USE [IMECentricEW]
+UPDATE tblCustomerData SET Param = Param + ';NotiCaseReferral="0"'
+WHERE TableType = 'tblCase' AND CustomerName = 'Liberty Mutual' AND Param NOT LIKE '%NotiCase%'
+GO
+
+
 -- IMEC-13994 - RPA LibertyiCase updates - add entry for documents
 USE [IMECentricMaster]
 UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 6 WHERE ScheduleID = 381
