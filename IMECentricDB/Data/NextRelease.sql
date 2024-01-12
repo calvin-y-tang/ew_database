@@ -1,17 +1,17 @@
--- Sprint 125
+-- Sprint 127
 
-
--- IMEC-13883 - Allow multiple transcriptionist - setting to set subform visibility
+-- IMEC-13994 - Add email address for when RPA document intake errors occur with referral numbers
 INSERT INTO tblSetting (Name, Value)
-VALUES ('ShowTranscriptionists', 'False')
+VALUES ('EmailForRefrlErr_RPA_Liberty', 'william.cecil@examworks.com')
 GO
 
--- IMEC-13883 - Data patch to copy trans companies to transcriptionist
-SET IDENTITY_INSERT tblTranscriptionist ON
-INSERT INTO tblTranscriptionist (TranscriptionistID, FirstName, LastName, Email, Status, DateAdded, UserIDAdded, TransCode, WebUserID)
-SELECT TransCode, '.', TransCompany, email, Status, GETDATE(), 'Admin', TransCode,  T.WebUserID 
-FROM tblTranscription AS T 
-LEFT JOIN tblWebUser AS W ON T.WebUserID = W.WebUserID
-SET IDENTITY_INSERT tblTranscriptionist OFF
+-- IMEC-13980 - Add email address for when RPA document intake errors occur with case numbers for Progressive
+INSERT INTO tblSetting (Name, Value)
+VALUES ('EmailForCaseNbrErr_RPA_Prog', 'william.cecil@examworks.com;liabilitydocuments@examworks.com')
+GO
+
+-- IMEC-12979 - Add setting for the number of times the code tries to copy the documents before failing
+INSERT INTO tblSetting (Name, Value)
+VALUES ('EnvelopRecopyAttemptCount', '3')
 GO
 

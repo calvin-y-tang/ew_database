@@ -372,6 +372,11 @@ CREATE NONCLUSTERED INDEX [IX_tblCase_ClaimNbr]
 
 
 GO
+CREATE NONCLUSTERED INDEX [IX_tblCase_SInternalCaseNbr]
+    ON [dbo].[tblCase]([SInternalCaseNbr] ASC);
+
+
+GO
 CREATE NONCLUSTERED INDEX [IX_tblCase_ChartNbr]
     ON [dbo].[tblCase]([ChartNbr] ASC);
 

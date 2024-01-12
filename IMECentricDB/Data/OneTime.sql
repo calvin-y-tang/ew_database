@@ -1,37 +1,26 @@
-﻿-- Sprint 124
+﻿-- Sprint 127
 
---IMEC-13955 - RPA Update Meds Type when medical records received - adding more mappins for possible file name variations
-USE IMECentricMaster
 
-INSERT INTO ISMapping (MappingType, MappingName, SrcValue, SrcDescrip, DstValue, DstDescrip)
-VALUES 
-  ('ExtDocIntake', 'CaseDocType', 0, 'Med Records', 7, 'Medical Record'),
-  ('ExtDocIntake', 'CaseDocType', 0, 'MedRecords', 7, 'Medical Record'),
-  ('ExtDocIntake', 'CaseDocType', 0, 'Med Record', 7, 'Medical Record')
+-- IMEC-13610 - data patch for Liberty referrals missing NotiCaseReferral data in tblCustomerData.Param
+USE [IMECentricEW]
+UPDATE tblCustomerData SET Param = Param + ';NotiCaseReferral="0"'
+WHERE TableType = 'tblCase' AND CustomerName = 'Liberty Mutual' AND Param NOT LIKE '%NotiCase%'
 GO
 
---IMEC-13957 - add columns for claimant mobile and work phone numbers
-USE CustomRepository
-ALTER TABLE SedgwickClaimRecord 
-ADD ClaimantWorkPhone VARCHAR(20) NULL, ClaimantMobilePhone VARCHAR(20) NULL
+
+-- IMEC-13994 - RPA LibertyiCase updates - add entry for documents
+USE [IMECentricMaster]
+UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 6 WHERE ScheduleID = 381
+UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 5 WHERE ScheduleID = 372
+
+INSERT INTO ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param, GroupNo, SeqNo)
+VALUES ('RPA Ext Doc - Liberty', 'ExtDocIntake', 'm', 5, '1111111', '1900-01-01 01:00:00', '2024-01-01 00:00:00', 
+'IntakeFolderID=332;FileNameFormat=dbid-intrnlCaseNbr-keyword-datetime-casedoctypename-status;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*LibertyiCase*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription="Meds Uploaded";AdditionalActions="RPA=UpdateCaseForRPA;Email1=EmailForCaseNbrErr;"',
+560, 4)
 GO
 
--- IMEC-13966 - enhance CRN Mapping to be DB Specific; include support for EW & FCE DBs
-ALTER TABLE IMECentricMaster.dbo.ISMapping add DBID INT NULL
+-- IMEC-13980 - Update RPA task for Progressive to add an extra Action to email someone when there is a problem
+UPDATE ISSchedule SET Param = 'IntakeFolderID=332;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;Email=EmailForCaseNbrErr;"' 
+WHERE ScheduleID = 377
 GO
-UPDATE IMECentricMaster.dbo.ISMapping 
-   SET DBID = 23
- WHERE MappingName <> 'systemid' and MappingType = 'CRN'
-GO
-INSERT INTO IMECentricMaster.dbo.ISMapping(MappingType, MappingName, SrcValue, SrcDescrip, DstValue, DstDescrip, DBID)
-     SELECT MappingType, MappingName, SrcValue, SrcDescrip, DstValue, DstDescrip, 25
-       FROM IMECentricMaster.dbo.ISMapping 
-      WHERE DBID = 23
- GO
 
- -- IMEC-13883 - Allow multiple transcriptionist - clean up tblWebUser of orphaned transcription companys
-DELETE FROM tblWebUser WHERE WebuserID IN 
- (SELECT W.WebUserID FROM tblWebUser AS W
-  LEFT JOIN tblTranscription AS T ON W.IMECentricCode = T.TransCode
-  WHERE (W.UserType = 'TR' AND W.WebUserID <> T.WebUserID) OR (W.UserType = 'TR' AND W.WebUserID IS NOT NULL AND T.WebUserID IS NULL))
-GO
