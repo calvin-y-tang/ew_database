@@ -1,17 +1,6 @@
--- Sprint 127
+-- Sprint 128
 
--- IMEC-13994 - Add email address for when RPA document intake errors occur with referral numbers
-INSERT INTO tblSetting (Name, Value)
-VALUES ('EmailForRefrlErr_RPA_Liberty', 'william.cecil@examworks.com')
-GO
-
--- IMEC-13980 - Add email address for when RPA document intake errors occur with case numbers for Progressive
-INSERT INTO tblSetting (Name, Value)
-VALUES ('EmailForCaseNbrErr_RPA_Prog', 'william.cecil@examworks.com;liabilitydocuments@examworks.com')
-GO
-
--- IMEC-12979 - Add setting for the number of times the code tries to copy the documents before failing
-INSERT INTO tblSetting (Name, Value)
-VALUES ('EnvelopRecopyAttemptCount', '3')
+-- IMEC-13688 - add new Liberty company to tblCodes
+ INSERT INTO tblCodes ([Category], [SubCategory], [Value]) VALUES ('LibertyMutual', 'LibertyMarket', 'IronShore') 
 GO
 
