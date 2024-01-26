@@ -1,26 +1,32 @@
-﻿-- Sprint 127
+﻿-- Sprint 128
 
-
--- IMEC-13610 - data patch for Liberty referrals missing NotiCaseReferral data in tblCustomerData.Param
-USE [IMECentricEW]
-UPDATE tblCustomerData SET Param = Param + ';NotiCaseReferral="0"'
-WHERE TableType = 'tblCase' AND CustomerName = 'Liberty Mutual' AND Param NOT LIKE '%NotiCase%'
+-- IMEC-14003 - adding new conditions for existing Business Rule.
+USE IMECentricEW 
+INSERT INTO tblBusinessRuleCondition (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+     SELECT BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, GETDATE(), 'Admin', GETDATE(), 'Admin', OfficeCode, 2, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6
+     FROM tblBusinessRuleCondition
+     WHERE BusinessRuleID = 130
+     and ((EntityType = 'PC' and EntityID = 324) or EntityType = 'CO')
+     and EWBusLineID = 1
 GO
-
-
--- IMEC-13994 - RPA LibertyiCase updates - add entry for documents
-USE [IMECentricMaster]
-UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 6 WHERE ScheduleID = 381
-UPDATE IMECentricMaster.dbo.ISSchedule SET SeqNo = 5 WHERE ScheduleID = 372
-
-INSERT INTO ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param, GroupNo, SeqNo)
-VALUES ('RPA Ext Doc - Liberty', 'ExtDocIntake', 'm', 5, '1111111', '1900-01-01 01:00:00', '2024-01-01 00:00:00', 
-'IntakeFolderID=332;FileNameFormat=dbid-intrnlCaseNbr-keyword-datetime-casedoctypename-status;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*LibertyiCase*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription="Meds Uploaded";AdditionalActions="RPA=UpdateCaseForRPA;Email1=EmailForCaseNbrErr;"',
-560, 4)
+INSERT INTO tblBusinessRuleCondition (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+     SELECT BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, GETDATE(), 'Admin', GETDATE(), 'Admin', OfficeCode, 4, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6
+     FROM tblBusinessRuleCondition
+     WHERE BusinessRuleID = 130
+     and ((EntityType = 'PC' and EntityID = 324) or EntityType = 'CO')
+     and EWBusLineID = 1
 GO
-
--- IMEC-13980 - Update RPA task for Progressive to add an extra Action to email someone when there is a problem
-UPDATE ISSchedule SET Param = 'IntakeFolderID=332;FileNameFormat=dbid-casenbr-keyword-description;CreateCaseDocumentFolders=true;DefaultUserID=RPA;FileMask=*PROG*.PDF;EventDesc="Document Uploaded";CaseDocTypeID=7;CaseHistoryType="Records";DocumentDescription=@description@;AdditionalActions="RPA=UpdateCaseForRPA;Email=EmailForCaseNbrErr;"' 
-WHERE ScheduleID = 377
+INSERT INTO tblBusinessRuleCondition (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+     SELECT BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, GETDATE(), 'Admin', GETDATE(), 'Admin', OfficeCode, 5, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6
+     FROM tblBusinessRuleCondition
+     WHERE BusinessRuleID = 130
+     and ((EntityType = 'PC' and EntityID = 324) or EntityType = 'CO')
+     and EWBusLineID = 1
 GO
-
+INSERT INTO tblBusinessRuleCondition (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+     SELECT BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, GETDATE(), 'Admin', GETDATE(), 'Admin', OfficeCode, 999, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6
+     FROM tblBusinessRuleCondition
+     WHERE BusinessRuleID = 130
+     and ((EntityType = 'PC' and EntityID = 324) or EntityType = 'CO')
+     and EWBusLineID = 1
+GO
