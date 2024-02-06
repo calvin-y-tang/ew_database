@@ -35,3 +35,16 @@ USE IMECentricEW
            (111, 'CO', 70428, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, '2', 'Atlanta_region_WC_Claims@Chubb.com', NULL, 'Appointment Delay', NULL, 0, NULL)
 
 GO
+
+
+-- IMEC-14033 - Track Liberty iCase referrals and resubmit files in Exception folder to Inbox folder
+-- created a new task to run to do this
+
+USE IMECentricMaster 
+
+INSERT INTO ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param, GroupNo, SeqNo)
+VALUES ('ExcptnDocReprocess - Liberty', 'ExcptnDocReprocessing', 'm', 30, '0111110', '1900-01-01 01:00:00', '2024-02-01 00:00:00', 
+'InboxFolderID=10009997;MaxRetries=3;RetryMinutes=20;SearchPattern="*LibertyiCase*.PDF"',
+570, 1)
+
+GO
