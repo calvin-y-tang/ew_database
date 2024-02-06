@@ -234,5 +234,6 @@
     <Build Include="Tables\WebSupportRequest.sql" />
     <Build Include="Tables\GPCompanyPrepay.sql" />
     <Build Include="Tables\ISMapping.sql" />
+    <Build Include="Tables\ISExcptnDocReprocessingLog.sql" />
   </ItemGroup>
 </Project>
