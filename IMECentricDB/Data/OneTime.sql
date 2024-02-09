@@ -41,10 +41,31 @@ GO
 -- created a new task to run to do this
 
 USE IMECentricMaster 
-
+GO
 INSERT INTO ISSchedule (Name, Task, Type, Interval, WeekDays, Time, StartDate, Param, GroupNo, SeqNo)
-VALUES ('ExcptnDocReprocess - Liberty', 'ExcptnDocReprocessing', 'm', 30, '0111110', '1900-01-01 01:00:00', '2024-02-01 00:00:00', 
-'InboxFolderID=10009997;MaxRetries=3;RetryMinutes=20;SearchPattern="*LibertyiCase*.PDF"',
+VALUES ('ExcptnDocReprocess - Liberty', 'ExcptnDocReprocessing', 'H', 2, '1111111', '1900-01-01 01:00:00', '2024-02-01 00:00:00', 
+'InboxFolderID=341;MaxRetries=3;RetryMinutes=120;SearchPattern="*LibertyiCase*.PDF"',
 570, 1)
+GO
+
+
+USE IMECentricMaster 
+GO
+CREATE TABLE [dbo].[ISExcptnDocReprocessingLog](
+	[ReprocessingLogID] INT             IDENTITY(1, 1) NOT FOR REPLICATION NOT NULL,
+	[MaxTimesRetry]     INT             NULL,
+	[AttemptNumber]     INT             NULL,
+	[AttemptTime]       SMALLDATETIME   NULL,
+	[FileName]          VARCHAR (200)   NULL,
+	[ExceptionFolder]   VARCHAR (300)   NULL,
+	[InboxFolder]       VARCHAR (300)   NULL,
+	[InboxFolderID]     INT             NULL,
+    CONSTRAINT [PK_ISExcptnDocReprocessingLog] PRIMARY KEY CLUSTERED ([ReprocessingLogID] ASC) WITH (FILLFACTOR = 90)
+);
 
 GO
+
+CREATE INDEX [IX_ISExcptnDocReprocessingLog_FileName_InboxFolderID] ON [dbo].[ISExcptnDocReprocessingLog] ([FileName], [InboxFolderID])
+
+GO
+
