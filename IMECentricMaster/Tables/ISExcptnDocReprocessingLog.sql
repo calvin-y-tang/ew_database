@@ -11,3 +11,7 @@ CREATE TABLE [dbo].[ISExcptnDocReprocessingLog](
     CONSTRAINT [PK_ISExcptnDocReprocessingLog] PRIMARY KEY CLUSTERED ([ReprocessingLogID] ASC) WITH (FILLFACTOR = 90)
 );
 
+
+GO
+
+CREATE INDEX [IX_ISExcptnDocReprocessingLog_FileName_InboxFolderID] ON [dbo].[ISExcptnDocReprocessingLog] ([FileName], [InboxFolderID])
