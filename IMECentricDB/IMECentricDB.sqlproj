@@ -804,7 +804,7 @@
     <Build Include="Stored Procedures\proc_ProviderType_LoadAll.sql" />
     <Build Include="Stored Procedures\proc_tblExamineeInsert.sql" />
     <Build Include="Stored Procedures\web_GetCaseDocumentPath.sql" />
-    <None Include="Data\NextRelease.sql" />
+    <None Include="Data\All_IMEC_NextRelease.sql" />
     <Build Include="Tables\tblExceptionDefOffice.sql" />
     <Build Include="Tables\tblExceptionDefEntity.sql" />
     <Build Include="Tables\tblCompanyCPTCode.sql" />
@@ -1166,8 +1166,8 @@
     <None Include="Compare\IMECentricDevelopment.scmp" />
     <None Include="Snapshots\CustomRepository.dacpac" />
     <None Include="Compare\DefaultCompareOptions.scmp" />
-    <None Include="Data\OneTime.sql" />
-    <None Include="Data\FutureRelease.sql" />
+    <None Include="Data\Single_IMEC_NextRelease.sql" />
+    <None Include="Data\MasterNextRelease.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\110\SqlSchemas\master.dacpac">
