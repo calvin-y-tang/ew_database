@@ -25,6 +25,7 @@
 	[ExternalDueDateType]	INT	CONSTRAINT [DF_tblServiceWorkflow_ExternalDueDateType]  DEFAULT 1 NOT NULL,
 	[DoctorRptDueDateType]	INT	CONSTRAINT [DF_tblServiceWorkflow_DoctorRptDueDateType]  DEFAULT 1 NOT NULL,
 	[ForecastDateType]		INT	CONSTRAINT [DF_tblServiceWorkflow_ForecastDateType]  DEFAULT 1 NOT NULL,
+    [WcCaseTypeRqd]         BIT          CONSTRAINT [DF_tblServiceWorkflow_WcCaseTypeRqd] DEFAULT ((0)) NULL, 
     CONSTRAINT [PK_tblServiceWorkflow] PRIMARY KEY CLUSTERED ([ServiceWorkflowID] ASC)
 );
 

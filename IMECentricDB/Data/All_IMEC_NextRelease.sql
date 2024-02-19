@@ -41,3 +41,6 @@
 
 GO
 
+-- IMEC-14047 - Data Patch for new required service workflow variable WC Case Type - set default value to 0
+  UPDATE tblServiceWorkflow SET WcCaseTypeRqd = 0
+  GO
