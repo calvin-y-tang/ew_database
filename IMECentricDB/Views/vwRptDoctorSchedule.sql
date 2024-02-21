@@ -4,6 +4,7 @@ AS
             CA.DoctorCode ,            
 			CA.LocationCode ,
             CAST(CAST(CA.ApptTime AS DATE) AS DATETIME) AS Date,
+			DATENAME(WEEKDAY, CAST(CAST(CA.ApptTime AS DATE) AS DATETIME))  AS DayOfWeekName,
             CA.ApptTime AS StartTime, 
 
             C.CaseNbr , 
