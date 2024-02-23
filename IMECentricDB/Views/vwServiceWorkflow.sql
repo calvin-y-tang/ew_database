@@ -38,7 +38,8 @@ AS
 		WF.UsePeerBill,
 		S.ProdCode, 
 		CT.EWBusLineID, 
-		S.EWServiceTypeID
+		S.EWServiceTypeID,
+        WF.WcCaseTypeRqd
     FROM
         tblServiceWorkflow AS WF
     INNER JOIN tblCaseType AS CT ON WF.CaseType=CT.Code
