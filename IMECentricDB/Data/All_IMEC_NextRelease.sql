@@ -23,3 +23,8 @@ and (C.ApptDate <= '2024-02-29 00:00:00.000' OR C.DateMedsRecd <= '2024-02-29 00
 
 GO
 
+-- IMEC-12294 - data patch for tblExaminee gender
+UPDATE tblExaminee SET Sex = 'Male' WHERE Sex = 'M'
+UPDATE tblExaminee SET Sex = 'Female' WHERE Sex = 'F'
+
+GO
