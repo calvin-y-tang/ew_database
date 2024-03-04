@@ -79,6 +79,8 @@ AS
             tblExaminee.TreatingPhysicianCredentials AS TreatingPhysicianDegree ,
 			tblExaminee.TreatingPhysicianNPINbr,
 
+            -- todojp:
+            tblEmployer.EWParentEmployerID, 
 			(Case ISNULL(tblcase.EmployerID, 0)
               WHEN 0
               THEN tblExaminee.Employer  
@@ -477,6 +479,8 @@ AS
 			tblCase.CaseCaption, 
 			tblCase.LitigationNotes, 
 			tblCase.BillClientCode,
+            -- TODOJP:
+            tblCase.WorkCompCaseType, 
 			tblEWParentCompany.Name AS ParentCompanyName
 
     FROM    tblCase

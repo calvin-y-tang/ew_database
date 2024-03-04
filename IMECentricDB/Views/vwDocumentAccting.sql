@@ -81,6 +81,8 @@ AS
             tblExaminee.TreatingPhysicianCredentials AS TreatingPhysicianDegree ,
 			tblExaminee.TreatingPhysicianNPINbr,
 
+            -- TODOJP:
+            tblEmployer.EWParentEmployerID, 
 			(Case ISNULL(tblcase.EmployerID, 0)
               WHEN 0
               THEN tblExaminee.Employer  
@@ -312,6 +314,8 @@ AS
 			tblCase.ICDCodeK ,
 			tblCase.ICDCodeL ,
 			tblCase.DoctorRptDueDate , 
+            -- TODOJP:
+            tblCase.WorkCompCaseType,
 
             'Dear ' + tblDoctor.firstName + ' ' + tblDoctor.lastName + ', ' + ISNULL(tblDoctor.credentials, '') AS DoctorSalutation ,
             tblDoctor.Notes AS DoctorNotes ,
