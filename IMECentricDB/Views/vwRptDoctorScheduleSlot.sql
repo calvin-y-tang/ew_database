@@ -4,6 +4,7 @@ AS
             BTD.DoctorCode,            
 			BTD.LocationCode,
             BTD.ScheduleDate AS Date,
+			DATENAME(WEEKDAY, CAST(CAST(BTS.StartTime AS DATE) AS DATETIME))  AS DayOfWeekName,
 			BTS.StartTime AS StartTime, 
 
             NULL AS CaseNbr , 
