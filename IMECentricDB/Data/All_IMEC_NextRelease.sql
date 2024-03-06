@@ -28,3 +28,30 @@ UPDATE tblExaminee SET Sex = 'Male' WHERE Sex = 'M'
 UPDATE tblExaminee SET Sex = 'Female' WHERE Sex = 'F'
 
 GO
+
+-- IMEC-14076 - Business Rules to drive new "WCCaseTypeAddressee" bookmark
+UPDATE tblBusinessRule
+  SET EventID = 1201
+WHERE Name = 'DynamicBookmarks'
+GO
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+VALUES (134, 'CAWCCaseType', 'Case', 'Generate Table for WCCaseTypeAddressee bookmark', 1, 1201, 0, 'WCCaseTypeValue', 'PAttyCompStartWith', 'EntitiesCompNoMatch', 'EntitiesCompMatch', 'EntitiesNoComp', 0, NULL)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'AME', 'DEU-;DEU -', 'Client;Plaintiff;Defense;ThirdParty', 'Client;Plaintiff;Examinee;Defense;ThirdParty', NULL, 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'AME-S', 'DEU-;DEU -', 'Client;Plaintiff;Defense;ThirdParty', 'Client;Plaintiff;Examinee;Defense;ThirdParty', NULL, 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'AME-R', NULL, NULL, NULL, 'Client;Plaintiff;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'A-QME', NULL, NULL, NULL, 'Client;Plaintiff', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'DCD', NULL, NULL, NULL, 'Client;Plaintiff;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'D-QME', NULL, NULL, NULL,'Client;Defense', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'IME-ADR', NULL, NULL, NULL, 'Client;Plaintiff;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'IME-LSH', NULL, NULL, NULL, 'Client;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'IME-SIBTF', NULL, NULL, NULL, 'Client;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'IME-SIBTF-S', NULL, NULL, NULL, 'Client;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'P/U-QMEE', 'DEU-;DEU -', 'Client;Examinee;Defense', 'Client;Examinee;Plaintiff;Defense', NULL, 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'P/U-QME-R', 'DEU-;DEU -', 'Client;Examinee;Defense', 'Client;Examinee;Plaintiff;Defense', NULL, 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'P/U-QME-S', 'DEU-;DEU -', 'Client;Examinee;Defense', 'Client;Examinee;Plaintiff;Defense', NULL, 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'R-PQME', NULL, NULL, NULL, 'Client;Plaintiff;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'R-PQME-R', NULL, NULL, NULL, 'Client;Plaintiff;Defense;ThirdParty', 0, NULL),
+       (134, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'R-PQME-S', NULL, NULL, NULL, 'Client;Plaintiff;Defense;ThirdParty', 0, NULL)
+GO
