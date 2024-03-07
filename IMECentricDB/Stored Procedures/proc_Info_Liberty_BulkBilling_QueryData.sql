@@ -67,6 +67,7 @@ SELECT
   CONVERT(VARCHAR(64), NULL) AS "iCaseIMERequestAs",
   CONVERT(VARCHAR(64), NULL) AS "iCaseServiceType",
   CONVERT(VARCHAR(64), NULL) AS "iCaseMarketDesignation",
+  CONVERT(VARCHAR(64), NULL) AS "CustomerName",
   CONVERT(BIT, NULL) as "NotiCaseReferral", 
   CONVERT(VARCHAR(128), NULL) AS CPTCodes,
   CONVERT(INT, NULL) AS "Count", 
