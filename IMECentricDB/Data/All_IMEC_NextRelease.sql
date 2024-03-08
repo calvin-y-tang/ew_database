@@ -61,7 +61,7 @@ INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
 VALUES('DrGenerateSigBookmark','Doctor - Generate Signature Bookmarks',GETDATE())
 GO
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-VALUES (135, 'GenDocBookmark', 'Case', 'Generate Doc Bookmark validate (Signature)', 1, 1201, 0, 'BookmarkName', 'SecurityToken', 'RequireOfficeMatch', 'SecTokenDesc', 'ReqDrDocTypeFileExists', 0, NULL)
+VALUES (135, 'GenDocBookmark', 'Case', 'Generate Doc Bookmark validate (Signature)', 1, 1201, 0, 'BookmarkName', 'SecurityToken', 'RequireOfficeMatch', 'SecTokenDesc', 'RqDrDocTypeFileExist', 0, NULL)
 GO
 INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
 VALUES (135, 'SW', NULL, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'DoctorSignature', 'DrGenerateSigBookmark', 'True', 'Doctor - Generate Signature Bookmarks', '8;Electronic Signature', 0, NULL)
