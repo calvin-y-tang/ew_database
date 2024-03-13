@@ -1,7 +1,7 @@
 ﻿-- -----------------------------------------------------------
 --	Scripts in here are ONLY applied to IMECentricMaster
 -- -----------------------------------------------------------
-USE [IMCentricMaster]  -- DO NOT REMOVE
+USE [IMECentricMaster]  -- DO NOT REMOVE
 GO
 
 -- Sprint 132
