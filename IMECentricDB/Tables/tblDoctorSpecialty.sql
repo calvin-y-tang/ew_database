@@ -6,6 +6,7 @@
     [UserIDEdited]              VARCHAR (50)  NULL,
     [DoctorCode]                INT           NOT NULL,
     [MasterReviewerSpecialtyID] INT           NULL,
+    [DoNotUse]                  BIT           NULL,
     CONSTRAINT [PK_tblDoctorSpecialty] PRIMARY KEY CLUSTERED ([SpecialtyCode] ASC, [DoctorCode] ASC)
 );
 GO
