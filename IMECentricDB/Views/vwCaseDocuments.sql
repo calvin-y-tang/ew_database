@@ -22,8 +22,7 @@ AS
 		CD.CaseDocTypeID, 
 		CDT.FilterKey,
 		CD.SharedDoc,
-		CD.MasterCaseNbr,
-		DocumentSelect
+		CD.MasterCaseNbr 
     FROM
 		tblCaseDocuments AS CD
 			LEFT OUTER JOIN tblCaseDocType AS CDT ON CDT.CaseDocTypeID = CD.CaseDocTypeID

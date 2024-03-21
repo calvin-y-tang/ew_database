@@ -27,7 +27,6 @@
     [MasterCaseNbr]  INT              NULL,
     [FirstViewedOnWebBy] VARCHAR(100) NULL, 
     [FirstViewedOnWebDate] SMALLDATETIME NULL, 
-    [DocumentSelect] BIT              CONSTRAINT [DF_tblCaseDocuments_DocumentSelect]  DEFAULT (0) NULL,
     CONSTRAINT [PK_tblCaseDocuments] PRIMARY KEY CLUSTERED ([SeqNo] ASC)
 );
 
