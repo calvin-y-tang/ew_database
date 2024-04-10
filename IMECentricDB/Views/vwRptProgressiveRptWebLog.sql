@@ -35,7 +35,7 @@ INNER JOIN tblCase AS C ON C.CaseNbr = CD.CaseNbr
 INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
 INNER JOIN tblServices AS S ON S.ServiceCode = C.ServiceCode
 INNER JOIN tblCaseType AS CT ON CT.Code = C.CaseType
-WHERE CD.CaseDocTypeID=5 OR CD.Description LIKE '%Closed Letter%'
+WHERE CD.CaseDocTypeID=5 OR (CD.Description LIKE '%Woodbury~_Closed~_Letter%' ESCAPE '~')
 GO
 
 
