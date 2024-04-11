@@ -75,7 +75,7 @@
     [LocationName]       VARCHAR (100)   NULL,
     [LocationState]      VARCHAR (2)     NULL,
     [LocationType]       VARCHAR (30)    NULL,
-    [ReleaseType]        VARBINARY(100)  NULL, 
+    [ReleaseType]        VARCHAR (100)   NULL, 
     CONSTRAINT [PK_GPInvoice] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
