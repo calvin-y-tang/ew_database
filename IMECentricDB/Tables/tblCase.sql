@@ -482,7 +482,7 @@ CREATE NONCLUSTERED INDEX [IX_tblCase_OfficeCode]
             [ClaimNbr], [PlaintiffAttorneyCode], [DefenseAttorneyCode], [ServiceCode], [DoctorCode], 
             [DoctorSpecialty], [RecCode], [DoctorName], [CertMailNbr], [Jurisdiction], [TransCode], [DefParaLegal], 
             [VenueID], [LanguageID], [ApptStatusID], [CaseApptID], [CertMailNbr2], [ExtCaseNbr], [EmployerID], 
-            [EmployerAddressID], [RPAMedRecRequestDate], [RPAMedRecUploadAckDate], [RPAMedRecUploadStatus]);
+            [EmployerAddressID], [RPAMedRecRequestDate], [RPAMedRecUploadAckDate], [RPAMedRecUploadStatus], [BillClientCode]);
 
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCase_DefParaLegal]
