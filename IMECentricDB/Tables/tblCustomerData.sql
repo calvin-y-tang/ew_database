@@ -8,3 +8,5 @@
     CONSTRAINT [PK_tblCustomerData] PRIMARY KEY CLUSTERED ([CustomerDataID] ASC)
 );
 
+GO
+CREATE INDEX [IX_tblCustomerData_TypeKeyName] ON [dbo].[tblCustomerData] ([TableType] ASC,[TableKey] ASC,[CustomerName] ASC)

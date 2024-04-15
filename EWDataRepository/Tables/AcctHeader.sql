@@ -72,6 +72,7 @@
     [LocationName]     VARCHAR (100)   NULL,
     [LocationState]    VARCHAR (2)     NULL,
     [LocationType]     VARCHAR (30)    NULL,
+    [ReleaseType]      VARCHAR(100)    NULL, 
     CONSTRAINT [PK_AcctHeader] PRIMARY KEY CLUSTERED ([HeaderID] ASC)
 );
 

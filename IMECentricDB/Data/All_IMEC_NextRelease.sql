@@ -3,21 +3,13 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 132
+-- Sprint 133
 
--- IMEC-14109 - new security token to lock down Doctor Accounting fields
-INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
-VALUES ('DoctorEditAcctngFields', 'Doctor - Edit Accounting Fields', GETDATE())
+-- IMEC-14048 - add timeout to allow time for Helper to resize the image, save the file, and write to tblTempData
+INSERT INTO tblSetting ([Name], [Value]) VALUES ('TimeOutResizeImage', '9000')
+
+-- IMEC-14144 - add new bizRule condition for sending new case acknowledgements for Chubb Insurance
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+VALUES (116, 'PC', 16, 2, 3, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'NewCase;', 'EntityType=PC;EntityID=16', NULL, NULL, NULL, 0, NULL, 0)
 GO
 
--- IMEC-14110 - new security tokem to enable changes for Specialty Do Not Use setting
-INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
-VALUES ('DoctorEditSpecialtyDoNotUse', 'Doctor - Update Specialty Do Not Use', GETDATE())
-GO
-
--- IMEC-14076 - Business Rules to drive new "WCCaseTypeAddressee" bookmark 
--- **** DEV NOTE: This was undone in a rollback and needs to be re-applied
-UPDATE tblBusinessRule
-  SET EventID = 1201
-WHERE Name = 'DynamicBookmarks'
-GO

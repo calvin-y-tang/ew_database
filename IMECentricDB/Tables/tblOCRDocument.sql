@@ -22,13 +22,11 @@
     CONSTRAINT [PK_tblOCRDocument] PRIMARY KEY CLUSTERED ([OCRDocumentID] ASC)
 );
 
-
-
-
-
+GO
+CREATE NONCLUSTERED INDEX [IX_tblOCRDocument_CaseDocID]
+ON [dbo].[tblOCRDocument] ([CaseDocID])
 
 GO
 CREATE NONCLUSTERED INDEX [IX_tblOCRDocument_OCRStatusID]
     ON [dbo].[tblOCRDocument]([OCRStatusID] ASC)
     INCLUDE([OCRSystemID], [CaseDocID], [ExtOCRDocumentID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [DateDue], [DateCompleted], [OriginalFileName], [OriginalFileDateUtc], [OriginalFileSizeKB], [OCRServer], [Priority], [Source], [DateReadyOCR], [DateSent], [DateReceived]);
-
