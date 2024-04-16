@@ -15,6 +15,6 @@ GO
 
 -- Add new security token for Doctor signature
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES ('DoctorAddEditSignatures', 'Doctor -Add/Edit Signatures', GETDATE)
+VALUES ('DoctorAddEditSignatures', 'Doctor -Add/Edit Signatures', GETDATE())
 GO
 
