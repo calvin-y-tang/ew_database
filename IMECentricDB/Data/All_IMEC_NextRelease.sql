@@ -13,3 +13,8 @@ INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, Billi
 VALUES (116, 'PC', 16, 2, 3, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'NewCase;', 'EntityType=PC;EntityID=16', NULL, NULL, NULL, 0, NULL, 0)
 GO
 
+-- Add new security token for Doctor signature
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES ('DoctorAddEditSignatures', 'Doctor -Add/Edit Signatures', GETDATE)
+GO
+
