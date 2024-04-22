@@ -12,3 +12,11 @@
 
 -- Sprint 134
 
+USE [EWDataRepository]
+GO
+
+-- // IMEC-14211 - Add ReleaseType field to Acctheader table in the data repository
+-- // Dev: Sam Chiang
+alter table EWDataRepository.dbo.AcctHeader
+add ReleaseType varchar(100) null
+go
