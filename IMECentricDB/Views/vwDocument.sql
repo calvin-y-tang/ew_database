@@ -189,6 +189,7 @@ AS
             UPPER(tblClient.State) AS ClientState ,
             tblClient.City AS ClientCity ,
             tblClient.Zip AS ClientZip ,
+            tblClient.ProcessorFirstName + ' ' + tblClient.ProcessorLastName AS ClientProcessorName ,
 
             tblCompany.extName AS Company ,
             tblCompany.USDvarchar1 AS CompanyUSDvarchar1 ,
@@ -202,6 +203,7 @@ AS
             tblCompany.USDmoney1 AS CompanyUSDmoney1 ,
             tblCompany.USDmoney2 AS CompanyUSDmoney2 ,
             tblCompany.Notes AS CompanyNotes ,
+			tblCompany.ParentCompanyID ,
 
             tblCase.QARep ,
             tblCase.Doctorspecialty ,
@@ -217,6 +219,7 @@ AS
 
             tblCase.marketerCode AS Marketer ,
             tblCase.Dateadded AS DateCalledIn ,
+            tblcase.DateCanceled,
             tblCase.Dateofinjury AS DOI ,
             tblCase.Allegation ,
             tblCase.Notes ,
@@ -299,6 +302,8 @@ AS
             tblCase.PILegalEvent ,
             tblCase.TransCode ,
             tblCase.RptFinalizedDate ,
+            tblcase.RptInitialDraftDate,
+            tblcase.Recommendation,
 
 			tblCase.ICDCodeA ,
 			tblCase.ICDCodeB ,
@@ -368,6 +373,7 @@ AS
             tblDoctor.NPINbr AS DoctorNPINbr ,
             tblDoctor.ProvTypeCode ,
             tblDoctor.PrintOnCheckAs ,
+            tblDoctorAuthor.EWAuthorID ,
 
             tblLocation.ExtName AS LocationExtName ,
             tblLocation.Location ,
@@ -511,4 +517,6 @@ AS
             LEFT OUTER JOIN tblEmployer on tblcase.EmployerID = tblEmployer.EmployerID 
             LEFT OUTER JOIN tblEmployerAddress on tblcase.EmployerAddressID = tblEmployerAddress.EmployerAddressID 
 			LEFT OUTER JOIN tblEWParentCompany ON tblCompany.ParentCompanyID = tblEWParentCompany.ParentCompanyID
+            LEFT OUTER JOIN tblDoctorAuthor ON tblCase.DoctorCode = tblDoctorAuthor.DoctorCode
+                LEFT OUTER JOIN tblOffice AS toffice ON tblDoctorAuthor.EWTransDeptID = toffice.EWTransDeptID
 
