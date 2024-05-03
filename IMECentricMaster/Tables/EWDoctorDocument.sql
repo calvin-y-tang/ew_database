@@ -20,7 +20,7 @@
     [FolderID]                 INT            NULL,
     [Notes]                    TEXT           NULL,
     [AllowEdit]                BIT            NULL,
-    [OriginalFilePath]         VARCHAR (250)  NULL,
+    [OriginalFilePath]         VARCHAR (256)  NULL,
     [ConvertStatus]            VARCHAR (25)   NULL,
     [ConvertFailed]            BIT            NULL,
     [EffectiveDate]            DATETIME       NULL,

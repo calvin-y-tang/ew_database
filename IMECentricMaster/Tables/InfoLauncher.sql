@@ -3,7 +3,7 @@
     [SeqNo]              INT          NULL,
     [AppName]            VARCHAR (40) NULL,
     [AppType]            VARCHAR (20) NULL,
-    [NewVersionDir]      VARCHAR (80) NULL,
+    [NewVersionDir]      VARCHAR (256) NULL,
     [AppSubDir]          VARCHAR (40) NULL,
     [MasterServerName]   VARCHAR (40) NULL,
     [MasterInstanceName] VARCHAR (40) NULL,

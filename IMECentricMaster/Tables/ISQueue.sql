@@ -6,7 +6,7 @@
     [RunDateTime]  SMALLDATETIME  NOT NULL,
     [RunTimeStart] SMALLDATETIME  NULL,
     [RunTimeEnd]   SMALLDATETIME  NULL,
-    [Param]        VARCHAR (1000) NULL,
+    [Param]        VARCHAR (3072) NULL,
     [GroupNo]      INT            NULL,
     [SeqNo]        INT            NULL,
     CONSTRAINT [PK_ISQueue] PRIMARY KEY CLUSTERED ([QueueID] ASC) WITH (FILLFACTOR = 90)

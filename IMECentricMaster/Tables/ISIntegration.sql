@@ -21,7 +21,7 @@
     [NextCompanyID]           INT           NULL,
     [NextClientID]            INT           NULL,
     [NextDoctorID]            INT           NULL,
-    [FolderPath]              VARCHAR (60)  NULL,
+    [FolderPath]              VARCHAR (256)  NULL,
     [UseSFTP]                 BIT           NOT NULL,
     [SFTPPath]                VARCHAR (60)  NULL,
     [Email]                   VARCHAR (200) NULL,

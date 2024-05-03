@@ -10,7 +10,7 @@
     [UserEdited]       INT           NULL,
     [CheckedOut]       BIT           NULL,
     [CheckedOutUserID] INT           NULL,
-    [CheckedOutFolder] VARCHAR (250) NULL,
+    [CheckedOutFolder] VARCHAR (256) NULL,
     CONSTRAINT [PK_InfoIssueDoc] PRIMARY KEY CLUSTERED ([InfoIssueDocID] ASC)
 );
 
