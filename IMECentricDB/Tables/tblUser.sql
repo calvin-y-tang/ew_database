@@ -16,7 +16,7 @@
     [LastComputerName]       VARCHAR (256)    NULL,
     [LastLogin]              DATETIME         NULL,
     [WebGUID]                UNIQUEIDENTIFIER NULL,
-    [DefaultDymoPrinter]     VARCHAR (256)    NULL,
+    [DefaultDymoPrinter]     VARCHAR (100)    NULL,
     [WindowsUsername]        VARCHAR (100)    NULL,
     [SeqNo]                  INT              IDENTITY (1, 1) NOT NULL,
     [Admin]                  BIT              CONSTRAINT [DF_tblUser_Admin] DEFAULT ((0)) NOT NULL,

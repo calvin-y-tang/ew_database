@@ -19,7 +19,7 @@
     [DateIMECentric]            DATETIME      NULL,
     [Active]                    BIT           NULL,
     [DateGP]                    DATETIME      NULL,
-    [Logo]                      VARCHAR (256)  NULL,
+    [Logo]                      VARCHAR (80)  NULL,
     [ContactOps]                VARCHAR (30)  NULL,
     [ContactAcct]               VARCHAR (30)  NULL,
     [InvRemitEWFacilityID]      INT           NULL,
