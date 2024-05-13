@@ -199,7 +199,7 @@ FROM
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN 
 			(SELECT DISTINCT DoctorCode 
 				FROM tblDoctorSpecialty 
-				WHERE PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties) > 0 AND DoNotUse = 0) '
+				WHERE PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties) > 0)'
 	END
 
 	IF @EWAccreditationID IS NOT NULL
