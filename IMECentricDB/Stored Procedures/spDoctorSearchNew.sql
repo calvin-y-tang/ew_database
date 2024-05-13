@@ -40,7 +40,6 @@
 	@LastName AS VARCHAR(50) = NULL,
 	@UserID AS VARCHAR(15) = NULL, 
 	@CaseType AS INT = NULL
-	
 )
 AS
 BEGIN
@@ -200,7 +199,7 @@ FROM
 		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN 
 			(SELECT DISTINCT DoctorCode 
 				FROM tblDoctorSpecialty 
-				WHERE PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties) > 0 AND DoNotUse = 0) '
+				WHERE PATINDEX(''%;;''+SpecialtyCode+'';;%'', @_lstSpecialties) > 0)'
 	END
 
 	IF @EWAccreditationID IS NOT NULL
@@ -238,9 +237,6 @@ FROM
 	IF @Proximity IS NOT NULL
 		SET @strWhere = @strWhere + ' AND L.GeoData.STDistance(@_geoEE)/@_distanceConv<=@_Proximity'
 
-	IF @EWBusLineID IS NOT NULL
-		SET @strWhere = @strWhere + ' AND DR.DoctorCode IN (SELECT DISTINCT DoctorCode FROM tblDoctorBusLine WHERE EWBusLineID = @_EWBusLineID)'
-
 	SET @strSQL = @strSQL + @strWhere
 	PRINT @strSQL
 	EXEC sp_executesql @strSQL,
@@ -273,8 +269,7 @@ FROM
 			@_BillClientCode INT,			
 			@_Proximity INT,
 			@_FirstName VARCHAR(50),
-			@_LastName VARCHAR(50),
-			@_EWBusLineID INT 
+			@_LastName VARCHAR(50)
 			',
 			@_tmpSessionID = @tmpSessionID,
 			@_geoEE = @geoEE,
@@ -305,8 +300,7 @@ FROM
 			@_BillClientCode = @BillClientCode,
 			@_Proximity = @Proximity,
 			@_FirstName = @FirstName,
-			@_LastName = @LastName, 
-			@_EWBusLineID = @EWBusLineID
+			@_LastName = @LastName
 	SET @returnValue = @@ROWCOUNT
 	
 	--Use only the first row of the same start time (DisplayScore was set to 1 during INSERT)
