@@ -10,7 +10,7 @@
 
 -- --------------------------------------------------------------------------
 
--- Sprint 134
+-- Sprint 135
 
 
 -- Applied to DB on 04/24 by DHT and WC
@@ -21,3 +21,92 @@
 -- alter table EWDataRepository.dbo.AcctHeader
 -- add ReleaseType varchar(100) null
 -- go
+
+
+--
+-- START CHANGES FOR IMEC-14218
+--
+
+USE [IMECentricEW]
+GO
+-- update fax prefix
+UPDATE tblControl Set XMediusFaxPrefix = '@xmedius-fax.com'
+
+-- update Fax System Format (or add)
+IF (SELECT COUNT(*) FROM tblSetting WHERE Name = 'FaxSysFormat') > 0
+BEGIN 
+	UPDATE tblSetting SET Value = 'XMediusDomain' WHERE Name = 'FaxSysFormat'
+END
+ELSE
+BEGIN 
+	INSERT INTO tblSetting (Name,Value) values ('FaxSysFormat', 'XMediusDomain')		
+END
+GO
+
+USE [IMECentricFCE]
+GO
+-- update fax prefix
+UPDATE tblControl Set XMediusFaxPrefix = '@xmedius-fax.com'
+
+-- update Fax System Format (or add)
+IF (SELECT COUNT(*) FROM tblSetting WHERE Name = 'FaxSysFormat') > 0
+BEGIN 
+	UPDATE tblSetting SET Value = 'XMediusDomain' WHERE Name = 'FaxSysFormat'
+END
+ELSE
+BEGIN 
+	INSERT INTO tblSetting (Name,Value) values ('FaxSysFormat', 'XMediusDomain')		
+END
+GO
+
+USE [IMECentricMCMC]
+GO
+-- update fax prefix
+UPDATE tblControl Set XMediusFaxPrefix = '@xmedius-fax.com'
+
+-- update Fax System Format (or add)
+IF (SELECT COUNT(*) FROM tblSetting WHERE Name = 'FaxSysFormat') > 0
+BEGIN 
+	UPDATE tblSetting SET Value = 'XMediusDomain' WHERE Name = 'FaxSysFormat'
+END
+ELSE
+BEGIN 
+	INSERT INTO tblSetting (Name,Value) values ('FaxSysFormat', 'XMediusDomain')		
+END
+GO
+
+USE [IMECentricMIMedSource]
+GO
+-- update fax prefix
+UPDATE tblControl Set XMediusFaxPrefix = '@xmedius-fax.com'
+
+-- update Fax System Format (or add)
+IF (SELECT COUNT(*) FROM tblSetting WHERE Name = 'FaxSysFormat') > 0
+BEGIN 
+	UPDATE tblSetting SET Value = 'XMediusDomain' WHERE Name = 'FaxSysFormat'
+END
+ELSE
+BEGIN 
+	INSERT INTO tblSetting (Name,Value) values ('FaxSysFormat', 'XMediusDomain')		
+END
+
+GO
+
+USE [IMECentricJBA]
+GO
+-- update fax prefix
+UPDATE tblControl Set XMediusFaxPrefix = '@xmedius-fax.com'
+
+-- update Fax System Format (or add)
+IF (SELECT COUNT(*) FROM tblSetting WHERE Name = 'FaxSysFormat') > 0
+BEGIN 
+	UPDATE tblSetting SET Value = 'XMediusDomain' WHERE Name = 'FaxSysFormat'
+END
+ELSE
+BEGIN 
+	INSERT INTO tblSetting (Name,Value) values ('FaxSysFormat', 'XMediusDomain')		
+END
+
+--
+-- END CHANGES FOR IMEC-14218
+--
