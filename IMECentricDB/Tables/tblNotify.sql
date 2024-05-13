@@ -14,5 +14,13 @@
 	[TableType] VARCHAR(50) NULL, 
     [UserCode] INT NULL, 
     CONSTRAINT [PK_tblNotify] PRIMARY KEY CLUSTERED ([NotifyID] ASC)
-
 )
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblNotify_UserMethodDelivered]
+ON [dbo].[tblNotify] ([UserID],[NotifyMethodID],[DateDelivered])
+INCLUDE ([UserType],[NotifyEventID],[CaseNbr],[ActionType],[ActionKey],[DateAdded],[UserIDAdded],[TableType],[UserCode])
+GO
+
+
+

@@ -3,18 +3,14 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 133
+-- Sprint 134
 
--- IMEC-14048 - add timeout to allow time for Helper to resize the image, save the file, and write to tblTempData
-INSERT INTO tblSetting ([Name], [Value]) VALUES ('TimeOutResizeImage', '9000')
+-- JAP - IMEC-14200 - set default value for previously added DoNotUse column
+UPDATE tblDoctorSpecialty SET DoNotUse = 0 WHERE DoNotUse IS NULL
+GO 
 
--- IMEC-14144 - add new bizRule condition for sending new case acknowledgements for Chubb Insurance
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-VALUES (116, 'PC', 16, 2, 3, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'NewCase;', 'EntityType=PC;EntityID=16', NULL, NULL, NULL, 0, NULL, 0)
+-- TL - IMEC-14212 - new business rule to allow companies and PC's to opt out of having MedIndex-Final document published on web
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
+VALUES (170, 'OptOutPOWMedIndexFinal', 'Case', 'IMEC-14212 - Entities opting out of publishing to web DPS document MedIndex-Final for client and/or billing client', 1,
+        1015, 0, 'ClientTypeToOptOut', 0)
 GO
-
--- Add new security token for Doctor signature
-INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES ('DoctorAddEditSignatures', 'Doctor -Add/Edit Signatures', GETDATE())
-GO
-

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[DB] (
     [DBID]            INT          NOT NULL,
     [Name]            VARCHAR (15) NULL,
-    [SQLInstance]     VARCHAR (50) NULL,
+    [SQLInstance]     VARCHAR (256) NULL,
     [SQLDatabaseName] VARCHAR (25) NULL,
     [SQLUserName]     VARCHAR (25) NULL,
     [SQLPassword]     VARCHAR (25) NULL,
