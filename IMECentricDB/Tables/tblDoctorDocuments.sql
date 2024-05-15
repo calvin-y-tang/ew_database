@@ -22,7 +22,7 @@
     [Notes]                    TEXT          NULL,
     [AllowEdit]                BIT           NULL,
     [FileSize]                 BIGINT        NULL,
-    [OriginalFilePath]         VARCHAR (250) NULL,
+    [OriginalFilePath]         VARCHAR (256) NULL,
     [ConvertStatus]            VARCHAR (25)  NULL,
     [EffectiveDate]            DATETIME      NULL,
     [MasterReviewerDocumentID] INT     NULL,
