@@ -10,7 +10,7 @@
     [EndDate]      SMALLDATETIME NULL,
     [RunTimeStart] SMALLDATETIME NULL,
     [RunTimeEnd]   SMALLDATETIME NULL,
-    [Param]        VARCHAR (3072) NULL,
+    [Param]        VARCHAR (8000) NULL,
     [GroupNo]      INT           NULL,
     [SeqNo]        INT           NULL,
     CONSTRAINT [PK_ISSchedule] PRIMARY KEY CLUSTERED ([ScheduleID] ASC) WITH (FILLFACTOR = 90)
