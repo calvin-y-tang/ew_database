@@ -36,6 +36,7 @@ CREATE TABLE [dbo].[tblAcctDetail] (
     [RptFSGroupID]           INT             NULL,
     [RptFSDetailID]          INT             NULL,
     [RptFeeAmt]              MONEY           NULL,
+    [ToDate]                 DateTime        NULL,
     CONSTRAINT [PK_tblAcctDetail] PRIMARY KEY CLUSTERED ([DetailID] ASC)
 );
 

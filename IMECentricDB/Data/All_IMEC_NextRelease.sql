@@ -16,3 +16,9 @@ GO
 INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
 VALUES('CaseSkipReqFieldCheck','Case -Override Required Field Validation (BusRule)', GETDATE())
 GO
+
+
+-- IMEC-14234 - Adding in entry to tblCodes for ToDate box on invoice sub form to be enabled if EWFacility combo box is set to one of the values
+INSERT INTO tblCodes (Category, SubCategory, Value)
+VALUES ('TexasFacilityCombo', 'ToDateEnabled', ';5;')
+GO
