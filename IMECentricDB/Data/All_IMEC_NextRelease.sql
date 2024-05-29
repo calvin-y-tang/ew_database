@@ -22,6 +22,12 @@ INSERT INTO tblCodes (Category, SubCategory, Value)
 VALUES ('TexasFacilityCombo', 'ToDateEnabled', ';5;')
 GO
 
+-- IMEC-14253 - create new entries for DRType of "locked"
+INSERT INTO tblCodes (Category, SubCategory, Value)
+VALUES('DRType_LOCKED', 'Locked', '20')
+GO
+
+
 -- *************************************************************************************
 -- ****** DO NOT EXECUTE AGAINST TEST SYSTEM DATABASES. **********
 -- IMEC-14230 - create new BizRules for Guard & Berkshire to handle GenDocs and Dist Doc/Rpt
