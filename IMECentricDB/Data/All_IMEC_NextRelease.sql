@@ -25,7 +25,19 @@ GO
 -- *************************************************************************************
 -- ****** DO NOT EXECUTE AGAINST TEST SYSTEM DATABASES. **********
 -- IMEC-14230 - create new BizRules for Guard & Berkshire to handle GenDocs and Dist Doc/Rpt
+--
+-- Applied to Following US Production DBs (they all had existing rules for Guard/Berkshire) on 5/23/2024 @ 10:00 PM
+--      - IMECentricEW
+--      - IMECentricFCE
+--      - IMECentricJBA
+--      - IMECentricLandMark
+--      - IMECentricMCMC
+--      - IMECentricMedicolegal
+--      - IMECentricMIMedSource
+--      - IMECentricPOPB
+--      - If needed this can be reapplied when sprint 136 is officially released (to all IMEC DBs).
 -- Distribute Documents
+/*
 DELETE 
 FROM tblBusinessRuleCondition 
 WHERE BusinessRuleID = 10 
@@ -98,5 +110,8 @@ VALUES
        (115, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL),
        (115, 'PC', 295, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL)
 GO
+*/
+
 -- *************************************************************************************
+
 
