@@ -11,6 +11,7 @@ AS
 			 WHEN '' THEN ''
 			 ELSE '-' + C.ClaimNbrExt
 			 END )AS ClaimNbrWExt , 
+			 c.AddlClaimNbrs, 
 
             C.Jurisdiction ,
             C.WCBNbr ,
