@@ -6,6 +6,7 @@ AS
 			B.BlankValue AS InvServiceDate1MM,
 			B.BlankValue AS InvServiceDate1DD,
 			B.BlankValue AS InvServiceDate1YY,
+			ISNULL(AD1.ToDate, AD1.Date) AS InvServiceDateTo1,
 			B.BlankValue AS InvServiceDateTo1MM,
 			B.BlankValue AS InvServiceDateTo1DD,
 			B.BlankValue AS InvServiceDateTo1YY,
@@ -29,12 +30,12 @@ AS
 			AD1.DrOpCode AS DrOpCode1,
 			DR1.NPINbr AS DoctorNPINbr1,
 
-
 			AD2.LineNbr AS InvLineNbr2 ,
 	        AD2.Date AS InvServiceDate2 ,
 			B.BlankValue AS InvServiceDate2MM,
 			B.BlankValue AS InvServiceDate2DD,
 			B.BlankValue AS InvServiceDate2YY,
+			ISNULL(AD2.ToDate, AD2.Date) AS InvServiceDateTo2,
 			B.BlankValue AS InvServiceDateTo2MM,
 			B.BlankValue AS InvServiceDateTo2DD,
 			B.BlankValue AS InvServiceDateTo2YY,
@@ -58,12 +59,12 @@ AS
 			AD2.DrOpCode AS DrOpCode2,
 			DR2.NPINbr AS DoctorNPINbr2,
 
-
 			AD3.LineNbr AS InvLineNbr3 ,
 	        AD3.Date AS InvServiceDate3 ,
 			B.BlankValue AS InvServiceDate3MM,
 			B.BlankValue AS InvServiceDate3DD,
 			B.BlankValue AS InvServiceDate3YY,
+			ISNULL(AD3.ToDate, AD3.Date) AS InvServiceDateTo3,
 			B.BlankValue AS InvServiceDateTo3MM,
 			B.BlankValue AS InvServiceDateTo3DD,
 			B.BlankValue AS InvServiceDateTo3YY,
@@ -87,12 +88,12 @@ AS
 			AD3.DrOpCode AS DrOpCode3,
 			DR3.NPINbr AS DoctorNPINbr3,
 
-
 			AD4.LineNbr AS InvLineNbr4 ,
 	        AD4.Date AS InvServiceDate4 ,
 			B.BlankValue AS InvServiceDate4MM,
 			B.BlankValue AS InvServiceDate4DD,
 			B.BlankValue AS InvServiceDate4YY,
+			ISNULL(AD4.ToDate, AD4.Date) AS InvServiceDateTo4,
 			B.BlankValue AS InvServiceDateTo4MM,
 			B.BlankValue AS InvServiceDateTo4DD,
 			B.BlankValue AS InvServiceDateTo4YY,
@@ -116,12 +117,12 @@ AS
 			AD4.DrOpCode AS DrOpCode4,
 			DR4.NPINbr AS DoctorNPINbr4,
 
-
 			AD5.LineNbr AS InvLineNbr5 ,
 	        AD5.Date AS InvServiceDate5 ,
 			B.BlankValue AS InvServiceDate5MM,
 			B.BlankValue AS InvServiceDate5DD,
 			B.BlankValue AS InvServiceDate5YY,
+			ISNULL(AD5.ToDate, AD5.Date) AS InvServiceDateTo5,
 			B.BlankValue AS InvServiceDateTo5MM,
 			B.BlankValue AS InvServiceDateTo5DD,
 			B.BlankValue AS InvServiceDateTo5YY,
@@ -145,12 +146,12 @@ AS
 			AD5.DrOpCode AS DrOpCode5,
 			DR5.NPINbr AS DoctorNPINbr5,
 
-
 			AD6.LineNbr AS InvLineNbr6 ,
 	        AD6.Date AS InvServiceDate6 ,
 			B.BlankValue AS InvServiceDate6MM,
 			B.BlankValue AS InvServiceDate6DD,
 			B.BlankValue AS InvServiceDate6YY,
+			ISNULL(AD6.ToDate, AD6.Date) AS InvServiceDateTo6,
 			B.BlankValue AS InvServiceDateTo6MM,
 			B.BlankValue AS InvServiceDateTo6DD,
 			B.BlankValue AS InvServiceDateTo6YY,
@@ -175,7 +176,6 @@ AS
 			DR6.NPINbr AS DoctorNPINbr6,
 
 			AD1.HeaderID AS InvDetHeaderID
-
 
 	FROM	tblAcctDetail AS AD1
 	LEFT OUTER JOIN tblAcctDetail AS AD2 ON AD2.HeaderID = AD1.HeaderID AND AD2.LineNbr=2
