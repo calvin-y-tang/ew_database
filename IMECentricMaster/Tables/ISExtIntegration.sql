@@ -10,7 +10,7 @@
     [LastBatchNo]      INT            NULL,
     [LastBatchDate]    DATETIME       NULL,
     [NotifyEmail]      VARCHAR (140)  NULL,
-    [Param]            VARCHAR (3072) NULL,
+    [Param]            VARCHAR (8000) NULL,
     CONSTRAINT [PK_ISExtIntegration] PRIMARY KEY CLUSTERED ([ExtIntegrationID] ASC)
 );
 

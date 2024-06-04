@@ -3,14 +3,121 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 134
+-- Sprint 136
 
--- JAP - IMEC-14200 - set default value for previously added DoNotUse column
-UPDATE tblDoctorSpecialty SET DoNotUse = 0 WHERE DoNotUse IS NULL
-GO 
-
--- TL - IMEC-14212 - new business rule to allow companies and PC's to opt out of having MedIndex-Final document published on web
-INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
-VALUES (170, 'OptOutPOWMedIndexFinal', 'Case', 'IMEC-14212 - Entities opting out of publishing to web DPS document MedIndex-Final for client and/or billing client', 1,
-        1015, 0, 'ClientTypeToOptOut', 0)
+-- IMEC-14227 (IMEC-14235) - add token and update bizRule details on all DBs to keep them in sync
+UPDATE tblBusinessRule
+   SET Param5Desc = 'SecurityToken', 
+       Param6Desc = 'ServiceCode', 
+       AllowOverride = 1
+WHERE BusinessRuleID = 130
 GO
+
+INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+VALUES('CaseSkipReqFieldCheck','Case -Override Required Field Validation (BusRule)', GETDATE())
+GO
+
+-- IMEC-14234 - Adding in entry to tblCodes for ToDate box on invoice sub form to be enabled if EWFacility combo box is set to one of the values
+INSERT INTO tblCodes (Category, SubCategory, Value)
+VALUES ('TexasFacilityCombo', 'ToDateEnabled', ';5;')
+GO
+
+-- IMEC-14253 - create new entries for DRType of "locked"
+INSERT INTO tblCodes (Category, SubCategory, Value)
+VALUES('DRType_LOCKED', 'Locked', '20')
+GO
+
+
+-- *************************************************************************************
+-- ****** DO NOT EXECUTE AGAINST TEST SYSTEM DATABASES. **********
+-- IMEC-14230 - create new BizRules for Guard & Berkshire to handle GenDocs and Dist Doc/Rpt
+--
+-- Applied to Following US Production DBs (they all had existing rules for Guard/Berkshire) on 5/23/2024 @ 10:00 PM
+--      - IMECentricEW
+--      - IMECentricFCE
+--      - IMECentricJBA
+--      - IMECentricLandMark
+--      - IMECentricMCMC
+--      - IMECentricMedicolegal
+--      - IMECentricMIMedSource
+--      - IMECentricPOPB
+--      - If needed this can be reapplied when sprint 136 is officially released (to all IMEC DBs).
+-- Distribute Documents
+/*
+DELETE 
+FROM tblBusinessRuleCondition 
+WHERE BusinessRuleID = 10 
+  AND EntityType = 'PC' 
+  AND EntityID in (91, 295)
+GO 
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES 
+       (10, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
+       (10, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', NULL, NULL, NULL, NULL, 0, NULL)
+GO
+
+-- Distribute Reports 
+DELETE 
+FROM tblBusinessRuleCondition 
+WHERE BusinessRuleID = 11 
+  AND EntityType = 'PC' 
+  AND EntityID in (91, 295)
+GO 
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES 
+       (11, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
+       (11, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', NULL, NULL, NULL, NULL, 0, NULL)
+GO
+
+-- Generate Documents & Quote Documents
+DELETE 
+FROM tblBusinessRuleCondition 
+WHERE BusinessRuleID = 160 
+  AND EntityType = 'PC' 
+  AND EntityID in (91, 295)
+GO
+-- The following replaces rules for Generate Document.
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES 
+       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
+       (160, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', NULL, NULL, NULL, NULL, 0, NULL),
+       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', 'YES', 'IN', NULL, NULL, 0, NULL),
+       (160, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', 'YES', 'IN', NULL, NULL, 0, NULL),
+       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Brandon.Styczen@guard.com', 'YES', 'OUT', NULL, NULL, 0, NULL),
+       (160, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'lauren.langan@biberk.com', 'YES', 'OUT', NULL, NULL, 0, NULL)
+GO
+
+-- DistRptInvDefaultOtherEmail
+DELETE 
+FROM tblBusinessRuleCondition 
+WHERE BusinessRuleID = 114 
+  AND EntityType = 'PC' 
+  AND EntityID in (91, 295)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES 
+       (114, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'mbr@guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
+       (114, 'PC', 91, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Claims@Guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
+       (114, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL),
+       (114, 'PC', 295, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL)
+GO
+
+-- DistDocInvDefaultOtherEmail
+DELETE 
+FROM tblBusinessRuleCondition 
+WHERE BusinessRuleID = 115 
+  AND EntityType = 'PC' 
+  AND EntityID in (91, 295)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES 
+       (115, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'mbr@guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
+       (115, 'PC', 91, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Claims@Guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
+       (115, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL),
+       (115, 'PC', 295, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL)
+GO
+*/
+
+-- *************************************************************************************
+
+
