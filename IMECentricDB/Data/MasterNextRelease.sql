@@ -30,7 +30,7 @@ insert into ISIntegration (
     '\\IMECDocs5\ISIntegrations\EWRepository\580\',
     1, 
     '/IS/Internal/RepositoryFeeds/Cyclone/Prod/',
-    'Jim.Harris@examworks.com',
+    'Jim.Harris@examworks.com;joel.lagace@ducoreexpertise.com',
     null,null,null,null,null,null,0
 )
 GO
