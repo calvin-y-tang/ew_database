@@ -293,6 +293,7 @@ CREATE TABLE [dbo].[tblCase] (
     [RPAMedRecUploadStatus]            VARCHAR(15)      NULL, 
     [RPAMedRecCompleteDate]            DATETIME         NULL, 
     [DateEmailSentForLateReport]       DATETIME         NULL,
+    [ClaimNbrFormatOverridden]         BIT              NULL,
     CONSTRAINT [PK_tblCase] PRIMARY KEY CLUSTERED ([CaseNbr] ASC),
     CONSTRAINT [FK_tblCase_tblClient] FOREIGN KEY ([ClientCode]) REFERENCES [dbo].[tblClient] ([ClientCode]),
     CONSTRAINT [FK_tblCase_tblExaminee] FOREIGN KEY ([ChartNbr]) REFERENCES [dbo].[tblExaminee] ([ChartNbr])
