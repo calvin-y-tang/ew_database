@@ -1162,7 +1162,6 @@
     <Build Include="Tables\tblTranscriptionist.sql" />
     <Build Include="Functions\fnConfListIsPhoneValid.sql" />
     <Build Include="Views\vwtblExaminee.sql" />
-    <Build Include="Functions\fnGetSSN.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
