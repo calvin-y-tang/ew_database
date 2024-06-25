@@ -13,7 +13,7 @@ DECLARE @Err int
 	DECLARE @modulo as NVARCHAR(5) = '%'
 
     SET @StrSQL = 'SELECT TOP 50 * FROM tblCase '
-	SET @StrSql = @StrSQL + 'INNER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr '
+	SET @StrSql = @StrSQL + 'INNER JOIN vwtblExaminee AS tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr '
 	SET @StrSql = @StrSQL + 'WHERE (tblCase.ClientCode IN (SELECT ClientCode FROM tblClient WHERE CompanyCode = ' + @CompanyCode + ')) '
 
 		IF LEN(@ClaimNbr) > 0

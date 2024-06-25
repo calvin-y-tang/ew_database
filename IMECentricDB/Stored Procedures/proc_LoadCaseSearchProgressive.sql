@@ -14,7 +14,7 @@ BEGIN
 	DECLARE @strSQL nvarchar(2000)
 	DECLARE @modulo as NVARCHAR(5) = '%'
 
-    SET @StrSQL = 'SELECT TOP 50 * FROM tblCase INNER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr ' +
+    SET @StrSQL = 'SELECT TOP 50 * FROM tblCase INNER JOIN vwtblExaminee AS tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr ' +
 		'WHERE (tblCase.ClientCode IN (SELECT ClientCode FROM tblClient WHERE CompanyCode = ' + CAST(@CompanyCode AS VARCHAR(20)) + ')) '
 
 		IF LEN(@ClaimNbr) > 0

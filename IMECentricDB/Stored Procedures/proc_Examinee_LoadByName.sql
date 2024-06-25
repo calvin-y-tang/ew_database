@@ -11,7 +11,7 @@ BEGIN
 
 	SELECT *
 
-	FROM [tblExaminee]
+	FROM [vwtblExaminee]
 	WHERE
 		([firstname] = @firstName)
 	AND

@@ -3,121 +3,57 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 136
+-- Sprint 137
 
--- IMEC-14227 (IMEC-14235) - add token and update bizRule details on all DBs to keep them in sync
-UPDATE tblBusinessRule
-   SET Param5Desc = 'SecurityToken', 
-       Param6Desc = 'ServiceCode', 
-       AllowOverride = 1
-WHERE BusinessRuleID = 130
+-- IMEC-14254 - business rules and business rule conditions for Farmers claim number format
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip,
+  IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, BrokenRuleAction)
+VALUES (171, 'ClaimNbrFormat', 'Case', 'Defines claim number format on case form', 1, 1001, 1, 'Format', 'Override Sec Token', 0)
 GO
 
-INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
-VALUES('CaseSkipReqFieldCheck','Case -Override Required Field Validation (BusRule)', GETDATE())
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID,
+   DateAdded, UserIDAdded, EWBusLineID, Param1, Param2)
+  VALUES 
+   ('PC', 24, 2, 1, 171, GETDATE(), 'Admin', 2, '##########-#-#', 'ClaimNbrFormatOverride'),
+   ('PC', 24, 2, 1, 171, GETDATE(), 'Admin', 5, '##########-#-#', 'ClaimNbrFormatOverride'),
+   ('PC', 24, 2, 1, 171, GETDATE(), 'Admin', 3, '##########-#', 'ClaimNbrFormatOverride')
 GO
 
--- IMEC-14234 - Adding in entry to tblCodes for ToDate box on invoice sub form to be enabled if EWFacility combo box is set to one of the values
-INSERT INTO tblCodes (Category, SubCategory, Value)
-VALUES ('TexasFacilityCombo', 'ToDateEnabled', ';5;')
+-- IMEC-14254 - Start date for cases added for Farmers claim number format
+INSERT INTO tblSetting ([Name], [Value])
+VALUES ('FarmersClaimNbrFormatStartDate', '2024/07/01')
 GO
 
--- IMEC-14253 - create new entries for DRType of "locked"
-INSERT INTO tblCodes (Category, SubCategory, Value)
-VALUES('DRType_LOCKED', 'Locked', '20')
+-- IMEC-14254 - security token for Farmers claim number format override
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+  VALUES ('ClaimNbrFormatOverride', 'Case - Claim Nbr Format Override', GETDATE())
 GO
 
+-- ****************************************************************************************************************
+-- IMEC-14239 (IMEC-14198) - enable CLE for tblExaminee DOB & SSN
 
--- *************************************************************************************
--- ****** DO NOT EXECUTE AGAINST TEST SYSTEM DATABASES. **********
--- IMEC-14230 - create new BizRules for Guard & Berkshire to handle GenDocs and Dist Doc/Rpt
---
--- Applied to Following US Production DBs (they all had existing rules for Guard/Berkshire) on 5/23/2024 @ 10:00 PM
---      - IMECentricEW
---      - IMECentricFCE
---      - IMECentricJBA
---      - IMECentricLandMark
---      - IMECentricMCMC
---      - IMECentricMedicolegal
---      - IMECentricMIMedSource
---      - IMECentricPOPB
---      - If needed this can be reapplied when sprint 136 is officially released (to all IMEC DBs).
--- Distribute Documents
-/*
-DELETE 
-FROM tblBusinessRuleCondition 
-WHERE BusinessRuleID = 10 
-  AND EntityType = 'PC' 
-  AND EntityID in (91, 295)
-GO 
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES 
-       (10, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
-       (10, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', NULL, NULL, NULL, NULL, 0, NULL)
-GO
+-- Encryption Setup/Configuration
+    -- create master key
+    CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'Im3Centr!c';
+    GO
+    -- create certificate
+    CREATE CERTIFICATE IMEC_CLE_Certificate 
+         WITH SUBJECT = 'IMECentric CLE';
+    GO
+    -- create symmetrical key
+    CREATE SYMMETRIC KEY IMEC_CLE_Key 
+         WITH ALGORITHM = AES_256 
+         ENCRYPTION BY CERTIFICATE IMEC_CLE_Certificate;
+    GO
 
--- Distribute Reports 
-DELETE 
-FROM tblBusinessRuleCondition 
-WHERE BusinessRuleID = 11 
-  AND EntityType = 'PC' 
-  AND EntityID in (91, 295)
-GO 
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES 
-       (11, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
-       (11, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', NULL, NULL, NULL, NULL, 0, NULL)
-GO
+	-- Encrypt tblExaminee
+	OPEN SYMMETRIC KEY IMEC_CLE_Key
+             DECRYPTION BY CERTIFICATE IMEC_CLE_Certificate
+    GO
+    UPDATE tblExaminee
+       SET ssn_encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), SSN), 
+           DOB_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), DOB) 
+      FROM tblExaminee
+    GO
 
--- Generate Documents & Quote Documents
-DELETE 
-FROM tblBusinessRuleCondition 
-WHERE BusinessRuleID = 160 
-  AND EntityType = 'PC' 
-  AND EntityID in (91, 295)
-GO
--- The following replaces rules for Generate Document.
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES 
-       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', NULL, NULL, NULL, NULL, 0, NULL),
-       (160, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', NULL, NULL, NULL, NULL, 0, NULL),
-       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@guard.com', 'YES', 'IN', NULL, NULL, 0, NULL),
-       (160, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@biberk.com', 'YES', 'IN', NULL, NULL, 0, NULL),
-       (160, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Brandon.Styczen@guard.com', 'YES', 'OUT', NULL, NULL, 0, NULL),
-       (160, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'lauren.langan@biberk.com', 'YES', 'OUT', NULL, NULL, 0, NULL)
-GO
-
--- DistRptInvDefaultOtherEmail
-DELETE 
-FROM tblBusinessRuleCondition 
-WHERE BusinessRuleID = 114 
-  AND EntityType = 'PC' 
-  AND EntityID in (91, 295)
-GO
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES 
-       (114, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'mbr@guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
-       (114, 'PC', 91, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Claims@Guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
-       (114, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL),
-       (114, 'PC', 295, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL)
-GO
-
--- DistDocInvDefaultOtherEmail
-DELETE 
-FROM tblBusinessRuleCondition 
-WHERE BusinessRuleID = 115 
-  AND EntityType = 'PC' 
-  AND EntityID in (91, 295)
-GO
-INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
-VALUES 
-       (115, 'PC', 91, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'mbr@guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
-       (115, 'PC', 91, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Claims@Guard.com', NULL, 'CMS', NULL, NULL, 0, NULL),
-       (115, 'PC', 295, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL),
-       (115, 'PC', 295, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'claims@Biberk.com', NULL, 'CMS', NULL, NULL, 0, NULL)
-GO
-*/
-
--- *************************************************************************************
-
-
+-- ****************************************************************************************************************

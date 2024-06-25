@@ -10,7 +10,7 @@ BEGIN
 
  SELECT *
 
- FROM [tblExaminee]
+ FROM [vwtblExaminee]
 
 
  SET @Err = @@Error

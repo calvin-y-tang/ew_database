@@ -199,7 +199,7 @@ SELECT
 	cc2.prefix AS plaintattprefix
 
 FROM tblCase
-	INNER JOIN tblExaminee ON tblCase.chartnbr = tblExaminee.chartnbr
+	INNER JOIN vwtblExaminee AS tblExaminee ON tblCase.chartnbr = tblExaminee.chartnbr
 	LEFT OUTER JOIN tblCaseType ON tblCase.casetype = tblCaseType.code
 	LEFT OUTER JOIN tblServices ON tblCase.servicecode = tblServices.servicecode
 	LEFT OUTER JOIN tblOffice ON tblCase.officecode = tblOffice.officecode
