@@ -239,7 +239,7 @@ AS
 			ISNULL(IIF ( C.PanelNbr > 0, '99999', D.NPINbr),'99999') AS DoctorNPINbr99999
 
     FROM    tblCase AS C
-            INNER JOIN tblExaminee AS EE ON EE.chartNbr = C.chartNbr
+            INNER JOIN vwtblExaminee AS EE ON EE.chartNbr = C.chartNbr
             INNER JOIN tblClient AS CL ON C.clientCode = CL.clientCode
             INNER JOIN tblCompany AS CO ON CL.companyCode = CO.companyCode
 			INNER JOIN tblCaseType AS CT ON C.CaseType = CT.Code

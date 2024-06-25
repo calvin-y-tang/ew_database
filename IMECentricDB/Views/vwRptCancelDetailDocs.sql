@@ -40,7 +40,7 @@ AS
             INNER JOIN tblCase ON tblCaseAppt.CaseNbr = tblCase.CaseNbr
             INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
             INNER JOIN tblCompany ON tblClient.CompanyCode = tblCompany.CompanyCode
-            INNER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
+            INNER JOIN vwtblExaminee AS tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr
             INNER JOIN tblServices ON tblCase.ServiceCode = tblServices.ServiceCode
             INNER JOIN tblOffice ON tblCase.OfficeCode = tblOffice.OfficeCode
             LEFT OUTER JOIN tblCaseApptPanel ON tblCaseAppt.CaseApptID = tblCaseApptPanel.CaseApptID

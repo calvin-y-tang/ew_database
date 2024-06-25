@@ -125,7 +125,7 @@ SELECT
 	tblProblem.description AS Problems
 
 FROM  tblCase
-	INNER JOIN tblExaminee ON tblCase.chartnbr = tblExaminee.chartnbr
+	INNER JOIN vwtblExaminee AS tblExaminee ON tblCase.chartnbr = tblExaminee.chartnbr
 	INNER JOIN tblClient ON tblCase.clientcode = tblClient.clientcode
 	INNER JOIN tblCompany ON tblClient.companycode = tblCompany.companycode
 	LEFT OUTER JOIN	tblCaseType ON tblCase.casetype = tblCaseType.code

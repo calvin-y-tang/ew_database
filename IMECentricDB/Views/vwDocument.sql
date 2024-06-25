@@ -482,7 +482,7 @@ AS
 			tblEWParentCompany.Name AS ParentCompanyName
 
     FROM    tblCase
-            INNER JOIN tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
+            INNER JOIN vwtblExaminee AS tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
             INNER JOIN tblOffice ON tblOffice.officeCode = tblCase.officeCode
             INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
             INNER JOIN tblCompany ON tblClient.CompanyCode = tblCompany.CompanyCode

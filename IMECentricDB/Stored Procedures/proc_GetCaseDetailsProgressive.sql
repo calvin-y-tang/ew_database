@@ -36,7 +36,7 @@ BEGIN
 		CC2.Fax PlaintiffAttorneyFax,
 		CC2.Email PlaintiffAttorneyEmail
 		FROM tblCase
-		INNER JOIN tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr 
+		INNER JOIN vwtblExaminee AS tblExaminee ON tblCase.ChartNbr = tblExaminee.ChartNbr 
 		LEFT JOIN tblCCAddress CC1 on tblCase.DefenseAttorneyCode = CC1.CCCode
 		LEFT JOIN tblCCAddress CC2 on tblCase.PlaintiffAttorneyCode = CC2.CCCode
 		WHERE tblCase.CaseNbr = @CaseNbr

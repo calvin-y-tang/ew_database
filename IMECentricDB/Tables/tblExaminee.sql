@@ -74,12 +74,63 @@
 	[MobilePhone]				   VARCHAR (15) NULL,
     [TreatingPhysicianNPINbr]      VARCHAR (20) NULL, 
 	[WorkPhone]					   VARCHAR (15) NULL,
+    [SSN_Encrypted]                VARBINARY(MAX) NULL,
+    [DOB_Encrypted]                VARBINARY(MAX) NULL, 
     CONSTRAINT [PK_tblExaminee] PRIMARY KEY CLUSTERED ([ChartNbr] ASC)
 );
 
+GO
+CREATE TRIGGER [dbo].[tblExaminee_AfterInsert_TRG]
+   ON  [dbo].[tblExaminee]
+   AFTER INSERT
+AS 
+BEGIN
 
+	SET NOCOUNT ON;
 
+	OPEN SYMMETRIC KEY IMEC_CLE_Key
+             DECRYPTION BY CERTIFICATE IMEC_CLE_Certificate
 
+     UPDATE E
+        SET E.SSN_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), I.SSN),
+            -- E.SSN = NULL, 
+            E.DOB_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), CONVERT(VARCHAR, I.DOB, 20))
+            -- E.DOB = NULL
+       FROM tblExaminee AS E
+               INNER JOIN Inserted AS I ON I.ChartNbr = E.ChartNbr
+
+END
+
+GO
+CREATE TRIGGER [dbo].[tblExaminee_AfterUpdate_TRG]
+   ON  [dbo].[tblExaminee]
+   AFTER UPDATE
+AS 
+BEGIN
+
+	SET NOCOUNT ON;
+
+	OPEN SYMMETRIC KEY IMEC_CLE_Key
+             DECRYPTION BY CERTIFICATE IMEC_CLE_Certificate
+     
+     UPDATE E
+        SET E.SSN_Encrypted = IIF(I.SSN = D.SSN,
+                                  E.SSN_Encrypted,
+                                  EncryptByKey (Key_GUID('IMEC_CLE_Key'), I.SSN)),
+            -- E.SSN = NULL, 
+            E.DOB_Encrypted = IIF(I.DOB = D.DOB, 
+                                  E.DOB_Encrypted, 
+                                  EncryptByKey (Key_GUID('IMEC_CLE_Key'), CONVERT(VARCHAR, I.DOB, 20)))
+            -- E.DOB = NULL
+       FROM tblExaminee AS E
+               INNER JOIN Inserted AS I ON I.ChartNbr = E.ChartNbr
+               INNER JOIN Deleted AS D ON D.ChartNbr = E.ChartNbr
+        WHERE I.SSN <> D.SSN OR I.SSN IS NULL OR D.SSN IS NULL
+           OR I.DOB <> D.DOB OR I.DOB IS NULL OR D.DOB IS NULL
+     
+     CLOSE SYMMETRIC KEY IMEC_CLE_Key;
+
+END
 
 
 GO
@@ -96,4 +147,5 @@ GO
 CREATE NONCLUSTERED INDEX [IX_tblExaminee_ChartNbr]
     ON [dbo].[tblExaminee]([ChartNbr] ASC)
     INCLUDE([LastName], [FirstName], [Sex]);
+
 
