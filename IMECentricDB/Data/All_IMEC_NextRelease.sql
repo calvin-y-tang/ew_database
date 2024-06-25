@@ -52,7 +52,7 @@ GO
     GO
     UPDATE tblExaminee
        SET ssn_encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), SSN), 
-           DOB_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), DOB) 
+           DOB_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), CONVERT(VARCHAR, DOB, 20)) 
       FROM tblExaminee
     GO
 
