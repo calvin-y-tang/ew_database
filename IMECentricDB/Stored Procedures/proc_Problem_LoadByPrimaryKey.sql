@@ -10,8 +10,7 @@ BEGIN
  DECLARE @Err int
 
  SELECT *
-
- FROM [tblProblem]
+ FROM [vwtblProblem]
  WHERE
   ([problemcode] = @problemcode)
 

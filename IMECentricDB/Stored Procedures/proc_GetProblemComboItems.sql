@@ -3,8 +3,9 @@ CREATE PROCEDURE [proc_GetProblemComboItems]
 
 AS
 
-SELECT problemcode, description from tblProblem 
-WHERE PublishOnWeb = 1
-	AND Status = 'Active'
-ORDER BY description
+	SELECT problemcode, description 
+	  FROM vwtblProblem AS tblProblem 
+	 WHERE PublishOnWeb = 1
+	   AND Status = 'Active'
+	ORDER BY description
 

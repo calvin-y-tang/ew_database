@@ -44,7 +44,7 @@ AS
 
 			ISNULL((STUFF((
 			SELECT CHAR(13) + CHAR(10) + CAST(P.Description AS VARCHAR)
-			FROM tblProblem AS P
+			FROM vwtblProblem AS P
 			INNER JOIN tblCaseProblem AS CP ON CP.ProblemCode = P.ProblemCode
 			WHERE CP.CaseNbr=C.CaseNbr
 			FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(300)'),1,1,'')),'') AS Problem

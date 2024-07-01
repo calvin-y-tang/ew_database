@@ -135,6 +135,6 @@ FROM  tblCase
 	LEFT OUTER JOIN	tblCCAddress AS cc2 ON tblCase.plaintiffattorneycode = cc2.cccode
 	LEFT OUTER JOIN	tblDoctor ON tblCase.doctorcode = tblDoctor.doctorcode
 	LEFT OUTER JOIN	tblCaseProblem ON tblCase.casenbr = tblCaseProblem.casenbr
-	LEFT OUTER JOIN	tblProblem ON tblCaseProblem.problemcode = tblProblem.problemcode
+	LEFT OUTER JOIN	vwtblProblem AS tblProblem ON tblCaseProblem.problemcode = tblProblem.problemcode
     LEFT OUTER JOIN tblEmployer on tblcase.EmployerID = tblEmployer.EmployerID 
     LEFT OUTER JOIN tblEmployerAddress on tblcase.EmployerAddressID = tblEmployerAddress.EmployerAddressID 
