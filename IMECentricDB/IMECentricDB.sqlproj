@@ -1163,6 +1163,9 @@
     <Build Include="Functions\fnConfListIsPhoneValid.sql" />
     <Build Include="Views\vwtblExaminee.sql" />
     <Build Include="Views\vwtblProblem.sql" />
+    <Build Include="Views\vwDocumentNoLock.sql" />
+    <Build Include="Views\vwtblExamineeNoLock.sql" />
+    <Build Include="Views\vwCaseApptNoLock.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
