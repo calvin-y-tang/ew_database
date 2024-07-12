@@ -16,6 +16,19 @@
 --GO
 
 
+-- IMEC-14305 - Security Token & Business Rule to control access to "File Browse" button on Case Letter/Report
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES('CaseFileBrowseBtn', 'Case - Allow File Browse', GETDATE())
+GO
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+VALUES (122, 'SetEnableStateFileBrowse', 'Case', 'Set Enabled state of FIle Browse button for Documents and Reports', 1, 1016, 1, NULL, NULL, NULL, NULL, 'OvrRideSecToken', 0, NULL)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES (122, 'PC', 16, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CaseFileBrowseBtn', 0, NULL)
+GO
+
+
+
 
 
 
