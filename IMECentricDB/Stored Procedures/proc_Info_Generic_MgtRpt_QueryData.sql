@@ -2,7 +2,8 @@
 	@startDate Date,
 	@endDate Date,
 	@ewFacilityIdList VarChar(255),
-	@companyCodeList VarChar(255)
+	@companyCodeList VarChar(255),
+    @useCaseCompany BIT
 AS 
 SET NOCOUNT ON
 
@@ -28,8 +29,6 @@ LEFT OUTER JOIN tblDataField as DF1 on tcm.StartDateFieldID = DF1.DataFieldID
 LEFT OUTER JOIN tblDataField as DF2 on tcm.EndDateFieldID = DF2.DataFieldID
 INNER JOIN tblCase as c on sla.CaseNbr = c.CaseNbr
 INNER JOIN tblAcctHeader as ah on c.CaseNbr = ah.CaseNbr
-INNER JOIN tblClient as cli on cli.ClientCode = ah.ClientCode
-INNER JOIN tblCompany as com on com.CompanyCode = cli.CompanyCode
 WHERE ((LEN(se.Descrip) > 0) OR (LEN(sla.Explanation) > 0))
   AND (AH.DocumentType = 'IN'
   AND AH.DocumentStatus = 'Final'
@@ -56,6 +55,7 @@ SELECT
   EWCT.Name as CompanyType,
   CL.ClientCode as ClientID,
   case when isnull(CL.LastName, '') = '' then isnull(CL.FirstName, '') else CL.LastName+', '+isnull(CL.FirstName, '') end as Client,
+  ISNULL(CL.Email, '') as ClientEmail,
   D.DoctorCode as DoctorID, 
   D.Zip as DoctorZip,
   CASE 
@@ -83,6 +83,7 @@ SELECT
   EL.City as ExamLocationCity,
   EL.State as ExamLocationState,
   EL.Zip as ExamLocationZip,
+  EL.County as ExamCounty,
   cast(case when isnull(M.FirstName, '') = '' then isnull(M.LastName, isnull(C.MarketerCode, '')) else M.FirstName+' '+isnull(M.LastName, '') end as varchar(30)) as Marketer,
   EWF.ShortName as EWFacility,
   EFGS.RegionGroupName as Region,
@@ -160,46 +161,46 @@ SELECT
  STUFF((SELECT '; ' + SLAReason FROM SLADetailsCTE
     WHERE SLADetailsCTE.CaseNbr = inv.CaseNbr
     FOR XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '') as SLAReasons,
-  CONVERT(DATETIME, NULL) as ClaimantConfirmationDateTime,
-  CONVERT(VARCHAR(32), NULL) as ClaimantConfirmationStatus,
-  CONVERT(INT, NULL) as ClaimantCallAttempts,
-  CONVERT(DATETIME, NULL) as AttyConfirmationDateTime,
-  CONVERT(VARCHAR(32), NULL) as AttyConfirmationStatus,
-  CONVERT(INT, NULL) as AttyCallAttempts,  
-  CONVERT(MONEY, NULL) AS   FeeDetailExam,
-  CONVERT(INT,   NULL) AS   FeeDetailExamUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailBillReview,
-  CONVERT(INT,   NULL) AS   FeeDetailBillRvwUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailPeer,
-  CONVERT(INT,   NULL) AS   FeeDetailPeerUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailAdd,
-  CONVERT(INT,   NULL) AS   FeeDetailAddUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailLegal,
-  CONVERT(INT,   NULL) AS   FeeDetailLegalUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailProcServ,
-  CONVERT(INT,   NULL) AS   FeeDetailProvServUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailDiag,
-  CONVERT(INT,   NULL) AS   FeeDetailDiagUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailNurseServ,
-  CONVERT(MONEY, NULL) AS   FeeDetailPhone,
-  CONVERT(MONEY, NULL) AS   FeeDetailMSA,
-  CONVERT(MONEY, NULL) AS   FeeDetailClinical,
-  CONVERT(MONEY, NULL) AS   FeeDetailTech,
-  CONVERT(MONEY, NULL) AS   FeeDetailMedicare,
-  CONVERT(MONEY, NULL) AS   FeeDetailOPO,
-  CONVERT(MONEY, NULL) AS   FeeDetailRehab,
-  CONVERT(MONEY, NULL) AS   FeeDetailAddRev,
-  CONVERT(INT,   NULL) AS   FeeDetailAddRevUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailTrans,
-  CONVERT(INT,   NULL) AS   FeeDetailTransUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailMileage,
-  CONVERT(INT,   NULL) AS   FeeDetailMileageUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailTranslate,
-  CONVERT(INT,   NULL) AS   FeeDetailTranslateUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailAdminFee,
-  CONVERT(INT,   NULL) AS   FeeDetailAdminFeeUnit,
-  CONVERT(MONEY, NULL) AS   FeeDetailFacFee,
-  CONVERT(MONEY, NULL) AS   FeeDetailOther,
+  CONVERT(DATETIME,     NULL) as ClaimantConfirmationDateTime,
+  CONVERT(VARCHAR(32),  NULL) as ClaimantConfirmationStatus,
+  CONVERT(INT,          NULL) as ClaimantCallAttempts,
+  CONVERT(DATETIME,     NULL) as AttyConfirmationDateTime,
+  CONVERT(VARCHAR(32),  NULL) as AttyConfirmationStatus,
+  CONVERT(INT,          NULL) as AttyCallAttempts,  
+  CONVERT(MONEY,        NULL) AS FeeDetailExam,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailExamUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailBillReview,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailBillRvwUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailPeer,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailPeerUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailAdd,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailAddUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailLegal,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailLegalUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailProcServ,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailProvServUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailDiag,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailDiagUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailNurseServ,
+  CONVERT(MONEY,        NULL) AS FeeDetailPhone,
+  CONVERT(MONEY,        NULL) AS FeeDetailMSA,
+  CONVERT(MONEY,        NULL) AS FeeDetailClinical,
+  CONVERT(MONEY,        NULL) AS FeeDetailTech,
+  CONVERT(MONEY,        NULL) AS FeeDetailMedicare,
+  CONVERT(MONEY,        NULL) AS FeeDetailOPO,
+  CONVERT(MONEY,        NULL) AS FeeDetailRehab,
+  CONVERT(MONEY,        NULL) AS FeeDetailAddRev,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailAddRevUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailTrans,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailTransUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailMileage,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailMileageUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailTranslate,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailTranslateUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailAdminFee,
+  CONVERT(NUMERIC(10,2),NULL) AS FeeDetailAdminFeeUnit,
+  CONVERT(MONEY,        NULL) AS FeeDetailFacFee,
+  CONVERT(MONEY,        NULL) AS FeeDetailOther,
   ISNULL(C.InsuringCompany, '') as InsuringCompany,
   ISNULL(C.Priority, 'Normal') AS CasePriority,
   CONVERT(DATE, C.AwaitingScheduling) as DateAwaitingScheduling,
@@ -213,17 +214,19 @@ SELECT
   CONVERT(VARCHAR(128),NULL) AS ClientCustomerName,
   C.ClaimNbrExt as ClaimNoExt,
   CONVERT(VARCHAR(32), NULL) as FeeQuoteAmount,
+  CONVERT(VARCHAR(32), NULL) as FeeScheduleAmount,
   CONVERT(VARCHAR(64), NULL) AS OutOfNetworkReason,
   CONVERT(VARCHAR(12), 'N/A') AS MedRecPages,
   CONVERT(BIT, NULL) AS AddendumNeeded,
   C.[Status] as CaseStatus,
-  C.DateReceived as CaseDateReceived
+  C.DateReceived as CaseDateReceived,
+  CA.DateShowNoShowLetterSent as DateSNSLetterSent
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
 left outer join tblEmployer as EM on C.EmployerID = EM.EmployerID
 left outer join tblClient as CL on Inv.ClientCode = CL.ClientCode		-- invoice client (billing client)
-left outer join tblCompany as CO on Inv.CompanyCode = CO.CompanyCode	-- invoice company (billing company)
+left outer join tblCompany as CO on CL.CompanyCode = CO.CompanyCode	    -- invoice company (billing company)
 left outer join tblClient as CLI on C.ClientCode = CLI.ClientCode		-- case client
 left outer join tblCompany as COM on CLI.CompanyCode = COM.CompanyCode	-- case company
 left outer join tblEWCompanyType as EWCT on CO.EWCompanyTypeID = EWCT.EWCompanyTypeID
@@ -268,11 +271,15 @@ WHERE (Inv.DocumentType='IN')
       AND (Inv.DocumentStatus='Final')
       AND (Inv.DocumentDate >= @startDate) and (Inv.DocumentDate <= @endDate)
       AND (inv.EWFacilityID in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xml.nodes( 'X' ) AS [T]( [N] )))
-      AND (((LEN(ISNULL(@companyCodeList, 0)) > 0 AND CO.ParentCompanyID in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xmlCompany.nodes( 'X' ) AS [T]( [N] ))))
-			OR (LEN(ISNULL(@companyCodeList, 0)) = 0 AND CO.ParentCompanyID > 0))
+      AND (((LEN(ISNULL(@companyCodeList, 0)) > 0 AND  IIF(@useCaseCompany = 0, CO.ParentCompanyID, COM.ParentCompanyID)  in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xmlCompany.nodes( 'X' ) AS [T]( [N] ))))
+			OR (LEN(ISNULL(@companyCodeList, 0)) = 0 AND IIF(@useCaseCompany = 0, CO.ParentCompanyID, COM.ParentCompanyID) > 0))
+
 
 ORDER BY EWF.GPFacility, Inv.DocumentNbr
 
 print 'Data retrieved'
 
 SET NOCOUNT OFF
+GO
+
+
