@@ -27,9 +27,8 @@ BEGIN
 
      UPDATE P
         SET P.Description_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), I.Description)
-            -- I.Description = NULL
        FROM tblProblem AS P
-               INNER JOIN Inserted AS I ON I.ProblemCode = P.ProblemCode
+               INNER JOIN Inserted AS I ON I.ProblemCode = P.ProblemCode;
 
 END
 
@@ -49,13 +48,18 @@ BEGIN
         SET P.Description_Encrypted = IIF(I.Description = D.Description,
                                   P.Description_Encrypted,
                                   EncryptByKey (Key_GUID('IMEC_CLE_Key'), I.Description))
-            -- P.Description = NULL
        FROM tblProblem AS P
                INNER JOIN Inserted AS I ON I.ProblemCode = P.ProblemCode
                INNER JOIN Deleted AS D ON I.ProblemCode = P.ProblemCode
         WHERE I.Description <> D.Description 
            OR I.Description IS NULL 
-           OR D.Description IS NULL
+           OR D.Description IS NULL;
+
+     UPDATE P
+        SET P.Description = NULL
+       FROM tblProblem AS P
+               INNER JOIN Inserted AS I ON I.ProblemCode = P.ProblemCode
+               INNER JOIN Deleted AS D ON I.ProblemCode = P.ProblemCode;
      
      CLOSE SYMMETRIC KEY IMEC_CLE_Key;
 
