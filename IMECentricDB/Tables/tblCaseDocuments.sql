@@ -27,6 +27,7 @@
     [MasterCaseNbr]  INT              NULL,
     [FirstViewedOnWebBy] VARCHAR(100) NULL, 
     [FirstViewedOnWebDate] SMALLDATETIME NULL, 
+    [QADateTransmitted] DATETIME NULL, 
     CONSTRAINT [PK_tblCaseDocuments] PRIMARY KEY CLUSTERED ([SeqNo] ASC)
 );
 

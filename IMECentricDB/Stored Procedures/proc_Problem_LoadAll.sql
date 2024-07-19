@@ -9,8 +9,7 @@ BEGIN
  DECLARE @Err int
 
  SELECT *
-
- FROM [tblProblem]
+ FROM [vwtblProblem]
  ORDER BY [description]
 
  SET @Err = @@Error

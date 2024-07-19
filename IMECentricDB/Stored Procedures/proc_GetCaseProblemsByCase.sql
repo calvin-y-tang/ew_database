@@ -6,7 +6,8 @@ CREATE PROCEDURE [proc_GetCaseProblemsByCase]
 
 AS 
 
-SELECT * FROM tblCaseProblem 
- INNER JOIN tblProblem ON tblCaseProblem.Problemcode = tblProblem.Problemcode 
+SELECT * 
+FROM tblCaseProblem 
+ INNER JOIN vwtblProblem AS tblProblem ON tblCaseProblem.Problemcode = tblProblem.Problemcode 
  WHERE casenbr = @CaseNbr
 

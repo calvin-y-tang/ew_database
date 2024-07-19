@@ -21,51 +21,45 @@ AS
 BEGIN
 	DECLARE @path VARCHAR(500)	
 	DECLARE @folderID INT
-	DECLARE @subFolder VARCHAR(32)
-	IF (@docType = 'invoice' or @docType = 'voucher') 
-	BEGIN
-		-- accounting document folder
-		SELECT @path = tblEWFolderDef.PathName 
-			+ RTRIM(YEAR(tblCase.DateAdded))
+	DECLARE @subFolder VARCHAR(32);
+	
+     WITH CaseFolderCTE AS
+          (SELECT
+              tblCase.CaseNbr AS CaseNbr, 
+              tblCase.DateAdded AS DateAdded,
+              IIF(@docType = 'invoice' OR @docType = 'voucher', 
+                    IIF(PC.AcctDocFolderID IS NOT NULL AND PC.AcctDocFolderID > 0, PC.AcctDocFolderID, IME.AcctDocFolderID), 
+                    IIF(PC.CaseDocFolderID IS NOT NULL AND PC.CaseDocFolderID > 0, PC.CaseDocFolderID, IME.CaseDocFolderID)
+              ) AS FolderID
+          FROM tblcase with (nolock)
+               LEFT OUTER JOIN tblOffice with (nolock) ON tblCase.OfficeCode = tblOffice.OfficeCode
+               INNER JOIN tblIMEData AS IME with (nolock) ON ISNULL(tblOffice.IMECode, 1) = IME.IMECode
+               INNER JOIN tblClient AS cl with (nolock) ON cl.ClientCode = ISNULL(tblCase.BillClientCode, tblcase.ClientCode)
+               INNER JOIN tblCompany AS co with (nolock) ON co.CompanyCode = cl.CompanyCode
+               INNER JOIN tblEWParentCompany AS pc with (nolock) ON pc.ParentCompanyID = co.ParentCompanyID
+          WHERE CaseNbr = @caseNbr 
+            AND CaseNbr IS NOT NULL
+          )
+     SELECT @path = fldr.PathName 
+			+ RTRIM(YEAR(DateAdded))
 			+ '-'
-			+ RIGHT('0' + RTRIM(MONTH(tblCase.DateAdded)), 2)
-			+ '\' + CONVERT(VARCHAR, @caseNbr),
-			@folderID = tblEWFolderDef.FolderID,
-			@subFolder = RTRIM(YEAR(tblCase.DateAdded))
+			+ RIGHT('0' + RTRIM(MONTH(DateAdded)), 2)
+			+ '\' + CONVERT(VARCHAR, CaseNbr),
+
+			@folderID = fldr.FolderID,
+			
+            @subFolder = RTRIM(YEAR(DateAdded))
 			+ '-'
-			+ RIGHT('0' + RTRIM(MONTH(tblCase.DateAdded)), 2)
-			+ '\' + CONVERT(VARCHAR, @caseNbr) + '\'		
-		  FROM tblCase
-				LEFT OUTER JOIN tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
-				INNER JOIN tblIMEData on ISNULL(tblOffice.IMECode, 1) = tblIMEData.IMECode
-				INNER JOIN tblEWFolderDef on tblIMEData.AcctDocFolderID = tblEWFolderDef.FolderID
-		  WHERE CaseNbr = @caseNbr 
-			AND CaseNbr IS NOT NULL		
-	END
-	ELSE
-	BEGIN
-		-- case document folder
-		SELECT @path = tblEWFolderDef.PathName 
-			+ RTRIM(YEAR(tblCase.DateAdded))
-			+ '-'
-			+ RIGHT('0' + RTRIM(MONTH(tblCase.DateAdded)), 2)
-			+ '\' + CONVERT(VARCHAR, @caseNbr),
-			@folderID = tblEWFolderDef.FolderID,
-			@subFolder = RTRIM(YEAR(tblCase.DateAdded))
-			+ '-'
-			+ RIGHT('0' + RTRIM(MONTH(tblCase.DateAdded)), 2)
-			+ '\' + CONVERT(VARCHAR, @caseNbr) + '\'		
-		  FROM tblCase
-				LEFT OUTER JOIN tblOffice on tblCase.OfficeCode = tblOffice.OfficeCode
-				INNER JOIN tblIMEData on ISNULL(tblOffice.IMECode, 1) = tblIMEData.IMECode
-				INNER JOIN tblEWFolderDef on tblIMEData.CaseDocFolderID = tblEWFolderDef.FolderID
-		  WHERE CaseNbr = @caseNbr 
-			AND CaseNbr IS NOT NULL
-	END	
-	INSERT @documentInfo
+			+ RIGHT('0' + RTRIM(MONTH(DateAdded)), 2)
+			+ '\' + CONVERT(VARCHAR, CaseNbr) + '\'		
+     FROM CaseFolderCTE
+               LEFT OUTER JOIN tblEWFolderDef AS fldr ON fldr.FolderID = CaseFolderCTE.FolderID
+	
+     INSERT @documentInfo
 		SELECT	@path as DocumentPath,
 				@folderID as FolderID, 
 				@subFolder as SubFolder
-	RETURN
+	
+     RETURN
 END
 

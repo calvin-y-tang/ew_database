@@ -93,9 +93,7 @@ BEGIN
 
      UPDATE E
         SET E.SSN_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), I.SSN),
-            -- E.SSN = NULL, 
             E.DOB_Encrypted = EncryptByKey (Key_GUID('IMEC_CLE_Key'), CONVERT(VARCHAR, I.DOB, 20))
-            -- E.DOB = NULL
        FROM tblExaminee AS E
                INNER JOIN Inserted AS I ON I.ChartNbr = E.ChartNbr
 
@@ -117,16 +115,21 @@ BEGIN
         SET E.SSN_Encrypted = IIF(I.SSN = D.SSN,
                                   E.SSN_Encrypted,
                                   EncryptByKey (Key_GUID('IMEC_CLE_Key'), I.SSN)),
-            -- E.SSN = NULL, 
             E.DOB_Encrypted = IIF(I.DOB = D.DOB, 
                                   E.DOB_Encrypted, 
                                   EncryptByKey (Key_GUID('IMEC_CLE_Key'), CONVERT(VARCHAR, I.DOB, 20)))
-            -- E.DOB = NULL
        FROM tblExaminee AS E
                INNER JOIN Inserted AS I ON I.ChartNbr = E.ChartNbr
                INNER JOIN Deleted AS D ON D.ChartNbr = E.ChartNbr
         WHERE I.SSN <> D.SSN OR I.SSN IS NULL OR D.SSN IS NULL
            OR I.DOB <> D.DOB OR I.DOB IS NULL OR D.DOB IS NULL
+     
+     UPDATE E
+        SET E.SSN = NULL, 
+            E.DOB = NULL
+       FROM tblExaminee AS E
+               INNER JOIN Inserted AS I ON I.ChartNbr = E.ChartNbr
+               INNER JOIN Deleted AS D ON D.ChartNbr = E.ChartNbr
      
      CLOSE SYMMETRIC KEY IMEC_CLE_Key;
 
