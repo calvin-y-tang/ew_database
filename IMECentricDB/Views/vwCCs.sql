@@ -7,5 +7,6 @@ AS
             Company ,
             City ,
             State ,
-            Status
+            Status,
+			Email
     FROM    tblCCAddress
