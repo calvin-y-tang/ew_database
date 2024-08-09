@@ -40,3 +40,10 @@ UPDATE tblBusinessRuleCondition
    AND EntityType = 'PC' 
    AND EntityID = 9 
 GO 
+
+
+-- IMEC-14276 - 
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
+VALUES ('PC', 31, 2, 1, 153, GETDATE(), 'Admin', 'Always')
+GO
+
