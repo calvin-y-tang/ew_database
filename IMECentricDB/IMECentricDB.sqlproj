@@ -1166,6 +1166,7 @@
     <Build Include="Views\vwDocumentNoLock.sql" />
     <Build Include="Views\vwtblExamineeNoLock.sql" />
     <Build Include="Views\vwCaseApptNoLock.sql" />
+    <Build Include="Tables\tblCaseDocLog.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />

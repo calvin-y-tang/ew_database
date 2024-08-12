@@ -9,8 +9,17 @@ CREATE TABLE [dbo].[tblTask] (
     [TableKey]      INT           NOT NULL,
     [Date1]         DATETIME      NULL,
     [Date2]         DATETIME      NULL,
-    [Int1]          DATETIME      NULL,
-    [Int2]          DATETIME      NULL,
+    [Int1]          INT           NULL,
+    [Int2]          INT           NULL,
+    [Int3]          INT           NULL,
+    [Text1]         VARCHAR(256)  NULL,
+    [Text2]         VARCHAR(120)  NULL,
+    [Text3]         VARCHAR(4096) NULL,
+    [Text4]         VARCHAR(4096) NULL,
+    [Text5]         VARCHAR(512)  NULL,
+    [Text6]         VARCHAR(MAX)  NULL,
+    [Text7]         VARCHAR(4096) NULL,
+    [Text8]         VARCHAR(50)   NULL,
     CONSTRAINT [PK_tblTask] PRIMARY KEY CLUSTERED ([TaskID] ASC)
 );
 

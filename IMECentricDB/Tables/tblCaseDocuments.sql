@@ -119,3 +119,6 @@ CREATE NONCLUSTERED INDEX [IX_tblCaseDocuments_SourceDateAdded]
     ON [dbo].[tblCaseDocuments]([Source] ASC, [DateAdded] ASC)
     INCLUDE([CaseNbr], [Description], [UserIDAdded], [CaseDocTypeID]);
 
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseDocDocuments_FolderID]
+    ON [dbo].[tblCaseDocuments]([FolderID] ASC);
