@@ -27,3 +27,8 @@ INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, Proce
 VALUES ('CO', 76626, 2, 1, 173, GETDATE(), 'Admin', 'WBPROGAPT*', 'DoNotReply@ExamWorks.com', 'PA', 'DistDocsExtEmailSys_ProgAlbany')
 GO
 
+-- IMEC-14381 - create new tblSetting to determine which CaseDocType items to apply for MedsIncoming
+INSERT INTO tblSetting(Name, Value)
+VALUES('CaseDocTypeMedsIncoming_True', ';7;21;')
+GO
+
