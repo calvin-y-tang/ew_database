@@ -32,3 +32,7 @@ INSERT INTO tblSetting(Name, Value)
 VALUES('CaseDocTypeMedsIncoming_True', ';7;21;')
 GO
 
+-- IMEC-14383 - new tblSetting to determine which CaseDocType items to apply for MedsToDoctor
+INSERT INTO tblSetting(Name, Value)
+VALUES('CaseDocTypeMedsToDoctor_True', ';7;21;')
+GO
