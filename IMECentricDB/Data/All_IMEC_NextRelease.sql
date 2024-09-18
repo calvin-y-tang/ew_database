@@ -40,52 +40,40 @@ GO
 -- IMEC-14382 - Guardrail for med Rec Pages when Finalizing Invoices - business rules and conditions for the security token and service types
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, BrokenRuleAction)
 VALUES (178, 'GuardRailForMedRecPagesFinInvoice', 'Case', 'Check that number of medical record pages has been recorded by checking that documents were sent to doctor before finalizing invoice', 1, 1811, 1, 'NumDocsMedsToDr', 'Override Sec Token', 0)
-
-
+GO
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
 VALUES ('SW', 2, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
 GO
@@ -107,4 +95,24 @@ GO
 
 INSERT INTO tblCodes (Category, SubCategory, Value)
 VALUES ('frmAuthorizeOverrideReason', 'cboOverrideReason', 'Records sent to doctor by client')
+GO
+
+-- IMEC-14417 - Re-work Attorney Add/Edit Security Tokens to use individual tokens instead a single AddEdit token
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES('AttorneyAdd', 'Attorney - Add', GetDate()), 
+      ('AttorneyEdit', 'Attorney - Edit', GetDate())
+GO
+INSERT INTO tblGroupFunction (GroupCode, FunctionCode)
+     SELECT GroupCode, 'AttorneyAdd'
+       FROM tblGroupFunction 
+      WHERE FunctionCode = 'AttorneyAddEdit'
+GO
+INSERT INTO tblGroupFunction (GroupCode, FunctionCode)
+     SELECT GroupCode, 'AttorneyEdit'
+       FROM tblGroupFunction 
+      WHERE FunctionCode = 'AttorneyAddEdit'
+GO
+DELETE FROM tblGroupFunction WHERE FunctionCode = 'AttorneyAddEdit'
+GO
+DELETE FROM tblUserFunction WHERE FunctionCode = 'AttorneyAddEdit'
 GO
