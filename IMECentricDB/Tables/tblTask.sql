@@ -21,6 +21,7 @@ CREATE TABLE [dbo].[tblTask] (
     [Text7]         VARCHAR(4096) NULL,
     [Text8]         VARCHAR(50)   NULL,
     [Text9]         VARCHAR(4096) NULL,
+    [Bit1]          Bit           NULL,
     CONSTRAINT [PK_tblTask] PRIMARY KEY CLUSTERED ([TaskID] ASC)
 );
 
