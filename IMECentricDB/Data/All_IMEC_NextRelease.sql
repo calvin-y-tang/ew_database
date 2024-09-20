@@ -116,3 +116,11 @@ DELETE FROM tblGroupFunction WHERE FunctionCode = 'AttorneyAddEdit'
 GO
 DELETE FROM tblUserFunction WHERE FunctionCode = 'AttorneyAddEdit'
 GO
+
+-- IMEC-14433 (IMEC-14301) - new business rule that allows us to force MedsIncoming = False when working in the Document Workspace folder.
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+VALUES (136, 'FileMgrFolderRule', 'Case', 'Specify rule for a folder when using File Manager', 1, 1015, 0, 'FolderID', 'NameOfValueToSet', 'Value', NULL, NULL, 0, NULL)
+GO
+INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6)
+VALUES (136, 'SW', NULL, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, '99', 'MedsIncoming', 'False', NULL, NULL, 0, NULL)
+GO
