@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[tblEWCoverLetterQuestion] (
-    [EWCoverLetterQuestionID] INT            NOT NULL,
+    [EWCoverLetterQuestionID] INT            IDENTITY (1, 1) NOT NULL,
     [EWCoverLetterID]         INT            NOT NULL,
     [QuestionText]            VARCHAR (1500) NULL,
     [Required]                BIT            NOT NULL,

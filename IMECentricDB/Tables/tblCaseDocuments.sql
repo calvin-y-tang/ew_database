@@ -28,6 +28,8 @@
     [FirstViewedOnWebBy] VARCHAR(100) NULL, 
     [FirstViewedOnWebDate] SMALLDATETIME NULL, 
     [QADateTransmitted] DATETIME NULL, 
+    [MedsIncoming]   BIT              CONSTRAINT [DF_tblcasedocuments_MedsIncoming] DEFAULT (0) NULL,
+    [MedsToDoctor]   BIT              CONSTRAINT [DF_tblcasedocuments_MedsToDoctor] DEFAULT (0) NULL,
     CONSTRAINT [PK_tblCaseDocuments] PRIMARY KEY CLUSTERED ([SeqNo] ASC)
 );
 

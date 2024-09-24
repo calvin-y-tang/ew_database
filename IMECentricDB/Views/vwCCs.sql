@@ -8,5 +8,8 @@ AS
             City ,
             State ,
             Status,
-			Email
+			Email,
+			Phone,
+			Fax,
+            Address1 + ' ' + City + ', ' + State + ' ' + zip AS Address
     FROM    tblCCAddress

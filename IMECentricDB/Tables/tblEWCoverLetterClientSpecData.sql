@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[tblEWCoverLetterClientSpecData] (
-    [EWCoverLetterClientSpecDataID] INT           NOT NULL,
+    [EWCoverLetterClientSpecDataID] INT           IDENTITY (1, 1) NOT NULL,
     [EWCoverLetterID]               INT           NOT NULL,
     [SpecifiedData]                 VARCHAR (500) NULL,
     [Required]                      BIT           NOT NULL,

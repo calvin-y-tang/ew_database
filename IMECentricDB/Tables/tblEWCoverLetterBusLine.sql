@@ -1,5 +1,5 @@
 CREATE TABLE [dbo].[tblEWCoverLetterBusLine] (
-    [EWCoverLetterBusLineID] INT          NOT NULL,
+    [EWCoverLetterBusLineID] INT          IDENTITY (1, 1) NOT NULL,
     [EWCoverLetterID]        INT          NOT NULL,
     [EWBusLineID]            INT          NOT NULL,
     [UserIDAdded]            VARCHAR (30) NULL,
