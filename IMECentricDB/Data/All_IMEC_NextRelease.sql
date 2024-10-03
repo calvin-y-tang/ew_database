@@ -6,9 +6,44 @@
 -- Sprint 140
 
 -- IMEC 14380 - Data patch - sets bits to 0 so checkboxes are blank and then patch the data
-UPDATE tblCaseDocuments SET MedsIncoming = 0, MedsToDoctor = 0
-UPDATE tblCaseDocuments SET MedsIncoming = 1 WHERE CaseDocTypeID = 7 AND UserIDAdded LIKE '%@%'
-GO
+
+-- Original Update
+-- UPDATE tblCaseDocuments SET MedsIncoming = 0, MedsToDoctor = 0
+-- UPDATE tblCaseDocuments SET MedsIncoming = 1 WHERE CaseDocTypeID = 7 AND UserIDAdded LIKE '%@%'
+
+DECLARE @startId AS int
+DECLARE @segment AS int
+DECLARE @maxSeqNo AS int
+
+set @startId = 0;
+set @segment = 4000;
+set @maxSeqNo = (select max(SeqNo) from [tblCaseDocuments])
+
+print(concat('starting row: ', @startId, '. Last row: ', @maxSeqNo, '.'))
+while 1 = 1
+begin
+	while 1 = 1
+	begin
+		print(concat('starting row: ', @startId, '. Limit row: ', @startId + @segment, ' Last row: ', @maxSeqNo, '.'))
+		IF @startId >= @maxSeqNo BREAK
+		UPDATE [tblCaseDocuments]
+		SET -- top to a lower value for locking
+			MedsIncoming = (case when CaseDocTypeID = 7 AND UserIDAdded LIKE '%@%' then 1 else 0 end),
+			MedsToDoctor = 0
+		where
+			SeqNo >= @startId
+			and SeqNo <= (@startId + @segment)
+
+		set @startId = iif(
+			(@startId + @segment) > @maxSeqNo,
+				@maxSeqNo,
+				@startId + @segment
+		)
+	END
+	set @maxSeqNo = (select max(SeqNo) from [tblCaseDocuments])
+	print(concat('Finished Inital Upate... checking for new rows. Old limit: ', @startId, '. New limit: ', @maxSeqNo, '.'))
+	IF @maxSeqNo = @startId BREAK
+END
 
 -- IMEC-14281 - new business rules and BR conditions for Progressive Albany Plaintiff Attorney emails using external email source
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)

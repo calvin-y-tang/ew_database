@@ -217,78 +217,78 @@ VALUES (178, 'GuardRailForMedRecPagesFinInvoice', 'Case', 'Check that number of 
 GO
 
 
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
 GO
 
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
 GO
-INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
+VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
 GO
 
 
