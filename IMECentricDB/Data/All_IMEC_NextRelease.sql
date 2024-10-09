@@ -16,8 +16,8 @@ DECLARE @segment AS int
 DECLARE @maxSeqNo AS int
 
 set @startId = (select min(SeqNo) from [tblCaseDocuments]
-	where DateAdded > '2024-10-04 00:00:00'
-		and DateAdded < '2024-10-04 21:00:00');
+       where MedsIncoming is null
+              or MedsToDoctor is null)
 set @segment = 4000;
 set @maxSeqNo = (select max(SeqNo) from [tblCaseDocuments])
 
