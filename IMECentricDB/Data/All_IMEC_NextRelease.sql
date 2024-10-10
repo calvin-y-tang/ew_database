@@ -17,9 +17,10 @@ DECLARE @maxSeqNo AS int
 
 set @startId = (select min(SeqNo) from [tblCaseDocuments]
        where MedsIncoming is null
-              or MedsToDoctor is null)
+              or MedsToDoctor is null);
 set @segment = 4000;
-set @maxSeqNo = (select max(SeqNo) from [tblCaseDocuments])
+set @maxSeqNo = (select max(SeqNo) from [tblCaseDocuments]);
+set @startId = isnull(@startId, @maxSeqNo);
 
 print(concat('starting row: ', @startId, '. Last row: ', @maxSeqNo, '.'))
 while 1 = 1
