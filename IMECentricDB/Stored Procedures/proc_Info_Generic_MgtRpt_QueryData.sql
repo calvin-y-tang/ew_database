@@ -217,10 +217,16 @@ SELECT
   CONVERT(VARCHAR(32), NULL) as FeeScheduleAmount,
   CONVERT(VARCHAR(64), NULL) AS OutOfNetworkReason,
   CONVERT(VARCHAR(12), 'N/A') AS MedRecPages,
+  CONVERT(VARCHAR(12), 'N/A') AS DocReviewPages,
   CONVERT(BIT, NULL) AS AddendumNeeded,
   C.[Status] as CaseStatus,
   C.DateReceived as CaseDateReceived,
-  CA.DateShowNoShowLetterSent as DateSNSLetterSent
+  CA.DateShowNoShowLetterSent as DateSNSLetterSent,
+  CONVERT(BIT, 
+      CASE 
+        WHEN DefenseAttorneyCode > 0 THEN 1
+        ELSE 0
+      END) [In Litigation]
 INTO ##tmp_GenericInvoices
 FROM tblAcctHeader AS Inv
 left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
