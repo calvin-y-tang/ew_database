@@ -190,6 +190,44 @@ AS
             tblClient.City AS ClientCity ,
             tblClient.Zip AS ClientZip ,
 
+            BCL.firstName + ' ' + BCL.lastName AS BillClientName ,
+            BCL.Phone1 + ' ' + ISNULL(BCL.Phone1ext, ' ') AS BillClientPhone ,
+            BCL.Phone2 + ' ' + ISNULL(BCL.Phone2ext, ' ') AS BillClientPhone2 ,
+            BCL.Addr1 AS BillClientAddr1 ,
+            BCL.Addr2 AS BillClientAddr2 ,
+            BCL.City + ', ' + UPPER(BCL.State) + '  ' + BCL.Zip AS BillClientCityStateZip ,
+            BCL.Fax AS BillClientFax ,
+            BCL.Email AS BillClientEmail ,
+            'Dear ' + BCL.firstName + ' ' + BCL.lastName AS BillClientSalutation ,
+            BCL.title AS BillClienttitle ,
+            BCL.Prefix AS BillClientPrefix ,
+            BCL.suffix AS BillClientsuffix ,
+            BCL.USDvarchar1 AS BillClientUSDvarchar1 ,
+            BCL.USDvarchar2 AS BillClientUSDvarchar2 ,
+            BCL.USDDate1 AS BillClientUSDDate1 ,
+            BCL.USDDate2 AS BillClientUSDDate2 ,
+            BCL.USDtext1 AS BillClientUSDtext1 ,
+            BCL.USDtext2 AS BillClientUSDtext2 ,
+            BCL.USDint1 AS BillClientUSDint1 ,
+            BCL.USDint2 AS BillClientUSDint2 ,
+            BCL.USDmoney1 AS BillClientUSDmoney1 ,
+            BCL.USDmoney2 AS BillClientUSDmoney2 ,
+            BCL.CompanyCode AS BillClientCompanyCode ,
+            BCL.Notes AS BillClientNotes ,
+            BCL.BillAddr1 AS BillClientBillAddr1,
+            BCL.BillAddr2 AS BillClientBillAddr2,
+            BCL.BillCity AS BillClientBillCity,
+            UPPER(BCL.BillState) AS BillClientBillState ,
+            BCL.BillZip AS BillClientBillZip,
+            BCL.Billattn AS BillClientBillattn,
+            BCL.ARKey AS BillClientARKey,
+            BCL.BillFax AS BillClientBillFax ,
+            BCL.lastName AS BillClientlastName ,
+            BCL.firstName AS BillClientfirstName ,
+            UPPER(BCL.State) AS BillClientState ,
+            BCL.City AS BillClientCity ,
+            BCL.Zip AS BillClientZip ,
+
             tblCompany.extName AS Company ,
             tblCompany.USDvarchar1 AS CompanyUSDvarchar1 ,
             tblCompany.USDvarchar2 AS CompanyUSDvarchar2 ,
@@ -202,6 +240,19 @@ AS
             tblCompany.USDmoney1 AS CompanyUSDmoney1 ,
             tblCompany.USDmoney2 AS CompanyUSDmoney2 ,
             tblCompany.Notes AS CompanyNotes ,
+
+            BCO.extName AS BillingCompany ,
+            BCO.USDvarchar1 AS BillingCompanyUSDvarchar1 ,
+            BCO.USDvarchar2 AS BillingCompanyUSDvarchar2 ,
+            BCO.USDDate1 AS BillingCompanyUSDDate1 ,
+            BCO.USDDate2 AS BillingCompanyUSDDate2 ,
+            BCO.USDtext1 AS BillingCompanyUSDtext1 ,
+            BCO.USDtext2 AS BillingCompanyUSDtext2 ,
+            BCO.USDint1 AS BillingCompanyUSDint1 ,
+            BCO.USDint2 AS BillingCompanyUSDint2 ,
+            BCO.USDmoney1 AS BillingCompanyUSDmoney1 ,
+            BCO.USDmoney2 AS BillingCompanyUSDmoney2 ,
+            BCO.Notes AS BillingCompanyNotes ,
 
             tblCase.QARep ,
             tblCase.Doctorspecialty ,
@@ -494,6 +545,9 @@ AS
             LEFT OUTER JOIN tblCaseAppt ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
             LEFT OUTER JOIN tblDoctorLocation ON tblCase.DoctorLocation = tblDoctorLocation.LocationCode
                                                  AND tblCase.DoctorCode = tblDoctorLocation.DoctorCode
+
+            LEFT JOIN tblClient AS BCL ON tblCase.BillClientCode = BCL.ClientCode
+            LEFT JOIN tblCompany AS BCO ON BCL.CompanyCode = BCO.CompanyCode
 
             LEFT OUTER JOIN tblSpecialty ON tblCase.Doctorspecialty = tblSpecialty.specialtyCode
             LEFT OUTER JOIN tblVenue ON tblCase.VenueID = tblVenue.VenueID
