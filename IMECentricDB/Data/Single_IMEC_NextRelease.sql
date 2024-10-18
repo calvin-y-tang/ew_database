@@ -27,3 +27,12 @@ INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, Proce
 VALUES ('PC', 4, 2, 1, 182, GETDATE(), 'Admin', 5, 'IN', '2')
 GO
 
+
+-- IMEC-14446 - only show 2 FL fee zones for Liberty - remove FL-Central if the case network is Liberty
+USE [IMECentricEW]
+
+INSERT INTO tblSetting (Name, Value)
+VALUES ('LibertyStartDateFLFeeZones', '2024/10/01')
+GO
+
+
