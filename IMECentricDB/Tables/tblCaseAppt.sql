@@ -33,6 +33,8 @@ CREATE TABLE [dbo].[tblCaseAppt] (
     [NoShowNotificationDate]   DATETIME      NULL,
     [DoctorReason]             VARCHAR (25)  NULL,
     [DateShowNoShowLetterSent] DATETIME      NULL,
+    -- TODOJP:
+    [TATNoShowToScheduled]     INT           NULL,
     CONSTRAINT [PK_tblCaseAppt] PRIMARY KEY CLUSTERED ([CaseApptID] ASC)
 );
 
