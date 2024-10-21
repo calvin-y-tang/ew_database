@@ -35,4 +35,29 @@ INSERT INTO tblSetting (Name, Value)
 VALUES ('LibertyStartDateFLFeeZones', '2024/10/01')
 GO
 
+-- IMEC-14422 - Allstate quote guardrails
+USE [IMECentricEW]
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)
+VALUES (181, 'ApplyAllStateGuardRailsQuote', 'Case', 'Check if the AllState guardrails need to be applied when generating a quote.', 1, 1060, 0, 'Max late cancel fee', 'Med recs max amount', 'Med recs rate', 'Max late cancel days', 0)
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 2, '2500', '2000', '1.00', '3')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 5, '2500', '2000', '1.00', '3')
+
+
+-- enables the MedRecsPages textbox on the Quote params form
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1)
+VALUES ('PC', 4, 2, 1, 152, GETDATE(), 'Admin', 2, 'True')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1)
+VALUES ('PC', 4, 2, 1, 152, GETDATE(), 'Admin', 5, 'True')
+
+
+-- quote override
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES (' AllStateQuoteGuardrailOverride ', 'AllState - Override Guardrails when creating quote', GETDATE())
+
+
 
