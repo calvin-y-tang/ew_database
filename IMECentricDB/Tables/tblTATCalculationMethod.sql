@@ -5,6 +5,8 @@
     [Unit]                   VARCHAR (5) NULL,
     [TATDataFieldID]         INT         NOT NULL,
     [UseTrend]               BIT         CONSTRAINT [DF_tblTATCalculationMethod_UseTrend] DEFAULT ((0)) NOT NULL,
+    -- TODOJP:
+    [ApptEnabled]            BIT         CONSTRAINT [DF_tblTATCalculationMethod_ApptEnabled] DEFAULT (0) NULL,
     CONSTRAINT [PK_tblTATCalculationMethod] PRIMARY KEY CLUSTERED ([TATCalculationMethodID] ASC)
 );
 
