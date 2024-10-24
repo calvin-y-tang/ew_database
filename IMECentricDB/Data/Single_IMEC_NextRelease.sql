@@ -59,5 +59,12 @@ VALUES ('PC', 4, 2, 1, 152, GETDATE(), 'Admin', 5, 'True')
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
 VALUES (' AllStateQuoteGuardrailOverride ', 'AllState - Override Guardrails when creating quote', GETDATE())
 
-
+-- IMEC-14483 - Update tblSetting for CaseDocTypeMedsIncoming_True to include only CaseDocType 'Med Records' and do not include 'San Med Records'
+Use IMECentricMedylex
+GO
+UPDATE tblSetting 
+   SET Value = '7;28;30;'
+  FROM tblSetting 
+ WHERE Name = 'CaseDocTypeMedsIncoming_True'
+GO
 
