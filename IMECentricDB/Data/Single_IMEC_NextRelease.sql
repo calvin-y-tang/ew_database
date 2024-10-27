@@ -46,6 +46,9 @@ VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 2, '2500', '2000', '1.00', '3')
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
 VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 5, '2500', '2000', '1.00', '3')
 
+-- quote override security token
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES (' AllStateQuoteGuardrailOverride ', 'AllState - Override Guardrails when creating quote', GETDATE())
 
 -- enables the MedRecsPages textbox on the Quote params form
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1)
@@ -55,9 +58,24 @@ INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, Proce
 VALUES ('PC', 4, 2, 1, 152, GETDATE(), 'Admin', 5, 'True')
 
 
--- quote override
+--IMEC-14421 - Allstate invoice guardrails
+USE [IMECentricEW]
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)
+VALUES (180, 'ApplyAllStateGuardRailsInvoice', 'Case', 'Check if the AllState guardrails need to be applied when generating an invoice.', 1, 1811, 0, 'Max late cancel fee', 'Med recs max amount', 'Med recs rate', 'Max late cancel days', 0)
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 180, GETDATE(), 'Admin', 2, '2500', '2000', '1.00', '3')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 180, GETDATE(), 'Admin', 5, '2500', '2000', '1.00', '3')
+
+-- invoice override security token
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES (' AllStateQuoteGuardrailOverride ', 'AllState - Override Guardrails when creating quote', GETDATE())
+VALUES ('AllStateInvGuardrailOverride', 'AllState - Override Guardrails to Finalize Invoice', GETDATE())
+
+
+
+
 
 -- IMEC-14483 - Update tblSetting for CaseDocTypeMedsIncoming_True to include only CaseDocType 'Med Records' and do not include 'San Med Records'
 Use IMECentricMedylex
