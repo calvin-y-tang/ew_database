@@ -48,7 +48,7 @@ VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 5, '2500', '2000', '1.00', '3')
 
 -- quote override security token
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES (' AllStateQuoteGuardrailOverride ', 'AllState - Override Guardrails when creating quote', GETDATE())
+VALUES ('AllStateQuoteGuardrailOverride', 'AllState - Override Guardrails when creating quote', GETDATE())
 
 -- enables the MedRecsPages textbox on the Quote params form
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1)
