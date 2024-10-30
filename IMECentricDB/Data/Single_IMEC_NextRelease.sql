@@ -10,302 +10,79 @@
 
 -- --------------------------------------------------------------------------
 
--- Sprint 140
-
--- IMEC-14303 - New Business Rule Conditions for EWCA for Industrial Alliance and Financial Services 
-USE IMECentricEWCA 
-GO 
-     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-     VALUES (7, 'CO', 2, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'tbPgSynergy', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-            (7, 'CO', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'tbPgSynergy', NULL, NULL, NULL, NULL, 0, NULL, 0),
-            (153, 'CO', 2, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Always', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-            (153, 'CO', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'Always', NULL, NULL, NULL, NULL, 0, NULL, 0)
-GO
-
--- IMEC-14296 - set CaseDocTypeID values for DBs based on current contents of local tblCaseDocType table
-USE IMECentricLandmark
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO 
-
-USE IMECentricMedicolegal
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-Use IMECentricFCE
-GO
-UPDATE tblSetting 
-   SET Value = ';7;22;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;22;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricSOMA
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricDirectIME
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricMatrix
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricCVS
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricMakos
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricNYRC
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricKRA
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricIMAS
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricMedylex
-GO
-UPDATE tblSetting 
-   SET Value = ';7;28;30;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;28;30;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricMedaca
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
-
-USE IMECentricEWCA
-GO
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsIncoming_True'
-GO 
-UPDATE tblSetting 
-   SET Value = ';7;'
-  FROM tblSetting 
- WHERE Name = 'CaseDocTypeMedsToDoctor_True'
-GO
+-- Sprint 141
 
 
---********************  Changes after sprint 140 was closed  *********************
--- moving from All IMEC to Single IMEC
-
-USE IMECentricEW
-
--- IMEC-14382 - Guardrail for med Rec Pages when Finalizing Invoices - business rules and conditions for the security token and service types
+USE [IMECentricEW]
+---- Business Rule and conditions for AllState Guardrails to send quote to billing client
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, BrokenRuleAction)
-VALUES (178, 'GuardRailForMedRecPagesFinInvoice', 'Case', 'Check that number of medical record pages has been recorded by checking that documents were sent to doctor before finalizing invoice', 1, 1811, 1, 'NumDocsMedsToDr', 'Override Sec Token', 0)
+VALUES (182, 'GenDocsSendQuoteToBillClient', 'Case', 'When generating documents for quotes, send email to billing client if there is one instead of case client', 1, 1201, 0, 'QuoteType', 'Quotehandling', 0)
+GO
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 182, GETDATE(), 'Admin', 2, 'IN', '2')
+GO
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2)
+VALUES ('PC', 4, 2, 1, 182, GETDATE(), 'Admin', 5, 'IN', '2')
 GO
 
 
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 4, 2, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
+-- IMEC-14446 - only show 2 FL fee zones for Liberty - remove FL-Central if the case network is Liberty
+USE [IMECentricEW]
+
+INSERT INTO tblSetting (Name, Value)
+VALUES ('LibertyStartDateFLFeeZones', '2024/10/01')
 GO
 
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 1, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 2, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 3, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 4, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 5, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 6, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 8, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 9, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 10, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 11, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 12, '1', 'MedRecPgsFinInvoiceOverride')
-GO
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2)
-VALUES ('PC', 31, 2, 1, 178, GETDATE(), 'Admin', 999, '1', 'MedRecPgsFinInvoiceOverride')
-GO
+-- IMEC-14422 - Allstate quote guardrails
+USE [IMECentricEW]
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)
+VALUES (181, 'ApplyAllStateGuardRailsQuote', 'Case', 'Check if the AllState guardrails need to be applied when generating a quote.', 1, 1060, 0, 'Max late cancel fee', 'Med recs max amount', 'Med recs rate', 'Max late cancel days', 0)
 
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 2, '2500', '2000', '1.00', '3')
 
--- ********************* moving from All IMEC to Single IMEC  **************
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 181, GETDATE(), 'Admin', 5, '2500', '2000', '1.00', '3')
 
-
--- IMEC-14382 - Guardrail for med Rec Pages when Finalizing Invoices - Security token to override guardrail
+-- quote override security token
 INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
-VALUES ('MedRecPgsFinInvoiceOverride', 'MedRecPgs - Override Guardrail to Finalize Invoice', GETDATE())
-GO
+VALUES (' AllStateQuoteGuardrailOverride ', 'AllState - Override Guardrails when creating quote', GETDATE())
 
--- IMEC-14382 - Guardrail for med Rec Pages when Finalizing Invoices - Reasons users can override guardrail stored in tblCodes
-INSERT INTO tblCodes (Category, SubCategory, Value)
-VALUES ('frmAuthorizeOverrideReason', 'cboOverrideReason', 'Service does not require page counts')
-GO
+-- enables the MedRecsPages textbox on the Quote params form
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1)
+VALUES ('PC', 4, 2, 1, 152, GETDATE(), 'Admin', 2, 'True')
 
-INSERT INTO tblCodes (Category, SubCategory, Value)
-VALUES ('frmAuthorizeOverrideReason', 'cboOverrideReason', 'Records sent to doctor by client')
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1)
+VALUES ('PC', 4, 2, 1, 152, GETDATE(), 'Admin', 5, 'True')
+
+
+--IMEC-14421 - Allstate invoice guardrails
+USE [IMECentricEW]
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)
+VALUES (180, 'ApplyAllStateGuardRailsInvoice', 'Case', 'Check if the AllState guardrails need to be applied when generating an invoice.', 1, 1811, 0, 'Max late cancel fee', 'Med recs max amount', 'Med recs rate', 'Max late cancel days', 0)
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 180, GETDATE(), 'Admin', 2, '2500', '2000', '1.00', '3')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 4, 2, 1, 180, GETDATE(), 'Admin', 5, '2500', '2000', '1.00', '3')
+
+-- invoice override security token
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES ('AllStateInvGuardrailOverride', 'AllState - Override Guardrails to Finalize Invoice', GETDATE())
+
+
+
+
+
+-- IMEC-14483 - Update tblSetting for CaseDocTypeMedsIncoming_True to include only CaseDocType 'Med Records' and do not include 'San Med Records'
+Use IMECentricMedylex
+GO
+UPDATE tblSetting 
+   SET Value = '7;28;30;'
+  FROM tblSetting 
+ WHERE Name = 'CaseDocTypeMedsIncoming_True'
 GO
 

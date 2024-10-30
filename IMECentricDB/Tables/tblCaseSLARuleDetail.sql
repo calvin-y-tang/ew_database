@@ -16,6 +16,9 @@
     [Responsible]         VARCHAR (50)  NULL,
     [StartDate]           DATETIME      NULL,
     [EndDate]             DATETIME      NULL,
+    -- TODOJP:
+    [StartCaseApptID]     INT           NULL, 
+    [EndCaseApptID]       INT           NULL,
     CONSTRAINT [PK_tblCaseSLARuleDetail] PRIMARY KEY CLUSTERED ([CaseSLARuleDetailID] ASC)
 );
 

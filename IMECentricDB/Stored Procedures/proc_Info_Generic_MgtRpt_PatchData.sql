@@ -214,8 +214,8 @@ print 'Custom Sedgwick Handling for Customer data values'
 	    INNER JOIN tblCustomerData as CD on CD.TableType = 'tblCase' AND CD.TableKey = ginv.CaseNbr AND CD.CustomerName = 'Sedgwick CMS'
    WHERE ginv.ParentCompanyID = 44
 
--- get medrec page counts
-print 'Get Medical Page Counts'
+-- get medrec page counts via MedIndex doc
+print 'Step 1 - Get Medical Page Counts from Medindex'
 UPDATE geninv SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT(VARCHAR(12), tblCD.Pages))
    FROM ##tmp_GenericInvoices as geninv
 		INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY CD.CaseNbr ORDER BY CD.SeqNo DESC) as ROWNUM,
@@ -224,6 +224,26 @@ UPDATE geninv SET MedRecPages = IIF(ISNULL(tblCD.Pages, '') = '', 'N/A', CONVERT
 					FROM tblCaseDocuments as CD
 					WHERE CD.Description like '%MedIndex%') as tblCD ON tblCD.CaseNbr = geninv.CaseNbr
 		WHERE tblCD.ROWNUM = 1
+
+-- get medrec page counts for any cases that we did not have a MedIndex doc on 
+print 'Step 2 - Calc missing Medical Page Counts'
+UPDATE geninv SET geninv.MedRecPages = tblCD.TotalPages
+  FROM ##tmp_GenericInvoices as geninv
+	INNER JOIN (SELECT SUM(ISNULL(Pages, 0)) as TotalPages, CaseNbr
+				  FROM tblCaseDocuments
+				  WHERE MedsIncoming = 1
+				  GROUP BY CaseNbr
+				  ) as tblCD ON tblCD.CaseNbr = geninv.CaseNbr		
+WHERE geninv.MedRecPages = 'N/A'
+
+print 'Step 3 - Calc missing Meds to Doctor'
+UPDATE geninv SET geninv.DocReviewPages = tblCD.TotalPages
+  FROM ##tmp_GenericInvoices as geninv
+	INNER JOIN (SELECT SUM(ISNULL(Pages, 0)) as TotalPages, CaseNbr
+				  FROM tblCaseDocuments
+				  WHERE MedsToDoctor = 1
+				  GROUP BY CaseNbr
+				  ) as tblCD ON tblCD.CaseNbr = geninv.CaseNbr		
 
 -- addendum 
 print 'Flag addendums'
