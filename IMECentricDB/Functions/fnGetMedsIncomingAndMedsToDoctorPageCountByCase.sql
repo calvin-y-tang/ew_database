@@ -1,9 +1,5 @@
 -- imec-14490-voucher-form-changes
 /****** Object:  UserDefinedFunction [dbo].[fnGetMedsIncomingAndMedsToDoctorPageCountByCase] ******/
-DROP FUNCTION [dbo].[fnGetMedsIncomingAndMedsToDoctorPageCountByCase]
-GO
-
-/****** Object:  UserDefinedFunction [dbo].[fnGetMedsIncomingAndMedsToDoctorPageCountByCase] ******/
 SET ANSI_NULLS ON
 GO
 
