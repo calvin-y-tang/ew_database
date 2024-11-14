@@ -4,7 +4,8 @@ create table [dbo].[tblFeeScheduleTiers]
     [Tier] varchar (128) not null,
     [DoctorCode] int not null,
     [ParentCompanyID] int null,
-	[EWBusLineID] [int] NULL,
+    [EWBusLineID] [int] NULL,
+	[EWFeeZoneID]  [int] NULL,
     [DateAdded] datetime constraint [DF_Tier_DateAdded] DEFAULT (getdate()) NULL,
     [UserIDAdded] varchar (64) null,
     constraint [PK_tblFeeScheduleTiers] primary key ([TierID])
