@@ -1,6 +1,6 @@
 create table [dbo].[tblFeeScheduleTiers]
 (
-    [TierID] bigint not null identity (1, 1),
+    [TierID] int not null identity (1, 1),
     [Tier] varchar (128) not null,
     [DoctorCode] int not null,
     [ParentCompanyID] int null,
