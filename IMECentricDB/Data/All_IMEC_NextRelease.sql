@@ -25,3 +25,51 @@
 		VALUES('CaseQAChecklistOverride', 'Case - QA Questions Override', GETDATE())
 	GO
 
+
+-- IMEC-14553
+    DECLARE
+	    @BusinessRuleID INT = 197,
+	    @Today DATETIME = sysdatetime(),
+	    @LibertyID INT = 31,
+	    @Zone1 INT = 1251,
+	    @Zone2 INT = 1252,
+	    @FLCentral INT = 1000,
+	    @FLNorth INT = 1100,
+	    @FLSouth INT = 1200;
+
+
+    -- delete the old data so that this script is idempotent
+    DELETE FROM dbo.tblBusinessRule WHERE BusinessRuleID = @BusinessRuleID;
+    DELETE FROM dbo.tblBusinessRuleCondition WHERE BusinessRuleID = @BusinessRuleID;
+
+    -- header row
+    INSERT INTO dbo.tblBusinessRule
+    (BusinessRuleID,Category, [Name], Descrip, IsActive, EventID,
+    Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, Param6Desc, 
+    BrokenRuleAction, AllowOverride)
+    VALUES
+    (
+	    -- EventID 1016 is CaseDataModified
+	    197, 'Case', 'RestrictFeeZoneList', 'Exclude listed fee zones', 1, 1016,
+	    'Fee zones to exclude', NULL, NULL, NULL, NULL, NULL,
+	    0, 0
+    );
+
+    -- create the detail rows for both conditions (Liberty and not Liberty)
+    INSERT INTO dbo.tblBusinessRuleCondition
+    (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, 
+    OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, 
+    Param1, Param2, Param3, Param4, Param5, Param6, 
+    [skip], ExcludeJurisdiction)
+    VALUES
+    -- Liberty (exclude North, South, and Central)
+    (@BusinessRuleID,'PC',@LibertyID,2,1,@Today,'Admin',
+    NULL,NULL,NULL,NULL,
+    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), NULL, NULL, NULL, NULL, NULL,
+    0, null),
+    -- Not Liberty (exclude zones 1 and 2)
+    (@BusinessRuleID,'SW',-1,2,1,@Today,'Admin',
+    NULL,NULL,NULL,NULL,
+    concat(@Zone1, ',', @Zone2), NULL, NULL, NULL, NULL, NULL,
+    0, NULL);
+    GO
