@@ -13,12 +13,16 @@ as
 return (
 	select sum(u.MedsIncoming) as MedsIncoming, sum(u.MedsToDoctor) as MedsToDoctor
 	from (
-		select mc.CaseNbr, isnull(Pages, 0) as MedsIncoming, 0 as MedsToDoctor
+		select tc.CaseNbr, tc.MasterCaseNbr
+			, mc.CaseNbr as JoinedCaseNbr, tcd.CaseNbr as documentCaseNbr
+			, isnull(Pages, 0) as MedsIncoming, 0 as MedsToDoctor, tcd.sFilename
+			, tcd.MedsIncoming as MedsIncomingBit, tcd.MedsToDoctor as MedsToDoctorBit
+			, tcd.SharedDoc
 		from tblCase tc
-		join tblCase mc on tc.MasterCaseNbr = mc.MasterCaseNbr
+		join tblCase mc on tc.MasterCaseNbr = mc.MasterCaseNbr or tc.CaseNbr = mc.CaseNbr
 		join tblCaseDocuments tcd on mc.CaseNbr = tcd.CaseNbr
 		where (
-			tc.CaseNbr = @CaseNbr and MedsIncoming = 1
+				tc.CaseNbr = @CaseNbr and MedsIncoming = 1
 		)
 		and (
 			(mc.CaseNbr <>  @CaseNbr and tcd.SharedDoc = 1)
@@ -26,10 +30,14 @@ return (
 			(mc.CaseNbr = @CaseNbr)
 		)
 		union
-		select tc.CaseNbr, 0 as MedsIncoming, isnull(Pages, 0) as MedsToDoctor
+		select tc.CaseNbr, tc.MasterCaseNbr
+			, tc.CaseNbr as JoinedCaseNbr, tcd.CaseNbr as documentCaseNbr
+			, 0 as MedsIncoming, isnull(Pages, 0) as MedsToDoctor, tcd.sFilename
+			, tcd.MedsIncoming as MedsIncomingBit, tcd.MedsToDoctor as MedsToDoctorBit
+			, tcd.SharedDoc
 		from tblCase tc
 		join tblCaseDocuments tcd on tc.CaseNbr = tcd.CaseNbr
-		where tc.CaseNbr = @CaseNbr and MedsToDoctor = 1 and tcd.SharedDoc = 0
+		where tc.CaseNbr = @CaseNbr and MedsToDoctor = 1
 	) u
 );
 GO
