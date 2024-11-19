@@ -31,8 +31,8 @@
 	    @BusinessRuleID INT = 197,
 	    @Today DATETIME = sysdatetime(),
 	    @LibertyID INT = 31,
-	    @Zone1 INT = 1251,
-	    @Zone2 INT = 1252,
+	    @Zone1 INT = 1250,
+	    @Zone2 INT = 1275,
 	    @FLCentral INT = 1000,
 	    @FLNorth INT = 1100,
 	    @FLSouth INT = 1200;
