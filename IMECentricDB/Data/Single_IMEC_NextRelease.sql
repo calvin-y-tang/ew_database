@@ -305,3 +305,228 @@ GO
 
 
 
+USE [IMECentricEW]
+---------------- IMEC-14539 - Use Liberty Specific Forms When Generating Quotes   ------------------------------------
+-- Business rule for document to use
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)
+VALUES (196, 'LibertyQuoteDocument', 'Case', 'Determine which Liberty Quote document to use', 1, 1060, 0, 'QuoteType', 'QuoteHandlingID', 'DoctorTier', 'Document', 0)
+GO
+
+-- Invoice quote, peer review, fee approval, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 2, 'IN', '2', ';T1;T2;', 'LibQtPRAprReq')
+GO
+
+-- Invoice quote, record review, fee approval, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 3, 'IN', '2', ';T1;T2;', 'LibQtPRAprReq')
+GO
+
+-- Invoice quote, peer review, fee quote, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 2, 'IN', '1', ';T1;T2;', 'LibQtPeerRecRev')
+GO
+
+-- Invoice quote, record review, fee quote, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 3, 'IN', '1', ';T1;T2;', 'LibQtPeerRecRev')
+GO
+
+-- Invoice quote, anything but peer review and record review, fee approval, doctor tier 1
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 196, GETDATE(), 'Admin', 'IN', '2', 'T1', 'LibQtT1AprReq')
+GO
+
+-- Invoice quote, anything but peer review and record review, fee quote, doctor tier 1
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 196, GETDATE(), 'Admin', 'IN', '1', 'T1', 'LibQtT1NoAppr')
+
+-- Invoice quote, anything but peer review and record review, fee approval, doctor tier 2
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 196, GETDATE(), 'Admin', 'IN', '2', 'T2', 'LibQtT2AprReq')
+GO
+
+-- Invoice quote, anything but peer review and record review, fee quote, doctor tier 2
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 196, GETDATE(), 'Admin', 'IN', '1', 'T2', 'LibQtT2NoAprReq')
+GO
+
+-- Invoice quote, anything but peer review and record review, fee approval, doctor tier not found
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 2, 196, GETDATE(), 'Admin', 'IN', '2', 'LibQtT2AprReq')
+GO
+
+-- Invoice quote, anything but peer review and record review, fee quote, doctor tier not found
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 2, 196, GETDATE(), 'Admin', 'IN', '1', 'LibQtT2NoAprReq')
+GO
+
+-- Invoice quote, peer review, fee approval, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 2, 'IN', '2', 'LibQtPRAprReq')
+GO
+
+-- Invoice quote, record review, fee approval, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 3, 'IN', '2', 'LibQtPRAprReq')
+GO
+
+-- Invoice quote, peer review, fee quote, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 2, 'IN', '1', 'LibQtPeerRecRev')
+GO
+
+-- Invoice quote, record review, fee quote, any tier
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWServiceTypeID, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 196, GETDATE(), 'Admin', 3, 'IN', '1', 'LibQtPeerRecRev')
+GO
+
+
+--------------------------- IMEC-14448 - Liberty Quote Guardrails  -----------------------------
+USE [IMECentricEW]
+-- insert 'Service Fee > 500 pgs' product into quote fee table
+INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
+VALUES('Svc Fee > 500pgs', 65, GETDATE(), 'Admin', 3030)
+GO
+
+-- business rule to set choice of additional fees on quote form
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
+VALUES (192, 'SetQuoteAdditionalFeeChoices', 'Accounting', 'Set list of available choices for quote additional fees', 1, 1061, 0, 'AllowedSelections', 0)
+GO
+
+-- show all fees for Liberty
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
+VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9')
+GO
+
+-- limit additional fees for everyone - do not show "Service Fee > 500 pgs"
+INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
+VALUES ('SW', 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
+GO
+
+-- User override security token for Liberty Quote Guardrails
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES ('LibertyQuoteOverride', 'Liberty - Override Guardrails to Generate Quote', GETDATE())
+GO
+
+-- enables the MedRecsPages textbox on the Quote params form
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
+VALUES ('PC', 31, 2, 1, 152, GETDATE(), 'Admin', 'True')
+GO
+
+  -- business rule to set Liberty quote maximum amount
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc , BrokenRuleAction)
+VALUES (200, 'LibertyGRSetQuoteMaxAmount', 'Case', 'Set quote maximum amount for Liberty Guardrails', 1, 1060, 0, 'QuoteFeeRangeUnit',  'AdditionalFeesUnit', 'TTlAmtLimit', 0)
+GO
+
+-- business rule condition to set Liberty quote maximum amount
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param3)
+VALUES ('PC', 31, 2, 1, 200, GETDATE(), 'Admin', ';fee;', ';fee;', '5000')
+GO
+
+-- Start Liberty Guardrails for cases added after date
+INSERT INTO tblSetting (Name, Value) 
+VALUES ('LibertyGuardrailsStartDate', '2024/10/01')
+GO
+
+
+-- Liberty quote guardrails - business rule for med rec page calculations
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES (186, 'LibertyQuoteMedRecPgCalculations', 'Case', 'Liberty Qote GR - rules for calculating med rec page amounts', 1, 1060, 0, 'Doctor Tier', 'BlockIncrement', 'ProdCode', 'RateForBlock', 'BlockStrtPgCnt', 0)
+GO
+
+--   (1) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = IME; Exclude Jurisdictions 'CA', 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 2, 186, GETDATE(), 'Admin', 1, 1, 'T1', '250', '385', '0.1', '250')
+GO
+
+--   (2) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Peer review; Exclude Jurisdictions 'CA', 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 2, 186, GETDATE(), 'Admin', 1, 2, 'T1', '250', '385', '0.2', '250')
+GO
+
+--   (3) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = IME; Exclude Jurisdictions 'CA', 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 2, 186, GETDATE(), 'Admin', 5, 1, 'T1', '250', '385', '0.1', '250')
+GO
+
+--   (4) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Peer review; Exclude Jurisdictions 'CA', 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 2, 186, GETDATE(), 'Admin', 5, 2, 'T1', '250', '385', '0.2', '250')
+GO
+
+--   (5) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = IME; Jurisdiction 'CA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 1, 1, 'CA', 'T1', '385', '0.5', '250')
+GO
+
+--   (6) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = IME; Jurisdiction 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 1, 1, 'WA', 'T1', '385', '0.5', '250')
+GO
+
+--   (7) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Peer review; Jurisdiction 'CA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 1, 2, 'CA', 'T1', '385', '0.35', '250')
+GO
+
+--   (8) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Peer review; Jurisdiction 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 1, 2, 'WA', 'T1', '385', '0.35', '250')
+GO
+
+--   (9) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = IME; Jurisdiction 'CA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 5, 1, 'CA', 'T1', '385', '0.5', '250')
+GO
+
+--   (10) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = IME; Jurisdiction 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 5, 1, 'WA', 'T1', '385', '0.5', '250')
+GO
+
+--   (11) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Peer review; Jurisdiction 'CA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 5, 2, 'CA', 'T1', '385', '0.35', '250')
+GO
+
+--   (12) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Peer review; Jurisdiction 'WA'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 5, 2, 'WA', 'T1', '385', '0.35', '250')
+GO
+
+--   (13) Med rec Pages > 250 - ProdCode = 385; First party; ServiceType = IME; Jurisdiction 'MI'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 2, 1, 'MI', 'T1', '250', '385', '0.1', '250')
+GO
+
+--   (14) Med rec Pages > 250 - ProdCode = 385; First party; ServiceType = Peer review; Jurisdiction 'MI'
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 2, 2, 'MI', 'T1', '385')
+GO
+
+--   (15) Service Fee > 500 - ProdCode = 3030; all cases
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param3, Param4, Param5)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', '3030', '0.1', '500')
+GO
+
+
+--------------------------- IMEC-14444 - Liberty Invoice Guardrails  -----------------------------
+USE [IMECentricEW]
+-- User override security token for Liberty Invoice Guardrails
+INSERT INTO tblUserFunction (FunctionCode, FunctionDesc, DateAdded)
+VALUES ('LibertyInvoiceOverride', 'Liberty - Override Guardrails to Finalize Invoice', GETDATE())
+GO
+
+-- Liberty invoice guardrail BR
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
+VALUES (187, 'LibertyGuardRailsInvoice', 'Case', 'Check if guardrails need to be applied when generating an invoice.', 1, 1811, 0, 'InvoiceMaxAmount', 0)
+GO
+  
+-- Liberty
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
+VALUES ('PC', 31, 2, 1, 187, GETDATE(), 'Admin', '5000')
+GO
+
+
+
