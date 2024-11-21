@@ -73,3 +73,12 @@
     concat(@Zone1, ',', @Zone2), NULL, NULL, NULL, NULL, NULL,
     0, NULL);
     GO
+
+-- IMEC-14611 - new bizRule to check on starting date for using Question Set
+    INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+    VALUES (138, 'UseQAQuestionSet', 'Case', 'Display QA Question Set when finalizing report', 1, 1310, 0, 'tblSettingStartDate', NULL, NULL, NULL, NULL, 0, NULL)
+    GO
+    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+    VALUES (138, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', NULL, NULL, NULL, NULL, 0, NULL, 0)
+    GO
+
