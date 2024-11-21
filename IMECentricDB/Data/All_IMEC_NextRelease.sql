@@ -73,3 +73,19 @@
     concat(@Zone1, ',', @Zone2), NULL, NULL, NULL, NULL, NULL,
     0, NULL);
     GO
+
+    
+-- IMEC-14486 - Only use EW Selected or Client Selected When Scheduling Appts - data patch for new collumn Status
+UPDATE tblDoctorReason SET [Status] = (CASE WHEN DoctorReasonID IN (1, 4) Then 'Active'  ELSE 'Inactive' END)
+GO
+
+
+-- IMEC-14448 - adding new product "Service Fee > 500 Pages" to tblProduct
+SET IDENTITY_INSERT tblProduct ON
+  INSERT INTO tblProduct (ProdCode, Description, LongDesc, Status, Taxable, INGLAcct,
+      VOGLAcct, DateAdded, UserIDAdded, XferToVoucher, UnitOfMeasureCode, AllowVoNegativeAmount, AllowInvoice, AllowVoucher, IsStandard)
+  Values(3030, 'Service Fee>500', 'Service Fee > 500 Pages', 'Active', 1, '400??',
+         '500??', GETDATE(), 'Admin', 0, 'PG', 0, 1, 0, 1)
+SET IDENTITY_INSERT tblProduct OFF
+GO
+
