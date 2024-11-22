@@ -35,7 +35,8 @@
 	    @Zone2 INT = 1275,
 	    @FLCentral INT = 1000,
 	    @FLNorth INT = 1100,
-	    @FLSouth INT = 1200;
+	    @FLSouth INT = 1200,
+        @LibertyStartDateFLFeeZones date = '2024-10-01'
 
 
     -- delete the old data so that this script is idempotent
@@ -51,7 +52,7 @@
     (
 	    -- EventID 1016 is CaseDataModified
 	    197, 'Case', 'RestrictFeeZoneList', 'Exclude listed fee zones', 1, 1016,
-	    'Fee zones to exclude', NULL, NULL, NULL, NULL, NULL,
+	    'Fee zones to exclude', 'Start date for rule', NULL, NULL, NULL, NULL,
 	    0, 0
     );
 
@@ -65,7 +66,7 @@
     -- Liberty (exclude North, South, and Central)
     (@BusinessRuleID,'PC',@LibertyID,2,1,@Today,'Admin',
     NULL,NULL,NULL,NULL,
-    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), NULL, NULL, NULL, NULL, NULL,
+    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), @LibertyStartDateFLFeeZones, NULL, NULL, NULL, NULL,
     0, null),
     -- Not Liberty (exclude zones 1 and 2)
     (@BusinessRuleID,'SW',-1,2,1,@Today,'Admin',
@@ -81,4 +82,17 @@
     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
     VALUES (138, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', NULL, NULL, NULL, NULL, 0, NULL, 0)
     GO
+    
+-- IMEC-14486 - Only use EW Selected or Client Selected When Scheduling Appts - data patch for new collumn Status
+UPDATE tblDoctorReason SET [Status] = (CASE WHEN DoctorReasonID IN (1, 4) Then 'Active'  ELSE 'Inactive' END)
+GO
+
+-- IMEC-14448 - adding new product "Service Fee > 500 Pages" to tblProduct
+SET IDENTITY_INSERT tblProduct ON
+  INSERT INTO tblProduct (ProdCode, Description, LongDesc, Status, Taxable, INGLAcct,
+      VOGLAcct, DateAdded, UserIDAdded, XferToVoucher, UnitOfMeasureCode, AllowVoNegativeAmount, AllowInvoice, AllowVoucher, IsStandard)
+  Values(3030, 'Service Fee>500', 'Service Fee > 500 Pages', 'Active', 1, '400??',
+         '500??', GETDATE(), 'Admin', 0, 'PG', 0, 1, 0, 1)
+SET IDENTITY_INSERT tblProduct OFF
+GO
 
