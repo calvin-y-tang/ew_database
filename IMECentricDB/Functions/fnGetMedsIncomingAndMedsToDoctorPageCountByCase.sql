@@ -1,12 +1,3 @@
--- imec-14490-voucher-form-changes
-/****** Object:  UserDefinedFunction [dbo].[fnGetMedsIncomingAndMedsToDoctorPageCountByCase] ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-
 create function [dbo].[fnGetMedsIncomingAndMedsToDoctorPageCountByCase] (@CaseNbr int)
 returns table
 as
@@ -21,7 +12,7 @@ return (
 		from tblCase tc
 		join tblCaseDocuments tcd on tc.CaseNbr = tcd.CaseNbr
 		where tc.CaseNbr = @CaseNbr and MedsToDoctor = 1
-		union		
+		union
 		select 	tc.CaseNbr
 			, tc.MasterCaseNbr
 			, mc.CaseNbr as JoinedCaseNbr, tcd.CaseNbr as documentCaseNbr
@@ -46,5 +37,4 @@ return (
 			join tblCaseDocuments tcd on mc.CaseNbr = tcd.CaseNbr
 		where (tc.CaseNbr = @CaseNbr and MedsIncoming = 1)  and ((mc.CaseNbr <>  @CaseNbr and tcd.SharedDoc = 1) or (mc.CaseNbr = @CaseNbr))
 	) u
-);
-GO
+)
