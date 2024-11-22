@@ -192,7 +192,7 @@ We have cancelled the exam for @Examineename@,
 claim number: @claimnbr@, 
 EW case #: @casenbr@. 
 
-he exam has been cancelled on @cancelapptdate@ because of @cancelreason@. 
+The exam has been cancelled on @cancelapptdate@ because of @cancelreason@. 
 
 Please remember to notify the translation and/or transportation vendors, if applicable. 
 
