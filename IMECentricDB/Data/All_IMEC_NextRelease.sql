@@ -35,7 +35,8 @@
 	    @Zone2 INT = 1275,
 	    @FLCentral INT = 1000,
 	    @FLNorth INT = 1100,
-	    @FLSouth INT = 1200;
+	    @FLSouth INT = 1200,
+        @LibertyStartDateFLFeeZones date = '2024-10-01'
 
 
     -- delete the old data so that this script is idempotent
@@ -51,7 +52,7 @@
     (
 	    -- EventID 1016 is CaseDataModified
 	    197, 'Case', 'RestrictFeeZoneList', 'Exclude listed fee zones', 1, 1016,
-	    'Fee zones to exclude', NULL, NULL, NULL, NULL, NULL,
+	    'Fee zones to exclude', 'Start date for rule', NULL, NULL, NULL, NULL,
 	    0, 0
     );
 
@@ -65,7 +66,7 @@
     -- Liberty (exclude North, South, and Central)
     (@BusinessRuleID,'PC',@LibertyID,2,1,@Today,'Admin',
     NULL,NULL,NULL,NULL,
-    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), NULL, NULL, NULL, NULL, NULL,
+    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), @LibertyStartDateFLFeeZones, NULL, NULL, NULL, NULL,
     0, null),
     -- Not Liberty (exclude zones 1 and 2)
     (@BusinessRuleID,'SW',-1,2,1,@Today,'Admin',
