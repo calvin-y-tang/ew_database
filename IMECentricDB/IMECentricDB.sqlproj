@@ -1166,6 +1166,8 @@
     <Build Include="Tables\tblCaseDocLog.sql" />
     <Build Include="Stored Procedures\pr_MedsToDoctor.sql" />
     <Build Include="Tables\tblQuestion.sql" />
+    <Build Include="Functions\fnGetMedsIncomingAndMedsToDoctorPageCountByCase.sql" />
+    <Build Include="Tables\tblFeeScheduleTiers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
