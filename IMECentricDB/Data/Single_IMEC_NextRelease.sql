@@ -1317,7 +1317,17 @@ GO
 
 --   (15) Service Fee > 500 - ProdCode = 3030; all cases
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param3, Param4, Param5)
-VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', '3030', '0.1', '500')
+VALUES ('PC', 31, 2, 2, 186, GETDATE(), 'Admin', '3030', '0.1', '500')
+GO
+
+  --   (16) Service Fee > 500 - ProdCode = 3030; exclude CA for workers comp - no service fee
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param3)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 3, 'CA', '3030')
+GO
+
+  --   (17) Service Fee > 500 - ProdCode = 3030; exclude TX for workers comp - no service fee
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param3)
+VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 3, 'TX', '3030')
 GO
 
 
