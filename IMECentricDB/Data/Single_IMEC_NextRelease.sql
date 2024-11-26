@@ -214,17 +214,11 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@          
+ $AdditionalFeeValues$
   
 If you have any questions or concerns, please reply by return email or contact our office.            
 
@@ -246,17 +240,11 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@          
+ $AdditionalFeeValues$
   
 If you have any questions or concerns, please reply by return email or contact our office.            
 
@@ -278,17 +266,11 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@          
+ $AdditionalFeeValues$
   
 If you have any questions or concerns, please reply by return email or contact our office.            
 
@@ -310,17 +292,11 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@          
+ $AdditionalFeeValues$
   
 If you have any questions or concerns, please reply by return email or contact our office.            
 
@@ -342,17 +318,11 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@          
+ $AdditionalFeeValues$
   
 If you have any questions or concerns, please reply by return email or contact our office.            
 
@@ -374,17 +344,11 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@          
+ $AdditionalFeeValues$
   
 If you have any questions or concerns, please reply by return email or contact our office.            
 
@@ -406,16 +370,10 @@ ExamWorks Fee Notice
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
+ Physician State: @ExamLocation@      
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
  Additional Applicable Fees:
-	 Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	 Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	 Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	 Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	 Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	 Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	 Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                 
+	 $AdditionalFeeValues$             
  
  If you have any questions or concerns, please reply by return email or contact our office.             
  
@@ -437,16 +395,10 @@ ExamWorks Fee Notice
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
+ Physician State: @ExamLocation@      
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
  Additional Applicable Fees:
-	 Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	 Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	 Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	 Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	 Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	 Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	 Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                 
+	 $AdditionalFeeValues$             
  
  If you have any questions or concerns, please reply by return email or contact our office.             
  
@@ -468,16 +420,10 @@ ExamWorks Fee Notice
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
+ Physician State: @ExamLocation@      
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
  Additional Applicable Fees:
-	 Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	 Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	 Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	 Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	 Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	 Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	 Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                 
+	 $AdditionalFeeValues$             
  
  If you have any questions or concerns, please reply by return email or contact our office.             
  
@@ -499,16 +445,10 @@ ExamWorks Fee Notice
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
+ Physician State: @ExamLocation@      
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
  Additional Applicable Fees:
-	 Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	 Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	 Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	 Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	 Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	 Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	 Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                 
+	 $AdditionalFeeValues$             
  
  If you have any questions or concerns, please reply by return email or contact our office.             
  
@@ -530,16 +470,10 @@ ExamWorks Fee Notice
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
+ Physician State: @ExamLocation@      
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
  Additional Applicable Fees:
-	 Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	 Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	 Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	 Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	 Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	 Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	 Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                 
+	 $AdditionalFeeValues$             
  
  If you have any questions or concerns, please reply by return email or contact our office.             
  
@@ -561,16 +495,10 @@ ExamWorks Fee Notice
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @ServiceDesc@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
+ Physician State: @ExamLocation@      
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@             
  Additional Applicable Fees:
-	 Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	 Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	 Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	 Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	 Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	 Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	 Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                 
+	 $AdditionalFeeValues$             
  
  If you have any questions or concerns, please reply by return email or contact our office.             
  
@@ -592,21 +520,17 @@ ExamWorks Fee Notice (Approval Required)
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
+ Physician State: @ExamLocation@       
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
  No Show Fee    @QuoteNoShowFee@          
  Late Cancel Fee    @QuoteLateCancelFee@             
  
  Additional Applicable Fees:        
-	Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                   
+	$AdditionalFeeValues$                  
 	
-Notify ExamWorks of Cancellation no later than [late cancellation days] (business days) prior to appointment to avoid Late Cancel Fee. The fee for this service may exceed this quote for reasons including, but not limited to additional required tests or geographical factors. Additional testing fees (i.e. X-Rays, diagnostics, diagnostic reviews, etc.) may apply and may be billed/reimbursed separately.        
+Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@  (business days) prior to appointment to avoid Late Cancel Fee. 
+
+The fee for this service may exceed this quote for reasons including, but not limited to additional required tests or geographical factors. Additional testing fees (i.e. X-Rays, diagnostics, diagnostic reviews, etc.) may apply and may be billed/reimbursed separately.        
 
 In order to provide our clients with the highest quality service we request that medical records, including CDs and films, are sent as soon as possible. Preferably at least 15 business days prior to the scheduled appointment date. Please send records, etc. to our ExamWorks office. If you are a web portal user, please upload the records to the portal as soon as possible.                      
 
@@ -630,21 +554,17 @@ ExamWorks Fee Notice (Approval Required)
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
+ Physician State: @ExamLocation@       
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
  No Show Fee    @QuoteNoShowFee@          
  Late Cancel Fee    @QuoteLateCancelFee@             
  
  Additional Applicable Fees:        
-	Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                   
+	$AdditionalFeeValues$                  
 	
-Notify ExamWorks of Cancellation no later than [late cancellation days] (business days) prior to appointment to avoid Late Cancel Fee. The fee for this service may exceed this quote for reasons including, but not limited to additional required tests or geographical factors. Additional testing fees (i.e. X-Rays, diagnostics, diagnostic reviews, etc.) may apply and may be billed/reimbursed separately.        
+Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@  (business days) prior to appointment to avoid Late Cancel Fee. 
+
+The fee for this service may exceed this quote for reasons including, but not limited to additional required tests or geographical factors. Additional testing fees (i.e. X-Rays, diagnostics, diagnostic reviews, etc.) may apply and may be billed/reimbursed separately.        
 
 In order to provide our clients with the highest quality service we request that medical records, including CDs and films, are sent as soon as possible. Preferably at least 15 business days prior to the scheduled appointment date. Please send records, etc. to our ExamWorks office. If you are a web portal user, please upload the records to the portal as soon as possible.                      
 
@@ -668,21 +588,17 @@ ExamWorks Fee Notice (Approval Required)
  
  Physician Name: @doctorname@          
  Physician Specialty: @doctorspecialty@          
- Physician State: @DoctorAddr3@          
- @QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
+ Physician State: @ExamLocation@       
+ @QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
  No Show Fee    @QuoteNoShowFee@          
  Late Cancel Fee    @QuoteLateCancelFee@             
  
  Additional Applicable Fees:        
-	Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-	Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-	Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-	Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-	Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-	Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-	Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@                   
+	$AdditionalFeeValues$                  
 	
-Notify ExamWorks of Cancellation no later than [late cancellation days] (business days) prior to appointment to avoid Late Cancel Fee. The fee for this service may exceed this quote for reasons including, but not limited to additional required tests or geographical factors. Additional testing fees (i.e. X-Rays, diagnostics, diagnostic reviews, etc.) may apply and may be billed/reimbursed separately.        
+Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@  (business days) prior to appointment to avoid Late Cancel Fee. 
+
+The fee for this service may exceed this quote for reasons including, but not limited to additional required tests or geographical factors. Additional testing fees (i.e. X-Rays, diagnostics, diagnostic reviews, etc.) may apply and may be billed/reimbursed separately.        
 
 In order to provide our clients with the highest quality service we request that medical records, including CDs and films, are sent as soon as possible. Preferably at least 15 business days prior to the scheduled appointment date. Please send records, etc. to our ExamWorks office. If you are a web portal user, please upload the records to the portal as soon as possible.                      
 
@@ -707,19 +623,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@         
 Physician Specialty: @doctorspecialty@         
-Physician State: @DoctorAddr3@         
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 No Show Fee    @QuoteNoShowFee@         
 Late Cancel Fee    @QuoteLateCancelFee@           
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$               
   
 Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
 
@@ -747,19 +657,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@         
 Physician Specialty: @doctorspecialty@         
-Physician State: @DoctorAddr3@         
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 No Show Fee    @QuoteNoShowFee@         
 Late Cancel Fee    @QuoteLateCancelFee@           
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$               
   
 Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
 
@@ -787,19 +691,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@         
 Physician Specialty: @doctorspecialty@         
-Physician State: @DoctorAddr3@         
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
+Physician State: @ExamLocation@   
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@         
 No Show Fee    @QuoteNoShowFee@         
-Late Cancel Fee    @QuoteLateCancelFee@         
-  
+Late Cancel Fee    @QuoteLateCancelFee@           
+
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$               
   
 Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
 
@@ -828,19 +726,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
  
 Physician Name: @doctorname@          
 Physician Specialty: @doctorspecialty@          
-Physician State: @DoctorAddr3@          
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
+Physician State: @ExamLocation@    
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
 No Show Fee    @QuoteNoShowFee@          
 Late Cancel Fee    @QuoteLateCancelFee@  
            
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@     
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$           
 
 Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
 
@@ -868,19 +760,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
  
 Physician Name: @doctorname@          
 Physician Specialty: @doctorspecialty@          
-Physician State: @DoctorAddr3@          
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
+Physician State: @ExamLocation@    
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
 No Show Fee    @QuoteNoShowFee@          
 Late Cancel Fee    @QuoteLateCancelFee@  
            
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@     
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$           
 
 Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
 
@@ -908,19 +794,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
  
 Physician Name: @doctorname@          
 Physician Specialty: @doctorspecialty@          
-Physician State: @DoctorAddr3@          
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
+Physician State: @ExamLocation@    
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@          
 No Show Fee    @QuoteNoShowFee@          
 Late Cancel Fee    @QuoteLateCancelFee@  
            
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@      
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@      
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@     
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$           
 
 Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
 
@@ -949,19 +829,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@        
+Physician State:@ExamLocation@        
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@        
 No Show Fee    @QuoteNoShowFee@        
 Late Cancel Fee    @QuoteLateCancelFee@        
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@     
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@     
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$             
   
  Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
  
@@ -989,19 +863,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@        
+Physician State:@ExamLocation@        
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@        
 No Show Fee    @QuoteNoShowFee@        
 Late Cancel Fee    @QuoteLateCancelFee@        
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@     
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@     
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$             
   
  Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
  
@@ -1029,19 +897,13 @@ Thank you for scheduling with ExamWorks. This letter serves as notification of t
 
 Physician Name: @doctorname@        
 Physician Specialty: @doctorspecialty@        
-Physician State: @DoctorAddr3@        
-@QuoteComment@ Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@        
+Physician State:@ExamLocation@        
+@QuoteProduct@  Base Rate  @FeeScheduleAmount@ @QuoteFeeUnit@        
 No Show Fee    @QuoteNoShowFee@        
 Late Cancel Fee    @QuoteLateCancelFee@        
 
 Additional Applicable Fees:          
-  Diagnostic Study: @QuoteDiagnosticStudyFee@  @QuoteDiagnosticStudyUnit@     
-  Record Review: @QuoteRecordReviewFee@ @QuoteRecordReviewUnit@      
-  Report Prep: @QuoteReportPrepFee@ @QuoteReportPrepUnit@     
-  Travel: @QuoteTravelFee@ @QuoteTravelUnit@      
-  Consultation: @QuoteConsultationFee@ @QuoteConsultationUnit@      
-  Exam Room Rental: @QuoteExamRoomRentalFee@ @QuoteExamRoomRentalUnit@      
-  Indexing Chart Prep: @QuoteIndexingChartPrepFee@ @QuoteIndexingChartPrepUnit@               
+  $AdditionalFeeValues$             
   
  Notify ExamWorks of Cancellation no later than @QuoteLateCancelDays@ (business days) prior to appointment to avoid Late Cancel Fee.        
  
