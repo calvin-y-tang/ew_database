@@ -958,11 +958,8 @@
     <Build Include="Stored Procedures\proc_DoctorSchedulePortalCalendarMonth.sql" />
     <Build Include="Tables\tblWebUserChangeRequest.sql" />
     <Build Include="Tables\tblCaseContactRequest.sql" />
-    <Build Include="Tables\tblQuestionRule.sql" />
     <Build Include="Tables\tblQuestionSet.sql" />
     <Build Include="Tables\tblQuestionSetDetail.sql" />
-    <Build Include="Tables\tblIssueQuestion.sql" />
-    <Build Include="Tables\tblCaseIssueQuestion.sql" />
     <Build Include="Tables\tblDoctorRecommend.sql" />
     <Build Include="Tables\tblBusinessRuleCondition.sql" />
     <Build Include="Tables\tblBusinessRule.sql" />
@@ -1168,6 +1165,9 @@
     <Build Include="Views\vwCaseApptNoLock.sql" />
     <Build Include="Tables\tblCaseDocLog.sql" />
     <Build Include="Stored Procedures\pr_MedsToDoctor.sql" />
+    <Build Include="Tables\tblQuestion.sql" />
+    <Build Include="Functions\fnGetMedsIncomingAndMedsToDoctorPageCountByCase.sql" />
+    <Build Include="Tables\tblFeeScheduleTiers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />

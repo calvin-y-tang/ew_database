@@ -3,94 +3,96 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 141
--- IMEC-14483 - Update tblSetting for CaseDocTypeMedsIncoming_True to include only CaseDocType 'Med Records' (7) and do not include 'San Med Records' (21)
-UPDATE tblSetting Set Value = ';7;' where Name = 'CaseDocTypeMedsIncoming_True'
-GO 
+-- Sprint 142
+-- IMEC-14425 - No Show Letter template based on number of no show appts for case
+     INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+     VALUES (137, 'NoShowTemplateToUse', 'Case', 'Determine No Show Template to use for a case based on the # of no shows', 1, 1107, 0, 'MinNoShowApptCnt', 'MaxNoShowApptCnt', 'NoShowDocument', NULL, NULL, 0, NULL)
+     GO
 
--- IMEC-14423 - Changes for Allstate SLA Metric (No Show to Exam Scheduled)
-UPDATE tblTATCalculationMethod
-   SET ApptEnabled = ISNULL(ApptEnabled, 0)
-GO 
-INSERT INTO tblDataField(DataFieldID, TableName, FieldName, Descrip)           
-VALUES(227, 'OrigAppt', 'ApptTime', 'No Show'), 
-      (228, 'NextAppt', 'DateAdded', 'Exam Scheduled'),
-      (229, 'OrigAppt', 'TATNoShowToScheduled', NULL)
-GO
-INSERT INTO tblTATCalculationMethod(TATCalculationMethodID, StartDateFieldID, EndDateFieldID, Unit, TATDataFieldID, UseTrend, ApptEnabled)
-VALUES(26, 227, 228, 'Day', 229, 0, 1)
-GO
-INSERT INTO tblTATCalculationMethodEvent(TATCalculationMethodID, EventID)
-VALUES(26, 1101)
+     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+     VALUES (137, 'PC', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, NULL, NULL, '1', '1', 'AllState1stNS', NULL, NULL, 0, NULL, 0),
+            (137, 'PC', 4, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, NULL, NULL, NULL, NULL, 'AllState2ndNS', NULL, NULL, 0, NULL, 0)
+    GO
+
+-- IMEC-14445 - Changes to Implement Liberty QA Questions Feature for Finalize Report
+-- Ensure that all tables are empty
+	DELETE FROM tblQuestionSet
+	GO 
+	DELETE FROM tblQuestionSetDetail
+	GO
+-- New security token
+	INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+		VALUES('CaseQAChecklistOverride', 'Case - QA Questions Override', GETDATE())
+	GO
+
+
+-- IMEC-14553
+    DECLARE
+	    @BusinessRuleID INT = 197,
+	    @Today DATETIME = sysdatetime(),
+	    @LibertyID INT = 31,
+	    @Zone1 INT = 1250,
+	    @Zone2 INT = 1275,
+	    @FLCentral INT = 1000,
+	    @FLNorth INT = 1100,
+	    @FLSouth INT = 1200,
+        @LibertyStartDateFLFeeZones date = '2024-10-01'
+
+
+    -- delete the old data so that this script is idempotent
+    DELETE FROM dbo.tblBusinessRule WHERE BusinessRuleID = @BusinessRuleID;
+    DELETE FROM dbo.tblBusinessRuleCondition WHERE BusinessRuleID = @BusinessRuleID;
+
+    -- header row
+    INSERT INTO dbo.tblBusinessRule
+    (BusinessRuleID,Category, [Name], Descrip, IsActive, EventID,
+    Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, Param6Desc, 
+    BrokenRuleAction, AllowOverride)
+    VALUES
+    (
+	    -- EventID 1016 is CaseDataModified
+	    197, 'Case', 'RestrictFeeZoneList', 'Exclude listed fee zones', 1, 1016,
+	    'Fee zones to exclude', 'Start date for rule', NULL, NULL, NULL, NULL,
+	    0, 0
+    );
+
+    -- create the detail rows for both conditions (Liberty and not Liberty)
+    INSERT INTO dbo.tblBusinessRuleCondition
+    (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, 
+    OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, 
+    Param1, Param2, Param3, Param4, Param5, Param6, 
+    [skip], ExcludeJurisdiction)
+    VALUES
+    -- Liberty (exclude North, South, and Central)
+    (@BusinessRuleID,'PC',@LibertyID,2,1,@Today,'Admin',
+    NULL,NULL,NULL,NULL,
+    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), @LibertyStartDateFLFeeZones, NULL, NULL, NULL, NULL,
+    0, null),
+    -- Not Liberty (exclude zones 1 and 2)
+    (@BusinessRuleID,'SW',-1,2,1,@Today,'Admin',
+    NULL,NULL,NULL,NULL,
+    concat(@Zone1, ',', @Zone2), NULL, NULL, NULL, NULL, NULL,
+    0, NULL);
+    GO
+
+-- IMEC-14611 - new bizRule to check on starting date for using Question Set
+    INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+    VALUES (138, 'UseQAQuestionSet', 'Case', 'Display QA Question Set when finalizing report', 1, 1310, 0, 'tblSettingStartDate', NULL, NULL, NULL, NULL, 0, NULL)
+    GO
+    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+    VALUES (138, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', NULL, NULL, NULL, NULL, 0, NULL, 0)
+    GO
+    
+-- IMEC-14486 - Only use EW Selected or Client Selected When Scheduling Appts - data patch for new collumn Status
+UPDATE tblDoctorReason SET [Status] = (CASE WHEN DoctorReasonID IN (1, 4) Then 'Active'  ELSE 'Inactive' END)
 GO
 
--- IMEC-14424 - add new SLA Exception Reason columns for tracking historical case appts SLA Exception reasons
---  table is managed by dev team and will be the same across all databases.
-    INSERT INTO tblDataField(DataFieldID, TableName, FieldName, Descrip)           
-    VALUES(231, 'tblCaseAppt', 'SLAExScheduledToExam', NULL), 
-        (232, 'tblCaseAppt', 'SLAExExamToClientNotified', NULL), 
-        (233, 'tblCaseAppt', 'SLAExAwaitingScheduling', NULL), 
-        (234, 'tblCaseAppt', 'SLAExAwaitingSchedulingToExam', NULL), 
-        (235, 'tblCaseAppt', 'SALExEnteredToExam', NULL), 
-        (236, 'tblCaseAppt', 'SLAExDateLossToApptDate', NULL), 
-        (237, 'tblCaseAppt', 'SLAExExamSchedToQuoteSent', NULL), 
-        (238, 'tblCaseAppt', 'SLAExExamSchedToApprovalSent', NULL), 
-        (239, 'tblCaseAppt', 'SLAExExamDateToNotifyShowNoShow', NULL) 
+-- IMEC-14448 - adding new product "Service Fee > 500 Pages" to tblProduct
+SET IDENTITY_INSERT tblProduct ON
+  INSERT INTO tblProduct (ProdCode, Description, LongDesc, Status, Taxable, INGLAcct,
+      VOGLAcct, DateAdded, UserIDAdded, XferToVoucher, UnitOfMeasureCode, AllowVoNegativeAmount, AllowInvoice, AllowVoucher, IsStandard)
+  Values(3030, 'Service Fee>500', 'Service Fee > 500 Pages', 'Active', 1, '400??',
+         '500??', GETDATE(), 'Admin', 0, 'PG', 0, 1, 0, 1)
+SET IDENTITY_INSERT tblProduct OFF
 GO
 
--- IMEC-14424 - patch TATCalcMethod to include Appt SLA Exception Reason tabel/field where appropriate
---   table is managed by dev team and will the same across all IMEC databases.
-     -- Exam Scheduled to Date of Exam
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 231
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 8
-     GO
-     -- Date of Exam to Client Notified
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 232
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 11
-     GO
-     -- Available for Scheduling to Exam Scheduled
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 233
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 12
-     GO
-     -- Available for Scheduling to Date of Exam
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 234
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 14
-     GO
-     -- Referral Entered into IMEC to Date of Exam
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 235
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 15
-     GO
-     -- Date of Loss to Date of Exam
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 236
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 17
-     GO
-     -- Exam Scheduled to Fee Quote Sent
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 237
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 21
-     GO
-     -- Exam Scheduled to Fee Approval Sent
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 238
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 22
-     GO
-     -- Appt Time to Client Notified Show/No Show
-     UPDATE tblTATCalculationMethod
-        SET ApptSLAExceptionDataFieldID = 239
-       FROM tblTATCalculationMethod
-      WHERE TATCalculationMethodID = 24
-     GO
