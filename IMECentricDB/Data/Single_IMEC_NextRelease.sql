@@ -1211,4 +1211,27 @@ VALUES ('PC', 31, 2, 1, 187, GETDATE(), 'Admin', '5000')
 GO
 
 
+--------------------------- IMEC-14426 - Allstate GR - Doctor Cancellation Fee and Emails -----------------------------
+USE [IMECentricEW]
+-- Allstate GR - Doctor Cancellations pay $100 fee
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param6Desc, BrokenRuleAction)
+VALUES (188, 'DocCancelledApt', 'Case', 'Business Rule when the doctor cancels the apointment with in the last 2 days.', 1, 1105, 0, 'CanceledBy', 'NoOfBusDays', 'MsgToDoctor2BusDays', 0)
+GO
+  
+-- Allstate GR - Doctor Cancellations pay $100 fee
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param6)
+VALUES ('PC', 4, 2, 1, 188, GETDATE(), 'Admin', 2, 1, '4', '2', 'ExamWorks must pay Allstate a $100 penalty fee. Thank you.')
+GO
+
+-- Allstate GR - Doctor Cancellations pay $100 fee - email
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, Param6Desc, BrokenRuleAction)
+VALUES (198, 'AllStateGRDoctorCancelFee', 'Case', 'Send email notification to Brent Nalley for $100 Allstate penalty.', 1, 1105, 0, 'ToEmailAddress', 'SubjectLine', 'FromEmailAddress', 'FirstName', 'LastName', 'EmailBody', 0)
+GO
+  
+-- Allstate GR - Doctor Cancellations pay $100 fee - email
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param3, Param4, Param5, Param6)
+VALUES ('PC', 4, 2, 1, 198, GETDATE(), 'Admin', 'brent_nalley@examworks.com', 'Allstate - $100 penalty', 'DoNotReply@ExamWorks.com', 'Brent', 'Nalley', 'ExamWorks users were notified that we owe Allstate a $100 penalty for Case Number @casenbr@.')
+GO
+
+
 
