@@ -1220,7 +1220,7 @@ GO
   
 -- Allstate GR - Doctor Cancellations pay $100 fee
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param6)
-VALUES ('PC', 4, 2, 1, 188, GETDATE(), 'Admin', 2, 1, '4', '2', 'ExamWorks must pay Allstate a $100 penatly fee. Thank you.')
+VALUES ('PC', 4, 2, 1, 188, GETDATE(), 'Admin', 2, 1, '4', '2', 'ExamWorks must pay Allstate a $100 penalty fee. Thank you.')
 GO
 
 -- Allstate GR - Doctor Cancellations pay $100 fee - email
