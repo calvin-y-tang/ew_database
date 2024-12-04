@@ -24,14 +24,15 @@ INSERT INTO tblBusinessRuleCondition (
     UserIDAdded,        -- User who added the record ('Admin' in this case)
     DateEdited,         -- Date and time when the record was last edited (using GETDATE())
     UserIDEdited,       -- User who last edited the record ('Admin' in this case)
+    Param1,             -- SET to 2 for all kinds of emal with or without attachments
     Param2,             -- An additional parameter (email in this case)
     Param4,              -- Indicating documentype in this case
     Skip                -- A flag (0 means no skip)
 )
 VALUES   
-    ('CO',4121,2,1,109,GETDATE(),'Admin',GETDATE(),'Admin','WCClaimse3@Chubb.com','ALL',0),
-	('CO',4121,2,1,110,GETDATE(),'Admin',GETDATE(),'Admin','WCClaimse3@Chubb.com','ALL',0),
-	('CO',4121,2,1,111,GETDATE(),'Admin',GETDATE(),'Admin','WCClaimse3@Chubb.com','ALL',0)
+    ('CO',4121,2,1,109,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0),
+	('CO',4121,2,1,110,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0),
+	('CO',4121,2,1,111,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0)
 
 
 -- Sprint 142
