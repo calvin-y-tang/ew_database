@@ -29,6 +29,9 @@
     [AllowCoverLetterGeneration] BIT          NULL,
     [NPProviderSearch]           BIT          CONSTRAINT [DF_EWCompany_NPProviderSearch] DEFAULT ((0)) NOT NULL,
     [DataHandling]               INT          NULL,
+    [EFTBankName]               VARCHAR(30)  NULL, 
+    [EFTAccount]                VARCHAR(34) NULL, 
+    [EFTRouting]                VARCHAR(10) NULL, 
     CONSTRAINT [PK_EWCompany] PRIMARY KEY CLUSTERED ([EWCompanyID] ASC)
 );
 

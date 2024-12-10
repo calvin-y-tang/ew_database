@@ -21,6 +21,9 @@ CREATE TABLE [dbo].[GPCompany] (
     [AcctingEmail]    VARCHAR (70)  NULL,
     [EWCompanyTypeID] INT           NULL,
     [CustomerType]    VARCHAR (100) NULL,
+    [EFTBankName] VARCHAR(30) NULL, 
+    [EFTAccount] VARCHAR(34) NULL, 
+    [EFTRouting] VARCHAR(10) NULL, 
     CONSTRAINT [PK_GPCompany] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 

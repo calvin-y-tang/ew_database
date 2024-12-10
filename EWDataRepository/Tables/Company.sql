@@ -23,6 +23,9 @@ CREATE TABLE [dbo].[Company] (
     [DateAdded]       DATETIME      CONSTRAINT [DF_Company_DateAdded] DEFAULT (getdate()) NULL,
     [AcctingEmail]    VARCHAR (70)  NULL,
     [CustomerType]    VARCHAR (100) NULL,
+    [EFTBankName] VARCHAR(30) NULL, 
+    [EFTAccount] VARCHAR(34) NULL, 
+    [EFTRouting] VARCHAR(10) NULL, 
     CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
 );
 
