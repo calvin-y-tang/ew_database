@@ -126,6 +126,10 @@
     [OriginalDoctorCode]           INT            NULL,
     [LastCRNFederationDate]        DATETIME       NULL,
     [CreatedByEmail]               VARCHAR (70)   NULL,
+    [ActiveSurgery] BIT NULL, 
+    [LastSurgeryDate] DATETIME NULL, 
+    [DoctorDisciplineStatus] BIT NULL, 
+    [LicenseNotRequired] BIT NULL, 
     CONSTRAINT [PK_tblDoctor] PRIMARY KEY CLUSTERED ([DoctorCode] ASC) WITH (FILLFACTOR = 90)
 );
 

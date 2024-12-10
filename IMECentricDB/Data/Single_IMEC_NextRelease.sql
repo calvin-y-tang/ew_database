@@ -80,23 +80,3 @@ GO
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3)
 VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 2, 3, 'MI', 'T1', '385')
 GO
-
--------------IMEC-14415---and-------IMEC-14188---Add--Additional--Columns--to--map--from--CRN---------
-USE [IMECentricEW] 
-
-ALTER TABLE tblDoctor
-ADD ActiveSurgery BIT NULL,
-LastSugeryDate DATETIME NULL,
-DoctorDisciplineStatus BIT NULL,
-LicenseNotRequired BIT NULL;
-
-GO
-
-USE [IMECentricEW] 
-
-ALTER TABLE tblDoctorSpecialty
-ADD CertificationStatus VARCHAR(50) NULL,
-CertificationStatusID INT NULL,
-ExpirationDate DATETIME NULL;
-
-GO
