@@ -7,6 +7,9 @@
     [DoctorCode]                INT           NOT NULL,
     [MasterReviewerSpecialtyID] INT           NULL,
     [DoNotUse]                  BIT           NULL,
+    [CertificationStatus] VARCHAR(50) NULL, 
+    [CertificationStatusID] INT NULL, 
+    [ExpirationDate] DATETIME NULL, 
     CONSTRAINT [PK_tblDoctorSpecialty] PRIMARY KEY CLUSTERED ([SpecialtyCode] ASC, [DoctorCode] ASC)
 );
 GO
