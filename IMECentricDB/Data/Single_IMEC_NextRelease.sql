@@ -33,8 +33,28 @@ VALUES
     ('CO',4121,2,1,109,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0),
 	('CO',4121,2,1,110,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0),
 	('CO',4121,2,1,111,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0)
+GO
 
+-- IMEC-14578 - security token and Biz Rules for Doctor Discipline Status validation when scheduling case
+-- need new security token
+USE [IMECentricEW]
+GO
+    INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+    VALUES('SchedDocDisciplineOverRide', 'Appointments - Override Doctor Discipline Status', GETDATE())
+    GO
 
+-- need new bizRules
+    INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+    VALUES (139, 'ApplyDoctorDiscipline', 'Appointment', 'Apply Doctor Discipline Status Criteria when scheduling', 1, 1101, 0, 'tblSettingStartDate', 'CriteriaNotMetMsg', NULL, NULL, 'SecOverrideToken', 0, NULL)
+    GO
+    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+    VALUES (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline.', NULL, NULL, 'SchedDocDisciplineOverRide', 0, NULL, 0)
+    GO
+
+    -- just create the rule; we will deploy with no doctors being exempt and them as the need arises
+    INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+    VALUES (123, 'ExemptDoctorDiscipline', 'Appointment', 'Exempt from Doctor Discipline Status Criteria when scheduling', 1, 1101, 0, 'DoctorCode', NULL, NULL, NULL, NULL, 0, NULL)
+    GO
 
 USE [IMECentricEW]
 GO
@@ -80,3 +100,4 @@ GO
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3)
 VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 2, 3, 'MI', 'T1', '385')
 GO
+
