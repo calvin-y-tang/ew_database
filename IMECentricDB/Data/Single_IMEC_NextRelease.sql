@@ -33,7 +33,6 @@ VALUES
     ('CO',4121,2,1,109,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0),
 	('CO',4121,2,1,110,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0),
 	('CO',4121,2,1,111,GETDATE(),'Admin',GETDATE(),'Admin',2,'WCClaimse3@Chubb.com','ALL',0)
-<<<<<<< HEAD
 GO
 
 -- IMEC-14578 - security token and Biz Rules for Doctor Discipline Status validation when scheduling case
@@ -56,9 +55,6 @@ GO
     INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
     VALUES (123, 'ExemptDoctorDiscipline', 'Appointment', 'Exempt from Doctor Discipline Status Criteria when scheduling', 1, 1101, 0, 'DoctorCode', NULL, NULL, NULL, NULL, 0, NULL)
     GO
-=======
-
-
 
 USE [IMECentricEW]
 GO
@@ -104,4 +100,4 @@ GO
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3)
 VALUES ('PC', 31, 2, 1, 186, GETDATE(), 'Admin', 2, 3, 'MI', 'T1', '385')
 GO
->>>>>>> 6db2d48fc2286e68a74cfd6094ade93c864fb882
+
