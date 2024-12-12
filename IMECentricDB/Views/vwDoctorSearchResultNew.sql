@@ -26,7 +26,9 @@ SELECT DSR.PrimaryKey,
        L.Phone,
        L.County,
 	   DSR.DisplayScore,
-	   DSR.DoctorRank
+	   DSR.DoctorRank, 
+       ISNULL(FirstName, '') + ' ' + ISNULL(LastName, '') + ', ' + ISNULL(Credentials, '') AS DoctorNameFirstLast, 
+       ISNULL(DoctorDisciplineStatus, 0) AS DisciplineStatus
 
 FROM tblDoctorSearchResult AS DSR
 	INNER JOIN tblDoctorSearchWeightedCriteria AS W ON W.PrimaryKey=1
