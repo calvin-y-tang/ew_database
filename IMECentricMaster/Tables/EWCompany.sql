@@ -28,7 +28,7 @@
     [UseNotification]            BIT          NULL,
     [AllowCoverLetterGeneration] BIT          NULL,
     [NPProviderSearch]           BIT          CONSTRAINT [DF_EWCompany_NPProviderSearch] DEFAULT ((0)) NOT NULL,
-    [DataHandling]               INT          NULL,
+    [DataHandling]               INT          NULL 
     CONSTRAINT [PK_EWCompany] PRIMARY KEY CLUSTERED ([EWCompanyID] ASC)
 );
 

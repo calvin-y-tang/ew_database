@@ -7,9 +7,9 @@ CREATE TABLE [dbo].[GPCompany] (
     [GPCustomerID]    VARCHAR (15)  NOT NULL,
     [GPUserID]        VARCHAR (10)  NOT NULL,
     [CompanyName]     VARCHAR (100) NOT NULL,
-    [Address1]        VARCHAR (50)  NULL,
-    [Address2]        VARCHAR (50)  NULL,
-    [Address3]        VARCHAR (50)  NULL,
+    [Address1]        VARCHAR (60)  NULL,
+    [Address2]        VARCHAR (60)  NULL,
+    [Address3]        VARCHAR (60)  NULL,
     [City]            VARCHAR (35)  NULL,
     [State]           VARCHAR (2)   NULL,
     [Zip]             VARCHAR (10)  NULL,
@@ -21,6 +21,9 @@ CREATE TABLE [dbo].[GPCompany] (
     [AcctingEmail]    VARCHAR (70)  NULL,
     [EWCompanyTypeID] INT           NULL,
     [CustomerType]    VARCHAR (100) NULL,
+    [EFTBankName] VARCHAR(30) NULL, 
+    [EFTAccount] VARCHAR(34) NULL, 
+    [EFTRouting] VARCHAR(10) NULL, 
     CONSTRAINT [PK_GPCompany] PRIMARY KEY CLUSTERED ([PrimaryKey] ASC)
 );
 
