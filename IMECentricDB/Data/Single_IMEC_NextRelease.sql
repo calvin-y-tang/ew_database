@@ -40,7 +40,7 @@ GO
 USE [IMECentricEW]
 GO
     INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
-    VALUES('SchedDocDisciplineOverRide', 'Appointments - Override Doctor Discipline Status', GETDATE())
+    VALUES('LibertySchedulingOverride', 'Appointments - Liberty Schedule Doctor Override', GETDATE())
     GO
 
 -- need new bizRules
@@ -48,7 +48,7 @@ GO
     VALUES (139, 'ApplyDoctorDiscipline', 'Appointment', 'Apply Doctor Discipline Status Criteria when scheduling', 1, 1101, 0, 'tblSettingStartDate', 'CriteriaNotMetMsg', NULL, NULL, 'SecOverrideToken', 0, NULL)
     GO
     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-    VALUES (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline.', NULL, NULL, 'SchedDocDisciplineOverRide', 0, NULL, 0)
+    VALUES (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline.', NULL, NULL, 'LibertySchedulingOverride', 0, NULL, 0)
     GO
 
     -- just create the rule; we will deploy with no doctors being exempt and them as the need arises
