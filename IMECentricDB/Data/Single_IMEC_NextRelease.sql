@@ -340,6 +340,16 @@ INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr
 where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
      THEN
 	 CRNExpirationDate
+----------------Not Boarded, Boarded -------------------
+ WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
+where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
+where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
+			THEN
+			(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
+where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
 END,
 EWMasterReviewerSpecialtyID = CRNSpecialtyID
 
