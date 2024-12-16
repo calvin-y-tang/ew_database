@@ -48,9 +48,9 @@ GO
     VALUES (139, 'ApplyDoctorDiscipline', 'Appointment', 'Apply Doctor Discipline Status Criteria when scheduling', 1, 1101, 0, 'tblSettingStartDate', 'CriteriaNotMetMsg', 'PerformActionDesc', NULL, 'SecOverrideToken', 0, NULL)
     GO
     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-    VALUES (139, 'PC', 31, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline.', NULL, NULL, 'LibertySchedulingOverride', 0, NULL, 0), 
-            (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline.', 'SKIP', NULL, 'LibertySchedulingOverride', 0, NULL, 0),
-            (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'TX', 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline.', 'SKIP', NULL, 'LibertySchedulingOverride', 0, NULL, 0)
+    VALUES (139, 'PC', 31, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline for Case Nbr @CaseNbr@.', NULL, NULL, 'LibertySchedulingOverride', 0, NULL, 0), 
+           (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'CA', 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline for Case Nbr @CaseNbr@.', 'SKIP', NULL, 'LibertySchedulingOverride', 0, NULL, 0),
+           (139, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 3, NULL, 'TX', 'LibertyGuardrailsStartDate', 'The selected doctor doesn''t meet Liberty''s credentialing requirements for discipline for Case Nbr @CaseNbr@.', 'SKIP', NULL, 'LibertySchedulingOverride', 0, NULL, 0)
     GO
 
     -- just create the rule; we will deploy with no doctors being exempt and them as the need arises
