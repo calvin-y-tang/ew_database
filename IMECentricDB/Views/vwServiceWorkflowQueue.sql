@@ -32,6 +32,7 @@ AS
         tblServiceWorkflowQueue AS WFQ
     INNER JOIN vwServiceWorkflow AS WF ON WF.ServiceWorkflowID=WFQ.ServiceWorkflowID
     INNER JOIN tblQueues AS Q ON Q.StatusCode=WFQ.StatusCode
+    LEFT OUTER JOIN tblQueues AS NxtQ ON NxtQ.StatusCode = WFQ.NextStatus
     LEFT OUTER JOIN (
                      SELECT
                         ServiceWorkflowQueueID,
