@@ -352,7 +352,7 @@ INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr
 where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
 END,
 EWMasterReviewerSpecialtyID = CRNSpecialtyID
-
+GO
 
 -- IMEC-14692 - updates to QA IME report questions
 USE [IMECentricEW]
@@ -364,4 +364,22 @@ GO
 UPDATE tblQuestionSetDetail SET QuestionID = 10 WHERE QuestionSetDetailID = 15
 GO
 
-
+-- IMEC14540 - changes to acknowledge DPS Bundle for RPA
+USE [IMECentricEW]
+GO
+    -- new event
+    INSERT INTO tblEvent(EventID, Descrip, Category)
+    VALUES(1150, 'DPS Bundle Acknowledged', 'Case')
+    GO
+    -- new business rule
+    INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+    VALUES (124, 'AutoAckDPSBundle', 'Case', 'In EWIS, Auto Acknowledge a returned DPS Bundle and move Case to next Status', 1, 1150, 0, 'CurrCaseStatus', NULL, NULL, NULL, NULL, 0, NULL)
+    GO
+    -- business rule conditions are specific for IMECentricEW; Param1 which is tied to tblQueues is setup for 
+    -- the database and aside from some basic/common entries are different in each DB.
+    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+    VALUES (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
+           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
+           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
+           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0)
+    GO

@@ -25,7 +25,9 @@ AS
         Q.StatusDesc AS QueueDesc,
         Q.ShortDesc,
 		Q.DoNotAllowManualChange,
-        WFQD.DocCount
+        WFQD.DocCount, 
+        NxtQ.StatusDesc AS NxtQLongDesc,
+        NxtQ.ShortDesc AS NxtQShortDesc
     FROM
         tblServiceWorkflowQueue AS WFQ
     INNER JOIN vwServiceWorkflow AS WF ON WF.ServiceWorkflowID=WFQ.ServiceWorkflowID
