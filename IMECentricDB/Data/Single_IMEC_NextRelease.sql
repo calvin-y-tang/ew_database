@@ -354,4 +354,14 @@ END,
 EWMasterReviewerSpecialtyID = CRNSpecialtyID
 
 
+-- IMEC-14692 - updates to QA IME report questions
+USE [IMECentricEW]
+GO
+INSERT INTO tblQuestion (QuestionText, DateAdded, UserIDAdded)
+VALUES ('IME provider documented and supported their impression, functional abilities and/or restrictions and timeframes are outlined.', GETDATE(), 'System')
+GO
+
+UPDATE tblQuestionSetDetail SET QuestionID = 10 WHERE QuestionSetDetailID = 15
+GO
+
 
