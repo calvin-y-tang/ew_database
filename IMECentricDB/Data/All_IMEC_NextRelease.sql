@@ -86,7 +86,6 @@ UPDATE tblBusinessRuleCondition SET Param6='ExamWorks now owes Allstate the foll
 • A refund of the testimony/deposition fee (if prepaid)
 • A refund of the original IME/MMR service fee
                                      Thank you.' WHERE BusinessRuleConditionID=2001;
-
 
 -- Sprint 143
 -- IMEC- 14680 Email language updated
