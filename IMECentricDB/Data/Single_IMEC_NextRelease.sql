@@ -373,13 +373,18 @@ GO
     GO
     -- new business rule
     INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-    VALUES (124, 'AutoAckDPSBundle', 'Case', 'In EWIS, Auto Acknowledge a returned DPS Bundle and move Case to next Status', 1, 1150, 0, 'CurrCaseStatus', NULL, NULL, NULL, NULL, 0, NULL)
+    VALUES (124, 'AutoAckDPSBundle', 'Case', 'In EWIS, Auto Acknowledge a returned DPS Bundle and move Case to next Status', 1, 1150, 0, 'DelimitedCurCaseStat', NULL, NULL, NULL, NULL, 0, 'DelimitedServiceCode')
     GO
     -- business rule conditions are specific for IMECentricEW; Param1 which is tied to tblQueues is setup for 
     -- the database and aside from some basic/common entries are different in each DB.
-    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-    VALUES (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0)
-    GO
+     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+     VALUES (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0)
+     
+     GO
