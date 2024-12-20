@@ -383,3 +383,34 @@ GO
            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0)
     GO
+
+-- IMEC-14657 - database changes for Liberty guardrails additonal fees
+USE [IMECentricEW]
+GO
+
+  -- insert 'Med Recs' product into quote fee table
+INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
+VALUES('Med Recs', 46, GETDATE(), 'Admin', 3060)
+
+
+  -- ****** run in the order below - delete the current BR conditions and then add the changed ones back in
+UPDATE tblBusinessRule SET Param2Desc = 'DoctorTier', Param3Desc = 'DoctorReason', Param4Desc = 'tblSettingStartDate' WHERE BusinessRuleID = 192
+
+DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = 192
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', ';T2;', 'LibertyGuardrailsStartDate')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', 'Client Selected', 'LibertyGuardrailsStartDate')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
+VALUES ('SW', 2, 3, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
+
+
