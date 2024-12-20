@@ -37,3 +37,12 @@ SELECT ID FROM tblCaseHistory WHERE (Eventdesc LIKE '%guardrails override%'
 ORDER BY EventDate
 GO
 
+-- IMEC-14657 - additional additional product for additonal Liberty fee = "Med Recs"
+SET IDENTITY_INSERT tblProduct ON
+INSERT INTO tblProduct (ProdCode, Description, LongDesc, Status, Taxable, INGLAcct,
+      VOGLAcct, DateAdded, UserIDAdded, XferToVoucher, UnitOfMeasureCode, AllowVoNegativeAmount, AllowInvoice, AllowVoucher, IsStandard)
+  Values(3060, 'Med Recs', 'Medical Records', 'Active', 1, '400??',
+         '500??', GETDATE(), 'Admin', 0, 'PG', 0, 1, 0, 1)
+SET IDENTITY_INSERT tblProduct OFF
+GO
+
