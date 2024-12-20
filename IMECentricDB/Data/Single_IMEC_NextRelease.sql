@@ -382,9 +382,9 @@ GO
             (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
             (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
             (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
-            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
-            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
-            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
-            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0)
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0)
      
      GO
