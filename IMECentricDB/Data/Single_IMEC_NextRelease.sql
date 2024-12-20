@@ -373,16 +373,22 @@ GO
     GO
     -- new business rule
     INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-    VALUES (124, 'AutoAckDPSBundle', 'Case', 'In EWIS, Auto Acknowledge a returned DPS Bundle and move Case to next Status', 1, 1150, 0, 'CurrCaseStatus', NULL, NULL, NULL, NULL, 0, NULL)
+    VALUES (124, 'AutoAckDPSBundle', 'Case', 'In EWIS, Auto Acknowledge a returned DPS Bundle and move Case to next Status', 1, 1150, 0, 'DelimitedCurCaseStat', NULL, NULL, NULL, NULL, 0, 'DelimitedServiceCode')
     GO
     -- business rule conditions are specific for IMECentricEW; Param1 which is tied to tblQueues is setup for 
     -- the database and aside from some basic/common entries are different in each DB.
-    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-    VALUES (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0), 
-           (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, NULL, NULL, '1131', NULL, NULL, NULL, NULL, 0, NULL, 0)
-    GO
+     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
+     VALUES (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 1, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';2070;3290;4121;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 26, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 28, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 44, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0), 
+            (124, 'SW', -1, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', 17, NULL, 10, NULL, ';1131;', NULL, NULL, NULL, NULL, 0, ';4133;', 0)
+     
+     GO
+
 
 -- IMEC-14657 - database changes for Liberty guardrails additonal fees
 USE [IMECentricEW]
@@ -391,26 +397,33 @@ GO
   -- insert 'Med Recs' product into quote fee table
 INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
 VALUES('Med Recs', 46, GETDATE(), 'Admin', 3060)
-
+GO
 
   -- ****** run in the order below - delete the current BR conditions and then add the changed ones back in
 UPDATE tblBusinessRule SET Param2Desc = 'DoctorTier', Param3Desc = 'DoctorReason', Param4Desc = 'tblSettingStartDate' WHERE BusinessRuleID = 192
+GO
 
 DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = 192
+GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
 VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
+GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
 VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', ';T2;', 'LibertyGuardrailsStartDate')
+GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
 VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
+GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
 VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', 'Client Selected', 'LibertyGuardrailsStartDate')
+GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
 VALUES ('SW', 2, 3, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
+GO
 
 
