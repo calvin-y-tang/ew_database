@@ -7,9 +7,9 @@ CREATE TABLE [dbo].[Company] (
     [SourceID]        INT           NULL,
     [ExtName]         VARCHAR (100) NULL,
     [IntName]         VARCHAR (70)  NULL,
-    [Address1]        VARCHAR (50)  NULL,
-    [Address2]        VARCHAR (50)  NULL,
-    [Address3]        VARCHAR (50)  NULL,
+    [Address1]        VARCHAR (60)  NULL,
+    [Address2]        VARCHAR (60)  NULL,
+    [Address3]        VARCHAR (60)  NULL,
     [City]            VARCHAR (35)  NULL,
     [State]           VARCHAR (3)   NULL,
     [Zip]             VARCHAR (10)  NULL,
@@ -23,6 +23,9 @@ CREATE TABLE [dbo].[Company] (
     [DateAdded]       DATETIME      CONSTRAINT [DF_Company_DateAdded] DEFAULT (getdate()) NULL,
     [AcctingEmail]    VARCHAR (70)  NULL,
     [CustomerType]    VARCHAR (100) NULL,
+    [EFTBankName] VARCHAR(30) NULL, 
+    [EFTAccount] VARCHAR(34) NULL, 
+    [EFTRouting] VARCHAR(10) NULL, 
     CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
 );
 

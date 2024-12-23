@@ -3,95 +3,108 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 142
--- IMEC-14425 - No Show Letter template based on number of no show appts for case
-     INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-     VALUES (137, 'NoShowTemplateToUse', 'Case', 'Determine No Show Template to use for a case based on the # of no shows', 1, 1107, 0, 'MinNoShowApptCnt', 'MaxNoShowApptCnt', 'NoShowDocument', NULL, NULL, 0, NULL)
-     GO
-
-     INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-     VALUES (137, 'PC', 4, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, NULL, NULL, '1', '1', 'AllState1stNS', NULL, NULL, 0, NULL, 0),
-            (137, 'PC', 4, 2, 2, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, 2, NULL, NULL, NULL, NULL, 'AllState2ndNS', NULL, NULL, 0, NULL, 0)
-    GO
-
--- IMEC-14445 - Changes to Implement Liberty QA Questions Feature for Finalize Report
--- Ensure that all tables are empty
-	DELETE FROM tblQuestionSet
-	GO 
-	DELETE FROM tblQuestionSetDetail
-	GO
--- New security token
-	INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
-		VALUES('CaseQAChecklistOverride', 'Case - QA Questions Override', GETDATE())
-	GO
-
-
--- IMEC-14553
-    DECLARE
-	    @BusinessRuleID INT = 197,
-	    @Today DATETIME = sysdatetime(),
-	    @LibertyID INT = 31,
-	    @Zone1 INT = 1250,
-	    @Zone2 INT = 1275,
-	    @FLCentral INT = 1000,
-	    @FLNorth INT = 1100,
-	    @FLSouth INT = 1200,
-        @LibertyStartDateFLFeeZones date = '2024-10-01'
-
-
-    -- delete the old data so that this script is idempotent
-    DELETE FROM dbo.tblBusinessRule WHERE BusinessRuleID = @BusinessRuleID;
-    DELETE FROM dbo.tblBusinessRuleCondition WHERE BusinessRuleID = @BusinessRuleID;
-
-    -- header row
-    INSERT INTO dbo.tblBusinessRule
-    (BusinessRuleID,Category, [Name], Descrip, IsActive, EventID,
-    Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, Param6Desc, 
-    BrokenRuleAction, AllowOverride)
-    VALUES
-    (
-	    -- EventID 1016 is CaseDataModified
-	    197, 'Case', 'RestrictFeeZoneList', 'Exclude listed fee zones', 1, 1016,
-	    'Fee zones to exclude', 'Start date for rule', NULL, NULL, NULL, NULL,
-	    0, 0
-    );
-
-    -- create the detail rows for both conditions (Liberty and not Liberty)
-    INSERT INTO dbo.tblBusinessRuleCondition
-    (BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, 
-    OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, 
-    Param1, Param2, Param3, Param4, Param5, Param6, 
-    [skip], ExcludeJurisdiction)
-    VALUES
-    -- Liberty (exclude North, South, and Central)
-    (@BusinessRuleID,'PC',@LibertyID,2,1,@Today,'Admin',
-    NULL,NULL,NULL,NULL,
-    concat(@FLNorth, ',', @FLSouth, ',', @FLCentral), @LibertyStartDateFLFeeZones, NULL, NULL, NULL, NULL,
-    0, null),
-    -- Not Liberty (exclude zones 1 and 2)
-    (@BusinessRuleID,'SW',-1,2,1,@Today,'Admin',
-    NULL,NULL,NULL,NULL,
-    concat(@Zone1, ',', @Zone2), NULL, NULL, NULL, NULL, NULL,
-    0, NULL);
-    GO
-
--- IMEC-14611 - new bizRule to check on starting date for using Question Set
-    INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
-    VALUES (138, 'UseQAQuestionSet', 'Case', 'Display QA Question Set when finalizing report', 1, 1310, 0, 'tblSettingStartDate', NULL, NULL, NULL, NULL, 0, NULL)
-    GO
-    INSERT INTO tblBusinessRuleCondition(BusinessRuleID, EntityType, EntityID, BillingEntity, ProcessOrder, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5, Skip, Param6, ExcludeJurisdiction)
-    VALUES (138, 'PC', 31, 2, 1, GETDATE(), 'Admin', GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 'LibertyGuardrailsStartDate', NULL, NULL, NULL, NULL, 0, NULL, 0)
-    GO
-    
--- IMEC-14486 - Only use EW Selected or Client Selected When Scheduling Appts - data patch for new collumn Status
-UPDATE tblDoctorReason SET [Status] = (CASE WHEN DoctorReasonID IN (1, 4) Then 'Active'  ELSE 'Inactive' END)
+-- Sprint 143
+IF NOT EXISTS (SELECT 1 FROM dbo.tblSetting WHERE [Name] = 'PreventDupInvoicesAndVouchers')
+BEGIN
+	INSERT INTO dbo.tblSetting ([Name], [Value]) VALUES ('PreventDupInvoicesAndVouchers', 'True')
+END
 GO
 
--- IMEC-14448 - adding new product "Service Fee > 500 Pages" to tblProduct
+-- Sprint 143
+-- IMEC-14466 - existing bizRule for 2500 penalty fee message
+-- Update the Param4Desc column in the tblBusinessRule table
+UPDATE tblBusinessRule SET Param4Desc = '1-BusDay, 2-ActDay'  -- Setting the value to flag whether Business Days or Actual Days are used
+WHERE businessruleId = 188;  -- Updating the row where businessruleId is 188
+-- Insert a new business rule condition for a $2500 penalty
+INSERT INTO tblBusinessRuleCondition (
+    EntityType,               -- Entity type: 'PC' (Parent Company)
+    EntityID,                 -- Entity ID: 4 (tblEWParentCompany)
+    BillingEntity,            -- Billing entity: 2 (For Both Parent Company and Company Client)
+    ProcessOrder,             -- Process order: 1 
+    BusinessRuleID,           -- Business rule ID: 188 (ID of the specific business rule)
+    DateAdded,                -- Date added: current date/time (GETDATE())
+    UserIDAdded,              -- User who added the record: 'Admin'
+    DateEdited,               -- Date edited: NULL (No edit date as of now)
+    UserIDEdited,             -- User who last edited the record: NULL (No edit by any user yet)
+    OfficeCode,               -- Office code: NULL (No office code specified)
+    EWBusLineID,              -- Business line ID: 7 (Represents tblEWBusLine)
+    EWServiceTypeID,          -- Service type ID: NULL (Not specified)
+    Jurisdiction,             -- Jurisdiction: NULL (Represents a specific jurisdiction code)
+    Param1,                   -- Parameter 1: 4 (Doctor ID)
+    Param2,                   -- Parameter 2: 7 (No of days)
+    Param3,                   -- Parameter 3: 7 (Days b/w case & Appointment)
+    Param4,                   -- Parameter 4: 2 (Flag 1-BusDay, 2-ActDay)
+    Param5,                   -- Parameter 5: 'ExamWorks now owes Allstate...' (Description or message for the business rule)
+    Skip,                     -- Skip: 0 (Flag indicating whether to skip the rule or not)
+    Param6,                   -- Parameter 6: NULL (No value for this parameter)
+    ExcludeJurisdiction       -- Exclude jurisdiction: 0 (No exclusion of jurisdiction)
+)
+VALUES (
+    'PC', 4, 2, 1, 188, GETDATE(), 'Admin', NULL, NULL, NULL, 7, NULL, NULL, 4, 7, 7, 2, NULL, 0, 'ExamWorks now owes Allstate the following: - A $2500 penalty fee - A refund of the testimony/deposition fee (if prepaid) - A refund of the original IME/MMR service fee. Thank you.', 0
+);
+GO
+
+-- Insert a new business rule condition for email notification
+INSERT INTO tblBusinessRuleCondition (
+    EntityType,               -- Entity type: 'PC' (Parent Company)
+    EntityID,                 -- Entity ID: 4 (tblEWParentCompany)
+    BillingEntity,            -- Billing entity: 2 (For Both Parent Company and Company Client)
+    ProcessOrder,             -- Process order: 1 
+    BusinessRuleID,           -- Business rule ID: 198 (ID of the specific business rule)
+    DateAdded,                -- Date added: current date/time (GETDATE())
+    UserIDAdded,              -- User who added the record: 'Admin'
+    DateEdited,               -- Date edited: NULL (No edit date as of now)
+    UserIDEdited,             -- User who last edited the record: NULL (No edit by any user yet)
+    OfficeCode,               -- Office code: NULL (No office code specified)
+    EWBusLineID,              -- Business line ID: NULL
+    EWServiceTypeID,          -- Service type ID: 7 (tblEWServiceType)
+    Jurisdiction,             -- Jurisdiction: NULL (Represents a specific jurisdiction code)
+    Param1,                   -- Parameter 1: 'brent.nalley@examworks.com' (Email address for the user)
+    Param2,                   -- Parameter 2: 'Allstate - $2500 penalty' (Subject or title of the email)
+    Param3,                   -- Parameter 3: 'DoNotReply@ExamWorks.com' (Sender email address)
+    Param4,                   -- Parameter 4: 'Brent' (First name of the user)
+    Param5,                   -- Parameter 5: 'Nalley' (Last name of the user)
+    Skip,                     -- Skip: 0 (Flag indicating whether to skip the rule or not)
+    Param6,                   -- Parameter 6: 'ExamWorks users were notified that we owe Allstate a $2500 penalty, A refund of the testimony/deposition fee (if prepaid), A refund of the original IME/MMR service fee for Case Number @casenbr@.' (Message content)
+    ExcludeJurisdiction       -- Exclude jurisdiction: 0 (No exclusion of jurisdiction)
+)
+VALUES (
+    'PC', 4, 2, 1, 198, GETDATE(), 'Admin', NULL, NULL, NULL, NULL, 7, NULL, 'brent.nalley@examworks.com',
+    'Allstate - $2500 penalty', 'DoNotReply@ExamWorks.com', 'Brent', 'Nalley', 0, 'ExamWorks users were notified that we owe Allstate a $2500 penalty, A refund of the testimony/deposition fee (if prepaid), A refund of the original IME/MMR service fee for Case Number @casenbr@.', 0
+);
+GO
+
+-- Sprint 143
+-- IMEC- 14686 Checking CaseDate to Appointment Date
+UPDATE tblBusinessRule SET Param3Desc='DaysbetwnApptC&ApptT' WHERE BusinessRuleID=188;
+GO
+
+-- Sprint 143
+-- IMEC- 14678 Pop-up message styling updated
+UPDATE tblBusinessRuleCondition SET Param6='ExamWorks now owes Allstate the following:-
+• A $2500 penalty fee
+• A refund of the testimony/deposition fee (if prepaid)
+• A refund of the original IME/MMR service fee
+                                     Thank you.' WHERE BusinessRuleConditionID=2001;
+
+-- Sprint 143
+-- IMEC- 14680 Email language updated
+ UPDATE tblBusinessRuleCondition SET Param6='Examworks users were notified that we owe Allstate a $2500 penalty for Case Number @casenbr@.' WHERE BusinessRuleConditionID=2002;
+GO
+
+-- IMEC-14600 - data patch for populating the new table used to keep track of case history notes for use overrides
+INSERT INTO tblCaseHistoryOverrides (CasehistoryID)
+SELECT ID FROM tblCaseHistory WHERE (Eventdesc LIKE '%guardrails override%' 
+  OR Eventdesc LIKE '%QA Checklist completed with override%' 
+  OR Eventdesc LIKE '%Doctor Scheduling Discipline Override%') AND EventDate > '2024-10-01 16:36:46.000'
+ORDER BY EventDate
+GO
+
+-- IMEC-14657 - additional additional product for additonal Liberty fee = "Med Recs"
 SET IDENTITY_INSERT tblProduct ON
-  INSERT INTO tblProduct (ProdCode, Description, LongDesc, Status, Taxable, INGLAcct,
+INSERT INTO tblProduct (ProdCode, Description, LongDesc, Status, Taxable, INGLAcct,
       VOGLAcct, DateAdded, UserIDAdded, XferToVoucher, UnitOfMeasureCode, AllowVoNegativeAmount, AllowInvoice, AllowVoucher, IsStandard)
-  Values(3030, 'Service Fee>500', 'Service Fee > 500 Pages', 'Active', 1, '400??',
+  Values(3060, 'Med Recs', 'Medical Records', 'Active', 1, '400??',
          '500??', GETDATE(), 'Admin', 0, 'PG', 0, 1, 0, 1)
 SET IDENTITY_INSERT tblProduct OFF
 GO
