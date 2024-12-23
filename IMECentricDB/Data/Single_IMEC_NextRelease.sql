@@ -442,30 +442,30 @@ GO
 
 UPDATE tblBusinessRule Set Param3Desc='CaseHistoryNotes' Where BusinessRuleID =194
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1893
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1893
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1894
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1894
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1895
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1895
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1907
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1907
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1908
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1908
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1909
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1909
 GO
 
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1910
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1910
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1911
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1911
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1912
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1912
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1913
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1913
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1914
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1914
 GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase Peer/Record Review No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1915
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1915
 GO
 
 UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1916
