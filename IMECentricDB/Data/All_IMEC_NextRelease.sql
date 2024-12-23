@@ -41,7 +41,7 @@ INSERT INTO tblBusinessRuleCondition (
     ExcludeJurisdiction       -- Exclude jurisdiction: 0 (No exclusion of jurisdiction)
 )
 VALUES (
-    'PC', 4, 2, 1, 188, GETDATE(), 'Admin', NULL, NULL, NULL, 7, NULL, NULL, 4, 7, 7, 2, NULL, 0, 'ExamWorks now owes Allstate the following:-
+    'PC', 4, 2, 1, 188, GETDATE(), 'Admin', NULL, NULL, NULL, 7, NULL, NULL, '4', '7', '7', '2', NULL, 0, 'ExamWorks now owes Allstate the following:-
 � A $2500 penalty fee
 � A refund of the testimony/deposition fee (if prepaid)
 � A refund of the original IME/MMR service fee
