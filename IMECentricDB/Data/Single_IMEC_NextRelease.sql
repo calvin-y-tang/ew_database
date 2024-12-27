@@ -503,7 +503,7 @@ GO
 
 -- IMEC-14668 - Modify Liberty iCase Popups to Use Doctor Address instead
 update tblBusinessRuleCondition
-set Param6 = replace(Param6, '@ExamLocation@', '@DoctorAddr1@ @DoctorAddr2@')
+set Param6 = replace(Param6, '@ExamLocation@', ' @DoctorAddr1@ @DoctorAddr2@')
 where BusinessRuleID  in (
 	select BusinessRuleID
 	from tblBusinessRule
