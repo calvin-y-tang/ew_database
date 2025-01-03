@@ -357,11 +357,43 @@ GO
 -- IMEC-14692 - updates to QA IME report questions
 USE [IMECentricEW]
 GO
-INSERT INTO tblQuestion (QuestionText, DateAdded, UserIDAdded)
-VALUES ('IME provider documented and supported their impression, functional abilities and/or restrictions and timeframes are outlined.', GETDATE(), 'System')
-GO
+declare @question nvarchar(max) = 'IME provider documented and supported their impression, functional abilities and/or restrictions and timeframes are outlined.'
+declare @questionId int = (select QuestionId from tblQuestion where QuestionText = @question)
 
-UPDATE tblQuestionSetDetail SET QuestionID = 10 WHERE QuestionSetDetailID = 15
+if @questionId is null
+begin
+	print 'Create question: ' +  @question
+	INSERT INTO tblQuestion (QuestionText, DateAdded, UserIDAdded)
+	VALUES (@question, GETDATE(), 'System')
+	set  @questionId = (select QuestionId from tblQuestion where QuestionText = @question)
+	print 'Created question with Id: ' +  @questionId
+end
+
+declare @questionSetId int = (
+  select QuestionSetID
+  from
+    tblQuestionSet  with (nolock)
+  WHERE ProcessOrder = 2
+    and ParentCompanyID = 31
+    and EWServiceTypeID = 1
+    and Active = 1
+)
+
+declare @questionSetDetailId int
+declare @currentQuestionId int
+select @questionSetDetailId = QuestionSetDetailID,
+	@currentQuestionId = QuestionID
+from tblQuestionSetDetail
+WHERE QuestionSetID = @questionSetId
+  and DisplayOrder = 8
+
+if @questionSetDetailId is not null and @currentQuestionId <> @questionId
+begin
+	print 'Updating QuestionSetDetailID: ' +  @questionSetDetailId + ' [QuestionID] to: ' + @questionId
+	UPDATE tblQuestionSetDetail
+	SET QuestionID = @questionId
+	where QuestionSetDetailID = @questionSetDetailId
+end
 GO
 
 -- IMEC14540 - changes to acknowledge DPS Bundle for RPA
