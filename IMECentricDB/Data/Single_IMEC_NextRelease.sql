@@ -474,35 +474,35 @@ UPDATE tblBusinessRuleCondition Set Param5='iCase Status Change Pop-up acknowled
 
 set @StatusChange = (select BusinessRuleID from tblBusinessRule where Name = 'InvoiceQuotetMsgs')
 UPDATE tblBusinessRule Set Param3Desc='CaseHistoryNotes' Where BusinessRuleID =@StatusChange;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=2 and Param1 = 2 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=2 and Param1 = 2 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=2 and Param1 = 2 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=3 and Param1 = 2 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=3 and Param1 = 2 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=3 and Param1 = 2 and Param2 = NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=2 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=2 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=2 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=3 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=3 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=3 and Param1 = 2 and Param2 is NULL;
  
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=2 and Param1 = 1 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=2 and Param1 = 1 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=2 and Param1 = 1 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=3 and Param1 = 1 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=3 and Param1 = 1 and Param2 = NULL;
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=3 and Param1 = 1 and Param2 = NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=2 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=2 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=2 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=3 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=3 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=3 and Param1 = 1 and Param2 is NULL;
  
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=NULL and Param1 = 2 and Param2 = 'T1';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=NULL and Param1 = 2 and Param2 = 'T1';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=NULL and Param1 = 2 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T1';
  
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=NULL and Param1 = 1 and Param2 = 'T1';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=NULL and Param1 = 1 and Param2 = 'T1';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=NULL and Param1 = 1 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T1';
  
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
  
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
 
 set @StatusChange = (select BusinessRuleID from tblBusinessRule where Name = 'CancelApptMsgsPanelExam')
 UPDATE tblBusinessRule Set Param1Desc='CaseHistoryNotes' Where BusinessRuleID =@StatusChange;
