@@ -387,7 +387,7 @@ from tblQuestionSetDetail
 WHERE QuestionSetID = @questionSetId
   and DisplayOrder = 8
 
-if @currentQuestionId <> @questionId
+if @questionSetDetailId is not null and @currentQuestionId <> @questionId
 begin
 	print 'Updating QuestionSetDetailID: ' +  @questionSetDetailId + ' [QuestionID] to: ' + @questionId
 	UPDATE tblQuestionSetDetail
