@@ -366,7 +366,7 @@ begin
 	INSERT INTO tblQuestion (QuestionText, DateAdded, UserIDAdded)
 	VALUES (@question, GETDATE(), 'System')
 	set  @questionId = (select QuestionId from tblQuestion where QuestionText = @question)
-	print 'Created question with Id: ' +  @questionId
+	print 'Created question with Id: ' +  convert(nvarchar(255), @questionId)
 end
 
 declare @questionSetId int = (
@@ -389,7 +389,7 @@ WHERE QuestionSetID = @questionSetId
 
 if @questionSetDetailId is not null and @currentQuestionId <> @questionId
 begin
-	print 'Updating QuestionSetDetailID: ' +  @questionSetDetailId + ' [QuestionID] to: ' + @questionId
+	print 'Updating QuestionSetDetailID: ' +  convert(nvarchar(255), @questionSetDetailId) + ' [QuestionID] to: ' + convert(nvarchar(255), @questionId)
 	UPDATE tblQuestionSetDetail
 	SET QuestionID = @questionId
 	where QuestionSetDetailID = @questionSetDetailId
