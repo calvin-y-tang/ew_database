@@ -533,4 +533,11 @@ GO
 UPDATE tblBusinessRuleCondition Set Param1='iCase Cancelling Pop-up acknowledged' Where BusinessRuleConditionID=1965
 GO
 
-
+-- IMEC-14668 - Modify Liberty iCase Popups to Use Doctor Address instead
+update tblBusinessRuleCondition
+set Param6 = replace(Param6, '@ExamLocation@', ' @DoctorAddr1@ @DoctorAddr2@')
+where BusinessRuleID  in (
+	select BusinessRuleID
+	from tblBusinessRule
+	where name in ('ScheduleAppointmentMsgs', 'ApptStatusChangeMsgs', 'InvoiceQuotetMsgs', 'ScheduleApptMsgsPanelExam')
+)
