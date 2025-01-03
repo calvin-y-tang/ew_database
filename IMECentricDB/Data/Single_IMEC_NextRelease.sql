@@ -442,22 +442,17 @@ declare @QuoteFeeConfigID_str varchar(5) = convert (varchar(5), @QuoteFeeConfigI
 
   -- ****** run in the order below - delete the current BR conditions and then add the changed ones back in
 UPDATE tblBusinessRule SET Param2Desc = 'DoctorTier', Param3Desc = 'DoctorReason', Param4Desc = 'tblSettingStartDate' WHERE BusinessRuleID = 192
-GO
 
 DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = 192
-GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
 VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
-GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
 VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
-GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
 VALUES ('SW', 2, 3, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
-GO
 
 print 'Adding new business rules with new ID: ' + @QuoteFeeConfigID_str
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
@@ -467,6 +462,7 @@ INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, Proce
 VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,' + @QuoteFeeConfigID_str, 'Client Selected', 'LibertyGuardrailsStartDate')
 print 'Added new business rules with new ID: ' + @QuoteFeeConfigID_str
 
+GO
 
 
 -- IMEC-14653 - database changes for adding Case History Notes for iCase popup acknowledgement
