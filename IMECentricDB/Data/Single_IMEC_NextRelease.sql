@@ -170,6 +170,10 @@ SET
 
 USE [IMECentricEW]
 GO
+ DECLARE @sub NVARCHAR(MAX);
+  DECLARE @main NVARCHAR(MAX);
+  DECLARE @subExpirationDate DATETIME;
+  DECLARE @mainExpirationDate DATETIME;
 WITH CTE_Update AS (
     SELECT 
 		  ds.DoctorCode AS EWDoctorCode,		
@@ -192,164 +196,145 @@ WITH CTE_Update AS (
 	inner join [crn].[crn_production].[dbo].master_reviewer mr with (nolock) on mr.masterreviewerid = r.masterid
                 inner join [crn].[crn_production].[dbo].Master_Reviewer_Specialty mrs with (nolock) on mrs.masterreviewerid = mr.masterreviewerid
                 inner join [crn].[crn_production].[dbo].Specialty_Certification_Status cs with (nolock) on cs.specialtycertificationstatusid = mrs.specialtycertificationstatusid
-                where r.Active = 1 and r.localsystemname = 'EW-IMEC' and ds.SpecialtyCode Like '% - %'				
+                where r.Active = 1 and r.localsystemname = 'EW-IMEC' and ds.SpecialtyCode Like '% - %'		
 )
 -- Perform the update using the CTE
-UPDATE CTE_Update
-SET 
-  EWCertificationStatus = CASE
-						WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+UPDATE CTE_Update   
+  SET @sub = (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
 INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+  @main = (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
 INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
-						then  'Boarded'
-						WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+@subExpirationDate = (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
 INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+@mainExpirationDate = (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
 INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
-						then  'Not Boarded'
-						WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-						then  'Boarded'
-							WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-						then  'Not Boarded'
-						
-							WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
-						then  'Not Boarded'
-						
-WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-						then  'N/A'
+where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+EWCertificationStatus = CASE
+						WHEN (@sub = 'Boarded' AND @main = 'Boarded') OR (@main = 'Boarded' AND @sub = 'Boarded') 
+						 then  'Boarded'
+						WHEN @sub = 'Boarded' AND (@main = 'Not Boarded' OR @main = '') OR @main = 'Boarded' AND (@sub = 'Not Boarded' OR @sub = '')
+						 then  'Not Boarded'
+						WHEN @sub = 'Boarded' AND @main = 'N/A' OR @main = 'Boarded' AND @sub = 'N/A'
+						 then  'Boarded'
+						WHEN (@sub = 'Not Boarded' OR @sub = '') AND @main = 'N/A' OR (@main = 'Not Boarded' OR @main = '') AND @sub = 'N/A'
+						 then  'Not Boarded'						
+						WHEN (@sub = 'Not Boarded' OR @sub = '') AND (@main = 'Not Boarded' OR @main = '') OR (@main = 'Not Boarded' OR @main = '') AND (@sub = 'Not Boarded' OR @sub = '')
+						 then  'Not Boarded'
+						WHEN @sub = 'Not Boarded' AND @main = 'Boarded' OR @main = 'Not Boarded' AND @sub = 'Boarded'
+						 then  'Not Boarded'						
+						WHEN @sub = 'N/A' AND @main = 'N/A' OR @main = 'N/A' AND @sub = 'N/A'
+						 then  'N/A'
 						END,
-EWCertificationStatusID = CRNCertificationStatusID,
- EWExpirationDate = CASE
-   --- Boarded and Boarded 1-------------
-             WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
-               THEN CASE
-			   WHEN (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) > (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)    
-                THEN 
-				(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-  ELSE
-  (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-				END           
+EWCertificationStatusID = CASE
+							WHEN CTE_Update.EWCertificationStatus = 'Boarded' then 1
+							When CTE_Update.EWCertificationStatus = 'Not Boarded' then 2
+							WHEN CTE_Update.EWCertificationStatus = 'N/A' then 0
+							WHEN CTE_Update.EWCertificationStatus = '' then NULL
+							END,
 
+ EWExpirationDate =  CASE
+    --- Boarded and Boarded 1-------------
+             WHEN @sub = 'Boarded' AND @main  = 'Boarded' OR @main = 'Boarded' AND @sub = 'Boarded'
+			  THEN CASE 
+			   WHEN @subExpirationDate IS NOT NULL AND @mainExpirationDate IS NOT NULL
+                 THEN CASE
+			       WHEN @subExpirationDate  >= GETDATE() OR @mainExpirationDate >= GETDATE()
+                     THEN CASE
+				     WHEN @subExpirationDate > @mainExpirationDate
+				       THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END			     		
+				   WHEN @subExpirationDate < GETDATE() AND @mainExpirationDate < GETDATE()
+				     THEN CASE 
+				     WHEN @subExpirationDate > @mainExpirationDate
+                        THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END	
+				    WHEN @subExpirationDate >= GETDATE() AND @mainExpirationDate < GETDATE()
+				     THEN CASE 
+				     WHEN ABS(DATEDIFF(day, GETDATE(), @subExpirationDate)) > ABS(DATEDIFF(day, GETDATE(), @mainExpirationDate))
+                        THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END	
+					 WHEN @mainExpirationDate >= GETDATE() AND @subExpirationDate < GETDATE()
+				     THEN CASE 
+				     WHEN ABS(DATEDIFF(day, GETDATE(), @subExpirationDate)) > ABS(DATEDIFF(day, GETDATE(), @mainExpirationDate))
+                        THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END	 
+				 END	
+			   WHEN @subExpirationDate IS NOT NULL
+			    THEN @subExpirationDate
+				ELSE @mainExpirationDate
+			 END	 
 -----------Boarded and Not Boarded Or Blank ---------------
-			 	
-				WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
-               THEN 
-				(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-				
-------------Boarded and N/A -----------
-  WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-			THEN
-			(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-   
-   ----------NOt Boarded,Blank and N/A-------------
-  WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-  THEN
-  		(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-   
-------Not Boarded, Blank and Not Boarded, Blank----------
-	WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
- THEN CASE
-			   WHEN (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) > (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)    
-                THEN 
-				(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) 
-ELSE
-(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) 
-				END             
-------------------N/A and N/A------------------
-WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-     THEN
-	 CRNExpirationDate
-----------------Not Boarded, Boarded -------------------
- WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
-			THEN
-			(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
+	WHEN @sub = 'Boarded' AND (@main = 'Not Boarded' OR @main = '') OR @main = 'Boarded' AND (@sub = 'Not Boarded' OR @sub = '')
+	  THEN CASE 
+			   WHEN @main = 'Not Boarded' OR @main = ''
+			   THEN @mainExpirationDate
+			   ELSE 
+			   @subExpirationDate
+      END 
+ --------------Boarded and N/A ---------------
+   WHEN @sub = 'Boarded' AND @main = 'N/A' OR @main = 'Boarded' AND @sub = 'N/A'
+     THEN CASE	
+		WHEN @main = 'Boarded' 
+		THEN @mainExpirationDate
+		ELSE
+		@subExpirationDate
+     END
+ ------------ Not Boarded Or blank and N/A
+  WHEN (@sub = 'Not Boarded' OR @sub = '') AND @main = 'N/A' OR (@main = 'Not Boarded' OR @main = '') AND @sub = 'N/A'
+    THEN CASE 
+	   WHEN @main = 'Not Boarded' OR @main = ''
+	   THEN @mainExpirationDate
+	   ELSE
+	   @subExpirationDate
+    END
+-------------Not Boarded Or blank--------------------------------------
+  WHEN (@sub = 'Not Boarded' OR @sub = '') AND (@main = 'Not Boarded' OR @main = '') OR (@main = 'Not Boarded' OR @main = '') AND (@sub = 'Not Boarded' OR @sub = '')
+    THEN CASE
+	  WHEN @subExpirationDate IS NOT NULL AND @mainExpirationDate IS NOT NULL
+	    THEN CASE 
+			WHEN @subExpirationDate > @mainExpirationDate
+			THEN @mainExpirationDate
+			ELSE
+			@subExpirationDate
+        END
+	  WHEN @subExpirationDate IS NOT NULL
+	  THEN @subExpirationDate
+	  ELSE
+	  @mainExpirationDate
+    END
+----------Not Boarded and Boarded Or Boarded and Not Boarded
+  WHEN @sub = 'Not Boarded' AND @main = 'Boarded' OR @main = 'Not Boarded' AND @sub = 'Boarded'
+    THEN CASE
+	  WHEN @main = 'Not Boarded' 
+	  THEN @mainExpirationDate
+	  ELSE
+	  @subExpirationDate
+    END
+-----------N/A and N/A-------------
+ WHEN @sub = 'N/A' AND @main = 'N/A' OR @main = 'N/A' AND @sub = 'N/A'
+     THEN CASE
+	   WHEN	@subExpirationDate IS NOT NULL AND @mainExpirationDate IS NOT NULL
+	     THEN CASE
+		    WHEN @subExpirationDate > @mainExpirationDate
+			THEN @mainExpirationDate
+			ELSE
+			@subExpirationDate
+		 END
+      WHEN @subExpirationDate IS NOT NULL
+	   THEN @subExpirationDate
+	   ELSE @mainExpirationDate
+    END
 END,
 EWMasterReviewerSpecialtyID = CRNSpecialtyID
 GO
