@@ -432,11 +432,9 @@ declare @QuoteFeeConfigID int = (select QuoteFeeConfigID from tblQuoteFeeConfig 
 
 if @QuoteFeeConfigID is null
 begin
-  print 'Create product code in tblQuoteFeeConfig: ' + @prodcode
   INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
   VALUES('Med Recs', 46, GETDATE(), 'Admin', @prodcode)
   set @QuoteFeeConfigID = (select QuoteFeeConfigID from tblQuoteFeeConfig where ProdCode = @prodcode)
-  print 'Created product code in tblQuoteFeeConfig with ID: ' + @QuoteFeeConfigID
 end
 declare @QuoteFeeConfigID_str varchar(5) = convert (varchar(5), @QuoteFeeConfigID)
 
