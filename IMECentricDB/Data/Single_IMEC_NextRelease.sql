@@ -170,6 +170,10 @@ SET
 
 USE [IMECentricEW]
 GO
+ DECLARE @sub NVARCHAR(MAX);
+  DECLARE @main NVARCHAR(MAX);
+  DECLARE @subExpirationDate DATETIME;
+  DECLARE @mainExpirationDate DATETIME;
 WITH CTE_Update AS (
     SELECT 
 		  ds.DoctorCode AS EWDoctorCode,		
@@ -192,164 +196,147 @@ WITH CTE_Update AS (
 	inner join [crn].[crn_production].[dbo].master_reviewer mr with (nolock) on mr.masterreviewerid = r.masterid
                 inner join [crn].[crn_production].[dbo].Master_Reviewer_Specialty mrs with (nolock) on mrs.masterreviewerid = mr.masterreviewerid
                 inner join [crn].[crn_production].[dbo].Specialty_Certification_Status cs with (nolock) on cs.specialtycertificationstatusid = mrs.specialtycertificationstatusid
-                where r.Active = 1 and r.localsystemname = 'EW-IMEC' and ds.SpecialtyCode Like '% - %'				
+                where r.Active = 1 and r.localsystemname = 'EW-IMEC' and ds.SpecialtyCode Like '% - %'		
+),
+SpecialtyStatusJoin as (
+  select cs.Name, msr.SpecialtyTypeID, msr.masterreviewerid, msr.ExpirationDate
+  from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+    INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs
+      ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
 )
 -- Perform the update using the CTE
 UPDATE CTE_Update
-SET 
-  EWCertificationStatus = CASE
-						WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
-						then  'Boarded'
-						WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
-						then  'Not Boarded'
-						WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-						then  'Boarded'
-							WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-						then  'Not Boarded'
-						
-							WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
-						then  'Not Boarded'
-						
-WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-						then  'N/A'
+  SET @sub = (select top(1) ssj.Name from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=2 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+  @main = (select top(1) ssj.Name from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=1 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+@subExpirationDate = (select top(1) ssj.ExpirationDate from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=2 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+@mainExpirationDate = (select top(1) ssj.ExpirationDate from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=1 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+EWCertificationStatus = CASE
+						WHEN (@sub = 'Boarded' AND @main = 'Boarded') OR (@main = 'Boarded' AND @sub = 'Boarded') 
+						 then  'Boarded'
+						WHEN @sub = 'Boarded' AND (@main = 'Not Boarded' OR @main = '') OR @main = 'Boarded' AND (@sub = 'Not Boarded' OR @sub = '')
+						 then  'Not Boarded'
+						WHEN @sub = 'Boarded' AND @main = 'N/A' OR @main = 'Boarded' AND @sub = 'N/A'
+						 then  'Boarded'
+						WHEN (@sub = 'Not Boarded' OR @sub = '') AND @main = 'N/A' OR (@main = 'Not Boarded' OR @main = '') AND @sub = 'N/A'
+						 then  'Not Boarded'						
+						WHEN (@sub = 'Not Boarded' OR @sub = '') AND (@main = 'Not Boarded' OR @main = '') OR (@main = 'Not Boarded' OR @main = '') AND (@sub = 'Not Boarded' OR @sub = '')
+						 then  'Not Boarded'
+						WHEN @sub = 'Not Boarded' AND @main = 'Boarded' OR @main = 'Not Boarded' AND @sub = 'Boarded'
+						 then  'Not Boarded'						
+						WHEN @sub = 'N/A' AND @main = 'N/A' OR @main = 'N/A' AND @sub = 'N/A'
+						 then  'N/A'
 						END,
-EWCertificationStatusID = CRNCertificationStatusID,
- EWExpirationDate = CASE
-   --- Boarded and Boarded 1-------------
-             WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
-               THEN CASE
-			   WHEN (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) > (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)    
-                THEN 
-				(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-  ELSE
-  (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-				END           
+EWCertificationStatusID = CASE
+							WHEN CTE_Update.EWCertificationStatus = 'Boarded' then 1
+							When CTE_Update.EWCertificationStatus = 'Not Boarded' then 2
+							WHEN CTE_Update.EWCertificationStatus = 'N/A' then 0
+							WHEN CTE_Update.EWCertificationStatus = '' then NULL
+							END,
 
+ EWExpirationDate =  CASE
+    --- Boarded and Boarded 1-------------
+             WHEN @sub = 'Boarded' AND @main  = 'Boarded' OR @main = 'Boarded' AND @sub = 'Boarded'
+			  THEN CASE 
+			   WHEN @subExpirationDate IS NOT NULL AND @mainExpirationDate IS NOT NULL
+                 THEN CASE
+			       WHEN @subExpirationDate  >= GETDATE() OR @mainExpirationDate >= GETDATE()
+                     THEN CASE
+				     WHEN @subExpirationDate > @mainExpirationDate
+				       THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END			     		
+				   WHEN @subExpirationDate < GETDATE() AND @mainExpirationDate < GETDATE()
+				     THEN CASE 
+				     WHEN @subExpirationDate > @mainExpirationDate
+                        THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END	
+				    WHEN @subExpirationDate >= GETDATE() AND @mainExpirationDate < GETDATE()
+				     THEN CASE 
+				     WHEN ABS(DATEDIFF(day, GETDATE(), @subExpirationDate)) > ABS(DATEDIFF(day, GETDATE(), @mainExpirationDate))
+                        THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END	
+					 WHEN @mainExpirationDate >= GETDATE() AND @subExpirationDate < GETDATE()
+				     THEN CASE 
+				     WHEN ABS(DATEDIFF(day, GETDATE(), @subExpirationDate)) > ABS(DATEDIFF(day, GETDATE(), @mainExpirationDate))
+                        THEN @mainExpirationDate
+					    ELSE
+				       @subExpirationDate
+				     END	 
+				 END	
+			   WHEN @subExpirationDate IS NOT NULL
+			    THEN @subExpirationDate
+				ELSE @mainExpirationDate
+			 END	 
 -----------Boarded and Not Boarded Or Blank ---------------
-			 	
-				WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
-               THEN 
-				(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-				
-------------Boarded and N/A -----------
-  WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-			THEN
-			(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-   
-   ----------NOt Boarded,Blank and N/A-------------
-  WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-  THEN
-  		(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
-   
-------Not Boarded, Blank and Not Boarded, Blank----------
-	WHEN ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '') AND ((SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' OR (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = '')
- THEN CASE
-			   WHEN (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) > (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)    
-                THEN 
-				(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) 
-ELSE
-(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) 
-				END             
-------------------N/A and N/A------------------
-WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'N/A'
-     THEN
-	 CRNExpirationDate
-----------------Not Boarded, Boarded -------------------
- WHEN (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Not Boarded' AND (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID) = 'Boarded'
-			THEN
-			(SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID)
+	WHEN @sub = 'Boarded' AND (@main = 'Not Boarded' OR @main = '') OR @main = 'Boarded' AND (@sub = 'Not Boarded' OR @sub = '')
+	  THEN CASE 
+			   WHEN @main = 'Not Boarded' OR @main = ''
+			   THEN @mainExpirationDate
+			   ELSE 
+			   @subExpirationDate
+      END 
+ --------------Boarded and N/A ---------------
+   WHEN @sub = 'Boarded' AND @main = 'N/A' OR @main = 'Boarded' AND @sub = 'N/A'
+     THEN CASE	
+		WHEN @main = 'Boarded' 
+		THEN @mainExpirationDate
+		ELSE
+		@subExpirationDate
+     END
+ ------------ Not Boarded Or blank and N/A
+  WHEN (@sub = 'Not Boarded' OR @sub = '') AND @main = 'N/A' OR (@main = 'Not Boarded' OR @main = '') AND @sub = 'N/A'
+    THEN CASE 
+	   WHEN @main = 'Not Boarded' OR @main = ''
+	   THEN @mainExpirationDate
+	   ELSE
+	   @subExpirationDate
+    END
+-------------Not Boarded Or blank--------------------------------------
+  WHEN (@sub = 'Not Boarded' OR @sub = '') AND (@main = 'Not Boarded' OR @main = '') OR (@main = 'Not Boarded' OR @main = '') AND (@sub = 'Not Boarded' OR @sub = '')
+    THEN CASE
+	  WHEN @subExpirationDate IS NOT NULL AND @mainExpirationDate IS NOT NULL
+	    THEN CASE 
+			WHEN @subExpirationDate > @mainExpirationDate
+			THEN @mainExpirationDate
+			ELSE
+			@subExpirationDate
+        END
+	  WHEN @subExpirationDate IS NOT NULL
+	  THEN @subExpirationDate
+	  ELSE
+	  @mainExpirationDate
+    END
+----------Not Boarded and Boarded Or Boarded and Not Boarded
+  WHEN @sub = 'Not Boarded' AND @main = 'Boarded' OR @main = 'Not Boarded' AND @sub = 'Boarded'
+    THEN CASE
+	  WHEN @main = 'Not Boarded' 
+	  THEN @mainExpirationDate
+	  ELSE
+	  @subExpirationDate
+    END
+-----------N/A and N/A-------------
+ WHEN @sub = 'N/A' AND @main = 'N/A' OR @main = 'N/A' AND @sub = 'N/A'
+     THEN CASE
+	   WHEN	@subExpirationDate IS NOT NULL AND @mainExpirationDate IS NOT NULL
+	     THEN CASE
+		    WHEN @subExpirationDate > @mainExpirationDate
+			THEN @mainExpirationDate
+			ELSE
+			@subExpirationDate
+		 END
+      WHEN @subExpirationDate IS NOT NULL
+	   THEN @subExpirationDate
+	   ELSE @mainExpirationDate
+    END
 END,
 EWMasterReviewerSpecialtyID = CRNSpecialtyID
 GO
@@ -357,11 +344,43 @@ GO
 -- IMEC-14692 - updates to QA IME report questions
 USE [IMECentricEW]
 GO
-INSERT INTO tblQuestion (QuestionText, DateAdded, UserIDAdded)
-VALUES ('IME provider documented and supported their impression, functional abilities and/or restrictions and timeframes are outlined.', GETDATE(), 'System')
-GO
+declare @question nvarchar(max) = 'IME provider documented and supported their impression, functional abilities and/or restrictions and timeframes are outlined.'
+declare @questionId int = (select QuestionId from tblQuestion where QuestionText = @question)
 
-UPDATE tblQuestionSetDetail SET QuestionID = 10 WHERE QuestionSetDetailID = 15
+if @questionId is null
+begin
+	print 'Create question: ' +  @question
+	INSERT INTO tblQuestion (QuestionText, DateAdded, UserIDAdded)
+	VALUES (@question, GETDATE(), 'System')
+	set  @questionId = (select QuestionId from tblQuestion where QuestionText = @question)
+	print 'Created question with Id: ' +  convert(nvarchar(255), @questionId)
+end
+
+declare @questionSetId int = (
+  select QuestionSetID
+  from
+    tblQuestionSet  with (nolock)
+  WHERE ProcessOrder = 2
+    and ParentCompanyID = 31
+    and EWServiceTypeID = 1
+    and Active = 1
+)
+
+declare @questionSetDetailId int
+declare @currentQuestionId int
+select @questionSetDetailId = QuestionSetDetailID,
+	@currentQuestionId = QuestionID
+from tblQuestionSetDetail
+WHERE QuestionSetID = @questionSetId
+  and DisplayOrder = 8
+
+if @questionSetDetailId is not null and @currentQuestionId <> @questionId
+begin
+	print 'Updating QuestionSetDetailID: ' +  convert(nvarchar(255), @questionSetDetailId) + ' [QuestionID] to: ' + convert(nvarchar(255), @questionId)
+	UPDATE tblQuestionSetDetail
+	SET QuestionID = @questionId
+	where QuestionSetDetailID = @questionSetDetailId
+end
 GO
 
 -- IMEC14540 - changes to acknowledge DPS Bundle for RPA
@@ -395,110 +414,91 @@ USE [IMECentricEW]
 GO
 
   -- insert 'Med Recs' product into quote fee table
-INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
-VALUES('Med Recs', 46, GETDATE(), 'Admin', 3060)
-GO
+declare @prodcode int = 3060
+declare @QuoteFeeConfigID int = (select QuoteFeeConfigID from tblQuoteFeeConfig where ProdCode = @prodcode)
+
+if @QuoteFeeConfigID is null
+begin
+  INSERT INTO tblQuoteFeeConfig (FeeValueName, DisplayOrder, DateAdded, UserIDAdded, ProdCode)
+  VALUES('Med Recs', 46, GETDATE(), 'Admin', @prodcode)
+  set @QuoteFeeConfigID = (select QuoteFeeConfigID from tblQuoteFeeConfig where ProdCode = @prodcode)
+end
+declare @QuoteFeeConfigID_str varchar(5) = convert (varchar(5), @QuoteFeeConfigID)
 
   -- ****** run in the order below - delete the current BR conditions and then add the changed ones back in
 UPDATE tblBusinessRule SET Param2Desc = 'DoctorTier', Param3Desc = 'DoctorReason', Param4Desc = 'tblSettingStartDate' WHERE BusinessRuleID = 192
-GO
 
 DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = 192
-GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
 VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
-GO
-
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
-VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', ';T2;', 'LibertyGuardrailsStartDate')
-GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
 VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
-GO
-
-INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
-VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', 'Client Selected', 'LibertyGuardrailsStartDate')
-GO
 
 INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
 VALUES ('SW', 2, 3, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
+
+print 'Adding new business rules with new ID: ' + @QuoteFeeConfigID_str
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
+VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,' + @QuoteFeeConfigID_str, ';T2;', 'LibertyGuardrailsStartDate')
+
+INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,' + @QuoteFeeConfigID_str, 'Client Selected', 'LibertyGuardrailsStartDate')
+print 'Added new business rules with new ID: ' + @QuoteFeeConfigID_str
+
 GO
+
 
 -- IMEC-14653 - database changes for adding Case History Notes for iCase popup acknowledgement
 USE [IMECentricEW]
 GO
 
-UPDATE tblBusinessRule Set Param1Desc='CaseHistoryNotes' Where BusinessRuleID =193
-GO
-UPDATE tblBusinessRuleCondition Set Param1='iCase Cancelling Pop-up acknowledged' Where BusinessRuleConditionID=1892
-GO
+declare @StatusChange int;
 
-UPDATE tblBusinessRule Set Param5Desc='CaseHistoryNotes' Where BusinessRuleID =190
-GO
-UPDATE tblBusinessRuleCondition Set Param5='iCase Status Change Pop-up acknowledged' Where BusinessRuleConditionID=1889
-GO
+set @StatusChange = (select BusinessRuleID from tblBusinessRule where Name = 'CancelAppointmentMsgs')
+UPDATE tblBusinessRule Set Param1Desc='CaseHistoryNotes' Where BusinessRuleID =@StatusChange;
+UPDATE tblBusinessRuleCondition Set Param1='iCase Cancelling Pop-up acknowledged' Where BusinessRuleID = @StatusChange;
 
-UPDATE tblBusinessRule Set Param3Desc='CaseHistoryNotes' Where BusinessRuleID =194
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1893
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1894
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1895
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1907
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1908
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1909
-GO
+set @StatusChange = (select BusinessRuleID from tblBusinessRule where Name = 'ApptStatusChangeMsgs')
+UPDATE tblBusinessRule Set Param5Desc='CaseHistoryNotes' Where BusinessRuleID =@StatusChange;
+UPDATE tblBusinessRuleCondition Set Param5='iCase Status Change Pop-up acknowledged' Where BusinessRuleID = @StatusChange;
 
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1910
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1911
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1912
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1913
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1914
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleConditionID=1915
-GO
+set @StatusChange = (select BusinessRuleID from tblBusinessRule where Name = 'InvoiceQuotetMsgs')
+UPDATE tblBusinessRule Set Param3Desc='CaseHistoryNotes' Where BusinessRuleID =@StatusChange;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=2 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=2 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=2 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=3 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=3 and Param1 = 2 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Review Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=3 and Param1 = 2 and Param2 is NULL;
+ 
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=2 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=2 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=2 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID=3 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID=3 and Param1 = 1 and Param2 is NULL;
+UPDATE tblBusinessRuleCondition Set Param3='iCase P/R Rvw No Apprv Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID=3 and Param1 = 1 and Param2 is NULL;
+ 
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T1';
+ 
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T1';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T1';
+ 
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 2 and Param2 = 'T2;NORECORD;';
+ 
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 1 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 3 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
+UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleID=@StatusChange and EWBusLineID = 5 and EWServiceTypeID is NULL and Param1 = 1 and Param2 = 'T2;NORECORD;';
 
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1916
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1917
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1918
-GO
-
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1919
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1920
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T1 No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1921
-GO
-
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1922
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1923
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1924
-GO
-
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1925
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1926
-GO
-UPDATE tblBusinessRuleCondition Set Param3='iCase IME T2 No Approval Quote Pop-up acknowledged' Where BusinessRuleConditionID=1927
-GO
-
-UPDATE tblBusinessRule Set Param1Desc='CaseHistoryNotes' Where BusinessRuleID =202
-GO
-UPDATE tblBusinessRuleCondition Set Param1='iCase Cancelling Pop-up acknowledged' Where BusinessRuleConditionID=1965
+set @StatusChange = (select BusinessRuleID from tblBusinessRule where Name = 'CancelApptMsgsPanelExam')
+UPDATE tblBusinessRule Set Param1Desc='CaseHistoryNotes' Where BusinessRuleID =@StatusChange;
+UPDATE tblBusinessRuleCondition Set Param1='iCase Cancelling Pop-up acknowledged' Where BusinessRuleID = @StatusChange;
 GO
 
 -- IMEC-14668 - Modify Liberty iCase Popups to Use Doctor Address instead
@@ -509,3 +509,36 @@ where BusinessRuleID  in (
 	from tblBusinessRule
 	where name in ('ScheduleAppointmentMsgs', 'ApptStatusChangeMsgs', 'InvoiceQuotetMsgs', 'ScheduleApptMsgsPanelExam')
 )
+
+USE [IMECentricEW]
+GO
+
+UPDATE tblBusinessRuleCondition
+SET EWServiceTypeId = 1
+WHERE BusinessRuleConditionID IN (
+    SELECT brc.BusinessRuleConditionID
+    FROM IMECentricEWNextRel..tblBusinessRuleCondition brc
+    INNER JOIN tblBusinessRule br
+        ON br.BusinessRuleID = brc.BusinessRuleID
+    WHERE br.Name = 'AllStateGRDoctorCancelFee'
+        AND brc.EntityType = 'PC'
+        AND brc.EntityID = 4
+        AND brc.BillingEntity = 2
+        AND brc.Param2 = 'Allstate - $100 penalty'
+);
+UPDATE tblBusinessRuleCondition
+SET Param6 = 'ExamWorks now owes Allstate the following:-  • A $2500 penalty fee  • A refund of the testimony/deposition fee (if prepaid)  • A refund of the original IME/MMR service fee                                       Thank you.',
+    EWBusLineID = NULL,
+    EWServiceTypeId = 7
+WHERE BusinessRuleConditionID IN (
+    SELECT brc.BusinessRuleConditionID
+    FROM IMECentricEWNextRel..tblBusinessRuleCondition brc
+    INNER JOIN tblBusinessRule br
+        ON br.BusinessRuleID = brc.BusinessRuleID
+    WHERE br.Name = 'DocCancelledApt'
+        AND brc.EntityType = 'PC'
+        AND brc.EntityID = 4
+        AND brc.BillingEntity = 2
+        AND brc.Param1 = '4'
+        AND brc.Param2 = '7'
+);
