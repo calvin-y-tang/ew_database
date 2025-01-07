@@ -197,21 +197,23 @@ WITH CTE_Update AS (
                 inner join [crn].[crn_production].[dbo].Master_Reviewer_Specialty mrs with (nolock) on mrs.masterreviewerid = mr.masterreviewerid
                 inner join [crn].[crn_production].[dbo].Specialty_Certification_Status cs with (nolock) on cs.specialtycertificationstatusid = mrs.specialtycertificationstatusid
                 where r.Active = 1 and r.localsystemname = 'EW-IMEC' and ds.SpecialtyCode Like '% - %'		
+),
+SpecialtyStatusJoin as (
+  select cs.Name, msr.SpecialtyTypeID, msr.masterreviewerid, msr.ExpirationDate
+  from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
+    INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs
+      ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
 )
 -- Perform the update using the CTE
-UPDATE CTE_Update   
-  SET @sub = (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
-  @main = (SELECT cs.Name from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
-@subExpirationDate = (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=2 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
-@mainExpirationDate = (SELECT msr.ExpirationDate from [crn].[crn_production].[dbo].Master_Reviewer_Specialty msr
-INNER JOIN [crn].[crn_production].[dbo].Specialty_Certification_Status cs ON msr.SpecialtyCertificationStatusID = cs.SpecialtyCertificationStatusID
-where msr.SpecialtyTypeID=1 and msr.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+UPDATE CTE_Update
+  SET @sub = (select top(1) ssj.Name from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=2 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+  @main = (select top(1) ssj.Name from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=1 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+@subExpirationDate = (select top(1) ssj.ExpirationDate from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=2 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
+@mainExpirationDate = (select top(1) ssj.ExpirationDate from SpecialtyStatusJoin ssj
+where ssj.SpecialtyTypeID=1 and ssj.masterreviewerid = CTE_Update.CRNMasterReviewerID),
 EWCertificationStatus = CASE
 						WHEN (@sub = 'Boarded' AND @main = 'Boarded') OR (@main = 'Boarded' AND @sub = 'Boarded') 
 						 then  'Boarded'
