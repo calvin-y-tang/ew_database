@@ -509,36 +509,3 @@ where BusinessRuleID  in (
 	from tblBusinessRule
 	where name in ('ScheduleAppointmentMsgs', 'ApptStatusChangeMsgs', 'InvoiceQuotetMsgs', 'ScheduleApptMsgsPanelExam')
 )
-
-USE [IMECentricEW]
-GO
-
-UPDATE tblBusinessRuleCondition
-SET EWServiceTypeId = 1
-WHERE BusinessRuleConditionID IN (
-    SELECT brc.BusinessRuleConditionID
-    FROM IMECentricEWNextRel..tblBusinessRuleCondition brc
-    INNER JOIN tblBusinessRule br
-        ON br.BusinessRuleID = brc.BusinessRuleID
-    WHERE br.Name = 'AllStateGRDoctorCancelFee'
-        AND brc.EntityType = 'PC'
-        AND brc.EntityID = 4
-        AND brc.BillingEntity = 2
-        AND brc.Param2 = 'Allstate - $100 penalty'
-);
-UPDATE tblBusinessRuleCondition
-SET Param6 = 'ExamWorks now owes Allstate the following:-  • A $2500 penalty fee  • A refund of the testimony/deposition fee (if prepaid)  • A refund of the original IME/MMR service fee                                       Thank you.',
-    EWBusLineID = NULL,
-    EWServiceTypeId = 7
-WHERE BusinessRuleConditionID IN (
-    SELECT brc.BusinessRuleConditionID
-    FROM IMECentricEWNextRel..tblBusinessRuleCondition brc
-    INNER JOIN tblBusinessRule br
-        ON br.BusinessRuleID = brc.BusinessRuleID
-    WHERE br.Name = 'DocCancelledApt'
-        AND brc.EntityType = 'PC'
-        AND brc.EntityID = 4
-        AND brc.BillingEntity = 2
-        AND brc.Param1 = '4'
-        AND brc.Param2 = '7'
-);
