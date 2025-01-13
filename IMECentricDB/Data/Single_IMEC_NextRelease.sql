@@ -126,5 +126,22 @@ END
 
 GO
 
+-- IMEC-14728 - Need an additional serviceCode for FL office
+--		**** This was applied to production  on 01/10/2025 but there is no harm in letting it run again.
+USE [IMECentricEW]
 
+DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'AutoAckDPSBundle')
+
+IF @BusinessRuleID IS NOT NULL
+BEGIN
+	UPDATE tblBusinessRuleCondition 
+	   SET param6 = ';2070;3290;4121;2100;' , 
+		   DateEdited = GETDATE(),
+		   UserIDEdited = 'JPais'
+	WHERE  BusinessRuleID = @BusinessRuleID
+	   AND EWServiceTypeID = 1  
+	   AND OfficeCode = 17
+END
+
+GO
 
