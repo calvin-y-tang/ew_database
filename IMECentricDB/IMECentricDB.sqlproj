@@ -1169,6 +1169,7 @@
     <Build Include="Functions\fnGetMedsIncomingAndMedsToDoctorPageCountByCase.sql" />
     <Build Include="Tables\tblFeeScheduleTiers.sql" />
     <Build Include="Tables\tblCaseHistoryOverrides.sql" />
+    <Build Include="Stored Procedures\proc_Info_CaseHistoryReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\IMECentricEW.scmp" />
