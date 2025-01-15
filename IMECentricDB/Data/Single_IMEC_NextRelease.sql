@@ -157,22 +157,22 @@ BEGIN
 	DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = @BusinessRuleID
 
 	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
-	VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
 
 	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
-	VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
+	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
 
 	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
-	VALUES ('SW', 2, 4, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
+	VALUES ('SW', 2, 4, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
 
 	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
-	VALUES ('PC', 31, 2, 1, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', ';T2;', 'LibertyGuardrailsStartDate')
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', ';T2;', 'LibertyGuardrailsStartDate')
 
 	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
-	VALUES ('PC', 31, 2, 2, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', 'Client Selected', 'LibertyGuardrailsStartDate')
+	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', 'Client Selected', 'LibertyGuardrailsStartDate')
 
 	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param4)
-	VALUES ('PC', 31, 2, 3, 192, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'LibertyGuardrailsStartDate')
+	VALUES ('PC', 31, 2, 3, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'LibertyGuardrailsStartDate')
 
 END
 GO
