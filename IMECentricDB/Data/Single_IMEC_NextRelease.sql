@@ -177,3 +177,64 @@ BEGIN
 END
 GO
 
+-- IMEC-14664 - Do Not Show QA Checklist for Certain Conditions
+
+use IMECentricEW
+
+begin try
+    begin transaction noTxOrCaWc
+    
+    declare @ruleId int = (select BusinessRuleID from tblBusinessRule where Name
+                        = 'UseQAQuestionSet');
+    declare @busLine int = (select EWBusLineID from tblEWBusLine where Name
+                         = 'Workers Comp');
+    declare @parentCompany int = (select ParentCompanyID from tblEWParentCompany where [Name]
+                               = 'Liberty Mutual');
+    declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate';
+    declare @Param2 varchar(100) = 'Exclude';
+
+    update tblBusinessRule
+    set Param2Desc = 'FlagForExclusion'
+    where [BusinessRuleID] = @ruleId
+
+    update tblBusinessRuleCondition
+    set [ProcessOrder] = 2
+    where [BusinessRuleID] = @ruleId
+
+    if not exists (
+        select *
+        from tblBusinessRuleCondition
+        where [BusinessRuleID] = @ruleId
+            and [EWBusLineID] = @busLine
+            and Jurisdiction in ('CA', 'TX')
+    )
+    begin
+        print 'Adding Rules...' 
+        insert into tblBusinessRuleCondition (
+            [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2]
+        )
+        values
+            ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , NULL        , @busLine     , NULL             , 'CA'          , @Param1  , @Param2),
+            ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , NULL        , @busLine     , NULL             , 'TX'          , @Param1  , @Param2)
+    end
+    /*
+    -- test with throw enabled
+    select *
+    from tblBusinessRule br
+        join tblBusinessRuleCondition brc
+        on brc.BusinessRuleID = br.BusinessRuleID
+    where br.Name = 'UseQAQuestionSet'
+    order by brc.BusinessRuleID, brc.ProcessOrder
+
+    ;throw 51000, 'Rollback for testing.', 1;
+    --*/
+    commit transaction noTxOrCaWc
+end try
+begin catch
+    declare @RN varchar(2) = CHAR(13)+CHAR(10)
+    print ERROR_MESSAGE() + @RN
+    print 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+    print 'Rolling back transaction.'
+    rollback transaction noTxOrCaWc
+end catch
+
