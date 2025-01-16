@@ -197,26 +197,19 @@ begin try
     set Param2Desc = 'FlagForExclusion'
     where [BusinessRuleID] = @ruleId
 
-    update tblBusinessRuleCondition
-    set [ProcessOrder] = 2
+    print 'Clearing out old rules rules...' 
+    delete from tblBusinessRuleCondition
     where [BusinessRuleID] = @ruleId
 
-    if not exists (
-        select *
-        from tblBusinessRuleCondition
-        where [BusinessRuleID] = @ruleId
-            and [EWBusLineID] = @busLine
-            and Jurisdiction in ('CA', 'TX')
+    print 'Inserting new rules...'
+    insert into tblBusinessRuleCondition (
+        [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2]
     )
-    begin
-        print 'Adding Rules...' 
-        insert into tblBusinessRuleCondition (
-            [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2]
-        )
-        values
-            ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , NULL        , @busLine     , NULL             , 'CA'          , @Param1  , @Param2),
-            ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , NULL        , @busLine     , NULL             , 'TX'          , @Param1  , @Param2)
-    end
+    values
+        ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , @busLine     , NULL             , 'CA'          , @Param1  , @Param2),
+        ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , @busLine     , NULL             , 'TX'          , @Param1  , @Param2),
+        ('PC'       , @parentCompany, 2              , 2             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , NULL         , NULL             , NULL          , @Param1  , NULL   )
+
     /*
     -- test with throw enabled
     select *
