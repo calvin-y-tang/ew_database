@@ -239,6 +239,7 @@ BEGIN TRY
     BEGIN TRANSACTION noTxOr14598
 
 DECLARE @BusinessRuleID1 INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'ClientGenDocsToAddtlEmail')
+DECLARE @BCCEmail VARCHAR(120) = 'appointments@medylex.com'
 
 IF @BusinessRuleID1 IS NOT NULL
 BEGIN
