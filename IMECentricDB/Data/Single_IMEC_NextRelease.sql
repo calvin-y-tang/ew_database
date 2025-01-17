@@ -231,3 +231,61 @@ begin catch
     rollback transaction noTxOrCaWc
 end catch
 
+
+-- IMEC-14598 - Auto BCC email when sending appointment letters for Scheduled, Cancelled, and Late Cancelled
+
+Use [IMECentricMedylex]  -- Note, this is a Canadian DB on a different server
+BEGIN TRY
+    BEGIN TRANSACTION noTxOr14598
+
+DECLARE @BusinessRuleID1 INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'ClientGenDocsToAddtlEmail')
+
+IF @BusinessRuleID1 IS NOT NULL
+BEGIN
+	UPDATE tblBusinessRuleCondition SET Param3 = @BCCEmail WHERE BusinessRuleID = @BusinessRuleID1
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+	VALUES ('SW', 2, 2, @BusinessRuleID1, GETDATE(), 'Admin', '1', @BCCEmail, 'Appointment Confirmation')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+	VALUES ('SW', 2, 2, @BusinessRuleID1, GETDATE(), 'Admin', '1', @BCCEmail, 'Cancellation Notice')
+END
+
+DECLARE @BusinessRuleID2 INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'ClientDistDocsToAddtlEmail')
+
+IF @BusinessRuleID2 IS NOT NULL
+BEGIN
+	UPDATE tblBusinessRuleCondition SET Param3 = @BCCEmail WHERE BusinessRuleID = @BusinessRuleID2
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+	VALUES ('SW', 2, 2, @BusinessRuleID2, GETDATE(), 'Admin', '1', @BCCEmail, 'Appointment Confirmation')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+	VALUES ('SW', 2, 2, @BusinessRuleID2, GETDATE(), 'Admin', '1', @BCCEmail, 'Cancellation Notice')
+END
+
+DECLARE @BusinessRuleID3 INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'ClientDistRptToAddtlEmail')
+
+IF @BusinessRuleID3 IS NOT NULL
+BEGIN
+	UPDATE tblBusinessRuleCondition SET Param3 = @BCCEmail WHERE BusinessRuleID = @BusinessRuleID3
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+	VALUES ('SW', 2, 2, @BusinessRuleID3, GETDATE(), 'Admin', '1', @BCCEmail, 'Appointment Confirmation')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
+	VALUES ('SW', 2, 2, @BusinessRuleID3, GETDATE(), 'Admin', '1', @BCCEmail, 'Cancellation Notice')
+END
+
+    commit transaction noTxOr14598
+end try
+begin catch
+    declare @RN varchar(2) = CHAR(13)+CHAR(10)
+    print ERROR_MESSAGE() + @RN
+    print 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+    print 'Rolling back transaction.'
+    rollback transaction noTxOr14598
+end catch
+
+
+
