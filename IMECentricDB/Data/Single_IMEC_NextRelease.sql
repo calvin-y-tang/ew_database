@@ -288,5 +288,54 @@ begin catch
     rollback transaction noTxOr14598
 end catch
 
+use IMECentricEW
+
+begin try
+    begin transaction libertySpeciality	
+    
+    declare @ruleId int = (select BusinessRuleID from tblBusinessRule where Name
+                        = 'MustUseRequestedSpecialty');
+
+    declare @parentCompany int = (select ParentCompanyID from tblEWParentCompany where [Name]
+                               = 'Liberty Mutual');
+    declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate'; 
+	declare @Param2 varchar(100)= 'Liberty has requested a specialty for this exam and you are required to schedule a doctor that matches that specialty.'
+	declare @Param5 varchar (100)= 'LibertySchedulingOverride'
+	declare @Param6 varchar(100)= 'Liberty has requested specialties for this exam. Since this is a panel exam, you are required to schedule only doctors that match those specialties.  Any other specialty would require Liberty approval'
+	declare  @EntityType varchar(2)='PC';
+
+
+    print 'Clearing out old rules rules...' 
+    delete from tblBusinessRuleCondition
+    where [BusinessRuleID] = @ruleId and EntityType=@EntityType and EntityID=@parentCompany
+
+    print 'Inserting new rules...'
+    insert into tblBusinessRuleCondition (
+        [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2],[Param5],[Param6]
+    )
+    values
+        (@EntityType       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , NULL     , NULL             , NULL, @Param1 ,@Param2,@Param5,@Param6)
+    
+
+    
+    -- test with throw enabled
+/*     select *
+    from tblBusinessRule br
+        join tblBusinessRuleCondition brc
+        on brc.BusinessRuleID = br.BusinessRuleID
+    where br.Name = 'MustUseRequestedSpecialty' and brc.EntityID=@parentCompany
+    order by brc.BusinessRuleID, brc.ProcessOrder
+
+    ;throw 51000, 'Rollback for testing.', 1; */
+    
+    commit transaction libertySpeciality	
+end try
+begin catch
+    declare @RN varchar(2) = CHAR(13)+CHAR(10)
+    print ERROR_MESSAGE() + @RN
+    print 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+    print 'Rolling back transaction.'
+    rollback transaction libertySpeciality	
+end catch
 
 
