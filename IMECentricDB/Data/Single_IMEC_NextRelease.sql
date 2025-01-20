@@ -295,6 +295,12 @@ begin try
     declare @ruleId int = (select BusinessRuleID from tblBusinessRule where Name
                         = 'MustUseRequestedSpecialty');
 
+    Update tblBusinessRule
+	SET Param1Desc='tblSettingStartDate', Param2Desc= 'ApptMsg', Param6Desc='PnlApptMsg'
+    where BusinessRuleID=@ruleId
+	   
+
+
     declare @parentCompany int = (select ParentCompanyID from tblEWParentCompany where [Name]
                                = 'Liberty Mutual');
     declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate'; 
