@@ -287,7 +287,6 @@ begin catch
     print 'Rolling back transaction.'
     rollback transaction noTxOr14598
 end catch
-
 use IMECentricEW
 
 begin try
@@ -299,9 +298,9 @@ begin try
     declare @parentCompany int = (select ParentCompanyID from tblEWParentCompany where [Name]
                                = 'Liberty Mutual');
     declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate'; 
-	declare @Param2 varchar(100)= 'Liberty has requested a specialty for this exam and you are required to schedule a doctor that matches that specialty.'
+	declare @Param2 varchar(128)= 'Liberty has requested a specialty for this exam and you are required to schedule a doctor that matches that specialty.'
 	declare @Param5 varchar (100)= 'LibertySchedulingOverride'
-	declare @Param6 varchar(100)= 'Liberty has requested specialties for this exam. Since this is a panel exam, you are required to schedule only doctors that match those specialties.  Any other specialty would require Liberty approval'
+	declare @Param6 varchar(MAX)= 'Liberty has requested specialties for this exam. Since this is a panel exam, you are required to schedule only doctors that match those specialties.  Any other specialty would require Liberty approval'
 	declare  @EntityType varchar(2)='PC';
 
 
@@ -319,7 +318,8 @@ begin try
 
     
     -- test with throw enabled
-/*     select *
+	/*
+    select *
     from tblBusinessRule br
         join tblBusinessRuleCondition brc
         on brc.BusinessRuleID = br.BusinessRuleID
@@ -337,5 +337,6 @@ begin catch
     print 'Rolling back transaction.'
     rollback transaction libertySpeciality	
 end catch
+
 
 
