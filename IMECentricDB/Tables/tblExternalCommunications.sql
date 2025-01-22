@@ -29,6 +29,7 @@ CREATE TABLE [dbo].[tblExternalCommunications]
     [EntityType]        VARCHAR(2)     NULL, 
     [EntityID]          VARCHAR(64)    NULL, 
     [DateProcessed]     DATETIME       NULL, 
+    [DevNote]           VARCHAR(255)   NULL, 
     CONSTRAINT [PK_tblExternalCommunications] PRIMARY KEY CLUSTERED ([CommunicationID] ASC)
 )
 

@@ -347,7 +347,7 @@ end catch
 
 -- IMEC-14208 - data patch for old entries in tblExternalCommunication to set processed date
 USE [IMECentricEW]
-UPDATE tblExternalCommunications SET DateProcessed = GETDATE()
+UPDATE tblExternalCommunications SET DateProcessed = GETDATE(), DevNote = 'Data Patching DateProcessed - restarting service'
 WHERE DateProcessed IS NULL AND CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE Status IN (8, 9) OR DateAdded <= (GETDATE()-2) OR DateAdded IS NULL)
 GO
 
