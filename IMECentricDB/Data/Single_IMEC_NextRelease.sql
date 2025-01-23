@@ -236,7 +236,7 @@ end catch
 
 Use [IMECentricMedylex]  -- Note, this is a Canadian DB on a different server
 BEGIN TRY
-    BEGIN TRANSACTION noTxOr14598
+    BEGIN TRANSACTION IMEC14598
 
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, BrokenRuleAction)
 VALUES (203, 'GenDocsToAddtlEmail', 'Case', 'When generating docs, CC/BCC additional email addresses', 1, 1201, 0, 'AttachOption', 'CCEmailAddress', 'BCCEmailAddress', 'MatchOnContentType', 0)
@@ -280,14 +280,14 @@ BEGIN
 	VALUES ('SW', 2, 3, @BusinessRuleID3, GETDATE(), 'Admin', '1', @BCCEmail, 'Cancellation Notice')
 END
 
-    commit transaction noTxOr14598
+    commit transaction IMEC14598
 end try
 begin catch
     declare @RN varchar(2) = CHAR(13)+CHAR(10)
     print ERROR_MESSAGE() + @RN
     print 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
     print 'Rolling back transaction.'
-    rollback transaction noTxOr14598
+    rollback transaction IMEC14598
 end catch
 
 
