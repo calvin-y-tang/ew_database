@@ -1,0 +1,1532 @@
+﻿
+
+IF (SELECT OBJECT_ID('tempdb..#tmpErrors')) IS NOT NULL DROP TABLE #tmpErrors
+GO
+CREATE TABLE #tmpErrors (Error int)
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+GO
+BEGIN TRANSACTION
+GO
+PRINT N'Altering [dbo].[tblCase]...';
+
+
+GO
+ALTER TABLE [dbo].[tblCase]
+    ADD [RecordRetrievalMethod] INT CONSTRAINT [DF_tblCase_RecordRetrievalMethod] DEFAULT ((0)) NOT NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblCaseRecRetrievalDocument]...';
+
+
+GO
+ALTER TABLE [dbo].[tblCaseRecRetrievalDocument]
+    ADD [LastResponse] VARCHAR (200) NULL,
+        [Facility]     VARCHAR (200) NULL,
+        [RecordType]   VARCHAR (50)  NULL,
+        [FileVersion]  VARCHAR (25)  NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblEWParentCompany]...';
+
+
+GO
+SET QUOTED_IDENTIFIER ON;
+
+SET ANSI_NULLS OFF;
+
+
+GO
+ALTER TABLE [dbo].[tblEWParentCompany]
+    ADD [RecordRetrievalMethod] INT CONSTRAINT [DF_tblEWParentCompany_RecordRetrievalMethod] DEFAULT ((0)) NOT NULL;
+
+
+GO
+SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblFSDetail]...';
+
+
+GO
+ALTER TABLE [dbo].[tblFSDetail]
+    ADD [InchesIncluded] DECIMAL (18, 2) CONSTRAINT [DF_tblFSDetail_InchesIncluded] DEFAULT ((0)) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblFSDetailSetup]...';
+
+
+GO
+ALTER TABLE [dbo].[tblFSDetailSetup]
+    ADD [InchesIncluded] DECIMAL (18, 2) CONSTRAINT [DF_tblFSDetailSetup_InchesIncluded] DEFAULT ((0)) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblOffice]...';
+
+
+GO
+ALTER TABLE [dbo].[tblOffice]
+    ADD [RecordRetrievalMethod] VARCHAR (15) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[tblDPSResultFileConfig]...';
+
+
+GO
+CREATE TABLE [dbo].[tblDPSResultFileConfig] (
+    [ResultFileConfigID] INT          IDENTITY (1, 1) NOT NULL,
+    [EWServiceTypeID]    INT          NOT NULL,
+    [FileIndex]          INT          NOT NULL,
+    [Description]        VARCHAR (50) NOT NULL,
+    [CombinedFileName]   VARCHAR (50) NOT NULL,
+    [CombineFileSeqNo]   INT          NOT NULL,
+    CONSTRAINT [PK_tblDPSResultFileConfig] PRIMARY KEY CLUSTERED ([ResultFileConfigID] ASC)
+);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwDocument]...';
+
+
+GO
+ALTER VIEW vwDocument
+AS
+    SELECT  tblCase.CaseNbr ,
+			tblCase.ExtCaseNbr,
+            tblCase.ClaimNbr ,
+			tblCase.AddlClaimNbrs, 
+
+            tblApptStatus.Name AS ApptStatus ,
+
+            tblCase.ApptDate ,
+            tblCase.Appttime ,
+            tblCase.CaseApptID ,
+            tblCase.ApptStatusID ,
+
+            tblCase.DoctorCode ,
+            tblCase.DoctorLocation ,
+
+			tblcase.EmployerID ,
+			tblcase.EmployerAddressID ,
+
+            tblExaminee.City AS ExamineeCity ,
+            UPPER(tblExaminee.State) AS ExamineeState ,
+            tblExaminee.Zip AS ExamineeZip ,
+            tblExaminee.lastName AS ExamineelastName ,
+            tblExaminee.firstName AS ExamineefirstName ,
+            tblExaminee.Addr1 AS ExamineeAddr1 ,
+            tblExaminee.Addr2 AS ExamineeAddr2 ,
+            tblExaminee.City + ', ' + UPPER(tblExaminee.State) + '  ' + tblExaminee.Zip AS ExamineeCityStateZip ,
+            tblExaminee.Country ,
+            tblExaminee.PolicyNumber ,
+            tblExaminee.SSN ,
+            tblExaminee.firstName + ' ' + tblExaminee.lastName AS ExamineeName ,
+            tblExaminee.Phone1 AS ExamineePhone ,
+			tblExaminee.WorkPhone AS ExamineeWorkPhone,
+            tblExaminee.sex ,
+            tblExaminee.DOB ,
+            tblExaminee.county AS Examineecounty ,
+            tblExaminee.Prefix AS ExamineePrefix ,
+
+            tblExaminee.USDvarchar1 AS ExamineeUSDvarchar1 ,
+            tblExaminee.USDvarchar2 AS ExamineeUSDvarchar2 ,
+            tblExaminee.USDDate1 AS ExamineeUSDDate1 ,
+            tblExaminee.USDDate2 AS ExamineeUSDDate2 ,
+            tblExaminee.USDtext1 AS ExamineeUSDtext1 ,
+            tblExaminee.USDtext2 AS ExamineeUSDtext2 ,
+            tblExaminee.USDint1 AS ExamineeUSDint1 ,
+            tblExaminee.USDint2 AS ExamineeUSDint2 ,
+            tblExaminee.USDmoney1 AS ExamineeUSDmoney1 ,
+            tblExaminee.USDmoney2 AS ExamineeUSDmoney2 ,
+
+            tblExaminee.note AS ChartNotes ,
+            tblExaminee.Fax AS ExamineeFax ,
+            tblExaminee.Email AS ExamineeEmail ,
+            tblExaminee.insured AS Examineeinsured ,
+            tblExaminee.middleinitial AS Examineemiddleinitial ,
+            tblExaminee.InsuredAddr1 ,
+            tblExaminee.InsuredCity ,
+            UPPER(tblExaminee.InsuredState) AS InsuredState ,
+            tblExaminee.InsuredZip ,
+            tblExaminee.InsuredSex ,
+            tblExaminee.InsuredRelationship ,
+            tblExaminee.InsuredPhone ,
+            tblExaminee.InsuredPhoneExt ,
+            tblExaminee.InsuredFax ,
+            tblExaminee.InsuredEmail ,
+            tblExaminee.ExamineeStatus ,
+
+            tblExaminee.TreatingPhysician ,
+            tblExaminee.TreatingPhysicianAddr1 ,
+            tblExaminee.TreatingPhysicianCity ,
+            UPPER(tblExaminee.TreatingPhysicianState) AS TreatingPhysicianState ,
+            tblExaminee.TreatingPhysicianZip ,
+            tblExaminee.TreatingPhysicianPhone ,
+            tblExaminee.TreatingPhysicianPhoneExt ,
+            tblExaminee.TreatingPhysicianFax ,
+            tblExaminee.TreatingPhysicianEmail ,
+            tblExaminee.TreatingPhysicianLicenseNbr ,
+			tblExaminee.TreatingPhysicianTaxID ,
+            tblExaminee.TreatingPhysicianCredentials AS TreatingPhysicianDegree ,
+			tblExaminee.TreatingPhysicianNPINbr,
+
+			(Case ISNULL(tblcase.EmployerID, 0)
+              WHEN 0
+              THEN tblExaminee.Employer  
+			  ELSE tblEmployer.Name  
+			  END) AS Employer,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerAddr1  
+			  ELSE tblEmployerAddress.Address1 
+			  END) AS EmployerAddr1,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN NULL 
+			  ELSE tblEmployerAddress.Address2 
+			  END) AS EmployerAddr2,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerCity  
+			  ELSE tblEmployerAddress.City  
+			  END) AS EmployerCity,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN UPPER(tblExaminee.EmployerState)  
+			  ELSE UPPER(tblEmployerAddress.State)  
+			  END) AS EmployerState,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerZip  
+			  ELSE tblEmployerAddress.Zip  
+			  END) AS EmployerZip,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerPhone  
+			  ELSE tblEmployerAddress.Phone  
+			  END) AS EmployerPhone,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerPhoneExt  
+			  ELSE tblEmployerAddress.PhoneExt  
+			  END) AS EmployerPhoneExt,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerFax  
+			  ELSE tblEmployerAddress.Fax  
+			  END) AS EmployerFax,  
+            
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerEmail  
+			  ELSE tblEmployerAddress.Email  
+			  END) AS EmployerEmail,  
+            
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerContactLastName  
+			  ELSE tblEmployerAddress.ContactLast  
+			  END) AS EmployerContactLastName,  
+            
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerContactFirstName  
+			  ELSE tblEmployerAddress.ContactFirst  
+			  END) AS EmployerContactFirstName,  
+
+            tblClient.firstName + ' ' + tblClient.lastName AS ClientName ,
+            tblClient.Phone1 + ' ' + ISNULL(tblClient.Phone1ext, ' ') AS ClientPhone ,
+            tblClient.Phone2 + ' ' + ISNULL(tblClient.Phone2ext, ' ') AS ClientPhone2 ,
+            tblClient.Addr1 AS ClientAddr1 ,
+            tblClient.Addr2 AS ClientAddr2 ,
+            tblClient.City + ', ' + UPPER(tblClient.State) + '  ' + tblClient.Zip AS ClientCityStateZip ,
+            tblClient.Fax AS ClientFax ,
+            tblClient.Email AS ClientEmail ,
+            'Dear ' + tblClient.firstName + ' ' + tblClient.lastName AS ClientSalutation ,
+            tblClient.title AS Clienttitle ,
+            tblClient.Prefix AS ClientPrefix ,
+            tblClient.suffix AS Clientsuffix ,
+            tblClient.USDvarchar1 AS ClientUSDvarchar1 ,
+            tblClient.USDvarchar2 AS ClientUSDvarchar2 ,
+            tblClient.USDDate1 AS ClientUSDDate1 ,
+            tblClient.USDDate2 AS ClientUSDDate2 ,
+            tblClient.USDtext1 AS ClientUSDtext1 ,
+            tblClient.USDtext2 AS ClientUSDtext2 ,
+            tblClient.USDint1 AS ClientUSDint1 ,
+            tblClient.USDint2 AS ClientUSDint2 ,
+            tblClient.USDmoney1 AS ClientUSDmoney1 ,
+            tblClient.USDmoney2 AS ClientUSDmoney2 ,
+            tblClient.CompanyCode ,
+            tblClient.Notes AS ClientNotes ,
+            tblClient.BillAddr1 ,
+            tblClient.BillAddr2 ,
+            tblClient.BillCity ,
+            UPPER(tblClient.BillState) AS BillState ,
+            tblClient.BillZip ,
+            tblClient.Billattn ,
+            tblClient.ARKey ,
+            tblClient.BillFax AS ClientBillFax ,
+            tblClient.lastName AS ClientlastName ,
+            tblClient.firstName AS ClientfirstName ,
+            UPPER(tblClient.State) AS ClientState ,
+            tblClient.City AS ClientCity ,
+            tblClient.Zip AS ClientZip ,
+
+            tblCompany.extName AS Company ,
+            tblCompany.USDvarchar1 AS CompanyUSDvarchar1 ,
+            tblCompany.USDvarchar2 AS CompanyUSDvarchar2 ,
+            tblCompany.USDDate1 AS CompanyUSDDate1 ,
+            tblCompany.USDDate2 AS CompanyUSDDate2 ,
+            tblCompany.USDtext1 AS CompanyUSDtext1 ,
+            tblCompany.USDtext2 AS CompanyUSDtext2 ,
+            tblCompany.USDint1 AS CompanyUSDint1 ,
+            tblCompany.USDint2 AS CompanyUSDint2 ,
+            tblCompany.USDmoney1 AS CompanyUSDmoney1 ,
+            tblCompany.USDmoney2 AS CompanyUSDmoney2 ,
+            tblCompany.Notes AS CompanyNotes ,
+
+            tblCase.QARep ,
+            tblCase.Doctorspecialty ,
+            tblCase.BillClientCode AS CaseBillClientCode ,
+            tblCase.officeCode ,
+            tblCase.PanelNbr ,
+
+            ISNULL(tblUser.lastName, '')
+            + Case WHEN ISNULL(tblUser.LastName, '') = ''
+                        OR ISNULL(tblUser.FirstName, '') = '' THEN ''
+                   ELSE ', '
+              END + ISNULL(tblUser.firstName, '') AS scheduler ,
+
+            tblCase.marketerCode AS Marketer ,
+            tblCase.Dateadded AS DateCalledIn ,
+            tblCase.Dateofinjury AS DOI ,
+            tblCase.Allegation ,
+            tblCase.Notes ,
+            tblCase.CaseType ,
+            'Dear ' + tblExaminee.firstName + ' ' + tblExaminee.lastName AS Examineesalutation ,
+            tblCase.status ,
+            tblCase.calledInBy ,
+            tblCase.chartnbr ,
+            tblCase.reportverbal ,
+            tblCase.Datemedsrecd AS medsrecd ,
+            tblCase.typemedsrecd ,
+            tblCase.plaintiffAttorneyCode ,
+            tblCase.defenseAttorneyCode ,
+            tblCase.serviceCode ,
+            tblCase.FaxPattny ,
+            tblCase.FaxDoctor ,
+            tblCase.FaxClient ,
+            tblCase.EmailClient ,
+            tblCase.EmailDoctor ,
+            tblCase.EmailPattny ,
+            tblCase.invoiceDate ,
+            tblCase.invoiceamt ,
+            tblCase.commitDate ,
+            tblCase.WCBNbr ,
+            tblCase.specialinstructions ,
+            tblCase.priority ,
+            tblCase.scheduleNotes ,
+            tblCase.requesteddoc ,
+
+            tblCase.USDvarchar1 AS CaseUSDvarchar1 ,
+            tblCase.USDvarchar2 AS CaseUSDvarchar2 ,
+            tblCase.USDDate1 AS CaseUSDDate1 ,
+            tblCase.USDDate2 AS CaseUSDDate2 ,
+            tblCase.USDtext1 AS CaseUSDtext1 ,
+            tblCase.USDtext2 AS CaseUSDtext2 ,
+            tblCase.USDint1 AS CaseUSDint1 ,
+            tblCase.USDint2 AS CaseUSDint2 ,
+            tblCase.USDmoney1 AS CaseUSDmoney1 ,
+            tblCase.USDmoney2 AS CaseUSDmoney2 ,
+            tblCase.USDDate3 AS CaseUSDDate3 ,
+            tblCase.USDDate4 AS CaseUSDDate4 ,
+            tblCase.USDDate5 AS CaseUSDDate5 ,
+            tblCase.USDBit1 AS CaseUSDboolean1 ,
+            tblCase.USDBit2 AS CaseUSDboolean2 ,
+
+            tblCase.sinternalCasenbr AS internalCasenbr ,
+            tblDoctor.credentials AS Doctordegree ,
+            tblCase.ClientCode ,
+            tblCase.feeCode ,
+            tblCase.photoRqd ,
+            tblCase.CertMailNbr ,
+            tblCase.CertMailNbr2 ,
+            tblCase.HearingDate ,
+            tblCase.DoctorName ,
+            tblCase.masterCasenbr ,
+            tblCase.prevappt ,
+            tblCase.AssessmentToAddress ,
+            tblCase.OCF25Date ,
+            tblCase.AssessingFacility ,
+            tblCase.DateForminDispute ,
+            tblCase.DateReceived ,
+            tblCase.ClaimNbrExt ,
+            tblCase.sreqspecialty AS RequestedSpecialty ,
+            tblCase.AttorneyNote ,
+            tblCase.ExternalDueDate ,
+            tblCase.InternalDueDate ,
+            tblCase.ForecastDate ,
+			tblCase.DoctorRptDueDate , 
+			tblCase.DoctorReason ,
+            tblCase.DefParaLegal ,
+
+            tblCase.MasterSubCase ,
+            tblCase.TransportationRequired ,
+            tblCase.InterpreterRequired ,
+            tblCase.EWReferralType ,
+            tblCase.EWReferralEWFacilityID ,
+            tblCase.PublishOnWeb ,
+            tblCase.Jurisdiction AS JurisdictionCode ,
+            tblCase.LegalEvent ,
+            tblCase.PILegalEvent ,
+            tblCase.TransCode ,
+            tblCase.RptFinalizedDate ,
+
+			tblCase.ICDCodeA ,
+			tblCase.ICDCodeB ,
+			tblCase.ICDCodeC ,
+			tblCase.ICDCodeD ,
+			tblCase.ICDCodeE ,
+			tblCase.ICDCodeF ,
+			tblCase.ICDCodeG ,
+			tblCase.ICDCodeH ,
+			tblCase.ICDCodeI ,
+			tblCase.ICDCodeJ ,
+			tblCase.ICDCodeK ,
+			tblCase.ICDCodeL ,
+
+            'Dear ' + tblDoctor.firstName + ' ' + tblDoctor.lastName + ', ' + ISNULL(tblDoctor.credentials, '') AS DoctorSalutation ,
+            tblDoctor.Notes AS DoctorNotes ,
+            tblDoctor.Prefix AS DoctorPrefix ,
+            tblDoctor.Addr1 AS DoctorcorrespAddr1 ,
+            tblDoctor.Addr2 AS DoctorcorrespAddr2 ,
+            tblDoctor.City + ', ' + UPPER(tblDoctor.State) + '  ' + tblDoctor.Zip AS DoctorcorrespCityStateZip ,
+            tblDoctor.Phone + ' ' + ISNULL(tblDoctor.PhoneExt, ' ') AS DoctorcorrespPhone ,
+            tblDoctor.FaxNbr AS DoctorcorrespFax ,
+            tblDoctor.EmailAddr AS DoctorcorrespEmail ,
+            tblDoctor.Qualifications ,
+            tblDoctor.Prepaid ,
+            tblDoctor.county AS DoctorCorrespCounty ,
+
+            tblDoctor.USDvarchar1 AS DoctorUSDvarchar1 ,
+            tblDoctor.USDvarchar2 AS DoctorUSDvarchar2 ,
+            tblDoctor.USDvarchar3 AS DoctorUSDvarchar3 ,
+            tblDoctor.USDDate1 AS DoctorUSDDate1 ,
+            tblDoctor.USDDate2 AS DoctorUSDDate2 ,
+            tblDoctor.USDDate3 AS DoctorUSDDate3 ,
+            tblDoctor.USDDate4 AS DoctorUSDDate4 ,
+            tblDoctor.USDDate5 AS DoctorUSDDate5 ,
+            tblDoctor.USDDate6 AS DoctorUSDDate6 ,
+            tblDoctor.USDDate7 AS DoctorUSDDate7 ,
+            tblDoctor.USDtext1 AS DoctorUSDtext1 ,
+            tblDoctor.USDtext2 AS DoctorUSDtext2 ,
+            tblDoctor.USDint1 AS DoctorUSDint1 ,
+            tblDoctor.USDint2 AS DoctorUSDint2 ,
+            tblDoctor.USDmoney1 AS DoctorUSDmoney1 ,
+            tblDoctor.USDmoney2 AS DoctorUSDmoney2 ,
+			tblDoctor.DrMedRecsInDays AS DrMedRecsInDays ,
+			tblDoctor.ExpectedVisitDuration As ExpectedVisitDuration,
+
+            tblDoctor.WCNbr AS Doctorwcnbr ,
+            tblDoctor.remitattn ,
+            tblDoctor.remitAddr1 ,
+            tblDoctor.remitAddr2 ,
+            tblDoctor.remitCity ,
+            UPPER(tblDoctor.remitState) AS remitState ,
+            tblDoctor.remitZip ,
+            tblDoctor.UPIN ,
+            tblDoctor.schedulepriority ,
+            tblDoctor.feeCode AS drfeeCode ,
+            tblDoctor.licensenbr AS Doctorlicense ,
+            tblDoctor.SSNTaxID AS DoctorTaxID ,
+            tblDoctor.lastName AS DoctorlastName ,
+            tblDoctor.firstName AS DoctorfirstName ,
+            tblDoctor.middleinitial AS Doctormiddleinitial ,
+            ISNULL(LEFT(tblDoctor.firstName, 1), '')
+            + ISNULL(LEFT(tblDoctor.middleinitial, 1), '')
+            + ISNULL(LEFT(tblDoctor.lastName, 1), '') AS Doctorinitials ,
+            UPPER(tblDoctor.State) AS DoctorcorrespState ,
+            tblDoctor.CompanyName AS PracticeName ,
+            tblDoctor.NPINbr AS DoctorNPINbr ,
+            tblDoctor.ProvTypeCode ,
+            tblDoctor.PrintOnCheckAs ,
+
+            tblLocation.ExtName AS LocationExtName ,
+            tblLocation.Location ,
+            tblLocation.Addr1 AS DoctorAddr1 ,
+            tblLocation.Addr2 AS DoctorAddr2 ,
+			tblLocation.AddressInstructions,
+            tblLocation.City + ', ' + UPPER(tblLocation.State) + '  ' + tblLocation.Zip AS DoctorCityStateZip ,
+            tblLocation.Phone AS DoctorPhone ,
+            tblLocation.insidedr ,
+            tblLocation.Email AS DoctorEmail ,
+            tblLocation.Fax AS DoctorFax ,
+            tblLocation.Faxdrschedule ,
+            tblLocation.medrcdletter ,
+            tblLocation.drletter ,
+            tblLocation.county AS Doctorcounty ,
+            tblLocation.vicinity AS Doctorvicinity ,
+            tblLocation.contactPrefix AS DoctorLocationcontactPrefix ,
+            tblLocation.contactfirst AS DoctorLocationcontactfirstName ,
+            tblLocation.contactlast AS DoctorLocationcontactlastName ,
+            tblLocation.Notes AS DoctorLocationNotes ,
+            tblLocation.contactfirst + ' ' + tblLocation.contactlast AS DoctorLocationcontact ,
+            'Dear ' + tblLocation.contactfirst + ' ' + tblLocation.contactlast AS DoctorLocationcontactsalutation ,
+            UPPER(tblLocation.State) AS DoctorState ,
+            tblLocation.City AS DoctorCity ,
+            tblLocation.Zip AS DoctorZip ,
+            UPPER(tblLocation.State) AS State ,
+
+            RTRIM(LTRIM(ISNULL(tblCCAddress_2.firstName,'') + ' ' + ISNULL(tblCCAddress_2.lastName,''))) AS PAttorneyName ,
+            'Dear ' + ISNULL(tblCCAddress_2.firstName, '') + ' ' + ISNULL(tblCCAddress_2.lastName, '') AS PAttorneysalutation ,
+            tblCCAddress_2.Company AS PAttorneyCompany ,
+            tblCCAddress_2.Address1 AS PAttorneyAddr1 ,
+            tblCCAddress_2.Address2 AS PAttorneyAddr2 ,
+            tblCCAddress_2.City + ', ' + UPPER(tblCCAddress_2.State) + '  ' + tblCCAddress_2.Zip AS PAttorneyCityStateZip ,
+            tblCCAddress_2.Phone + ISNULL(tblCCAddress_2.PhoneExtension, '') AS PAttorneyPhone ,
+            tblCCAddress_2.Fax AS PAttorneyFax ,
+            tblCCAddress_2.Email AS PAttorneyEmail ,
+            tblCCAddress_2.Prefix AS pAttorneyPrefix ,
+            tblCCAddress_2.lastName AS pAttorneylastName ,
+            tblCCAddress_2.firstName AS pAttorneyfirstName ,
+            UPPER(tblCCAddress_2.State) AS pAttorneyState ,
+            tblCCAddress_2.City AS pAttorneyCity ,
+            tblCCAddress_2.Zip AS pAttorneyZip ,
+
+            RTRIM(LTRIM(ISNULL(tblCCAddress_1.firstName,'') + ' ' + ISNULL(tblCCAddress_1.lastName,''))) AS DAttorneyName ,
+            'Dear ' + ISNULL(tblCCAddress_1.firstName, '') + ' ' + ISNULL(tblCCAddress_1.lastName, '') AS DAttorneysalutation ,
+            tblCCAddress_1.Company AS DAttorneyCompany ,
+            tblCCAddress_1.Address1 AS DAttorneyAddr1 ,
+            tblCCAddress_1.Address2 AS DAttorneyAddr2 ,
+            tblCCAddress_1.City + ', ' + UPPER(tblCCAddress_1.State) + '  ' + tblCCAddress_1.Zip AS DAttorneyCityStateZip ,
+            tblCCAddress_1.Phone + ' ' + ISNULL(tblCCAddress_1.PhoneExtension, '') AS DattorneyPhone ,
+            tblCCAddress_1.Prefix AS dAttorneyPrefix ,
+            tblCCAddress_1.lastName AS dAttorneylastName ,
+            tblCCAddress_1.firstName AS dAttorneyfirstName ,
+            tblCCAddress_1.Fax AS DAttorneyFax ,
+            tblCCAddress_1.Email AS DAttorneyEmail ,
+            tblCCAddress_1.Fax ,
+            UPPER(tblCCAddress_1.State) AS dAttorneyState ,
+
+            RTRIM(LTRIM(ISNULL(tblCCAddress_3.firstName,'') + ' ' + ISNULL(tblCCAddress_3.lastName,''))) AS DParaLegalName ,
+            'Dear ' + ISNULL(tblCCAddress_3.firstName, '') + ' ' + ISNULL(tblCCAddress_3.lastName, '') AS DParaLegalsalutation ,
+            tblCCAddress_3.Company AS DParaLegalCompany ,
+            tblCCAddress_3.Address1 AS DParaLegalAddr1 ,
+            tblCCAddress_3.Address2 AS DParaLegalAddr2 ,
+            tblCCAddress_3.City + ', ' + UPPER(tblCCAddress_3.State) + '  ' + tblCCAddress_3.Zip AS DParaLegalCityStateZip ,
+            tblCCAddress_3.Phone + ' ' + ISNULL(tblCCAddress_3.PhoneExtension,'') AS DParaLegalPhone ,
+            tblCCAddress_3.Email AS DParaLegalEmail ,
+            tblCCAddress_3.Fax AS DParaLegalFax ,
+
+
+            tblServices.description AS ServiceDesc ,
+            tblServices.ShortDesc ,
+
+            tblCaseType.ShortDesc AS CaseTypeShortDesc ,
+			tblCaseType.ExternalDesc AS CaseTypeDesc ,
+            --tblCaseType.description AS CaseTypeDesc ,  -- Issue 5985 - stop usign description and use ExternalDesc
+
+            tblQueues.StatusDesc ,
+
+            tblSpecialty.specialtyCode ,
+            tblSpecialty.description AS specialtydesc ,
+
+            tblRecordStatus.description AS medsstatus ,
+
+            tblDoctorLocation.correspondence AS Doctorcorrespondence ,
+
+            tblState.StateName AS Jurisdiction ,
+
+            tblCaseAppt.duration AS ApptDuration ,
+
+            tblProviderType.description AS DoctorProviderType ,
+
+            tblVenue.County AS Venue ,
+
+            tblOffice.description AS office ,
+			tblOffice.ShortDesc AS OfficeShortDesc ,
+            tblOffice.USDvarchar1 AS OfficeUSDVarChar1 ,
+            tblOffice.USDvarchar2 AS OfficeUSDVarChar2 ,
+			tblOffice.NYWCCompanyName ,
+
+            tblLanguage.Description AS Language ,
+
+            tblTranscription.TransCompany,                          
+			
+			tblCase.DateOfInjury2 AS DOI2, 
+			tblCase.DateOfInjury3 AS DOI3, 
+			tblCase.DateOfInjury4 AS DOI4,
+			tblCase.InsuringCompany as InsuringCompany,
+			tblCase.CaseCaption, 
+			tblCase.LitigationNotes, 
+			tblCase.BillClientCode
+
+    FROM    tblCase
+            INNER JOIN tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
+            INNER JOIN tblOffice ON tblOffice.officeCode = tblCase.officeCode
+            INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
+            INNER JOIN tblCompany ON tblClient.CompanyCode = tblCompany.CompanyCode
+            INNER JOIN tblCaseType ON tblCase.Casetype = tblCaseType.Code
+            INNER JOIN tblQueues ON tblCase.status = tblQueues.statusCode
+
+            LEFT OUTER JOIN tblDoctor ON tblCase.DoctorCode = tblDoctor.DoctorCode
+            LEFT OUTER JOIN tblLocation ON tblCase.DoctorLocation = tblLocation.LocationCode
+            LEFT OUTER JOIN tblCaseAppt ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
+            LEFT OUTER JOIN tblDoctorLocation ON tblCase.DoctorLocation = tblDoctorLocation.LocationCode
+                                                 AND tblCase.DoctorCode = tblDoctorLocation.DoctorCode
+
+            LEFT OUTER JOIN tblSpecialty ON tblCase.Doctorspecialty = tblSpecialty.specialtyCode
+            LEFT OUTER JOIN tblVenue ON tblCase.VenueID = tblVenue.VenueID
+            LEFT OUTER JOIN tblProviderType ON tblDoctor.ProvTypeCode = tblProviderType.ProvTypeCode
+            LEFT OUTER JOIN tblState ON tblCase.Jurisdiction = tblState.StateCode
+            LEFT OUTER JOIN tblRecordStatus ON tblCase.recCode = tblRecordStatus.recCode
+            LEFT OUTER JOIN tblUser ON tblCase.schedulerCode = tblUser.userid
+            LEFT OUTER JOIN tblServices ON tblCase.serviceCode = tblServices.serviceCode
+            LEFT OUTER JOIN tblCCAddress AS tblCCAddress_1 ON tblCase.defenseAttorneyCode = tblCCAddress_1.ccCode
+            LEFT OUTER JOIN tblCCAddress AS tblCCAddress_2 ON tblCase.plaintiffAttorneyCode = tblCCAddress_2.ccCode
+            LEFT OUTER JOIN tblCCAddress AS tblCCAddress_3 ON tblCCAddress_3.ccCode = tblCase.DefParaLegal
+            LEFT OUTER JOIN tblLanguage ON tblLanguage.LanguageID = tblCase.LanguageID
+            LEFT OUTER JOIN tblTranscription ON tblCase.TransCode = tblTranscription.TransCode
+            LEFT OUTER JOIN tblApptStatus ON tblCase.ApptStatusID = tblApptStatus.ApptStatusID
+            LEFT OUTER JOIN tblEmployer on tblcase.EmployerID = tblEmployer.EmployerID 
+            LEFT OUTER JOIN tblEmployerAddress on tblcase.EmployerAddressID = tblEmployerAddress.EmployerAddressID
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwDocumentAccting]...';
+
+
+GO
+ALTER VIEW vwDocumentAccting
+AS
+    SELECT  tblCase.CaseNbr ,
+			tblCase.ExtCaseNbr,
+            tblCase.ClaimNbr ,
+			tblCase.AddlClaimNbrs,
+
+			tblcase.EmployerID ,
+			tblcase.EmployerAddressID ,
+
+            tblAcctingTrans.SeqNO ,
+            AH.DocumentNbr ,
+            tblAcctingTrans.type AS DocumentType ,
+
+            tblAcctingTrans.ApptDate ,
+            tblAcctingTrans.ApptTime ,
+            tblAcctingTrans.CaseApptID ,
+			tblAcctingTrans.ApptStatusID ,
+
+            CASE WHEN EWReferralType = 2 THEN tblCase.doctorcode ELSE tblAcctingTrans.DrOpCode END AS DoctorCode ,
+            CASE WHEN EWReferralType = 2 THEN tblCase.doctorlocation ELSE tblAcctingTrans.doctorlocation END AS DoctorLocation ,
+
+            tblExaminee.City AS ExamineeCity ,
+            UPPER(tblExaminee.State) AS ExamineeState ,
+            tblExaminee.Zip AS ExamineeZip ,
+            tblExaminee.lastName AS ExamineelastName ,
+            tblExaminee.firstName AS ExamineefirstName ,
+            tblExaminee.Addr1 AS ExamineeAddr1 ,
+            tblExaminee.Addr2 AS ExamineeAddr2 ,
+            tblExaminee.City + ', ' + UPPER(tblExaminee.State) + '  ' + tblExaminee.Zip AS ExamineeCityStateZip ,
+            tblExaminee.Country ,
+            tblExaminee.PolicyNumber ,
+            tblExaminee.SSN ,
+            tblExaminee.firstName + ' ' + tblExaminee.lastName AS ExamineeName ,
+            tblExaminee.Phone1 AS ExamineePhone ,
+			tblExaminee.WorkPhone AS ExamineeWorkPhone,
+            tblExaminee.sex ,
+            tblExaminee.DOB ,
+            tblExaminee.county AS Examineecounty ,
+            tblExaminee.Prefix AS ExamineePrefix ,
+
+            tblExaminee.USDvarchar1 AS ExamineeUSDvarchar1 ,
+            tblExaminee.USDvarchar2 AS ExamineeUSDvarchar2 ,
+            tblExaminee.USDDate1 AS ExamineeUSDDate1 ,
+            tblExaminee.USDDate2 AS ExamineeUSDDate2 ,
+            tblExaminee.USDtext1 AS ExamineeUSDtext1 ,
+            tblExaminee.USDtext2 AS ExamineeUSDtext2 ,
+            tblExaminee.USDint1 AS ExamineeUSDint1 ,
+            tblExaminee.USDint2 AS ExamineeUSDint2 ,
+            tblExaminee.USDmoney1 AS ExamineeUSDmoney1 ,
+            tblExaminee.USDmoney2 AS ExamineeUSDmoney2 ,
+
+            tblExaminee.note AS ChartNotes ,
+            tblExaminee.Fax AS ExamineeFax ,
+            tblExaminee.Email AS ExamineeEmail ,
+            tblExaminee.insured AS Examineeinsured ,
+            tblExaminee.middleinitial AS Examineemiddleinitial ,
+            tblExaminee.InsuredAddr1 ,
+            tblExaminee.InsuredCity ,
+            UPPER(tblExaminee.InsuredState) AS InsuredState ,
+            tblExaminee.InsuredZip ,
+            tblExaminee.InsuredSex ,
+            tblExaminee.InsuredRelationship ,
+            tblExaminee.InsuredPhone ,
+            tblExaminee.InsuredPhoneExt ,
+            tblExaminee.InsuredFax ,
+            tblExaminee.InsuredEmail ,
+            tblExaminee.ExamineeStatus ,
+
+            tblExaminee.TreatingPhysician ,
+            tblExaminee.TreatingPhysicianAddr1 ,
+            tblExaminee.TreatingPhysicianCity ,
+            UPPER(tblExaminee.TreatingPhysicianState) AS TreatingPhysicianState,
+            tblExaminee.TreatingPhysicianZip ,
+            tblExaminee.TreatingPhysicianPhone ,
+            tblExaminee.TreatingPhysicianPhoneExt ,
+            tblExaminee.TreatingPhysicianFax ,
+            tblExaminee.TreatingPhysicianEmail ,
+            tblExaminee.TreatingPhysicianLicenseNbr ,
+			tblExaminee.TreatingPhysicianTaxID ,
+            tblExaminee.TreatingPhysicianCredentials AS TreatingPhysicianDegree ,
+			tblExaminee.TreatingPhysicianNPINbr,
+
+			(Case ISNULL(tblcase.EmployerID, 0)
+              WHEN 0
+              THEN tblExaminee.Employer  
+			  ELSE tblEmployer.Name  
+			  END) AS Employer,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerAddr1  
+			  ELSE tblEmployerAddress.Address1 
+			  END) AS EmployerAddr1,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN NULL 
+			  ELSE tblEmployerAddress.Address2 
+			  END) AS EmployerAddr2,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerCity  
+			  ELSE tblEmployerAddress.City  
+			  END) AS EmployerCity,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN UPPER(tblExaminee.EmployerState)  
+			  ELSE UPPER(tblEmployerAddress.State)  
+			  END) AS EmployerState,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerZip  
+			  ELSE tblEmployerAddress.Zip  
+			  END) AS EmployerZip,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerPhone  
+			  ELSE tblEmployerAddress.Phone  
+			  END) AS EmployerPhone,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerPhoneExt  
+			  ELSE tblEmployerAddress.PhoneExt  
+			  END) AS EmployerPhoneExt,  
+
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerFax  
+			  ELSE tblEmployerAddress.Fax  
+			  END) AS EmployerFax,  
+            
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerEmail  
+			  ELSE tblEmployerAddress.Email  
+			  END) AS EmployerEmail,  
+            
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerContactLastName  
+			  ELSE tblEmployerAddress.ContactLast  
+			  END) AS EmployerContactLastName,  
+            
+			(Case ISNULL(tblcase.EmployerID , 0)
+              WHEN 0
+              THEN tblExaminee.EmployerContactFirstName  
+			  ELSE tblEmployerAddress.ContactFirst  
+			  END) AS EmployerContactFirstName,  
+
+            tblClient.firstName + ' ' + tblClient.lastName AS ClientName ,
+            tblClient.Phone1 + ' ' + ISNULL(tblClient.Phone1ext, ' ') AS ClientPhone ,
+            tblClient.Phone2 + ' ' + ISNULL(tblClient.Phone2ext, ' ') AS ClientPhone2 ,
+            tblClient.Addr1 AS ClientAddr1 ,
+            tblClient.Addr2 AS ClientAddr2 ,
+            tblClient.City + ', ' + UPPER(tblClient.State) + '  ' + tblClient.Zip AS ClientCityStateZip ,
+            tblClient.Fax AS ClientFax ,
+            tblClient.Email AS ClientEmail ,
+            'Dear ' + tblClient.firstName + ' ' + tblClient.lastName AS ClientSalutation ,
+            tblClient.title AS Clienttitle ,
+            tblClient.Prefix AS ClientPrefix ,
+            tblClient.suffix AS Clientsuffix ,
+            tblClient.USDvarchar1 AS ClientUSDvarchar1 ,
+            tblClient.USDvarchar2 AS ClientUSDvarchar2 ,
+            tblClient.USDDate1 AS ClientUSDDate1 ,
+            tblClient.USDDate2 AS ClientUSDDate2 ,
+            tblClient.USDtext1 AS ClientUSDtext1 ,
+            tblClient.USDtext2 AS ClientUSDtext2 ,
+            tblClient.USDint1 AS ClientUSDint1 ,
+            tblClient.USDint2 AS ClientUSDint2 ,
+            tblClient.USDmoney1 AS ClientUSDmoney1 ,
+            tblClient.USDmoney2 AS ClientUSDmoney2 ,
+            tblClient.CompanyCode ,
+            tblClient.Notes AS ClientNotes ,
+            tblClient.BillAddr1 ,
+            tblClient.BillAddr2 ,
+            tblClient.BillCity ,
+            UPPER(tblClient.BillState) AS BillState ,
+            tblClient.BillZip ,
+            tblClient.Billattn ,
+            tblClient.ARKey ,
+            tblClient.BillFax AS ClientBillFax ,
+            tblClient.lastName AS ClientlastName ,
+            tblClient.firstName AS ClientfirstName ,
+            UPPER(tblClient.State) AS ClientState ,
+            tblClient.City AS ClientCity ,
+            tblClient.Zip AS ClientZip ,
+
+            tblCompany.extName AS Company ,
+            tblCompany.USDvarchar1 AS CompanyUSDvarchar1 ,
+            tblCompany.USDvarchar2 AS CompanyUSDvarchar2 ,
+            tblCompany.USDDate1 AS CompanyUSDDate1 ,
+            tblCompany.USDDate2 AS CompanyUSDDate2 ,
+            tblCompany.USDtext1 AS CompanyUSDtext1 ,
+            tblCompany.USDtext2 AS CompanyUSDtext2 ,
+            tblCompany.USDint1 AS CompanyUSDint1 ,
+            tblCompany.USDint2 AS CompanyUSDint2 ,
+            tblCompany.USDmoney1 AS CompanyUSDmoney1 ,
+            tblCompany.USDmoney2 AS CompanyUSDmoney2 ,
+            tblCompany.Notes AS CompanyNotes ,
+
+            tblCase.QARep ,
+            tblCase.Doctorspecialty ,
+            tblCase.BillClientCode AS CaseBillClientCode ,
+            tblCase.officeCode ,
+            tblCase.PanelNbr ,
+
+            ISNULL(tblUser.lastName, '')
+            + Case WHEN ISNULL(tblUser.LastName, '') = ''
+                        OR ISNULL(tblUser.FirstName, '') = '' THEN ''
+                   ELSE ', '
+              END + ISNULL(tblUser.firstName, '') AS scheduler ,
+
+            tblCase.marketerCode AS Marketer ,
+            tblCase.Dateadded AS DateCalledIn ,
+            tblCase.Dateofinjury AS DOI ,
+            tblCase.Allegation ,
+            tblCase.Notes ,
+            tblCase.CaseType ,
+            'Dear ' + tblExaminee.firstName + ' ' + tblExaminee.lastName AS Examineesalutation ,
+            tblCase.status ,
+            tblCase.calledInBy ,
+            tblCase.chartnbr ,
+            tblCase.reportverbal ,
+            tblCase.Datemedsrecd AS medsrecd ,
+            tblCase.typemedsrecd ,
+            tblCase.plaintiffAttorneyCode ,
+            tblCase.defenseAttorneyCode ,
+            tblCase.serviceCode ,
+            tblCase.FaxPattny ,
+            tblCase.FaxDoctor ,
+            tblCase.FaxClient ,
+            tblCase.EmailClient ,
+            tblCase.EmailDoctor ,
+            tblCase.EmailPattny ,
+            tblCase.invoiceDate ,
+            tblCase.invoiceamt ,
+            tblCase.commitDate ,
+            tblCase.WCBNbr ,
+            tblCase.specialinstructions ,
+            tblCase.priority ,
+            tblCase.scheduleNotes ,
+            tblCase.requesteddoc ,
+
+            tblCase.USDvarchar1 AS CaseUSDvarchar1 ,
+            tblCase.USDvarchar2 AS CaseUSDvarchar2 ,
+            tblCase.USDDate1 AS CaseUSDDate1 ,
+            tblCase.USDDate2 AS CaseUSDDate2 ,
+            tblCase.USDtext1 AS CaseUSDtext1 ,
+            tblCase.USDtext2 AS CaseUSDtext2 ,
+            tblCase.USDint1 AS CaseUSDint1 ,
+            tblCase.USDint2 AS CaseUSDint2 ,
+            tblCase.USDmoney1 AS CaseUSDmoney1 ,
+            tblCase.USDmoney2 AS CaseUSDmoney2 ,
+            tblCase.USDDate3 AS CaseUSDDate3 ,
+            tblCase.USDDate4 AS CaseUSDDate4 ,
+            tblCase.USDDate5 AS CaseUSDDate5 ,
+            tblCase.USDBit1 AS CaseUSDboolean1 ,
+            tblCase.USDBit2 AS CaseUSDboolean2 ,
+
+            tblCase.sinternalCasenbr AS internalCasenbr ,
+            tblDoctor.credentials AS Doctordegree ,
+            tblCase.ClientCode ,
+            tblCase.feeCode ,
+            tblCase.photoRqd ,
+            tblCase.CertMailNbr ,
+			tblCase.CertMailNbr2 ,
+            tblCase.HearingDate ,
+            tblCase.DoctorName ,
+            tblCase.masterCasenbr ,
+            tblCase.prevappt ,
+            tblCase.AssessmentToAddress ,
+            tblCase.OCF25Date ,
+            tblCase.AssessingFacility ,
+            tblCase.DateForminDispute ,
+            tblCase.DateReceived ,
+            tblCase.ClaimNbrExt ,
+            tblCase.sreqspecialty AS RequestedSpecialty ,
+            tblCase.AttorneyNote ,
+            tblCase.ExternalDueDate ,
+            tblCase.InternalDueDate ,
+            tblCase.ForecastDate ,
+            tblCase.DefParaLegal ,
+
+            tblCase.MasterSubCase ,
+            tblCase.TransportationRequired ,
+            tblCase.InterpreterRequired ,
+            tblCase.EWReferralType ,
+            tblCase.EWReferralEWFacilityID ,
+            tblCase.PublishOnWeb ,
+            tblCase.Jurisdiction AS JurisdictionCode ,
+            tblCase.LegalEvent ,
+            tblCase.PILegalEvent ,
+            tblCase.TransCode ,
+            tblCase.RptFinalizedDate ,
+
+			tblCase.ICDCodeA ,
+			tblCase.ICDCodeB ,
+			tblCase.ICDCodeC ,
+			tblCase.ICDCodeD ,
+			tblCase.ICDCodeE ,
+			tblCase.ICDCodeF ,
+			tblCase.ICDCodeG ,
+			tblCase.ICDCodeH ,
+			tblCase.ICDCodeI ,
+			tblCase.ICDCodeJ ,
+			tblCase.ICDCodeK ,
+			tblCase.ICDCodeL ,
+			tblCase.DoctorRptDueDate , 
+
+            'Dear ' + tblDoctor.firstName + ' ' + tblDoctor.lastName + ', ' + ISNULL(tblDoctor.credentials, '') AS DoctorSalutation ,
+            tblDoctor.Notes AS DoctorNotes ,
+            tblDoctor.Prefix AS DoctorPrefix ,
+            tblDoctor.Addr1 AS DoctorcorrespAddr1 ,
+            tblDoctor.Addr2 AS DoctorcorrespAddr2 ,
+            tblDoctor.City + ', ' + UPPER(tblDoctor.State) + '  ' + tblDoctor.Zip AS DoctorcorrespCityStateZip ,
+            tblDoctor.Phone + ' ' + ISNULL(tblDoctor.PhoneExt, ' ') AS DoctorcorrespPhone ,
+            tblDoctor.FaxNbr AS DoctorcorrespFax ,
+            tblDoctor.EmailAddr AS DoctorcorrespEmail ,
+            tblDoctor.Qualifications ,
+            tblDoctor.Prepaid ,
+            tblDoctor.county AS DoctorCorrespCounty ,
+
+            tblDoctor.USDvarchar1 AS DoctorUSDvarchar1 ,
+            tblDoctor.USDvarchar2 AS DoctorUSDvarchar2 ,
+            tblDoctor.USDvarchar3 AS DoctorUSDvarchar3 ,
+            tblDoctor.USDDate1 AS DoctorUSDDate1 ,
+            tblDoctor.USDDate2 AS DoctorUSDDate2 ,
+            tblDoctor.USDDate3 AS DoctorUSDDate3 ,
+            tblDoctor.USDDate4 AS DoctorUSDDate4 ,
+            tblDoctor.USDDate5 AS DoctorUSDDate5 ,
+            tblDoctor.USDDate6 AS DoctorUSDDate6 ,
+            tblDoctor.USDDate7 AS DoctorUSDDate7 ,
+            tblDoctor.USDtext1 AS DoctorUSDtext1 ,
+            tblDoctor.USDtext2 AS DoctorUSDtext2 ,
+            tblDoctor.USDint1 AS DoctorUSDint1 ,
+            tblDoctor.USDint2 AS DoctorUSDint2 ,
+            tblDoctor.USDmoney1 AS DoctorUSDmoney1 ,
+            tblDoctor.USDmoney2 AS DoctorUSDmoney2 ,
+			tblDoctor.DrMedRecsInDays AS DrMedRecsInDays ,
+			tblDoctor.ExpectedVisitDuration As ExpectedVisitDuration,
+
+            tblDoctor.WCNbr AS Doctorwcnbr ,
+            tblDoctor.remitattn ,
+            tblDoctor.remitAddr1 ,
+            tblDoctor.remitAddr2 ,
+            tblDoctor.remitCity ,
+            UPPER(tblDoctor.remitState) AS remitState ,
+            tblDoctor.remitZip ,
+            tblDoctor.UPIN ,
+            tblDoctor.schedulepriority ,
+            tblDoctor.feeCode AS drfeeCode ,
+            tblDoctor.licensenbr AS Doctorlicense ,
+            tblDoctor.SSNTaxID AS DoctorTaxID ,
+            tblDoctor.lastName AS DoctorlastName ,
+            tblDoctor.firstName AS DoctorfirstName ,
+            tblDoctor.middleinitial AS Doctormiddleinitial ,
+            ISNULL(LEFT(tblDoctor.firstName, 1), '')
+            + ISNULL(LEFT(tblDoctor.middleinitial, 1), '')
+            + ISNULL(LEFT(tblDoctor.lastName, 1), '') AS Doctorinitials ,
+            UPPER(tblDoctor.State) AS DoctorcorrespState ,
+            tblDoctor.CompanyName AS PracticeName ,
+            tblDoctor.NPINbr AS DoctorNPINbr ,
+            tblDoctor.ProvTypeCode ,
+            tblDoctor.PrintOnCheckAs ,
+
+            tblLocation.ExtName AS LocationExtName ,
+            tblLocation.Location ,
+            tblLocation.Addr1 AS DoctorAddr1 ,
+            tblLocation.Addr2 AS DoctorAddr2 ,
+			tblLocation.AddressInstructions,
+            tblLocation.City + ', ' + UPPER(tblLocation.State) + '  ' + tblLocation.Zip AS DoctorCityStateZip ,
+            tblLocation.Phone AS DoctorPhone ,
+            tblLocation.insidedr ,
+            tblLocation.Email AS DoctorEmail ,
+            tblLocation.Fax AS DoctorFax ,
+            tblLocation.Faxdrschedule ,
+            tblLocation.medrcdletter ,
+            tblLocation.drletter ,
+            tblLocation.county AS Doctorcounty ,
+            tblLocation.vicinity AS Doctorvicinity ,
+            tblLocation.contactPrefix AS DoctorLocationcontactPrefix ,
+            tblLocation.contactfirst AS DoctorLocationcontactfirstName ,
+            tblLocation.contactlast AS DoctorLocationcontactlastName ,
+            tblLocation.Notes AS DoctorLocationNotes ,
+            tblLocation.contactfirst + ' ' + tblLocation.contactlast AS DoctorLocationcontact ,
+            'Dear ' + tblLocation.contactfirst + ' ' + tblLocation.contactlast AS DoctorLocationcontactsalutation ,
+            UPPER(tblLocation.State) AS DoctorState ,
+            tblLocation.City AS DoctorCity ,
+            tblLocation.Zip AS DoctorZip ,
+            UPPER(tblLocation.State) AS State ,
+
+            RTRIM(LTRIM(ISNULL(tblCCAddress_2.firstName,'') + ' ' + ISNULL(tblCCAddress_2.lastName,''))) AS PAttorneyName ,
+            'Dear ' + ISNULL(tblCCAddress_2.firstName, '') + ' ' + ISNULL(tblCCAddress_2.lastName, '') AS PAttorneysalutation ,
+            tblCCAddress_2.Company AS PAttorneyCompany ,
+            tblCCAddress_2.Address1 AS PAttorneyAddr1 ,
+            tblCCAddress_2.Address2 AS PAttorneyAddr2 ,
+            tblCCAddress_2.City + ', ' + UPPER(tblCCAddress_2.State) + '  ' + tblCCAddress_2.Zip AS PAttorneyCityStateZip ,
+            tblCCAddress_2.Phone + ISNULL(tblCCAddress_2.PhoneExtension, '') AS PAttorneyPhone ,
+            tblCCAddress_2.Fax AS PAttorneyFax ,
+            tblCCAddress_2.Email AS PAttorneyEmail ,
+            tblCCAddress_2.Prefix AS pAttorneyPrefix ,
+            tblCCAddress_2.lastName AS pAttorneylastName ,
+            tblCCAddress_2.firstName AS pAttorneyfirstName ,
+            UPPER(tblCCAddress_2.State) AS pAttorneyState ,
+            tblCCAddress_2.City AS pAttorneyCity ,
+            tblCCAddress_2.Zip AS pAttorneyZip ,
+
+            RTRIM(LTRIM(ISNULL(tblCCAddress_1.firstName,'') + ' ' + ISNULL(tblCCAddress_1.lastName,''))) AS DAttorneyName ,
+            'Dear ' + ISNULL(tblCCAddress_1.firstName, '') + ' ' + ISNULL(tblCCAddress_1.lastName, '') AS DAttorneysalutation ,
+            tblCCAddress_1.Company AS DAttorneyCompany ,
+            tblCCAddress_1.Address1 AS DAttorneyAddr1 ,
+            tblCCAddress_1.Address2 AS DAttorneyAddr2 ,
+            tblCCAddress_1.City + ', ' + UPPER(tblCCAddress_1.State) + '  ' + tblCCAddress_1.Zip AS DAttorneyCityStateZip ,
+            tblCCAddress_1.Phone + ' ' + ISNULL(tblCCAddress_1.PhoneExtension, '') AS DattorneyPhone ,
+            tblCCAddress_1.Prefix AS dAttorneyPrefix ,
+            tblCCAddress_1.lastName AS dAttorneylastName ,
+            tblCCAddress_1.firstName AS dAttorneyfirstName ,
+            tblCCAddress_1.Fax AS DAttorneyFax ,
+            tblCCAddress_1.Email AS DAttorneyEmail ,
+            tblCCAddress_1.Fax ,
+            UPPER(tblCCAddress_1.State) AS dAttorneyState ,
+
+            RTRIM(LTRIM(ISNULL(tblCCAddress_3.firstName,'') + ' ' + ISNULL(tblCCAddress_3.lastName,''))) AS DParaLegalName ,
+            'Dear ' + ISNULL(tblCCAddress_3.firstName, '') + ' ' + ISNULL(tblCCAddress_3.lastName, '') AS DParaLegalsalutation ,
+            tblCCAddress_3.Company AS DParaLegalCompany ,
+            tblCCAddress_3.Address1 AS DParaLegalAddr1 ,
+            tblCCAddress_3.Address2 AS DParaLegalAddr2 ,
+            tblCCAddress_3.City + ', ' + UPPER(tblCCAddress_3.State) + '  ' + tblCCAddress_3.Zip AS DParaLegalCityStateZip ,
+            tblCCAddress_3.Phone + ' ' + ISNULL(tblCCAddress_3.PhoneExtension,'') AS DParaLegalPhone ,
+            tblCCAddress_3.Email AS DParaLegalEmail ,
+            tblCCAddress_3.Fax AS DParaLegalFax ,
+
+			
+            tblServices.description AS ServiceDesc ,
+            tblServices.ShortDesc ,
+
+            tblCaseType.ShortDesc AS CaseTypeShortDesc ,
+			tblCaseType.ExternalDesc AS CaseTypeDesc ,
+            --tblCaseType.description AS CaseTypeDesc , -- Issue 5985 - stop usign description and use ExternalDesc
+            
+            tblQueues.StatusDesc ,
+
+            tblSpecialty.specialtyCode ,
+            tblSpecialty.description AS specialtydesc ,
+
+            tblRecordStatus.description AS medsstatus ,
+
+            tblDoctorLocation.correspondence AS Doctorcorrespondence ,
+
+            tblState.StateName AS Jurisdiction ,
+
+            tblCaseAppt.duration AS ApptDuration ,
+
+            tblProviderType.description AS DoctorProviderType ,
+
+            tblVenue.County AS Venue ,
+
+            tblOffice.description AS office ,
+			tblOffice.ShortDesc AS OfficeShortDesc ,
+            tblOffice.USDvarchar1 AS OfficeUSDVarChar1 ,
+            tblOffice.USDvarchar2 AS OfficeUSDVarChar2 ,
+			tblOffice.NYWCCompanyName ,
+
+            tblLanguage.Description AS Language ,
+			tblCase.DateOfInjury2 AS DOI2, 
+			tblCase.DateOfInjury3 AS DOI3, 
+			tblCase.DateOfInjury4 AS DOI4,
+
+            tblTranscription.TransCompany,
+
+			tblCase.InsuringCompany as InsuringCompany
+
+    FROM    tblCase
+            INNER JOIN tblExaminee ON tblExaminee.chartnbr = tblCase.chartnbr
+            INNER JOIN tblOffice ON tblOffice.officeCode = tblCase.officeCode
+            INNER JOIN tblClient ON tblCase.ClientCode = tblClient.ClientCode
+            INNER JOIN tblCompany ON tblClient.CompanyCode = tblCompany.CompanyCode
+            INNER JOIN tblCaseType ON tblCase.Casetype = tblCaseType.Code
+            INNER JOIN tblQueues ON tblCase.status = tblQueues.statusCode
+
+            INNER JOIN tblAcctingTrans ON tblCase.casenbr = tblAcctingTrans.casenbr
+			LEFT OUTER JOIN tblAcctHeader AS AH ON AH.SeqNo = tblAcctingTrans.SeqNO
+
+            LEFT OUTER JOIN tblDoctor ON CASE WHEN EWReferralType = 2 THEN tblCase.doctorcode ELSE tblAcctingTrans.DrOpCode END = tblDoctor.doctorcode
+            LEFT OUTER JOIN tblLocation ON CASE WHEN EWReferralType = 2 THEN tblCase.doctorlocation ELSE tblAcctingTrans.doctorlocation END = tblLocation.locationcode
+            LEFT OUTER JOIN tblCaseAppt ON tblCase.CaseApptID = tblCaseAppt.CaseApptID
+            LEFT OUTER JOIN tblDoctorLocation ON tblCase.DoctorLocation = tblDoctorLocation.LocationCode
+                                                 AND tblCase.DoctorCode = tblDoctorLocation.DoctorCode
+			
+            LEFT OUTER JOIN tblSpecialty ON tblCase.Doctorspecialty = tblSpecialty.specialtyCode
+            LEFT OUTER JOIN tblVenue ON tblCase.VenueID = tblVenue.VenueID
+            LEFT OUTER JOIN tblProviderType ON tblDoctor.ProvTypeCode = tblProviderType.ProvTypeCode
+            LEFT OUTER JOIN tblState ON tblCase.Jurisdiction = tblState.StateCode
+            LEFT OUTER JOIN tblRecordStatus ON tblCase.recCode = tblRecordStatus.recCode
+            LEFT OUTER JOIN tblUser ON tblCase.schedulerCode = tblUser.userid
+            LEFT OUTER JOIN tblServices ON tblCase.serviceCode = tblServices.serviceCode
+            LEFT OUTER JOIN tblCCAddress AS tblCCAddress_1 ON tblCase.defenseAttorneyCode = tblCCAddress_1.ccCode
+            LEFT OUTER JOIN tblCCAddress AS tblCCAddress_2 ON tblCase.plaintiffAttorneyCode = tblCCAddress_2.ccCode
+            LEFT OUTER JOIN tblCCAddress AS tblCCAddress_3 ON tblCCAddress_3.ccCode = tblCase.DefParaLegal
+            LEFT OUTER JOIN tblLanguage ON tblLanguage.LanguageID = tblCase.LanguageID
+            LEFT OUTER JOIN tblTranscription ON tblCase.TransCode = tblTranscription.TransCode
+            LEFT OUTER JOIN tblEmployer on tblcase.EmployerID = tblEmployer.EmployerID 
+            LEFT OUTER JOIN tblEmployerAddress on tblcase.EmployerAddressID = tblEmployerAddress.EmployerAddressID
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[spFeeSched_SyncTableData_Detail]...';
+
+
+GO
+ALTER PROCEDURE [dbo].[spFeeSched_SyncTableData_Detail]
+     @iHdrSetupID INTEGER,
+	 @iHeaderID INTEGER 
+AS
+BEGIN
+	
+	DECLARE @iDtlSetupID INTEGER 
+	DECLARE @iDetailID INTEGER 
+	DECLARE @sBusLine VARCHAR(MAX)
+	DECLARE @sFeeZone VARCHAR(MAX)
+	DECLARE @sProduct VARCHAR(MAX)
+	DECLARE @sSpecialty VARCHAR(MAX)
+	DECLARE @sSvcType VARCHAR(MAX)
+	DECLARE @sService VARCHAR(MAX)
+	DECLARE @sDoctor VARCHAR(MAX)
+	DECLARE @sExamLocation VARCHAR(MAX)
+	
+	-- DEV NOTE: this process will completely rebuild all items in FSDetailCondition for the Detail items
+	--		that are present; therefore, before we do anything we are going dump all Condition items
+	--		that are attached to the detail items for the Header we are processing.
+	DELETE 
+	  FROM tblFSDetailCondition 
+	 WHERE FSDetailID IN (SELECT FSDetailID FROM tblFSDetail WHERE FSHeaderID = @iHeaderID)
+
+	-- get a list of Detail Items that make up this Header and process them
+	DECLARE curDetailSetup CURSOR FOR
+		SELECT FSDetailSetupID, FSDetailID, 
+			  BusLine,  ServiceType, Service, Product, FeeZone, Specialty, Doctor, ExamLocation
+		  FROM tblFSDetailSetup 
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+	OPEN curDetailSetup
+	FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
+	WHILE @@FETCH_STATUS = 0
+	BEGIN 
+		-- update or insert item? 
+		IF @iDetailID IS NULL
+		BEGIN 
+			INSERT INTO tblFSDetail(FSHeaderID, ProcessOrder, FeeUnit, FeeAmt, NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, InchesIncluded, DateAdded, UserIDAdded)
+				SELECT @iHeaderID, ProcessOrder, FeeUnit, ISNULL(FeeAmt, 0), NSFeeAmt1, NSFeeAmt2, NSFeeAmt3, LateCancelAmt, CancelDays, InchesIncluded, DateAdded, UserIDAdded
+				  FROM tblFSDetailSetup
+				 WHERE FSDetailSetupID = @iDtlSetupID
+			SET @iDetailID = @@IDENTITY 
+			IF @iDetailID IS NOT NULL AND @iDetailID > 0 
+			BEGIN 
+				UPDATE tblFSDetailSetup
+				   SET FSDetailID = @iDetailID 
+				 WHERE FSDetailSetupID = @iDtlSetupID
+			END
+			ELSE 
+			BEGIN 
+				-- no DetailID; unable to continue
+				RAISERROR ('Unable to create new tblFSDetail entry (FSDetailID is not valid).', 16, 2);
+				RETURN 
+			END 
+		END 
+		ELSE 
+		BEGIN 
+			-- need to update existing tblFSDetail entry
+			UPDATE calc
+			   SET ProcessOrder = ui.ProcessOrder, 
+				  FeeUnit = ui.FeeUnit,
+				  FeeAmt = ISNULL(ui.FeeAmt, 0), 
+				  NSFeeAmt1 = ui.NSFeeAmt1,
+				  NSFeeAmt2 = ui.NSFeeAmt2, 
+				  NSFeeAmt3 = ui.NSFeeAmt3, 
+				  LateCancelAmt = ui.LateCancelAmt, 
+				  CancelDays = ui.CancelDays, 
+				  InchesIncluded = ui.InchesIncluded, 
+				  DateEdited = ui.DateEdited, 
+				  UserIDEdited = ui.UserIDEdited
+			  FROM tblFSDetail AS calc
+					INNER JOIN tblFSDetailSetup AS ui ON ui.FSDetailID = calc.FSDetailID
+			 WHERE calc.FSDetailID = @iDetailID
+		END 
+
+		-- process next row
+		FETCH NEXT FROM curDetailSetup INTO @iDtlSetupID, @iDetailID, @sBusLine, @sSvcType, @sService, @sProduct, @sFeeZone, @sSpecialty, @sDoctor, @sExamLocation
+	END
+	CLOSE curDetailSetup
+	DEALLOCATE curDetailSetup
+	
+	-- Process Detail Condition selections
+	INSERT INTO tblFSDetailCondition(FSDetailID, ConditionTable, ConditionKey)
+		SELECT  FSDetailID, 'tblEWBusLine', BL.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(BusLine, ',') AS BL
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND BL.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblEWServiceType', ST.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(ServiceType, ',') AS ST
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND ST.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblServices', S.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Service, ',') AS S
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND S.value <> -1
+
+		UNION 
+		
+		SELECT  FSDetailID, 'tblProduct', P.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Product, ',') AS P
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND P.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblEWFeeZone', FZ.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(FeeZone, ',') AS FZ
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND FZ.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblSpecialty', SP.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Specialty, ',') AS SP
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND SP.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblDoctor', D.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(Doctor, ',') AS D
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND D.value <> -1
+
+		UNION 
+
+		SELECT  FSDetailID, 'tblLocation', L.value
+		  FROM tblFSDetailSetup
+					CROSS APPLY STRING_SPLIT(ExamLocation, ',') AS L
+		 WHERE FSHeaderSetupID = @iHdrSetupID
+		   AND L.value <> -1
+	
+	-- cleanup Detail table for items no longer part of setup table
+	DELETE tblFSDetail
+	  FROM tblfsDetail 
+			LEFT OUTER JOIN tblFSDetailSetup ON tblFSDetailSetup.FSDetailID = tblFSDetail.FSDetailID
+	 WHERE FSHeaderID = @iHeaderID 
+	   AND tblFSDetailSetup.FSDetailID IS NULL
+	
+	RETURN
+
+END
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+--Added late by Gary
+PRINT N'Creating [dbo].[tblWebFileUpload]...';
+
+
+GO
+CREATE TABLE [dbo].[tblWebFileUpload](
+	[WebFileUploadID] [INT] IDENTITY(1,1) NOT NULL,
+	[WebUserID] [INT] NULL,
+	[CaseDocTypeID] [INT] NULL,
+	[FileName] [VARCHAR](255) NULL,
+	[Description] [VARCHAR](1000) NULL,
+	[DateUploaded] [SMALLDATETIME] NULL,
+ CONSTRAINT [PK_tblWebFileUpload] PRIMARY KEY CLUSTERED 
+(
+	[WebFileUploadID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+
+IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
+GO
+IF @@TRANCOUNT>0 BEGIN
+PRINT N'The transacted portion of the database update succeeded.'
+COMMIT TRANSACTION
+END
+ELSE PRINT N'The transacted portion of the database update failed.'
+GO
+DROP TABLE #tmpErrors
+GO
+PRINT N'Update complete.';
+
+
+GO
+
+-- Issue 11718 - Add business rule and condition for Hartford quotes - BCC email
+INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES(112, 'HartfordQuoteBCC', 'Case', 'BCC Hartford for all Invoice Quotes generated thru generate docs form', 1, 1201, 0, 'BccEmailAddress', NULL, NULL, NULL, NULL, 0)
+
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES('PC', 30, 2, 1, 112, GetDate(), 'Admin', NULL, NULL, NULL, NULL, NULL, NULL, 'HartfordQuotes@ExamWorks.com', NULL, NULL, NULL, NULL)
+GO
+
+
+
+-- Issue 11702 - populate new DPSImportConfig table with configuration details
+INSERT INTO tblDPSResultFileConfig (EWServiceTypeID, FileIndex, Description, CombinedFileName, CombineFileSeqNo)
+VALUES(-1, 1, 'Sorted Document 1', 'MedIndex - Final', 1),
+      (-1, 2, 'Exclusion Document', 'MedIndex - Final', 99),
+      (-1, 3, 'Sorted Document 2', 'MedIndex - Final', 2),
+      (-1, 4, 'Sorted Document 3', 'MedIndex - Final', 3),
+      (-1, 5, 'Sorted Document 4', 'MedIndex - Final', 4),
+      (-1, 6, 'Sorted Document 5', 'MedIndex - Final', 5),
+      (-1, 7, 'Sorted Document 6', 'MedIndex - Final', 6),
+      (-1, 8, 'Sorted Document 7', 'MedIndex - Final', 7),
+      (-1, 9, 'Sorted Document 8', 'MedIndex - Final', 8),
+      (-1, 10, 'Sorted Document 9', 'MedIndex - Final', 9), 
+	  (11, 1, 'MedIndex - Final', '', 0)
+GO
+
+
+INSERT INTO tblUserFunction
+(
+    FunctionCode,
+    FunctionDesc
+)
+VALUES ( 'RecRetrieval', 'Record Retrieval' )
+GO
+
+DELETE FROM tblQuoteStatus
+GO
+SET IDENTITY_INSERT [dbo].[tblQuoteStatus] ON
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (1, 'VO', 'Awaiting Quote', 0, '2018-08-05 22:57:31.333', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (2, 'VO', 'Quote Received', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (3, 'VO', 'Cancelled', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (4, 'IN', 'Awaiting Approval', 0, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 2)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (5, 'IN', 'Approved', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 2)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (6, 'IN', 'No Approval Needed', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, 1)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (7, 'IN', 'Cancelled', 1, '2018-08-05 22:57:31.337', 'Admin', NULL, NULL, NULL)
+INSERT INTO [dbo].[tblQuoteStatus] ([QuoteStatusID], [QuoteType], [Description], [IsClosed], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [QuoteHandlingID]) VALUES (8, 'IN', 'Awaiting Distribution', 0, '2020-07-09 17:36:32.083', 'Admin', NULL, NULL, 1)
+SET IDENTITY_INSERT [dbo].[tblQuoteStatus] OFF
+
+GO
