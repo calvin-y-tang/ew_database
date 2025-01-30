@@ -1191,4 +1191,7 @@
       <DatabaseVariableLiteralValue>CustomRepository</DatabaseVariableLiteralValue>
     </ArtifactReference>
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="IMECentricDB.refactorlog" />
+  </ItemGroup>
 </Project>
