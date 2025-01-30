@@ -297,3 +297,108 @@ WHERE DateProcessed IS NULL AND CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE St
 GO
 
 
+
+--INEC 14451 - liberty-Scheduling
+
+use IMECentricEW
+
+begin try
+    begin transaction matchSpecialty
+    
+   
+    declare @parentCompany int = (select ParentCompanyID from tblEWParentCompany where [Name]
+                               = 'Liberty Mutual');
+    declare @ruleName varchar(34) = 'MatchDoctorSpecialty';
+	declare @Category varchar(20)='Appointment';
+	declare @description varchar(150)= 'Match User Selected Doctor Speciality with Requested Speciality in Case Parameters';
+	declare @IsActive bit = 1;
+	declare @AllowOverride bit = 1;
+	declare @EventId int =1101;
+	declare @Param1Desc varchar(20) = 'StartDate'
+	declare @Param2Desc varchar(20) = 'AppointmentMessage'
+	declare @Param3Desc varchar(20) = 'CaseCustomerDataParamCondtion'
+	declare @Param4Desc varchar(20) = 'Company Name'
+	declare @Param5Desc varchar(20) = 'OverrideToken'
+	declare @Param6Desc varchar (20)='PanelExamMessage'
+    
+	declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate'; 
+	declare @Param2 varchar(128)= 'Liberty has requested a specialty for this exam and you are required to schedule a doctor that matches that specialty.'
+	declare @Param3 varchar(100)='NotiCaseReferral="0"'
+	declare @Param4 varchar(100)='Liberty Mutual'
+	declare @Param5 varchar (100)= 'LibertySchedulingOverride'	
+	declare @Param6 varchar(MAX)= 'WARNING: Liberty has requested specialties for this exam. Since this is a panel exam, you are required to schedule only doctors that match those specialties.  Any other specialty would require Liberty approval.'
+	declare  @EntityType varchar(2)='PC';
+
+
+	 print 'Clearing out old rules rules...' 
+
+	   
+		delete from tblBusinessRuleCondition
+		 where [BusinessRuleID] in (Select BusinessRuleID from tblBusinessRule where Name= @ruleName);
+
+		delete from tblBusinessRule where Name = @ruleName;
+		 
+
+
+	declare @newRuleId int = (select  Max(BusinessRuleID)+1 from tblBusinessRule);
+
+	INSERT INTO [dbo].[tblBusinessRule]
+           ([BusinessRuleID]
+           ,[Name]
+           ,[Category]
+           ,[Descrip]
+           ,[IsActive]
+           ,[EventID]
+           ,[AllowOverride]
+           ,[Param1Desc]
+           ,[Param2Desc]
+           ,[Param3Desc]
+           ,[Param4Desc]
+           ,[Param5Desc]
+           ,[BrokenRuleAction]
+           ,[Param6Desc])
+     VALUES
+           (@newRuleId,
+            @ruleName,
+            @Category,
+            @description,
+            @IsActive,
+            @EventId,
+            1
+           ,@Param1Desc
+           ,@Param2Desc
+           ,@Param3Desc
+           ,@Param4Desc
+           ,@Param5Desc
+           ,0
+           ,@Param6Desc)
+
+
+
+    print 'Inserting new rules...'
+    insert into tblBusinessRuleCondition (
+        [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2],[Param3], [Param4],[Param5],[Param6]
+    )
+    values
+        ('PC'       , @parentCompany, 2              , 1             , @newRuleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , NULL     , NULL             , NULL          , @Param1  , @Param2,@Param3,@Param4, @Param5, @Param6)
+      
+       -- test with throw enabled
+    --select *
+    --from tblBusinessRule br
+    --    join tblBusinessRuleCondition brc
+    --    on brc.BusinessRuleID = br.BusinessRuleID
+    --where br.Name = @ruleName
+    --order by brc.BusinessRuleID, brc.ProcessOrder
+
+    --;throw 51000, 'Rollback for testing.', 1;
+    
+    commit transaction matchSpecialty
+end try
+begin catch
+    declare @RN varchar(2) = CHAR(13)+CHAR(10)
+    print ERROR_MESSAGE() + @RN
+    print 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+    print 'Rolling back transaction.'
+    rollback transaction matchSpecialty
+end catch
+
