@@ -402,3 +402,164 @@ begin catch
     rollback transaction matchSpecialty
 end catch
 
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+  --  create new business rule and event to check Liberty cases for quote
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_newBR
+
+	INSERT INTO tblEvent (EventID, Descrip, Category) VALUES (9999, 'All', 'Application')
+
+	INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
+	VALUES (209, ' LibertyGRsApplyToIMECEW', 'Case', 'Check if Liberty guardrails apply for Liberty cases', 1, 9999, 0, 'TrueOrFalse', 0)
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = ' LibertyGRsApplyToIMECEW')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2)
+	VALUES ('PC', 31, 2, 4, @BusinessRuleID, GETDATE(), 'Admin', 'True')
+
+	COMMIT TRANSACTION imec14800_newBR
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_newBR
+END CATCH
+
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- add additional BRC's to set additional fee choices on quote form - use "default" fees in these scenarios
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_addquotefees
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'SetQuoteAdditionalFeeChoices')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	UPDATE tblBusinessRuleCondition SET ProcessOrder = (ProcessOrder + 1) WHERE BusinessRuleID = @BusinessRuleID
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', '1,2,3,4,5,6,7,8')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', '1,2,3,4,5,6,7,8')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', '1,2,3,4,5,6,7,8')
+
+	COMMIT TRANSACTION imec14800_addquotefees
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_addquotefees
+END CATCH
+
+
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- add additional BRC's to enable / disable the Med Rec Pages textbox on the quote form
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_medrecpgsfield
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'UseQuoteSpecialColumns')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	UPDATE tblBusinessRuleCondition SET ProcessOrder = 2 WHERE BusinessRuleID = @BusinessRuleID AND EntityType = 'PC' AND EntityID = 31
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', 'False')
+
+	COMMIT TRANSACTION imec14800_medrecpgsfield
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_medrecpgsfield
+END CATCH
+
+
+-- IMEC-14801 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- add additional BRC's to set max amount for invoice
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14801_invmaxamount
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'LibertyGuardRailsInvoice')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	UPDATE tblBusinessRuleCondition SET ProcessOrder = 3 WHERE BusinessRuleID = @BusinessRuleID AND EntityType = 'PC' AND EntityID = 31
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA')
+
+	COMMIT TRANSACTION imec14801_invmaxamount
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14801_invmaxamount
+END CATCH
+
+
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- fix typo in business rule description
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_fixtypo
+
+	UPDATE tblBusinessRule SET Descrip = 'Liberty Quote GR - rules for calculating med rec page amounts' WHERE Name = 'LibertyQuoteMedRecPgCalculations'
+
+	COMMIT TRANSACTION imec14800_fixtypo
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_fixtypo
+END CATCH
+
+
