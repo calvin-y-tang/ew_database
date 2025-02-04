@@ -4,5 +4,3 @@
 use [IMECentricEW]
 
 DROP TRIGGER [dbo].[tblDoctor_AfterDelete_TRG]
-DROP TABLE [dbo].[tblLogChangeTracking]
-
