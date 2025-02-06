@@ -216,6 +216,8 @@ AS
             PA.Address2 AS PAttorneyAddr2 ,
             PA.City + ', ' + UPPER(PA.State) + '  ' + PA.Zip AS PAttorneyCityStateZip ,
 			B.BlankValue AS PAttorneyFullAddress ,
+			PA.City AS PAttorneyCity ,
+			PA.Zip As PAttorneyZip ,
 
             PA.Phone + ' ' + ISNULL(PA.Phoneextension, '') AS PAttorneyPhone , --Need Extension?
 			PA.Phone AS PAttorneyPhoneAreaCode ,
