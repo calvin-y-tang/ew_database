@@ -562,4 +562,33 @@ BEGIN CATCH
     ROLLBACK TRANSACTION imec14800_fixtypo
 END CATCH
 
+-- IMEC-14761 - Using the 'Restrict Access To Favorites' check box in User Security, Breaks Doctor Searching
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION IMEC_14761_Doctor_Search
 
+	truncate table tblOfficeState
+
+	insert into tblOfficeState
+	select OfficeCode, substring(Description, 0, 3) as State, 'Admin' as UserIdAdded, GETDATE() as DateAdded
+	from
+		tblOffice  with (nolock)
+	where
+		Description like '__ %'
+		and Description not like '%test%'
+	
+	-- test with throw enabled
+	/*
+	select count(*)
+	from tblOfficeState
+    ;throw 51000, 'Rollback for testing.', 1;
+	*/
+	COMMIT TRANSACTION IMEC_14761_Doctor_Search
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION IMEC_14761_Doctor_Search
+END CATCH
