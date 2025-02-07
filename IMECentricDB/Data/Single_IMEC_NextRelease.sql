@@ -296,6 +296,145 @@ UPDATE tblExternalCommunications SET DateProcessed = GETDATE(), DevNote = 'Data 
 WHERE DateProcessed IS NULL AND CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE Status IN (8, 9) OR DateAdded <= (GETDATE()-2) OR DateAdded IS NULL)
 GO
 
+---IMEC-14804 - Add Marketer Fields Based DB Triggers for Certain Tables
+USE [IMECentricEW]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[tblCase_Log_AfterInsert_TRG] 
+  ON [dbo].[tblCase]
+AFTER INSERT
+AS
+BEGIN    
+    SET NOCOUNT ON 
+    INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+    SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCase', 'MarketerCode', 
+               I.CaseNbr, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CaseNbr = D.CaseNbr
+         WHERE (D.MarketerCode <> I.MarketerCode)
+END
+GO
+
+USE [IMECentricEW]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[tblCase_Log_AfterUpdate_TRG] 
+  ON [dbo].[tblCase]
+AFTER UPDATE
+AS
+BEGIN
+	SET NOCOUNT OFF
+	INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+    SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCase', 'MarketerCode', 
+               I.CaseNbr, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CaseNbr = D.CaseNbr
+         WHERE (D.MarketerCode <> I.MarketerCode)
+END
+GO
+
+USE [IMECentricEW]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[tblCompany_Log_AfterInsert_TRG] 
+  ON [dbo].[tblCompany]
+AFTER INSERT
+AS
+BEGIN    
+    SET NOCOUNT ON 
+   INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+        SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCompany', 'MarketerCode', 
+               I.CompanyCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode
+         WHERE (D.MarketerCode <> I.MarketerCode)
+END
+GO
+
+USE [IMECentricEW]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[tblCompany_Log_AfterUpdate_TRG]
+    ON [dbo].[tblCompany]
+AFTER UPDATE
+AS
+BEGIN    
+    SET NOCOUNT ON        
+        INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+        SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCompany', 'MarketerCode', 
+               I.CompanyCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode
+         WHERE (D.MarketerCode <> I.MarketerCode)
+END
+GO
+
+USE [IMECentricEW]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[tblClient_Log_AfterInsert_TRG] 
+  ON [dbo].[tblClient]
+AFTER INSERT
+AS
+BEGIN    
+    SET NOCOUNT ON 
+   INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+        SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblClient', 'MarketerCode', 
+               I.ClientCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.ClientCode = D.ClientCode
+         WHERE (D.MarketerCode <> I.MarketerCode)
+END
+GO
+
+USE [IMECentricEW]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[tblClient_Log_AfterUpdate_TRG]
+    ON [dbo].[tblClient]
+AFTER UPDATE
+AS
+BEGIN    
+     SET NOCOUNT ON     
+    	 INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+     SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblClient', 'MarketerCode', 
+               I.ClientCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.ClientCode = D.ClientCode
+         WHERE (D.MarketerCode <> I.MarketerCode)
+END
+
+
+
+
+
+
+
+
 
 
 --INEC 14451 - liberty-Scheduling
