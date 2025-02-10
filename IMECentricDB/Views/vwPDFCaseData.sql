@@ -84,6 +84,9 @@ AS
 
             CL.Addr1 AS ClientAddr1 ,
             CL.Addr2 AS ClientAddr2 ,
+			CL.City AS ClientCity ,
+			CL.[State] AS ClientState ,
+			CL.Zip AS ClientZip ,
             CL.City + ', ' + UPPER(CL.State) + '  ' + CL.Zip AS ClientCityStateZip ,
             B.BlankValue AS ClientFullAddress ,
             CL.Phone1 + ' ' + ISNULL(CL.Phone1ext, ' ') AS ClientPhone , --Need Extension?
