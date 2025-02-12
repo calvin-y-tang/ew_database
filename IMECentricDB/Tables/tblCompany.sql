@@ -123,4 +123,33 @@ CREATE NONCLUSTERED INDEX [IX_tblCompany_City]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCompany_CompanyCodeIntNameExtName]
     ON [dbo].[tblCompany]([CompanyCode] ASC, [IntName] ASC, [ExtName] ASC);
+GO
+
+CREATE TRIGGER [dbo].[tblCompany_Log_AfterInsert_TRG] 
+  ON [dbo].[tblCompany]
+AFTER INSERT
+AS
+BEGIN    
+    SET NOCOUNT ON 
+   INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+        SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCompany', 'MarketerCode', 
+               I.CompanyCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode
+END
+GO
+
+CREATE TRIGGER [dbo].[tblCompany_Log_AfterUpdate_TRG]
+    ON [dbo].[tblCompany]
+AFTER UPDATE
+AS
+BEGIN    
+    SET NOCOUNT ON        
+        INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+        SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCompany', 'MarketerCode', 
+               I.CompanyCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode
+END
+GO
 

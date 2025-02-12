@@ -493,3 +493,35 @@ CREATE NONCLUSTERED INDEX [IX_tblCase_DefParaLegal]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblCase_DefenseAttorneyCode]
     ON [dbo].[tblCase]([DefenseAttorneyCode] ASC);
+
+GO
+
+CREATE TRIGGER [dbo].[tblCase_Log_AfterInsert_TRG] 
+  ON [dbo].[tblCase]
+AFTER INSERT
+AS
+BEGIN    
+    SET NOCOUNT ON 
+    INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+    SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCase', 'MarketerCode', 
+               I.CaseNbr, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+          FROM DELETED AS D
+                    INNER JOIN INSERTED AS I ON I.CaseNbr = D.CaseNbr
+END
+GO
+
+CREATE TRIGGER [dbo].[tblCase_Log_AfterUpdate_TRG] 
+  ON [dbo].[tblCase]
+AFTER UPDATE
+AS
+BEGIN
+	SET NOCOUNT OFF	
+	INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
+    SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCase', 'MarketerCode', 
+               I.CaseNbr, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
+          FROM INSERTED AS I	  
+                   JOIN  deleted AS D
+					ON I.CaseNbr = D.CaseNbr
+END
+GO
+

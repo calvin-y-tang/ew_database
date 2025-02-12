@@ -3,7 +3,7 @@
 --	both US and CA
 -- --------------------------------------------------------------------------
 
--- Sprint 144
+-- Sprint 145
 
 -- IMEC-14733 - adding BR to give the option to choose the zip file import method
 INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
