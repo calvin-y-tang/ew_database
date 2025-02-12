@@ -12,6 +12,8 @@ CREATE TABLE [dbo].[tblRecordHistory] (
     [UserIDEdited] VARCHAR (50)    NULL,
     [OnINDocument] BIT             CONSTRAINT [DF_tblRecordHistory_OnINDocument] DEFAULT ((0)) NULL,
     [OnVODocument] BIT             CONSTRAINT [DF_tblRecordHistory_OnVODocument] DEFAULT ((0)) NULL,
+    [INLineNbr] INT NULL, 
+    [VOLineNbr] INT NULL, 
     CONSTRAINT [PK_tblRecordHistory] PRIMARY KEY CLUSTERED ([MedRecID] ASC)
 );
 
@@ -21,4 +23,9 @@ CREATE TABLE [dbo].[tblRecordHistory] (
 GO
 CREATE NONCLUSTERED INDEX [IX_tblRecordHistory_CaseNbr]
     ON [dbo].[tblRecordHistory]([CaseNbr] ASC);
-
+GO
+CREATE NONCLUSTERED INDEX [IX_tblRecordHistory_CaseNbr_INLineNbr]
+    ON [dbo].[tblRecordHistory]([CaseNbr] ASC, [INLineNbr] ASC)
+GO
+CREATE NONCLUSTERED INDEX [IX_tblRecordHistory_CaseNbr_VOLineNbr]
+    ON [dbo].[tblRecordHistory]([CaseNbr] ASC, [VOLineNbr] ASC)
