@@ -313,15 +313,30 @@ FROM
 
 	--Remove results for access restrictions
 	IF (SELECT RestrictToFavorites FROM tblUser WHERE UserID = ISNULL(@UserID,'')) = 1
+	begin
+		with userOfficeStates as
+		(
+			select distinct l.State
+			from tblUser u
+			join tblUserOffice uo
+				on u.UserID = uo.UserID
+			join tblLocationOffice lo
+				on lo.OfficeCode = uo.OfficeCode
+			join tblLocation l
+				on l.LocationCode = lo.LocationCode 
+			where u.UserID = ISNULL(@UserID, '')
+		),
+		locationOffficeStates as
+		(
+			select l.LocationCode
+			from tblLocation l
+			join userOfficeStates s on s.State = l.State
+		)
 		DELETE FROM tblDoctorSearchResult WHERE SessionID = @tmpSessionID AND LocationCode NOT IN 
-			(SELECT DISTINCT L.LocationCode
-				FROM tblUser AS U
-				INNER JOIN tblUserOffice AS UO ON UO.UserID = U.UserID
-				INNER JOIN tblOfficeState AS OS ON OS.OfficeCode = UO.OfficeCode
-				INNER JOIN tblLocation AS L ON L.State = OS.State
-				WHERE U.UserID = ISNULL(@UserID,''))
-
-
+		(
+			select LocationCode from locationOffficeStates
+		)
+	end
 	--Set Specialty List
 	IF @Specialties IS NOT NULL
 	BEGIN
