@@ -273,3 +273,85 @@ BEGIN CATCH
     PRINT 'Rolling back transaction.'
     ROLLBACK TRANSACTION imec14800_fixtypo
 END CATCH
+GO
+
+-- IMEC-14820 - Progressive INV Quote secruity token & BizRule
+USE INECentricEW 
+GO
+     INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+     VALUES('ProgQuoteFSMatchOverride', 'Progressive - Quote Override matching FS item', GETDATE())
+     GO
+
+     BEGIN TRY
+          BEGIN TRANSACTION imec14820
+
+          DECLARE @ruleName VARCHAR(34) = 'INVQuotePropBasedOnFSMatch';
+          DECLARE @Category VARCHAR(20) = 'Accounting';
+          DECLARE @description VARCHAR(150)= 'Set some properties on a quote based on finding FS entry; for starters Handling, Status';
+          DECLARE @IsActive BIT = 1;
+          DECLARE @AllowOverride BIT = 1;
+          DECLARE @EventId INT = 1060; -- Fee Quote Saved
+          DECLARE @Param1Desc VARCHAR(20) = 'StartDate';
+          DECLARE @Param2Desc VARCHAR(20) = 'ReqQuoteHandlingID';
+          DECLARE @Param3Desc VARCHAR(20) = 'ReqQuoteStatusID';
+          DECLARE @Param4Desc VARCHAR(20) = 'InOutNetwork'
+          DECLARE @Param5Desc VARCHAR(20) = 'SecurityToken';
+          DECLARE @Param6Desc VARCHAR(20) = 'WarningMsg';
+     
+          -- ###################################################################
+          PRINT 'Clearing out old rules...' 
+     
+          DELETE FROM tblBusinessRuleCondition
+           WHERE [BusinessRuleID] IN (SELECT BusinessRuleID 
+                                        FROM tblBusinessRule 
+                                       WHERE Name = @ruleName);
+          DELETE FROM tblBusinessRule 
+           WHERE Name = @ruleName;
+
+          -- ###################################################################
+          PRINT 'Create new rule...'
+     
+          DECLARE @newRuleId INT = (SELECT MAX(BusinessRuleID) + 1 FROM tblBusinessRule);
+	     INSERT INTO dbo.tblBusinessRule
+                (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, 
+                 Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+          VALUES
+                (@newRuleId, @ruleName, @Category, @description, @IsActive, @EventId, 1,
+                 @Param1Desc, @Param2Desc, @Param3Desc, @Param4Desc, @Param5Desc, 0, @Param6Desc)
+
+          -- ###################################################################
+          PRINT 'Create new rule conditions...'
+
+          DECLARE @EntityType VARCHAR(2) = 'PC';
+          DECLARE @EntityID INT = 39; -- Progressive Parent Company
+          DECLARE @BillingEntityID INT = 2;
+          DECLARE @ProcessOrder INT = 2;
+          DECLARE @OfficeID INT = NULL;
+          DECLARE @EWBusLineID INT = 2; -- first party auto
+          DECLARE @EWServiceTypeID INT = 1; -- IME
+          DECLARE @Jursidiction VARCHAR(5) = NULL;
+          DECLARE @Param1 VARCHAR(100) = '2025-02-10';
+          DECLARE @Param2 VARCHAR(128) = '2'; -- Fee Approval
+          DECLARE @Param3 VARCHAR(100) = '4'; -- Awaiting Approval
+          DECLARE @Param4 VARCHAR(100) = '0'; -- Out of Network
+          DECLARE @Param5 VARCHAR(100) = 'ProgQuoteFSMatchOverride';
+          DECLARE @Param6 VARCHAR(MAX) = 'The Progressive Out of Network Approval quote guardrails are not met.';
+
+         INSERT INTO dbo.tblBusinessRuleCondition 
+               (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, 
+                OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1 , Param2, Param3, Param4, Param5, Param6, Skip, ExcludeJurisdiction)
+         VALUES
+               (@EntityType, @EntityID, @BillingEntityID, @ProcessOrder, @newRuleId, GETDATE(), 'Admin', GETDATE(), 'Admin', 
+                @OfficeID, @EWBusLineID, @EWServiceTypeID, @Jursidiction, @Param1, @Param2, @Param3, @Param4, @Param5, @Param6, 0, 0)
+      
+         COMMIT TRANSACTION imec14820
+     END TRY
+     BEGIN CATCH
+         DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+         PRINT ERROR_MESSAGE() + @RN
+         PRINT 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+         PRINT 'Rolling back transaction.'
+         ROLLBACK TRANSACTION imec14820
+     END CATCH
+GO
+
