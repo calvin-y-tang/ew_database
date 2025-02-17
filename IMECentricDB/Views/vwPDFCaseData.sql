@@ -84,6 +84,9 @@ AS
 
             CL.Addr1 AS ClientAddr1 ,
             CL.Addr2 AS ClientAddr2 ,
+			CL.City AS ClientCity ,
+			CL.[State] AS ClientState ,
+			CL.Zip AS ClientZip ,
             CL.City + ', ' + UPPER(CL.State) + '  ' + CL.Zip AS ClientCityStateZip ,
             B.BlankValue AS ClientFullAddress ,
             CL.Phone1 + ' ' + ISNULL(CL.Phone1ext, ' ') AS ClientPhone , --Need Extension?
@@ -216,6 +219,8 @@ AS
             PA.Address2 AS PAttorneyAddr2 ,
             PA.City + ', ' + UPPER(PA.State) + '  ' + PA.Zip AS PAttorneyCityStateZip ,
 			B.BlankValue AS PAttorneyFullAddress ,
+			PA.City AS PAttorneyCity ,
+			PA.Zip As PAttorneyZip ,
 
             PA.Phone + ' ' + ISNULL(PA.Phoneextension, '') AS PAttorneyPhone , --Need Extension?
 			PA.Phone AS PAttorneyPhoneAreaCode ,

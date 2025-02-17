@@ -176,3 +176,20 @@ BEGIN
 END
 GO
 
+
+
+CREATE TRIGGER [dbo].[tblDoctor_InsteadOfDelete_TRG]
+    ON [dbo].[tblDoctor]
+    INSTEAD OF DELETE
+    AS
+    BEGIN
+        INSERT INTO tblLog
+        SELECT GETDATE(), 3, '[IMECentricEW].[dbo].[tblDoctor]', 'Delete of tblDoctor record', 'The doctor record is not allowed to be deleted. (' + CONVERT(NVARCHAR(12), D.[DoctorCode]) + ')', NULL, user_name(), NULL
+        FROM Deleted D
+
+        DECLARE @topRowDoctorId INT = (SELECT TOP(1) [DoctorCode] FROM Deleted)
+        DECLARE @exceptionText NVARCHAR(max) = 'The doctor record is not allowed to be deleted. (' + CONVERT(NVARCHAR(12), @topRowDoctorId) + ')'
+
+        --Valid exeption range is 50000 to 2147483647. Story # is 14741 + 50000 = 64741
+        --;THROW 64741, @exceptionText, 1
+    END

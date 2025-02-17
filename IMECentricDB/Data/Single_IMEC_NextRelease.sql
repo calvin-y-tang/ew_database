@@ -9,232 +9,353 @@
 --	GO
 
 -- --------------------------------------------------------------------------
--- sprint 144
-
-
-
--- IMEC-14723 - Update Med rec page calculations for certain scenarios
+-- sprint 145
+-- IMEC-14208 - data patch for old entries in tblExternalCommunication to set processed date
 USE [IMECentricEW]
+UPDATE tblExternalCommunications SET DateProcessed = GETDATE(), DevNote = 'Data Patching DateProcessed - restarting service'
+WHERE DateProcessed IS NULL AND CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE Status IN (8, 9) OR DateAdded <= (GETDATE()-2) OR DateAdded IS NULL)
 
-DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'LibertyQuoteMedRecPgCalculations')
-
-IF @BusinessRuleID IS NOT NULL
-BEGIN
-	DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = @BusinessRuleID
-
-	--   (1) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = IME; Exclude Jurisdictions 'CA', 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', 1, 1, 'T1', '250', '385', '0.1', '250')
-
-	--   (2) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Peer review; Exclude Jurisdictions 'CA', 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', 1, 2, 'T1', '250', '385', '0.2', '250')
-
-	--   (3) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = IME; Exclude Jurisdictions 'CA', 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', 5, 1, 'T1', '250', '385', '0.1', '250')
-
-	--   (4) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Peer review; Exclude Jurisdictions 'CA', 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', 5, 2, 'T1', '250', '385', '0.2', '250')
-
-	--   (13) Med rec Pages > 250 - ProdCode = 385; First party; ServiceType = IME; Jurisdiction 'MI'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 2, 1, 'MI', 'T1', '250', '385', '0.1', '250')
-
-	--   (14) Med rec Pages > 250 - ProdCode = 385; First party; ServiceType = Peer review; Jurisdiction 'MI'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 2, 2, 'MI', 'T1', '385')
-
-	--   (15) Service Fee > 500 - ProdCode = 3030; all cases
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', '3030', '0.1', '500')
-
-	  --   (16) Service Fee > 500 - ProdCode = 3030; exclude CA for workers comp - no service fee
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param3)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', '3030')
-
-	  --   (17) Service Fee > 500 - ProdCode = 3030; exclude TX for workers comp - no service fee
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param3)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', '3030')
-
-	  --   (18) Service Fee > 500 - ProdCode = 3030; exclude WA for workers comp - no service fee
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param3)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', '3030')
-
-	--   (19) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Record review; Exclude Jurisdictions 'CA', 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', 1, 3, 'T1', '250', '385', '0.2', '250')
-
-	--   (20) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Record review; Exclude Jurisdictions 'CA', 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', 5, 3, 'T1', '250', '385', '0.2', '250')
-
-	--   (25) Med rec Pages > 250 - ProdCode = 385; First party; ServiceType = Record review; Jurisdiction 'MI'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param3)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 2, 3, 'MI', 'T1', '385')
-
-	--   (5) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = IME; Jurisdiction 'CA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 1, 1, 'CA', 'T1', '250', '385', '0.5', '250')
-
-	--   (6) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = IME; Jurisdiction 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 1, 1, 'WA', 'T1', '250', '385', '0.5', '250')
-
-	--   (7) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Peer review; Jurisdiction 'CA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 1, 2, 'CA', 'T1', '250', '385', '0.35', '250')
-
-	--   (8) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Peer review; Jurisdiction 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 1, 2, 'WA', 'T1', '250', '385', '0.35', '250')
-
-	--   (9) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = IME; Jurisdiction 'CA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 5, 1, 'CA', 'T1', '250', '385', '0.5', '250')
-
-	--   (10) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = IME; Jurisdiction 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 5, 1, 'WA', 'T1', '250', '385', '0.5', '250')
-
-	--   (11) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Peer review; Jurisdiction 'CA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 5, 2, 'CA', 'T1', '250', '385', '0.35', '250')
-
-	--   (12) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Peer review; Jurisdiction 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 5, 2, 'WA', 'T1', '250', '385', '0.35', '250')
-
-	--   (21) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Record review; Jurisdiction 'CA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 1, 3, 'CA', 'T1', '250', '385', '0.35', '250')
-
-	--   (22) Med rec Pages > 250 - ProdCode = 385; Liability; ServiceType = Record review; Jurisdiction 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 1, 3, 'WA', 'T1', '250', '385', '0.35', '250')
-
-	--   (23) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Record review; Jurisdiction 'CA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 5, 3, 'CA', 'T1', '250', '385', '0.35', '250')
-
-	--   (24) Med rec Pages > 250 - ProdCode = 385; Third party; ServiceType = Record review; Jurisdiction 'WA'
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 5, 3, 'WA', 'T1', '250', '385', '0.35', '250')
-
-END
-
-GO
-
--- IMEC-14728 - Need an additional serviceCode for FL office
---		**** This was applied to production  on 01/10/2025 but there is no harm in letting it run again.
-USE [IMECentricEW]
-
-DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'AutoAckDPSBundle')
-
-IF @BusinessRuleID IS NOT NULL
-BEGIN
-	UPDATE tblBusinessRuleCondition 
-	   SET param6 = ';2070;3290;4121;2100;' , 
-		   DateEdited = GETDATE(),
-		   UserIDEdited = 'JPais'
-	WHERE  BusinessRuleID = @BusinessRuleID
-	   AND EWServiceTypeID = 1  
-	   AND OfficeCode = 17
-END
-
-GO
-
-
--- IMEC-14730 - Liberty updates - add BRC for when no doctor and no reason - a.k.a panel exam
-USE [IMECentricEW]
-GO
-
-DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'SetQuoteAdditionalFeeChoices')
-
-IF @BusinessRuleID IS NOT NULL
-BEGIN
-	DELETE FROM tblBusinessRuleCondition WHERE BusinessRuleID = @BusinessRuleID
-
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', ';T1;', 'LibertyGuardrailsStartDate')
-
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'EW Selected', 'LibertyGuardrailsStartDate')
-
-	INSERT INTO tblBusinessRuleCondition (EntityType, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1)
-	VALUES ('SW', 2, 4, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8')
-
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2, Param4)
-	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', ';T2;', 'LibertyGuardrailsStartDate')
-
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param3, Param4)
-	VALUES ('PC', 31, 2, 2, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,9,10', 'Client Selected', 'LibertyGuardrailsStartDate')
-
-	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param4)
-	VALUES ('PC', 31, 2, 3, @BusinessRuleID, GETDATE(), 'Admin', '1,2,3,4,5,6,7,8,9', 'LibertyGuardrailsStartDate')
-
-END
-GO
-
--- IMEC-14664 - Do Not Show QA Checklist for Certain Conditions
+--INEC 14451 - liberty-Scheduling
 
 use IMECentricEW
 
 begin try
-    begin transaction noTxOrCaWc
+    begin transaction matchSpecialty
     
-    declare @ruleId int = (select BusinessRuleID from tblBusinessRule where Name
-                        = 'UseQAQuestionSet');
-    declare @busLine int = (select EWBusLineID from tblEWBusLine where Name
-                         = 'Workers Comp');
+   
     declare @parentCompany int = (select ParentCompanyID from tblEWParentCompany where [Name]
                                = 'Liberty Mutual');
-    declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate';
-    declare @Param2 varchar(100) = 'Exclude';
+    declare @ruleName varchar(34) = 'MatchDoctorSpecialty';
+	declare @Category varchar(20)='Appointment';
+	declare @description varchar(150)= 'Match User Selected Doctor Speciality with Requested Speciality in Case Parameters';
+	declare @IsActive bit = 1;
+	declare @AllowOverride bit = 1;
+	declare @EventId int =1101;
+	declare @Param1Desc varchar(20) = 'StartDate'
+	declare @Param2Desc varchar(20) = 'AppointmentMessage'
+	declare @Param3Desc varchar(20) = 'CaseCustomerDataParamCondtion'
+	declare @Param4Desc varchar(20) = 'Company Name'
+	declare @Param5Desc varchar(20) = 'OverrideToken'
+	declare @Param6Desc varchar (20)='PanelExamMessage'
+    
+	declare @Param1 varchar(100) = 'LibertyGuardrailsStartDate'; 
+	declare @Param2 varchar(128)= 'Liberty has requested a specialty for this exam and you are required to schedule a doctor that matches that specialty.'
+	declare @Param3 varchar(100)='NotiCaseReferral="0"'
+	declare @Param4 varchar(100)='Liberty Mutual'
+	declare @Param5 varchar (100)= 'LibertySchedulingOverride'	
+	declare @Param6 varchar(MAX)= 'WARNING: Liberty has requested specialties for this exam. Since this is a panel exam, you are required to schedule only doctors that match those specialties.  Any other specialty would require Liberty approval.'
+	declare  @EntityType varchar(2)='PC';
 
-    update tblBusinessRule
-    set Param2Desc = 'FlagForExclusion'
-    where [BusinessRuleID] = @ruleId
 
-    print 'Clearing out old rules rules...' 
-    delete from tblBusinessRuleCondition
-    where [BusinessRuleID] = @ruleId
+	 print 'Clearing out old rules rules...' 
+
+	   
+		delete from tblBusinessRuleCondition
+		 where [BusinessRuleID] in (Select BusinessRuleID from tblBusinessRule where Name= @ruleName);
+
+		delete from tblBusinessRule where Name = @ruleName;
+		 
+
+
+	declare @newRuleId int = (select  Max(BusinessRuleID)+1 from tblBusinessRule);
+
+	INSERT INTO [dbo].[tblBusinessRule]
+           ([BusinessRuleID]
+           ,[Name]
+           ,[Category]
+           ,[Descrip]
+           ,[IsActive]
+           ,[EventID]
+           ,[AllowOverride]
+           ,[Param1Desc]
+           ,[Param2Desc]
+           ,[Param3Desc]
+           ,[Param4Desc]
+           ,[Param5Desc]
+           ,[BrokenRuleAction]
+           ,[Param6Desc])
+     VALUES
+           (@newRuleId,
+            @ruleName,
+            @Category,
+            @description,
+            @IsActive,
+            @EventId,
+            1
+           ,@Param1Desc
+           ,@Param2Desc
+           ,@Param3Desc
+           ,@Param4Desc
+           ,@Param5Desc
+           ,0
+           ,@Param6Desc)
+
+
 
     print 'Inserting new rules...'
     insert into tblBusinessRuleCondition (
-        [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2]
+        [EntityType], [EntityID]    , [BillingEntity], [ProcessOrder], [BusinessRuleID], [DateAdded], [UserIDAdded], [DateEdited], [UserIDEdited], [OfficeCode], [EWBusLineID], [EWServiceTypeID], [Jurisdiction], [Param1] , [Param2],[Param3], [Param4],[Param5],[Param6]
     )
     values
-        ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , @busLine     , NULL             , 'CA'          , @Param1  , @Param2),
-        ('PC'       , @parentCompany, 2              , 1             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , @busLine     , NULL             , 'TX'          , @Param1  , @Param2),
-        ('PC'       , @parentCompany, 2              , 2             , @ruleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , NULL         , NULL             , NULL          , @Param1  , NULL   )
+        ('PC'       , @parentCompany, 2              , 1             , @newRuleId         , GETDATE()  , 'Admin'      , GETDATE()   , 'Admin'       , NULL        , NULL     , NULL             , NULL          , @Param1  , @Param2,@Param3,@Param4, @Param5, @Param6)
+      
+       -- test with throw enabled
+    --select *
+    --from tblBusinessRule br
+    --    join tblBusinessRuleCondition brc
+    --    on brc.BusinessRuleID = br.BusinessRuleID
+    --where br.Name = @ruleName
+    --order by brc.BusinessRuleID, brc.ProcessOrder
 
-    /*
-    -- test with throw enabled
-    select *
-    from tblBusinessRule br
-        join tblBusinessRuleCondition brc
-        on brc.BusinessRuleID = br.BusinessRuleID
-    where br.Name = 'UseQAQuestionSet'
-    order by brc.BusinessRuleID, brc.ProcessOrder
-
-    ;throw 51000, 'Rollback for testing.', 1;
-    --*/
-    commit transaction noTxOrCaWc
+    --;throw 51000, 'Rollback for testing.', 1;
+    
+    commit transaction matchSpecialty
 end try
 begin catch
     declare @RN varchar(2) = CHAR(13)+CHAR(10)
     print ERROR_MESSAGE() + @RN
     print 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
     print 'Rolling back transaction.'
-    rollback transaction noTxOrCaWc
+    rollback transaction matchSpecialty
 end catch
 
--- IMEC-14208 - data patch for old entries in tblExternalCommunication to set processed date
-USE [IMECentricEW]
-UPDATE tblExternalCommunications SET DateProcessed = GETDATE(), DevNote = 'Data Patching DateProcessed - restarting service'
-WHERE DateProcessed IS NULL AND CaseNbr IN (SELECT CaseNbr FROM tblCase WHERE Status IN (8, 9) OR DateAdded <= (GETDATE()-2) OR DateAdded IS NULL)
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+--  create new business rule and event to check Liberty cases for quote
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_newBR
+
+	INSERT INTO tblEvent (EventID, Descrip, Category) VALUES (9999, 'All', 'Application')
+
+	INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
+	VALUES (209, ' LibertyGRsApplyToIMECEW', 'Case', 'Check if Liberty guardrails apply for Liberty cases', 1, 9999, 0, 'TrueOrFalse', 0)
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = ' LibertyGRsApplyToIMECEW')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, Param1, Param2)
+	VALUES ('PC', 31, 2, 4, @BusinessRuleID, GETDATE(), 'Admin', 'True')
+
+	COMMIT TRANSACTION imec14800_newBR
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_newBR
+END CATCH
+
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- add additional BRC's to set additional fee choices on quote form - use "default" fees in these scenarios
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_addquotefees
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'SetQuoteAdditionalFeeChoices')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	UPDATE tblBusinessRuleCondition SET ProcessOrder = (ProcessOrder + 1) WHERE BusinessRuleID = @BusinessRuleID
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', '1,2,3,4,5,6,7,8')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', '1,2,3,4,5,6,7,8')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', '1,2,3,4,5,6,7,8')
+
+	COMMIT TRANSACTION imec14800_addquotefees
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_addquotefees
+END CATCH
+
+
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- add additional BRC's to enable / disable the Med Rec Pages textbox on the quote form
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_medrecpgsfield
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'UseQuoteSpecialColumns')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	UPDATE tblBusinessRuleCondition SET ProcessOrder = 2 WHERE BusinessRuleID = @BusinessRuleID AND EntityType = 'PC' AND EntityID = 31
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX', 'False')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction, Param1)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA', 'False')
+
+	COMMIT TRANSACTION imec14800_medrecpgsfield
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_medrecpgsfield
+END CATCH
+
+
+-- IMEC-14801 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- add additional BRC's to set max amount for invoice
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14801_invmaxamount
+
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'LibertyGuardRailsInvoice')
+
+	IF @BusinessRuleID IS NOT NULL
+
+	UPDATE tblBusinessRuleCondition SET ProcessOrder = 3 WHERE BusinessRuleID = @BusinessRuleID AND EntityType = 'PC' AND EntityID = 31
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'CA')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'TX')
+
+	INSERT INTO tblBusinessRuleCondition (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, EWBusLineID, Jurisdiction)
+	VALUES ('PC', 31, 2, 1, @BusinessRuleID, GETDATE(), 'Admin', 3, 'WA')
+
+	COMMIT TRANSACTION imec14801_invmaxamount
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14801_invmaxamount
+END CATCH
+
+
+
+-- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
+   -- fix typo in business rule description
+USE IMECentricEW
+BEGIN TRY
+    BEGIN TRANSACTION imec14800_fixtypo
+
+	UPDATE tblBusinessRule SET Descrip = 'Liberty Quote GR - rules for calculating med rec page amounts' WHERE Name = 'LibertyQuoteMedRecPgCalculations'
+
+	COMMIT TRANSACTION imec14800_fixtypo
+
+END TRY
+BEGIN CATCH
+    DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+    PRINT ERROR_MESSAGE() + @RN
+    PRINT 'On line: ' + convert(NVARCHAR(4), ERROR_LINE()) + @RN
+    PRINT 'Rolling back transaction.'
+    ROLLBACK TRANSACTION imec14800_fixtypo
+END CATCH
 GO
 
+-- IMEC-14820 - Progressive INV Quote secruity token & BizRule
+USE INECentricEW 
+GO
+     INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
+     VALUES('ProgQuoteFSMatchOverride', 'Progressive - Quote Override matching FS item', GETDATE())
+     GO
+
+     BEGIN TRY
+          BEGIN TRANSACTION imec14820
+
+          DECLARE @ruleName VARCHAR(34) = 'INVQuotePropBasedOnFSMatch';
+          DECLARE @Category VARCHAR(20) = 'Accounting';
+          DECLARE @description VARCHAR(150)= 'Set some properties on a quote based on finding FS entry; for starters Handling, Status';
+          DECLARE @IsActive BIT = 1;
+          DECLARE @AllowOverride BIT = 1;
+          DECLARE @EventId INT = 1060; -- Fee Quote Saved
+          DECLARE @Param1Desc VARCHAR(20) = 'StartDate';
+          DECLARE @Param2Desc VARCHAR(20) = 'ReqQuoteHandlingID';
+          DECLARE @Param3Desc VARCHAR(20) = 'ReqQuoteStatusID';
+          DECLARE @Param4Desc VARCHAR(20) = 'InOutNetwork'
+          DECLARE @Param5Desc VARCHAR(20) = 'SecurityToken';
+          DECLARE @Param6Desc VARCHAR(20) = 'WarningMsg';
+     
+          -- ###################################################################
+          PRINT 'Clearing out old rules...' 
+     
+          DELETE FROM tblBusinessRuleCondition
+           WHERE [BusinessRuleID] IN (SELECT BusinessRuleID 
+                                        FROM tblBusinessRule 
+                                       WHERE Name = @ruleName);
+          DELETE FROM tblBusinessRule 
+           WHERE Name = @ruleName;
+
+          -- ###################################################################
+          PRINT 'Create new rule...'
+     
+          DECLARE @newRuleId INT = (SELECT MAX(BusinessRuleID) + 1 FROM tblBusinessRule);
+	     INSERT INTO dbo.tblBusinessRule
+                (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, 
+                 Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction, Param6Desc)
+          VALUES
+                (@newRuleId, @ruleName, @Category, @description, @IsActive, @EventId, 1,
+                 @Param1Desc, @Param2Desc, @Param3Desc, @Param4Desc, @Param5Desc, 0, @Param6Desc)
+
+          -- ###################################################################
+          PRINT 'Create new rule conditions...'
+
+          DECLARE @EntityType VARCHAR(2) = 'PC';
+          DECLARE @EntityID INT = 39; -- Progressive Parent Company
+          DECLARE @BillingEntityID INT = 2;
+          DECLARE @ProcessOrder INT = 2;
+          DECLARE @OfficeID INT = NULL;
+          DECLARE @EWBusLineID INT = 2; -- first party auto
+          DECLARE @EWServiceTypeID INT = 1; -- IME
+          DECLARE @Jursidiction VARCHAR(5) = NULL;
+          DECLARE @Param1 VARCHAR(100) = '2025-02-10';
+          DECLARE @Param2 VARCHAR(128) = '2'; -- Fee Approval
+          DECLARE @Param3 VARCHAR(100) = '4'; -- Awaiting Approval
+          DECLARE @Param4 VARCHAR(100) = '0'; -- Out of Network
+          DECLARE @Param5 VARCHAR(100) = 'ProgQuoteFSMatchOverride';
+          DECLARE @Param6 VARCHAR(MAX) = 'The Progressive Out of Network Approval quote guardrails are not met.';
+
+         INSERT INTO dbo.tblBusinessRuleCondition 
+               (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, 
+                OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1 , Param2, Param3, Param4, Param5, Param6, Skip, ExcludeJurisdiction)
+         VALUES
+               (@EntityType, @EntityID, @BillingEntityID, @ProcessOrder, @newRuleId, GETDATE(), 'Admin', GETDATE(), 'Admin', 
+                @OfficeID, @EWBusLineID, @EWServiceTypeID, @Jursidiction, @Param1, @Param2, @Param3, @Param4, @Param5, @Param6, 0, 0)
+      
+         COMMIT TRANSACTION imec14820
+     END TRY
+     BEGIN CATCH
+         DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+         PRINT ERROR_MESSAGE() + @RN
+         PRINT 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+         PRINT 'Rolling back transaction.'
+         ROLLBACK TRANSACTION imec14820
+     END CATCH
+GO
 
