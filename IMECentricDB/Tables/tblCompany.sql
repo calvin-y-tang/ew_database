@@ -131,11 +131,14 @@ AFTER INSERT
 AS
 BEGIN    
     SET NOCOUNT ON 
+	IF EXISTS (SELECT 1 FROM inserted WHERE MarketerCode IS NOT NULL)
+    BEGIN
    INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
         SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCompany', 'MarketerCode', 
-               I.CompanyCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
-          FROM DELETED AS D
-                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode
+               I.CompanyCode, NULL, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+         FROM inserted i
+        WHERE i.MarketerCode IS NOT NULL;    
+	END	
 END
 GO
 
@@ -144,12 +147,18 @@ CREATE TRIGGER [dbo].[tblCompany_Log_AfterUpdate_TRG]
 AFTER UPDATE
 AS
 BEGIN    
-    SET NOCOUNT ON        
+    SET NOCOUNT ON    
+	  IF EXISTS (
+        SELECT 1 FROM inserted i
+        JOIN deleted d ON i.CompanyCode = d.CompanyCode     		
+    )
+    BEGIN
         INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
         SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblCompany', 'MarketerCode', 
                I.CompanyCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
           FROM DELETED AS D
-                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode
+                    INNER JOIN INSERTED AS I ON I.CompanyCode = D.CompanyCode    
+	END				
 END
 GO
 

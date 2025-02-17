@@ -154,11 +154,14 @@ AFTER INSERT
 AS
 BEGIN    
     SET NOCOUNT ON 
+	IF EXISTS (SELECT 1 FROM inserted WHERE MarketerCode IS NOT NULL)
+    BEGIN
    INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
         SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblClient', 'MarketerCode', 
-               I.ClientCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
-          FROM DELETED AS D
-                    INNER JOIN INSERTED AS I ON I.ClientCode = D.ClientCode     
+               I.ClientCode, NULL, I.MarketerCode, GetDate(), 'Added By :' + I.UserIDAdded
+         FROM inserted i
+        WHERE i.MarketerCode IS NOT NULL;
+	END				
 END
 GO
 
@@ -168,9 +171,16 @@ AFTER UPDATE
 AS
 BEGIN    
      SET NOCOUNT ON     
+	  IF EXISTS (
+        SELECT 1 FROM inserted i
+        JOIN deleted d ON i.ClientCode = d.ClientCode
+    )
+    BEGIN
     	 INSERT INTO tblLogChangeTracking(HostName, HostIPAddr, AppName, TableName, ColumnName, TablePkID, OldValue, NewValue, ModifeDate, Msg)
      SELECT HOST_NAME(), CONVERT(VARCHAR(16), CONNECTIONPROPERTY('client_net_address')), APP_NAME(), 'tblClient', 'MarketerCode', 
                I.ClientCode, D.MarketerCode, I.MarketerCode, GetDate(), 'Changed By :' + I.UserIDEdited
           FROM DELETED AS D
-                    INNER JOIN INSERTED AS I ON I.ClientCode = D.ClientCode        
+                    INNER JOIN INSERTED AS I ON I.ClientCode = D.ClientCode   
+	END				
 END
+GO
