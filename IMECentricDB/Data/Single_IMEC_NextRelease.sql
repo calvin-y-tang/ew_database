@@ -128,9 +128,9 @@ BEGIN TRY
 	INSERT INTO tblEvent (EventID, Descrip, Category) VALUES (9999, 'All', 'Application')
 
 	INSERT INTO tblBusinessRule (BusinessRuleID, Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, BrokenRuleAction)
-	VALUES (209, ' LibertyGRsApplyToIMECEW', 'Case', 'Check if Liberty guardrails apply for Liberty cases', 1, 9999, 0, 'TrueOrFalse', 0)
+	VALUES (209, 'LibertyGRsApplyToIMECEW', 'Case', 'Check if Liberty guardrails apply for Liberty cases', 1, 9999, 0, 'TrueOrFalse', 0)
 
-	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = ' LibertyGRsApplyToIMECEW')
+	DECLARE @BusinessRuleID INT = (SELECT BusinessRuleID FROM tblBusinessRule WHERE Name = 'LibertyGRsApplyToIMECEW')
 
 	IF @BusinessRuleID IS NOT NULL
 
