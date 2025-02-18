@@ -119,6 +119,8 @@ begin catch
     rollback transaction matchSpecialty
 end catch
 
+GO
+
 -- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
 --  create new business rule and event to check Liberty cases for quote
 USE IMECentricEW
@@ -157,6 +159,7 @@ BEGIN CATCH
     ROLLBACK TRANSACTION imec14800_newBR
 END CATCH
 
+GO
 
 -- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
    -- add additional BRC's to set additional fee choices on quote form - use "default" fees in these scenarios
@@ -191,7 +194,7 @@ BEGIN CATCH
 END CATCH
 
 
-
+GO
 -- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
    -- add additional BRC's to enable / disable the Med Rec Pages textbox on the quote form
 USE IMECentricEW
@@ -223,7 +226,7 @@ BEGIN CATCH
     PRINT 'Rolling back transaction.'
     ROLLBACK TRANSACTION imec14800_medrecpgsfield
 END CATCH
-
+GO
 
 -- IMEC-14801 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
    -- add additional BRC's to set max amount for invoice
@@ -256,7 +259,7 @@ BEGIN CATCH
     PRINT 'Rolling back transaction.'
     ROLLBACK TRANSACTION imec14801_invmaxamount
 END CATCH
-
+GO
 
 
 -- IMEC-14800 - carve out workers comp cases for TX, CA, and WA for Liberty guardrails
