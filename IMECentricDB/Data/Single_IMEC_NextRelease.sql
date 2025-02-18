@@ -276,7 +276,7 @@ END CATCH
 GO
 
 -- IMEC-14820 - Progressive INV Quote secruity token & BizRule
-USE INECentricEW 
+USE IMECentricEW 
 GO
      INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
      VALUES('ProgQuoteFSMatchOverride', 'Progressive - Quote Override matching FS item', GETDATE())
