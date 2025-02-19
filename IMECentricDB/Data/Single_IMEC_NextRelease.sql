@@ -285,6 +285,8 @@ GO
 -- IMEC-14820 - Progressive INV Quote secruity token & BizRule
 USE IMECentricEW 
 GO
+     DELETE FROM tblUserFunction WHERE FunctionCode = 'ProgQuoteFSMatchOverride'
+     GO
      INSERT INTO tblUserFunction(FunctionCode, FunctionDesc, DateAdded)
      VALUES('ProgQuoteFSMatchOverride', 'Progressive - Quote Override matching FS item', GETDATE())
      GO
@@ -292,18 +294,18 @@ GO
      BEGIN TRY
           BEGIN TRANSACTION imec14820
 
-          DECLARE @ruleName VARCHAR(34) = 'INVQuotePropBasedOnFSMatch';
+          DECLARE @ruleName VARCHAR(34) = 'ProgressiveINVQuoteRules';
           DECLARE @Category VARCHAR(20) = 'Accounting';
-          DECLARE @description VARCHAR(150)= 'Set some properties on a quote based on finding FS entry; for starters Handling, Status';
+          DECLARE @description VARCHAR(150)= 'Determine if this is a Progressive Quote for which Rules need to be applied';
           DECLARE @IsActive BIT = 1;
           DECLARE @AllowOverride BIT = 1;
           DECLARE @EventId INT = 1060; -- Fee Quote Saved
           DECLARE @Param1Desc VARCHAR(20) = 'StartDate';
-          DECLARE @Param2Desc VARCHAR(20) = 'ReqQuoteHandlingID';
-          DECLARE @Param3Desc VARCHAR(20) = 'ReqQuoteStatusID';
-          DECLARE @Param4Desc VARCHAR(20) = 'InOutNetwork'
+          DECLARE @Param2Desc VARCHAR(20) = NULL;
+          DECLARE @Param3Desc VARCHAR(20) = NULL;
+          DECLARE @Param4Desc VARCHAR(20) = NULL;
           DECLARE @Param5Desc VARCHAR(20) = 'SecurityToken';
-          DECLARE @Param6Desc VARCHAR(20) = 'WarningMsg';
+          DECLARE @Param6Desc VARCHAR(20) = NULL;
      
           -- ###################################################################
           PRINT 'Clearing out old rules...' 
@@ -331,18 +333,18 @@ GO
 
           DECLARE @EntityType VARCHAR(2) = 'PC';
           DECLARE @EntityID INT = 39; -- Progressive Parent Company
-          DECLARE @BillingEntityID INT = 2;
-          DECLARE @ProcessOrder INT = 2;
+          DECLARE @BillingEntityID INT = 2; -- Billing & Case
+          DECLARE @ProcessOrder INT = 2; -- leaving a spot so that we can exclude CO/CL IDs that we don't want to follow the rules for
           DECLARE @OfficeID INT = NULL;
           DECLARE @EWBusLineID INT = 2; -- first party auto
           DECLARE @EWServiceTypeID INT = 1; -- IME
           DECLARE @Jursidiction VARCHAR(5) = NULL;
           DECLARE @Param1 VARCHAR(100) = '2025-02-10';
-          DECLARE @Param2 VARCHAR(128) = '2'; -- Fee Approval
-          DECLARE @Param3 VARCHAR(100) = '4'; -- Awaiting Approval
-          DECLARE @Param4 VARCHAR(100) = '0'; -- Out of Network
+          DECLARE @Param2 VARCHAR(128) = NULL;
+          DECLARE @Param3 VARCHAR(100) = NULL;
+          DECLARE @Param4 VARCHAR(100) = NULL;
           DECLARE @Param5 VARCHAR(100) = 'ProgQuoteFSMatchOverride';
-          DECLARE @Param6 VARCHAR(MAX) = 'The Progressive Out of Network Approval quote guardrails are not met.';
+          DECLARE @Param6 VARCHAR(MAX) = NULL;
 
          INSERT INTO dbo.tblBusinessRuleCondition 
                (EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, 
@@ -350,7 +352,7 @@ GO
          VALUES
                (@EntityType, @EntityID, @BillingEntityID, @ProcessOrder, @newRuleId, GETDATE(), 'Admin', GETDATE(), 'Admin', 
                 @OfficeID, @EWBusLineID, @EWServiceTypeID, @Jursidiction, @Param1, @Param2, @Param3, @Param4, @Param5, @Param6, 0, 0)
-      
+        
          COMMIT TRANSACTION imec14820
      END TRY
      BEGIN CATCH
@@ -360,5 +362,6 @@ GO
          PRINT 'Rolling back transaction.'
          ROLLBACK TRANSACTION imec14820
      END CATCH
+
 GO
 
