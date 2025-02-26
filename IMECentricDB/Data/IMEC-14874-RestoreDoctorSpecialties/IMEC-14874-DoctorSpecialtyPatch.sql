@@ -28,8 +28,26 @@
 
 -- **********************************************************************************************************************************
 
+-- 4. capture the list of missing items to a temporary table for future reference
+SELECT 
+     resDS.SpecialtyCode AS RestoreSpecialtyCode, resDS.DoctorCode AS RestoreDoctorCode, d.EWDoctorID as RestoreEWDoctorID, s.EWSpecialtyID as RestoreEWSpecialtyID,
+     resDS.MasterReviewerSpecialtyID AS RestoreMasterReviewerSpecialtyID, resDS.DateAdded AS RestoreDateAdded, 
+     ds.SpecialtyCode AS OrigSpecialtyCode, ds.DoctorCode AS OrigDoctorCode, ds.MasterReviewerSpecialtyID AS OrigMasterReviewerSpecialtyID, ds.DateAdded AS OrigDateAdded
+  INTO _tmp_DoctorSpecialty_MissingInProd
+  FROM _tmp_Restore_DoctorSpecialty AS resDS 
+               LEFT OUTER JOIN tblDoctor AS d 
+                 ON d.DoctorCode = resDS.DoctorCode
+               LEFT OUTER JOIN tblDoctorSpecialty AS ds
+			  ON resDS.DoctorCode = ds.DoctorCode 
+			 AND resDS.SpecialtyCode = ds.SpecialtyCode
+               LEFT OUTER JOIN tblSpecialty AS s
+                 ON s.SpecialtyCode = resDS.SpecialtyCode
+WHERE ds.SpecialtyCode IS NULL
+
+-- **********************************************************************************************************************************
+
 /*
--- 4. Some data validation checks - Manul checks done after restore data is loaded into temp tables 
+-- 5. Some data validation checks - Manul checks done after restore data is loaded into temp tables 
 --    but before the script is applied.
 
 -- verify doctorcodes from backup against current DB to verify that they are in "sync"
@@ -41,8 +59,8 @@
      from tblDoctor AS d
                left outer join _tmpDoctorVerify as dv on dv.DoctorCode = d.DoctorCode
      where d.EWParentDocID <> dv.EWParentDocID
-     --or d.FirstName <> dv.FirstName 
-     --or d.LastName <> dv.LastName
+     or d.FirstName <> dv.FirstName 
+     or d.LastName <> dv.LastName
 
 -- some data validation to ensure that data is properly lined up....
      -- show counts of missing specialties
@@ -79,52 +97,61 @@
 
 USE IMECentricEW
 
--- 5. create a backup copy of current tblDoctorSpecialty >>> (to undo if needed)
-SELECT * 
-INTO _tmp_JP_DoctorSpecialty_02242025
-FROM tblDoctorSpecialty
+     -- 6. create a backup copy of current tblDoctorSpecialty >>> (to undo if needed)
+     SELECT * 
+     INTO _tmp_JP_DoctorSpecialty_02262025
+     FROM tblDoctorSpecialty
 
--- 6. capture the list of missing items to a temporary table for future reference
-SELECT 
-     resDS.SpecialtyCode AS RestoreSpecialtyCode, resDS.DoctorCode AS RestoreDoctorCode, resDS.MasterReviewerSpecialtyID AS RestoreMasterReviewerSpecialtyID, resDS.DateAdded AS RestoreDateAdded, 
-     ds.SpecialtyCode AS OrigSpecialtyCode, ds.DoctorCode AS OrigDoctorCode, ds.MasterReviewerSpecialtyID AS OrigMasterReviewerSpecialtyID, ds.DateAdded AS OrigDateAdded,
-     s.ControlledByIMEC
-  INTO _tmp_DoctorSpecialty_MissingInProd
-  FROM tblDoctorSpecialty AS ds
-          LEFT OUTER JOIN _tmp_Restore_DoctorSpecialty AS resDS 
-			  ON resDS.DoctorCode = ds.DoctorCode 
-			 AND resDS.SpecialtyCode = ds.SpecialtyCode
-WHERE ds.SpecialtyCode IS NULL
+-- **********************************************************************************************************************************
 
--- *****************************************************************************************************
+     -- 7. create a backup copy of current IMECentricMaster.EWDoctorSpecialty >>> (to have a restore point)
+     SELECT * 
+     INTO IMECentricMaster.dbo._tmp_JP_DoctorSpecialty_022262025
+     FROM IMECentricMaster.dbo.EWDoctorSpecialty
 
-     -- 7. add missing item to tblDoctorSpecialty
+-- **********************************************************************************************************************************
+
+     -- 8. add missing item to tblDoctorSpecialty
+BEGIN TRY
+     BEGIN TRANSACTION IMEC14874
      INSERT INTO tblDoctorSpecialty(SpecialtyCode, DoctorCode, MasterReviewerSpecialtyID, DateEdited, UserIDEdited, 
                                     DateAdded, UserIDAdded, DoNotUse, CertificationStatus, CertificationStatusID, ExpirationDate)
           SELECT 
                resDS.SpecialtyCode, resDS.DoctorCode, NULL, GETDATE(), 'RestoreData', 
-               resDS.DateAdded, resDS.UserIDAdded, resDS.DoNotUse, resDS.CertificationStatus, resDS.CertificationStatusID, resDS.ExpirationDate
-            FROM tblDoctorSpecialty AS ds
-                    LEFT OUTER JOIN _tmp_Restore_DoctorSpecialty AS resDS 
-						 ON resDS.DoctorCode = ds.DoctorCode 
-                        AND resDS.SpecialtyCode = ds.SpecialtyCode
+               resDS.DateAdded, LEFT(resDS.UserIDAdded, 12), resDS.DoNotUse, resDS.CertificationStatus, resDS.CertificationStatusID, resDS.ExpirationDate
+            FROM _tmp_Restore_DoctorSpecialty AS resDS
+                    LEFT OUTER JOIN  tblDoctorSpecialty AS ds
+                        ON ds.DoctorCode = resDS.DoctorCode
+                        AND ds.SpecialtyCode = resDS.SpecialtyCode 
           WHERE ds.SpecialtyCode IS NULL
-     
+     COMMIT TRANSACTION IMEC14874
+END TRY
+BEGIN CATCH
+     DECLARE @RN VARCHAR(2) = CHAR(13)+CHAR(10)
+     PRINT ERROR_MESSAGE() + @RN
+     PRINT 'On line: ' + convert(nvarchar(4), ERROR_LINE()) + @RN
+     PRINT 'Rolling back transaction.'
+     ROLLBACK TRANSACTION IMEC14874
+END CATCH
 
--- *****************************************************************************************************
+
+-- **********************************************************************************************************************************
 
 /*
      -- RESET 
      DROP TABLE _tmpDoctorVerify
      DROP TABLE _tmp_Restore_DoctorSpecialty
+     
+     -- temp tables that are used as data backups
      DROP TABLE _tmp_DoctorSpecialty_MissingInProd
-     DROP TABLE _tmp_JP_DoctorSpecialty_02242025
+     DROP TABLE _tmp_JP_DoctorSpecialty_02262025
+     DROP TABLE IMECentricMaster.dbo._tmp_JP_DoctorSpecialty_022262025
 
      -- SELECT * FROM tblDoctorSpecialty where UserIDEdited = 'RestoreData'
      DELETE FROM tblDoctorSpecialty where UserIDEdited = 'RestoreData'
 */
 
--- *****************************************************************************************************
+-- **********************************************************************************************************************************
 
 
 
