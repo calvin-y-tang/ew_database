@@ -39,7 +39,8 @@ AS
 		S.ProdCode, 
 		CT.EWBusLineID, 
 		S.EWServiceTypeID,
-        WF.WcCaseTypeRqd
+        WF.WcCaseTypeRqd,
+        WF.DobRqd
     FROM
         tblServiceWorkflow AS WF
     INNER JOIN tblCaseType AS CT ON WF.CaseType=CT.Code
