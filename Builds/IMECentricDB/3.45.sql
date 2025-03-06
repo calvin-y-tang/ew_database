@@ -1,0 +1,610 @@
+﻿
+
+IF (SELECT OBJECT_ID('tempdb..#tmpErrors')) IS NOT NULL DROP TABLE #tmpErrors
+GO
+CREATE TABLE #tmpErrors (Error int)
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+GO
+BEGIN TRANSACTION
+GO
+PRINT N'Altering [dbo].[tblEWFacility]...';
+
+
+GO
+ALTER TABLE [dbo].[tblEWFacility]
+    ADD [ReportDBID] INT NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblEWTimeZone]...';
+
+
+GO
+ALTER TABLE [dbo].[tblEWTimeZone]
+    ADD [ShortDesc] VARCHAR (10) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[tblParamProperty]...';
+
+
+GO
+CREATE TABLE [dbo].[tblParamProperty] (
+    [ParamPropertyID]      INT           IDENTITY (1, 1) NOT NULL,
+    [ParamPropertyGroupID] INT           NOT NULL,
+    [LabelText]            VARCHAR (30)  NOT NULL,
+    [FieldName]            VARCHAR (30)  NOT NULL,
+    [Required]             BIT           NOT NULL,
+    [AllowedValues]        VARCHAR (200) NULL,
+    [DateAdded]            DATETIME      NOT NULL,
+    [UserIDAdded]          VARCHAR (15)  NOT NULL,
+    CONSTRAINT [PK_tblParamProperty] PRIMARY KEY CLUSTERED ([ParamPropertyID] ASC)
+);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[tblParamPropertyGroup]...';
+
+
+GO
+CREATE TABLE [dbo].[tblParamPropertyGroup] (
+    [ParamPropertyGroupID] INT          IDENTITY (1, 1) NOT NULL,
+    [Description]          VARCHAR (50) NOT NULL,
+    [LabelText]            VARCHAR (20) NOT NULL,
+    [Version]              INT          NOT NULL,
+    [DateAdded]            DATETIME     NOT NULL,
+    [UserIDAdded]          VARCHAR (15) NOT NULL,
+    CONSTRAINT [PK_tblParamPropertyGroup] PRIMARY KEY CLUSTERED ([ParamPropertyGroupID] ASC)
+);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[DF_tblParamProperty_Required]...';
+
+
+GO
+ALTER TABLE [dbo].[tblParamProperty]
+    ADD CONSTRAINT [DF_tblParamProperty_Required] DEFAULT ((0)) FOR [Required];
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[vwRptProgressiveRptWebLog]...';
+
+
+GO
+
+CREATE VIEW [dbo].[vwRptProgressiveRptWebLog]
+AS
+SELECT
+C.CaseNbr,
+C.ClaimNbr,
+EE.firstName + ' ' + EE.lastName AS Examinee,
+CDT.Description AS DocType,
+CD.Description AS DocDescrip,
+POW.DateAdded AS DateUploaded,
+CL.FirstName + ' ' + CL.LastName AS Client,
+CL.EmployeeNumber AS ClientEmployeeNumber,
+POW.DateViewed,
+DATEDIFF(DAY, POW.DateAdded, POW.DateViewed) AS Days,
+S.Description AS Service,
+CT.Description AS ClaimType,
+C.ApptDate,
+C.DoctorSpecialty,
+C.DoctorName,
+C.DateOfInjury,
+
+ CL.CompanyCode,
+dbo.fnDateValue(POW.DateAdded) AS FilterDate
+
+FROM tblCaseDocuments AS CD
+INNER JOIN tblCaseDocType AS CDT ON CDT.CaseDocTypeID = CD.CaseDocTypeID
+INNER JOIN tblPublishOnWeb AS POW ON POW.TableType='tblCaseDocuments' AND POW.TableKey=CD.SeqNo
+INNER JOIN tblClient AS CL ON POW.UserType='CL' AND POW.UserCode=CL.ClientCode
+INNER JOIN tblCase AS C ON C.CaseNbr = CD.CaseNbr
+INNER JOIN tblExaminee AS EE ON EE.ChartNbr = C.ChartNbr
+INNER JOIN tblServices AS S ON S.ServiceCode = C.ServiceCode
+INNER JOIN tblCaseType AS CT ON CT.Code = C.CaseType
+WHERE CD.CaseDocTypeID=5 OR CD.Description LIKE '%Closed Letter%'
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[fnGetBusinessDays]...';
+
+
+GO
+
+CREATE FUNCTION [dbo].[fnGetBusinessDays](@StartDate DATETIME, @EndDate DATETIME ,@startFromBusinessDay bit = 1)
+RETURNS INT 
+AS
+BEGIN
+DECLARE @BusinessDays int
+DECLARE @iNonWorkingDays int
+DECLARE @iWeekendDays int
+DECLARE @padStart int
+DECLARE @padEnd int
+
+SET @BusinessDays = 0
+
+DECLARE @newStartDate DATETIME
+DECLARE @newEndDate DATETIME
+
+if DATEDIFF(Day, @StartDate, @EndDate) > 0 
+	Begin
+
+	if @startFromBusinessDay = 1 
+		SELECT @iNonWorkingDays=count(NonWorkDay)
+		FROM tblNonWorkDays where NonWorkDay >= CONVERT(VARCHAR(10),  @StartDate, 111) and NonWorkDay <= CONVERT(VARCHAR(10),  @EndDate, 111) 
+		and DATENAME(dw, NonWorkDay)<>'Sunday' and DATENAME(dw, NonWorkDay)<>'Saturday'		
+	else
+		SELECT @iNonWorkingDays=count(NonWorkDay)
+		FROM tblNonWorkDays where NonWorkDay > CONVERT(VARCHAR(10),  @StartDate, 111) and NonWorkDay <= CONVERT(VARCHAR(10),  @EndDate, 111) 
+		and DATENAME(dw, NonWorkDay)<>'Sunday' and DATENAME(dw, NonWorkDay)<>'Saturday'		
+		
+		SELECT  @padStart = DATEPART(weekday, @StartDate), @padEnd =DATEPART(weekday,@EndDate)
+		set @padStart = @padStart-1
+		set @padEnd=7-@padEnd
+		
+		Set @newStartDate = DATEADD (DD , -@padStart , @StartDate ) 		
+		Set @newEndDate = DATEADD (DD ,  @padEnd , @EndDate ) 
+		
+
+		SELECT @iWeekendDays = (DATEDIFF(dd, @newStartDate, @newEndDate)+1)/7
+		select @iWeekendDays = @iWeekendDays *2
+		
+		if @padStart >0
+			select @iWeekendDays = @iWeekendDays -1
+		if @padEnd >0
+			select @iWeekendDays = @iWeekendDays -1		
+		if  @startFromBusinessDay = 0 and (DATENAME(dw, @StartDate) ='Sunday' or DATENAME(dw, @StartDate) ='Saturday')
+			 set @iWeekendDays = @iWeekendDays -1	
+		
+		select @BusinessDays =DATEDIFF(dd, @StartDate, @EndDate) - @iNonWorkingDays - @iWeekendDays		
+	End		
+RETURN  @BusinessDays
+END
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[proc_CancelCase]...';
+
+
+GO
+CREATE PROCEDURE [proc_CancelCase]
+(
+	@CaseNbr int
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+	DECLARE @Err int
+
+	UPDATE tblCase SET STATUS = 9 WHERE CaseNbr = @CaseNbr
+
+	SET @Err = @@Error
+
+	RETURN @Err
+END
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[proc_Info_Travelers_MgtRpt_PatchData]...';
+
+
+GO
+CREATE PROCEDURE [dbo].[proc_Info_Travelers_MgtRpt_PatchData]
+	@startDate Date,
+	@endDate Date,
+	@ewFacilityIdList VarChar(255)
+AS
+
+  print 'update results with exam and other fee amounts'
+  UPDATE TI SET 
+		TI.ExamCost = LI.FeeDetailExam, 
+		TI.OtherCosts = LI.FeeDetailOther
+  FROM ##tmp_TravelersInvoices AS TI
+	LEFT OUTER JOIN 	  
+    (select tAD.HeaderID,
+		sum(case when tEWFC.Mapping6 = 'Exam' then tAD.ExtAmountUS else 0 end) as FeeDetailExam,
+		sum(case when tEWFC.Mapping6 = 'Other' or tEWFC.Mapping6 is null then tAD.ExtAmountUS else 0 end) as FeeDetailOther
+		from tblAcctHeader as tAH
+		inner join tblAcctDetail as tAD on tAH.HeaderID = tAD.HeaderID
+		inner join tblCase as tC on tAH.CaseNbr = tC.CaseNbr
+		left outer join tblFRCategory as tFRC on (tC.CaseType = tFRC.CaseType) and (tAD.ProdCode = tFRC.ProductCode)
+		left outer join tblEWFlashCategory as tEWFC on tFRC.EWFlashCategoryID = tEWFC.EWFlashCategoryID
+		group by tAD.HeaderID
+	 ) LI on TI.HeaderID = LI.HeaderID
+
+	print 'Retrieve the most recent Report Date Viewed from the portal for each case ...'
+	UPDATE ti SET ti.ReportDateViewed = docs.DateViewed
+	  FROM ##tmp_TravelersInvoices as ti
+		INNER JOIN (
+		SELECT *
+			FROM (SELECT ROW_NUMBER() OVER (PARTITION BY cd.CaseNbr ORDER BY cd.SeqNo DESC) as ROWNUM, cd.CaseNbr, cd.SeqNo, pow.DateViewed
+					FROM tblCaseDocuments as cd
+						LEFT OUTER JOIN tblPublishOnWeb as pow on cd.SeqNo = pow.TableKey and pow.TableType = 'tblCaseDocuments'
+					WHERE (cd.CaseNbr IN (Select pr.CaseNbr FROM ##tmp_TravelersInvoices as pr))
+					AND (cd.Type = 'Report') 
+					) as tbl
+			WHERE tbl.ROWNUM = 1) AS docs ON ti.CaseNbr = docs.CaseNbr	 
+
+	print 'calculate all Turn-Around-Time Values'
+	UPDATE ti SET ti.ReferralToScheduledBusDays = [dbo].[fnGetBusinessDays](ti.ReferralDate, ti.ScheduledDate, 1)
+	  FROM ##tmp_TravelersInvoices as ti  
+
+	UPDATE ti SET 
+				ti.ReferralToMedRecsRecvdCalDays = DATEDIFF(DAY, ti.ReferralDate, ti.MedicalRecordsReceived),
+				ti.ScheduledToApptCalDays = DATEDIFF(DAY, ti.ScheduledDate, ti.ApptDate),
+				ti.ApptToReportSentCalDays = DATEDIFF(DAY, ti.ApptDate, ti.ReportSent),
+				ti.ReferralReportReceviedCalDays = DATEDIFF(DAY, ti.ReferralDate, ti.ReportDateViewed)
+	  FROM ##tmp_TravelersInvoices as ti  
+	
+	print 'remove scheduled date for NON-IME Services'
+	UPDATE ##tmp_TravelersInvoices SET ScheduledDate = NULL WHERE ProductName <> 'IME'	  
+
+	print 'update rescheduled date'
+	UPDATE ti SET ti.RescheduledApptDate = (SELECT TOP 1 ca.DateAdded from tblCaseAppt as ca WHERE ca.CaseNbr = ti.CaseNbr ORDER BY ca.CaseApptID DESC)
+	  FROM ##tmp_TravelersInvoices as ti  
+
+    print 'Return results'
+    SELECT *
+      FROM ##tmp_TravelersInvoices
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[proc_Info_Travelers_MgtRpt_QueryData]...';
+
+
+GO
+CREATE PROCEDURE [dbo].[proc_Info_Travelers_MgtRpt_QueryData]
+	@startDate Date,
+	@endDate Date,
+	@ewFacilityIdList VarChar(255)
+AS
+SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb..##tmp_TravelersInvoices') IS NOT NULL DROP TABLE ##tmp_TravelersInvoices
+print 'Gather main data set ...'
+
+
+DECLARE @xml XML
+DECLARE @delimiter CHAR(1) = ','
+SET @xml = CAST('<X>' + REPLACE(@ewFacilityIdList, @delimiter, '</X><X>') + '</X>' AS XML)
+
+print 'Facility ID List: ' + @ewFacilityIdList;
+
+SELECT
+    'ExamWorks' as VendorName,
+	ah.EWFacilityID,
+	ah.HeaderID,
+	EWF.DBID as DBID,
+	EWF.GPFacility + '-' + CAST(ah.DocumentNbr as varchar(15)) as InvoiceNo,
+	ah.DocumentDate as InvoiceDate,
+	C.CaseNbr,
+	C.ExtCaseNbr,
+	CASE WHEN ISNULL(CL.LASTNAME, '') = '' THEN ISNULL(CL.FIRSTNAME, '') ELSE CL.LASTNAME + ', ' + ISNULL(CL.FIRSTNAME, '') END AS ReferralSource,
+	BL.Name as LineOfBusiness,
+	CO.IntName as ClientSite,
+	C.ClaimNbr,	
+	CASE 
+	  WHEN ST.EWServiceTypeID = 1 THEN 'IME'
+	  WHEN ST.EWServiceTypeID IN (2,3,4,5,6,8) THEN 'PEER'
+	  ELSE ''
+	END as ProductName,
+	ISNULL(CA.SpecialtyCode, C.DoctorSpecialty) as Specialty,
+	ISNULL(D.FirstName, '') + ' ' + ISNULL(D.LastName, '') as PhysicianReviewer,
+	C.Jurisdiction,
+    C.AwaitingScheduling as ReferralDate,
+	ISNULL(CA.DateAdded, CA.DateReceived) as ScheduledDate,	
+	C.DateMedsRecd as MedicalRecordsReceived,
+	C.OrigApptTime as OrigAppt,
+	CONVERT(DATETIME, NULL) AS RescheduledApptDate,
+	CA.ApptTime as ApptDate,
+	C.RptSentDate as ReportSent,
+	CONVERT(MONEY, NULL) AS   ExamCost,
+	CONVERT(MONEY, NULL) AS   OtherCosts,
+	CASE ST.EWServiceTypeID
+		WHEN 8 THEN ST.Name
+		ELSE ''
+	END AddReExam,
+	CASE CA.ApptStatusID
+		WHEN 101 THEN 'Yes'
+		WHEN 102 THEN 'Yes'
+		ELSE 'No'
+	END NoShow,
+	CASE CA.ApptStatusID
+		WHEN 50 THEN 'Yes'
+		WHEN 51 THEN 'Yes'
+		ELSE 'No'
+	END Cancellation,
+	CASE 
+		WHEN ISNULL(C.RequestedDoc, '') <> '' THEN 'Yes'
+		WHEN ISNULL(C.RequestedDoc, '') = '' THEN 'No'
+	END DoctorRequested,
+	CONVERT(DATETIME, NULL) as ReportDateViewed,
+	CONVERT(INT, NULL) ReferralToScheduledBusDays,
+	CONVERT(INT, NULL) AS ReferralToMedRecsRecvdCalDays,
+	CONVERT(INT, NULL) as ScheduledToApptCalDays,
+	CONVERT(INT, NULL) as ApptToReportSentCalDays, 	
+    CONVERT(INT, NULL) AS ReferralReportReceviedCalDays
+INTO ##tmp_TravelersInvoices
+FROM tblAcctHeader AS AH
+	LEFT OUTER JOIN tblCase as C on ah.CaseNbr = C.CaseNbr
+	LEFT OUTER JOIN tblEmployer as EM on C.EmployerID = EM.EmployerID
+	LEFT OUTER JOIN tblClient as CL on ah.ClientCode = CL.ClientCode
+	LEFT OUTER JOIN tblCompany as CO on ah.CompanyCode = CO.CompanyCode
+	LEFT OUTER JOIN tblEWCompanyType as EWCT on CO.EWCompanyTypeID = EWCT.EWCompanyTypeID
+	LEFT OUTER JOIN tblDoctor as D on ah.DrOpCode = D.DoctorCode
+	LEFT OUTER JOIN tblExaminee as E on C.ChartNbr = E.ChartNbr
+	LEFT OUTER JOIN tblCaseType as CT on C.CaseType = CT.Code
+	LEFT OUTER JOIN tblServices as S on C.ServiceCode = S.ServiceCode
+	LEFT OUTER JOIN tblEWBusLine as BL on CT.EWBusLineID = BL.EWBusLineID
+	LEFT OUTER JOIN tblEWServiceType as ST on S.EWServiceTypeID = ST.EWServiceTypeID
+	LEFT OUTER JOIN tblOffice as O on C.OfficeCode = O.OfficeCode
+	LEFT OUTER JOIN tblEWFacility as EWF on ah.EWFacilityID = EWF.EWFacilityID
+	LEFT OUTER JOIN tblEWFacilityGroupSummary as EFGS on ah.EWFacilityID = EFGS.EWFacilityID
+	LEFT OUTER JOIN tblEWFacilityGroupSummary as MCFGS on C.EWReferralEWFacilityID = MCFGS.EWFacilityID
+	LEFT OUTER JOIN tblDocument as DOC on ah.DocumentCode = DOC.Document
+	LEFT OUTER JOIN tblUser as M on C.MarketerCode = M.UserID
+	LEFT OUTER JOIN tblEWParentCompany as PC on CO.ParentCompanyID = PC.ParentCompanyID
+	LEFT OUTER JOIN tblEWBulkBilling as BB on CO.BulkBillingID = BB.BulkBillingID
+	LEFT OUTER JOIN tblCaseAppt as CA on ISNULL(ah.CaseApptID, C.CaseApptID) = CA.CaseApptID
+	LEFT OUTER JOIN tblApptStatus as APS on ISNULL(ah.ApptStatusID, C.ApptStatusID) = APS.ApptStatusID
+	LEFT OUTER JOIN tblCanceledBy as CB on CA.CanceledByID = CB.CanceledByID
+	LEFT OUTER JOIN tblEWFeeZone as FZ on ISNULL(CA.EWFeeZoneID, C.EWFeeZoneID) = FZ.EWFeeZoneID
+	LEFT OUTER JOIN tblLanguage as LANG on C.LanguageID = LANG.LanguageID
+	LEFT OUTER JOIN tblEWInputSource as EWIS on C.InputSourceID = EWIS.InputSourceID
+	LEFT OUTER JOIN tblLocation as EL on CA.LocationCode = EL.LocationCode
+WHERE (ah.DocumentType='IN')
+      AND (ah.DocumentStatus='Final')
+	  AND (CO.ParentCompanyID = 52)
+      AND (ah.DocumentDate >= @startDate) and (ah.DocumentDate <= @endDate)
+      AND (ah.EWFacilityID in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xml.nodes( 'X' ) AS [T]( [N] )))
+ORDER BY EWF.GPFacility, ah.DocumentNbr
+
+print 'Data retrieved'
+
+SET NOCOUNT OFF
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[proc_Info_Travelers_MgtRpt]...';
+
+
+GO
+CREATE PROCEDURE [dbo].[proc_Info_Travelers_MgtRpt]
+	@startDate Date,
+	@endDate Date,
+	@ewFacilityIdList VarChar(255)
+AS
+	EXEC [dbo].[proc_Info_Travelers_MgtRpt_QueryData] @startDate, @endDate, @ewFacilityIdList
+	EXEC [dbo].[proc_Info_Travelers_MgtRpt_PatchData] @startDate, @endDate, @ewFacilityIdList
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
+GO
+IF @@TRANCOUNT>0 BEGIN
+PRINT N'The transacted portion of the database update succeeded.'
+COMMIT TRANSACTION
+END
+ELSE PRINT N'The transacted portion of the database update failed.'
+GO
+DROP TABLE #tmpErrors
+GO
+PRINT N'Update complete.';
+
+
+GO
+-- ISSUE 8047 & 7933 Allstte changes for Case and Client Forms
+--	1. Update tblEvent 
+UPDATE tblEvent SET Category = 'Client' WHERE EventID = 3001
+GO
+INSERT INTO tblEvent (EventID, Descrip, Category)
+Values(3002, 'Client Loaded', 'Client'), 
+      (1016, 'Case Data Modified', 'Case')
+GO
+-- 2. add new entries to BusinessRule tables
+DECLARE @iPKeyValue INTEGER
+INSERT INTO tblBusinessRule(Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES('DisplayClientCustomerData', 'Client', 'Display Customer Data Tab on frmClient', 1, '3002', 0, 'ParamPropertyGroupID', NULL, NULL, NULL, NULL, 0)
+SET @iPKeyValue = @@IDENTITY
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 4, 1, 1, @iPKeyValue, '2018-12-10 13:54:00.000', 'Admin', '2018-12-10 13:54:00.000', 'Admin', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL)
+GO
+
+DECLARE @iPKeyValue INTEGER
+INSERT INTO tblBusinessRule(Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES('ClientRequiredFields', 'Client', 'Define Required Fields on Client Form', 1, 3002, 0, 'FieldName1', 'FieldName2', 'FieldName3', 'FieldName4', NULL, 0)
+SET @iPKeyValue = @@IDENTITY
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES ('PC', 4, 1, 1, @iPKeyValue, '2018-12-11 15:03:00.000', 'Admin', '2018-12-11 15:03:00.000', 'Admin', NULL, NULL, NULL, NULL, 'EmployeeNumber', NULL, NULL, NULL, NULL)
+GO
+
+DECLARE @iPKeyValue INTEGER
+INSERT INTO tblBusinessRule(Name, Category, Descrip, IsActive, EventID, AllowOverride, Param1Desc, Param2Desc, Param3Desc, Param4Desc, Param5Desc, BrokenRuleAction)
+VALUES('DisplayCaseCustomerData', 'Case', 'Display Customer Data Tabpage for frmCase', 1, 1016, 0, 'TabPageControlName', 'ParamPropertyGroupID', NULL, NULL, NULL, 0)
+SET @iPKeyValue = @@IDENTITY
+INSERT INTO tblBusinessRuleCondition(EntityType, EntityID, BillingEntity, ProcessOrder, BusinessRuleID, DateAdded, UserIDAdded, DateEdited, UserIDEdited, OfficeCode, EWBusLineID, EWServiceTypeID, Jurisdiction, Param1, Param2, Param3, Param4, Param5)
+VALUES 
+	('PC', 31, 2, 1, @iPKeyValue, '2018-12-18 10:12:00.000', 'Admin', '2018-12-18 10:12:00.000', 'Admin', NULL, NULL, NULL, NULL, 'Liberty', NULL, NULL, NULL, NULL),
+	('PC', 39, 2, 1, @iPKeyValue, '2018-12-18 10:12:00.000', 'Admin', '2018-12-18 10:12:00.000', 'Admin', NULL, NULL, NULL, NULL, 'Progressive', NULL, NULL, NULL, NULL),
+	('PC', 4, 2, 1, @iPKeyValue, '2018-12-18 10:12:00.000', 'Admin', '2018-12-18 10:12:00.000', 'Admin', NULL, NULL, NULL, NULL, 'CustomerData', 2, NULL, NULL, NULL)
+GO
+
+-- 3. Populate new ParamProperty Tables
+DECLARE @iPKeyValue INTEGER
+INSERT INTO tblParamPropertyGroup(Description, LabelText, Version, DateAdded, UserIDAdded)
+VALUES('Allstate Client Customer Data', 'Allstate', 1, '2018-12-10 00:00:00.000', 'JPais')
+SET @iPKeyValue = @@IDENTITY
+INSERT INTO tblParamProperty(ParamPropertyGroupID, LabelText, FieldName, Required, AllowedValues, DateAdded, UserIDAdded)
+VALUES
+	(@iPKeyValue, 'Department', 'Department', 0, NULL, '2018-12-10 00:00:00.000', 'JPais'), 
+	(@iPKeyValue, 'MCO (Office Name)', 'MCO', 0, NULL, '2018-12-10 00:00:00.000', 'JPais'),
+	(@iPKeyValue, 'CSA', 'CSA', 0, NULL, '2018-12-10 00:00:00.000', 'JPais')
+GO
+
+DECLARE @iPKeyValue INTEGER
+INSERT INTO tblParamPropertyGroup(Description, LabelText, Version, DateAdded, UserIDAdded)
+VALUES('Allstate Case Customer Data', 'Allstate', 1, '2018-12-10 00:00:00.000', 'JPais')
+SET @iPKeyValue = @@IDENTITY
+INSERT INTO tblParamProperty(ParamPropertyGroupID, LabelText, FieldName, Required, AllowedValues, DateAdded, UserIDAdded)
+VALUES
+	(@iPKeyValue, 'Involved ID', 'InvolvedID', 0, NULL, '2018-12-10 00:00:00.000', 'JPais')
+GO

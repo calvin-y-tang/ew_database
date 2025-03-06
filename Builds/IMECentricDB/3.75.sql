@@ -1,0 +1,1596 @@
+﻿
+IF (SELECT OBJECT_ID('tempdb..#tmpErrors')) IS NOT NULL DROP TABLE #tmpErrors
+GO
+CREATE TABLE #tmpErrors (Error int)
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+GO
+BEGIN TRANSACTION
+GO
+PRINT N'Dropping [dbo].[tblCaseHistory].[IX_tblCaseHistory_FollowUpDate]...';
+
+
+GO
+DROP INDEX [IX_tblCaseHistory_FollowUpDate]
+    ON [dbo].[tblCaseHistory];
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblAcctDetail]...';
+
+
+GO
+ALTER TABLE [dbo].[tblAcctDetail]
+    ADD [FSDetailID]      INT           NULL,
+        [FeeScheduleName] VARCHAR (100) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblCaseTrans]...';
+
+
+GO
+ALTER TABLE [dbo].[tblCaseTrans]
+    ADD [FSDetailID]      INT           NULL,
+        [FeeScheduleName] VARCHAR (100) NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[tblDoctor]...';
+
+
+GO
+ALTER TABLE [dbo].[tblDoctor]
+    ADD [UseLocEmailForDaySheet] BIT CONSTRAINT [DF_tblDoctor_UseLocEmailForDaySheet] DEFAULT (0) NOT NULL;
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Creating [dbo].[tblCaseHistory].[IX_tblCaseHistory_FollowUpDate]...';
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_tblCaseHistory_FollowUpDate]
+    ON [dbo].[tblCaseHistory]([FollowUpDate] ASC)
+    INCLUDE([CaseNbr]);
+
+
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwCaseTrans]...';
+
+
+GO
+ALTER VIEW vwCaseTrans
+AS
+    SELECT  tblCaseTrans.CaseNbr ,
+            tblCaseTrans.LineNbr ,
+            tblCaseTrans.Type ,
+            tblCaseTrans.Date ,
+            tblCaseTrans.ProdCode ,
+            tblCaseTrans.CPTCode ,
+            tblCaseTrans.LongDesc ,
+            tblCaseTrans.unit ,
+            tblCaseTrans.unitAmount ,
+            tblCaseTrans.extendedAmount ,
+            tblCaseTrans.Taxable ,
+            tblCaseTrans.DateAdded ,
+            tblCaseTrans.UserIDAdded ,
+            tblCaseTrans.DateEdited ,
+            tblCaseTrans.UserIDEdited ,
+            tblCaseTrans.DrOPCode ,
+            tblCaseTrans.DrOPType ,
+            tblCaseTrans.SeqNo ,
+            tblCaseTrans.LineItemType ,
+            tblCaseTrans.Location ,
+            tblCaseTrans.UnitOfMeasureCode,
+			tblCaseTrans.CreateInvoiceVoucher,
+			tblCaseTrans.FeeCode, 
+			tblCaseTrans.FeeCodeSource, 
+			tblCaseTrans.FSDetailID,
+			tblCaseTrans.FeeScheduleName
+    FROM    tblCaseTrans
+    WHERE   HeaderID IS NULL
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwDoctorBlockTimeScheduleSummary]...';
+
+
+GO
+ALTER VIEW vwDoctorBlockTimeScheduleSummary
+AS  
+	
+	-- DEV NOTE: the result set of this view needs to match (data type & column names) 
+	--		vwDoctorScheduleSummary. These 2 views are conditionally used within the same IMEC code
+	--		 and; therefore, need to be in "sync".
+   
+	-- This grabs all of the block time appts
+	SELECT  
+		Doc.LastName ,
+		Doc.FirstName ,
+		Loc.Location ,
+		-- need to return date + "00:00" time
+		DATEADD(d, DATEDIFF(d, 0, BTDay.ScheduleDate), 0) AS Date , 
+          
+		-- DEV NOTE: IMEC only looks for Scheduled/Hold value to count as Scheduled but only when CaseNbr is present; 
+		--		"Reserved" is not considered scheduled. WHERE clause excludes late cancel/cancel appts.
+		CASE BTSlot.DoctorBlockTimeSlotStatusID
+			WHEN 22 THEN 'Hold'
+			WHEN 30 THEN 'Scheduled' -- this will include your no shows
+			ELSE 'Other'
+		END AS Status, 
+		
+		Loc.InsideDr ,
+		Doc.DoctorCode ,
+		DocOff.OfficeCode ,
+		BTDay.LocationCode , 
+          
+		-- DEV NOTE: Instead of using the Doctor.Booking value we will count the actual number
+		--		slots that have been configured for each day, but only for the first slot of each day
+		(SELECT IIF(MIN(sl.DoctorBlockTimeSlotID) = BTSlot.DoctorBlockTimeSlotID, COUNT(sl.DoctorBlockTimeSlotID), 0) 
+		   FROM tblDoctorBlockTimeSlot AS sl 
+		  WHERE sl.DoctorBlockTimeDayID = BTDay.DoctorBlockTimeDayID AND sl.StartTime = BTSlot.StartTime) AS Booking,
+		
+		-- DEV NOTE: we now a multiple rows to define each potential booking slot at the same date/time; therefore, 
+		--		we only ever have CaseNbr1 to set/process but there may be multiple rows for the same time.
+		CA.CaseNbr AS CaseNbr1 , 
+		CAST(NULL AS INT) AS CaseNbr2 , 
+		CAST(NULL AS INT) AS CaseNbr3 , 
+		CAST(NULL AS INT) AS CaseNbr4 , 
+		CAST(NULL AS INT) AS CaseNbr5 , 
+		CAST(NULL AS INT) AS CaseNbr6 , 
+		BTSlot.StartTime, 
+		LocOff.OfficeCode AS LocationOffice,
+		
+		-- new columns added to help debugging
+		CA.CaseApptID AS CaseApptID, 
+		NULL AS SchedCode, 
+		BTDay.DoctorBlockTimeDayID AS DoctorBlockTimeDayID, 
+		BTSlot.DoctorBlockTimeSlotID AS DoctorBlockTimeSlotID
+	FROM
+		tblDoctorBlockTimeDay AS BTDay
+			INNER JOIN tblDoctorBlockTimeSlot AS BTSlot ON BTSlot.DoctorBlockTimeDayID = BTDay.DoctorBlockTimeDayID
+			INNER JOIN tblDoctor AS Doc ON Doc.DoctorCode = BTDay.DoctorCode
+			INNER JOIN tblLocation AS Loc ON Loc.LocationCode = BTDay.LocationCode
+			INNER JOIN tblDoctorOffice AS DocOff ON DocOff.DoctorCode = Doc.DoctorCode 
+			INNER JOIN tbllocationoffice AS LocOff ON (LocOff.OfficeCode = DocOff.OfficeCode AND LocOff.LocationCode = Loc.LocationCode) 
+			LEFT OUTER JOIN tblCaseAppt AS CA ON CA.CaseApptID = BTSlot.CaseApptID AND (CA.ApptStatusID IN (10, 100, 101, 102)) 
+			LEFT OUTER JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = CA.CaseApptID AND CAP.DoctorBlockTimeSlotID = BTSlot.DoctorBlockTimeSlotID
+			LEFT OUTER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr AND (C.Status <> 9) 
+	WHERE   
+		(BTDay.Active = 1) 
+
+	UNION ALL
+
+	-- Which we need to UNION with the non-block time appts (include panel exam items)
+	SELECT 		
+		Doc.LastName ,
+		Doc.FirstName ,
+		Loc.Location ,
+		-- need to return date + "00:00" time
+		DATEADD(d, DATEDIFF(d, 0, CA.ApptTime), 0) AS Date , 
+		'Scheduled' AS Status, 
+		Loc.InsideDr ,
+		Doc.DoctorCode ,
+		DocOff.OfficeCode ,
+		CA.LocationCode , 
+		1 AS Booking, 
+		CA.CaseNbr AS CaseNbr1 , 
+		CAST(NULL AS INT) AS CaseNbr2 , 
+		CAST(NULL AS INT) AS CaseNbr3 , 
+		CAST(NULL AS INT) AS CaseNbr4 , 
+		CAST(NULL AS INT) AS CaseNbr5 , 
+		CAST(NULL AS INT) AS CaseNbr6 , 
+		CA.ApptTime AS StartTime,
+		LocOff.OfficeCode AS LocationOffice,
+		-- new columns added to help debugging
+		CA.CaseApptID AS CaseApptID, 
+		NULL AS SchedCode, 
+		NULL AS DoctorBlockTimeDayID, 
+		NULL AS DoctorBlockTimeSlotID
+	FROM
+		tblCaseAppt AS CA 
+			LEFT OUTER JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = CA.CaseApptID
+			INNER JOIN tblDoctor AS Doc ON Doc.DoctorCode = IIF(CAP.CaseApptID IS NULL, CA.DoctorCode, CAP.DoctorCode)
+			INNER JOIN tblLocation AS Loc ON Loc.LocationCode = CA.LocationCode
+			INNER JOIN tblDoctorOffice AS DocOff ON DocOff.DoctorCode = Doc.DoctorCode
+			INNER JOIN tbllocationoffice AS LocOff ON (LocOff.OfficeCode = DocOff.OfficeCode AND LocOff.LocationCode = Loc.LocationCode) 
+			INNER JOIN tblCase AS C ON C.CaseNbr = CA.CaseNbr
+	WHERE   
+		 ((CA.DoctorBlockTimeSlotID IS NULL AND CA.DoctorCode IS NOT NULL) OR (CAP.DoctorBlockTimeSlotID IS NULL AND CAP.CaseApptID IS NOT NULL))
+	 AND (CA.ApptStatusID IN (10, 100, 101, 102)) 
+	 AND (C.Status <> 9) 
+GO
+
+
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwDoctorScheduleSummary]...';
+
+
+GO
+ 
+ ALTER VIEW vwDoctorScheduleSummary
+AS
+	-- DEV NOTE: the result set of this view needs to match (data type & column names) 
+	--		vwDoctorBlockTimeScheduleSummary. These 2 views are conditionally used within the same IMEC code
+	--		 and; therefore, need to be in "sync".
+
+   SELECT   tblDoctor.LastName ,
+            tblDoctor.FirstName ,
+            tblLocation.Location ,
+            tblDoctorSchedule.Date ,
+            tblDoctorSchedule.Status ,
+            tblLocation.InsideDr ,
+            tblDoctor.DoctorCode ,
+            tblDoctorOffice.OfficeCode ,
+            tblDoctorSchedule.LocationCode ,
+            tblDoctor.Booking ,
+            tblDoctorSchedule.CaseNbr1 ,
+            tblDoctorSchedule.CaseNbr2 ,
+            tblDoctorSchedule.CaseNbr3 ,
+            tblDoctorSchedule.CaseNbr4 ,
+            tblDoctorSchedule.CaseNbr5 ,
+            tblDoctorSchedule.CaseNbr6 ,
+            tblDoctorSchedule.StartTime, 
+			tblLocationOffice.OfficeCode AS LocationOffice, 
+			-- new columns added to help debugging (specific to Block Time Scheduler implementation)
+			NULL AS CaseApptID, 
+			tblDoctorSchedule.SchedCode, 
+			NULL AS DoctorBlockTimeDayID, 
+			NULL AS DoctorBlockTimeSlotID
+    FROM    tblDoctorSchedule
+            INNER JOIN tblDoctor ON tblDoctorSchedule.DoctorCode = tblDoctor.DoctorCode
+            INNER JOIN tblLocation ON tblDoctorSchedule.LocationCode = tblLocation.LocationCode
+            INNER JOIN tblDoctorOffice ON tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode 
+			INNER JOIN tbllocationoffice ON (tbllocationoffice.officecode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tbllocation.LocationCode) 
+    WHERE   ( tblDoctorSchedule.Status <> 'Off' )
+GO
+
+
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwRptDoctorSchedule]...';
+
+
+GO
+ALTER VIEW vwRptDoctorSchedule
+AS
+     SELECT CA.CaseApptID AS RecID,
+            CA.DoctorCode ,            
+			CA.LocationCode ,
+            CAST(CAST(CA.ApptTime AS DATE) AS DATETIME) AS Date,
+            CA.ApptTime AS StartTime, 
+
+            C.CaseNbr , 
+			C.ExtCaseNbr , 
+            CAST(C.SpecialInstructions AS VARCHAR(1000)) AS SpecialInstructions ,
+            C.PhotoRqd ,
+            C.PanelNbr ,
+            C.DoctorName AS PanelDesc,
+            C.OfficeCode AS CaseOfficeCode,
+
+            CASE WHEN C.InterpreterRequired = 1 THEN 'Interpreter'
+                 ELSE ''
+            END AS Interpreter,
+
+            EE.FirstName + ' ' + EE.LastName AS ScheduleDesc1,
+
+			ISNULL(CT.ShortDesc, '') + ' / ' + ISNULL(S.Description, '') AS ScheduleDesc2,
+
+            CO.ExtName AS Company ,
+
+            CL.FirstName + ' ' + CL.LastName AS ClientName ,
+            CL.Phone1 AS ClientPhone ,
+
+			LO.OfficeCode as LocationOfficeCode,
+            L.Location,
+			L.Addr1,
+            L.Addr2,
+            L.City,
+            L.State,
+            L.Zip,
+            L.Phone AS LocationPhone ,
+            L.Fax AS LocationFax ,
+
+            EWF.LegalName AS CompanyName ,
+
+            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName,
+
+			ISNULL((STUFF((
+			SELECT CHAR(13) + CHAR(10) + CAST(P.Description AS VARCHAR)
+			FROM tblProblem AS P
+			INNER JOIN tblCaseProblem AS CP ON CP.ProblemCode = P.ProblemCode
+			WHERE CP.CaseNbr=C.CaseNbr
+			FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(300)'),1,1,'')),'') AS Problem
+
+    FROM    tblCaseAppt AS CA
+
+				INNER JOIN tblCase AS C ON CA.CaseApptID = C.CaseApptID
+				INNER JOIN tblExaminee AS EE on C.ChartNbr = EE.ChartNbr
+				INNER JOIN tblClient AS CL ON C.ClientCode = CL.ClientCode
+				INNER JOIN tblCompany AS CO on CL.CompanyCode = CO.CompanyCode
+				INNER JOIN tblCaseType AS CT on C.CaseType = CT.Code		
+				INNER JOIN tblServices AS S on C.ServiceCode = S.ServiceCode 
+
+				INNER JOIN tblOffice AS O ON C.OfficeCode = O.OfficeCode
+				INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
+
+				LEFT JOIN tblCaseApptPanel AS CAP ON CAP.CaseApptID = C.CaseApptID
+				INNER JOIN tblDoctor AS DR ON DR.DoctorCode = ISNULL(CA.DoctorCode, CAP.DoctorCode)
+				INNER JOIN tblLocation AS L ON CA.LocationCode = L.LocationCode
+
+				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
+				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
+
+	WHERE CA.ApptStatusID IN (10,100,101,102)
+	  AND C.Status <> 9
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[vwRptDoctorScheduleSlot]...';
+
+
+GO
+ALTER VIEW vwRptDoctorScheduleSlot
+AS
+     SELECT BTS.RecID,
+            BTD.DoctorCode,            
+			BTD.LocationCode,
+            BTD.ScheduleDate AS Date,
+			BTS.StartTime AS StartTime, 
+
+            NULL AS CaseNbr , 
+			NULL AS ExtCaseNbr , 
+            '' AS SpecialInstructions ,
+            NULL AS PhotoRqd ,
+            NULL AS PanelNbr ,
+            '' AS PanelDesc,
+            NULL AS CaseOfficeCode,
+
+            '' AS Interpreter,
+
+            BTSS.Name AS ScheduleDesc1,
+
+			'' AS ScheduleDesc2,
+
+            '' AS Company ,
+
+            '' AS ClientName ,
+            '' AS ClientPhone ,
+
+			LO.OfficeCode as LocationOfficeCode,
+            L.Location,
+			L.Addr1,
+            L.Addr2,
+            L.City,
+            L.State,
+            L.Zip,
+            L.Phone AS LocationPhone ,
+            L.Fax AS LocationFax ,
+
+            EWF.LegalName AS CompanyName ,
+
+            ISNULL(DR.FirstName, '') + ' ' + ISNULL(DR.LastName, '') + ', ' + ISNULL(DR.Credentials, '') AS DoctorName,
+
+			'' AS Problem
+
+    FROM (SELECT MAX(DoctorBlockTimeSlotID) AS RecID, MAX(DoctorBlockTimeSlotStatusID) AS DoctorBlockTimeSlotStatusID,
+		  DoctorBlockTimeDayID, StartTime FROM tblDoctorBlockTimeSlot
+		  GROUP BY DoctorBlockTimeDayID, StartTime
+		  HAVING MIN(IIF(DoctorBlockTimeSlotStatusID IN (10,22), 1, 0))=1
+		  ) AS BTS
+			INNER JOIN tblDoctorBlockTimeDay AS BTD ON BTD.DoctorBlockTimeDayID = BTS.DoctorBlockTimeDayID
+			INNER JOIN tblDoctorBlockTimeSlotStatus AS BTSS ON BTSS.DoctorBlockTimeSlotStatusID = BTS.DoctorBlockTimeSlotStatusID
+			INNER JOIN tblDoctor AS DR ON DR.DoctorCode = BTD.DoctorCode
+			INNER JOIN tblLocation AS L ON BTD.LocationCode = L.LocationCode
+
+				INNER JOIN tblDoctorOffice AS DRO ON DR.DoctorCode = DRO.DoctorCode
+				INNER JOIN tblLocationOffice AS LO ON LO.OfficeCode = DRO.OfficeCode AND LO.LocationCode = L.LocationCode
+
+				INNER JOIN tblOffice AS O ON DRO.OfficeCode = O.OfficeCode
+			INNER JOIN tblEWFacility AS EWF on O.EWFacilityID = EWF.EWFacilityID
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_Info_Generic_MgtRpt_QueryData]...';
+
+
+GO
+ALTER PROCEDURE [dbo].[proc_Info_Generic_MgtRpt_QueryData]
+	@startDate Date,
+	@endDate Date,
+	@ewFacilityIdList VarChar(255),
+	@companyCodeList VarChar(255)
+AS
+SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb..##tmp_GenericInvoices') IS NOT NULL DROP TABLE ##tmp_GenericInvoices
+print 'Gather main data set ...'
+
+
+DECLARE @xml XML
+DECLARE @xmlCompany XML
+DECLARE @delimiter CHAR(1) = ','
+SET @xml = CAST('<X>' + REPLACE(@ewFacilityIdList, @delimiter, '</X><X>') + '</X>' AS XML)
+SET @xmlCompany = CAST('<X>' + REPLACE(@companyCodeList, @delimiter, '</X><X>') + '</X>' AS XML)
+
+print 'Facility ID List: ' + @ewFacilityIdList;
+print 'Company Code List: ' + @companyCodeList;
+
+WITH SLADetailsCTE AS
+	(SELECT se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '') as SLAReason, sla.CaseNbr 
+	   FROM tblCaseSLARuleDetail as sla 
+			 LEFT OUTER JOIN tblSLAException as se on sla.SLAExceptionID = se.SLAExceptionID 
+			 INNER JOIN tblCase as c on sla.CaseNbr = c.CaseNbr 
+			 INNER JOIN tblAcctHeader as ah on c.CaseNbr = ah.CaseNbr 
+			 INNER JOIN tblClient as cli on cli.ClientCode = ah.ClientCode 
+			 INNER JOIN tblCompany as com on com.CompanyCode = cli.CompanyCode 
+	 WHERE ((LEN(se.Descrip) > 0) OR (LEN(sla.Explanation) > 0)) 
+  		  AND (AH.DocumentType = 'IN' 
+		  AND AH.DocumentStatus = 'Final' 
+		  AND AH.DocumentDate >= @startDate and AH.DocumentDate <= @endDate) 
+	 GROUP BY (se.Descrip + IIF(LEN(sla.Explanation) > 0, ' - ' + sla.Explanation, '')), sla.CaseNbr ) 
+SELECT
+  Inv.EWFacilityID,
+  Inv.HeaderID,
+  EWF.DBID as DBID,
+  EWF.GPFacility + '-' + cast(Inv.DocumentNbr as varchar(15)) as InvoiceNo,
+  Inv.DocumentDate as InvoiceDate,
+  C.CaseNbr,
+  C.ExtCaseNbr,
+  isnull(PC.Name, 'Other') as ParentCompany,
+  CO.CompanyCode as CompanyID,
+  CO.IntName as CompanyInt,
+  CO.ExtName as CompanyExt,
+  COM.IntName as CaseCompanyInt,
+  COM.ExtName as CaseCompanyExt,
+  case when isnull(CLI.LastName, '') = '' then isnull(CLI.FirstName, '') else CLI.LastName+', '+isnull(CLI.FirstName, '') end as CaseClient,
+  CO.State as CompanyState,
+  EWCT.Name as CompanyType,
+  CL.ClientCode as ClientID,
+  case when isnull(CL.LastName, '') = '' then isnull(CL.FirstName, '') else CL.LastName+', '+isnull(CL.FirstName, '') end as Client,
+  D.DoctorCode as DoctorID, 
+  D.Zip as DoctorZip,
+  CASE 
+  WHEN c.PanelNbr IS NOT NULL THEN c.DoctorName 
+  ELSE case when isnull(D.LastName, '') = '' then isnull(D.FirstName, '') else D.LastName+', '+isnull(D.FirstName, '') end
+  END as Doctor, 
+  C.DoctorReason,
+  CT.Description as CaseType,
+  BL.Name as BusinessLine,
+  ST.Name as ServiceType,
+  S.Description as Service,
+  Inv.ClaimNbr as ClaimNo,
+  C.SInternalCaseNbr as InternalCaseNbr,
+  Inv.Examinee as Examinee,
+  CASE ISNULL(C.EmployerID, 0)
+    WHEN 0 THEN E.Employer
+    ELSE EM.Name
+  END AS Employer,
+  E.DOB as "Examinee DOB",
+  E.SSN as "Examinee SSN",
+  O.ShortDesc as Office,
+  EL.Location as ExamLocationName,
+  EL.Addr1 as ExamLocationAddress1,
+  EL.Addr2 as ExamLocationAddress2,
+  EL.City as ExamLocationCity,
+  EL.State as ExamLocationState,
+  EL.Zip as ExamLocationZip,
+  cast(case when isnull(M.FirstName, '') = '' then isnull(M.LastName, isnull(C.MarketerCode, '')) else M.FirstName+' '+isnull(M.LastName, '') end as varchar(30)) as Marketer,
+  EWF.ShortName as EWFacility,
+  EFGS.RegionGroupName as Region,
+  EFGS.SubRegionGroupName as SubRegion,
+  EFGS.BusUnitGroupName as BusUnit,
+  EWF.GPFacility as GPFacility,
+  Inv.Finalized as DateFinalized,
+  Inv.UserIDFinalized as UserFinalized,
+  Inv.BatchNbr as GPBatchNo,
+  Inv.ExportDate as GPBatchDate,
+  BB.Descrip as BulkBilling,
+  DOC.Description as InvoiceDocument,
+  APS.Name as ApptStatus,
+  CB.ExtName as CanceledBy,
+  CA.Reason as CancelReason,
+  isnull(Inv.ClientRefNbr, '') as ClientRefNo,
+  isnull(CA.SpecialtyCode, C.DoctorSpecialty) as DoctorSpecialty,
+  C.DateOfInjury as InjuryDate,
+  C.ForecastDate,
+  C.Jurisdiction,
+  EWIS.Name as InputSource,
+  EWIS.Mapping1 as SedgwickSource,
+  isnull(CA.DateReceived, C.DateReceived) as DateReceived,
+  CA.DateAdded as ApptMadeDate,
+  C.OrigApptTime as OrigAppt,
+  ISNULL(inv.CaseApptID, c.CaseApptID) as CaseApptID,
+  CA.ApptTime as [ApptDate],
+  C.RptFinalizedDate,
+  C.RptSentDate,
+  case S.EWServiceTypeID
+    when 2 then C.DateMedsRecd
+    when 3 then C.DateMedsRecd
+    when 4 then C.DateMedsRecd
+    when 5 then C.DateMedsRecd
+  end as DateMedsReceived,
+  C.OCF25Date,
+  c.TATAwaitingScheduling,  
+  c.TATEnteredToAcknowledged,
+  c.TATEnteredToMRRReceived,
+  c.TATEnteredToScheduled,
+  c.TATExamToClientNotified,
+  c.TATExamToRptReceived,
+  c.TATQACompleteToRptSent,
+  c.TATReport, 
+  c.TATRptReceivedToQAComplete,
+  c.TATRptSentToInvoiced,
+  c.TATScheduledToExam,
+  c.TATServiceLifeCycle, 
+  C.DateAdded as CaseDateAdded,
+  Inv.CaseDocID,
+  case
+    when EWReferralType=0 then ''
+    when EWReferralType=1 then 'Incoming'
+    when EWReferralType=2 then 'Outgoing'
+    else 'Unknown'
+  end as MigratingClaim,
+  isnull(MCFGS.BusUnitGroupName, '') as MigratingClaimBusUnit,
+  C.PhotoRqd,
+  C.PhotoRcvd,
+  isnull(C.TransportationRequired, 0) as TransportationRequired,
+  isnull(C.InterpreterRequired, 0) as InterpreterRequired,
+  LANG.Description as Language,
+  '' as CaseIssues,
+  case C.NeedFurtherTreatment when 1 then 'Pos' else 'Neg' end as Outcome,
+  case C.IsReExam when 1 then 'Yes' else 'No' end as IsReExam,
+  isnull(FZ.Name, '') as FeeZone,
+  (select count(tCA.CaseApptID) from tblCaseAppt as tCA where C.CaseNbr = tCA.CaseNbr and tCA.CaseApptID <= CA.CaseApptID and tCA.ApptStatusID <> 50) as ApptCount,
+  (select count(tCA.CaseApptID) from tblCaseAppt as tCA where C.CaseNbr = tCA.CaseNbr and tCA.CaseApptID <= CA.CaseApptID and tCA.ApptStatusID = 101) as NSCount,
+  cast(Round(Inv.TaxTotal*Inv.ExchangeRate, 2) as Money) as TaxTotal,
+  Inv.DocumentTotalUS-cast(Round(Inv.TaxTotal*Inv.ExchangeRate, 2) as Money) as Revenue,
+  Inv.DocumentTotalUS as InvoiceTotal,
+  isnull(VO.Expense, 0) as Expense,
+  VO.VoucherCount as Vouchers,
+  VO.VoucherDateMin as VoucherDate1,
+  EWF.GPFacility + '-' + cast(VO.VoucherNoMin as varchar(15)) as VoucherNo1,
+  VO.VoucherDateMax as VoucherDate2,
+  EWF.GPFacility + '-' + cast(VO.VoucherNoMax as varchar(15)) as VoucherNo2,
+  (select count(LI.LineNbr) from tblAcctDetail as LI where LI.HeaderID = Inv.HeaderID) as LineItems,
+ STUFF((SELECT '; ' + SLAReason FROM SLADetailsCTE
+    WHERE SLADetailsCTE.CaseNbr = inv.CaseNbr
+    FOR XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '') as SLAReasons,
+  CONVERT(DATETIME, NULL) as ClaimantConfirmationDateTime,
+  CONVERT(VARCHAR(32), NULL) as ClaimantConfirmationStatus,
+  CONVERT(INT, NULL) as ClaimantCallAttempts,
+  CONVERT(DATETIME, NULL) as AttyConfirmationDateTime,
+  CONVERT(VARCHAR(32), NULL) as AttyConfirmationStatus,
+  CONVERT(INT, NULL) as AttyCallAttempts,  
+  CONVERT(MONEY, NULL) AS   FeeDetailExam,
+  CONVERT(MONEY, NULL) AS   FeeDetailBillReview,
+  CONVERT(MONEY, NULL) AS   FeeDetailPeer,
+  CONVERT(MONEY, NULL) AS   FeeDetailAdd,
+  CONVERT(MONEY, NULL) AS   FeeDetailLegal,
+  CONVERT(MONEY, NULL) AS   FeeDetailProcServ,
+  CONVERT(MONEY, NULL) AS   FeeDetailDiag,
+  CONVERT(MONEY, NULL) AS   FeeDetailNurseServ,
+  CONVERT(MONEY, NULL) AS   FeeDetailPhone,
+  CONVERT(MONEY, NULL) AS   FeeDetailMSA,
+  CONVERT(MONEY, NULL) AS   FeeDetailClinical,
+  CONVERT(MONEY, NULL) AS   FeeDetailTech,
+  CONVERT(MONEY, NULL) AS   FeeDetailMedicare,
+  CONVERT(MONEY, NULL) AS   FeeDetailOPO,
+  CONVERT(MONEY, NULL) AS   FeeDetailRehab,
+  CONVERT(MONEY, NULL) AS   FeeDetailAddRev,
+  CONVERT(MONEY, NULL) AS   FeeDetailTrans,
+  CONVERT(MONEY, NULL) AS   FeeDetailMileage,
+  CONVERT(MONEY, NULL) AS   FeeDetailTranslate,
+  CONVERT(MONEY, NULL) AS   FeeDetailAdminFee,
+  CONVERT(MONEY, NULL) AS   FeeDetailFacFee,
+  CONVERT(MONEY, NULL) AS   FeeDetailOther,
+  ISNULL(C.InsuringCompany, '') as InsuringCompany,
+  ISNULL(C.Priority, 'Normal') AS CasePriority,
+  CONVERT(DATE, C.AwaitingScheduling) as DateAwaitingScheduling,
+  CO.ParentCompanyID,
+  CONVERT(VARCHAR(32), dbo.fnGetParamValue(CD.[Param], 'ClaimUniqueId'))	AS ClaimUniqueId,
+  CONVERT(VARCHAR(32), dbo.fnGetParamValue(CD.[Param], 'CMSClaimNumber'))	AS CMSClaimNumber,
+  CONVERT(VARCHAR(8),  dbo.fnGetParamValue(CD.[Param], 'ShortVendorId'))	AS ShortVendorId,
+  CONVERT(VARCHAR(12), dbo.fnGetParamValue(CD.[Param], 'OfficeNumber'))		AS ProcessingOfficeId,
+  CONVERT(VARCHAR(32), dbo.fnGetParamValue(CD.[Param], 'ReferralUniqueId')) AS ReferralUniqueId,
+  CONVERT(VARCHAR(12), NULL) AS ClientCustomerId,
+  CONVERT(VARCHAR(128),NULL) AS ClientCustomerName
+INTO ##tmp_GenericInvoices
+FROM tblAcctHeader AS Inv
+left outer join tblCase as C on Inv.CaseNbr = C.CaseNbr
+left outer join tblEmployer as EM on C.EmployerID = EM.EmployerID
+left outer join tblClient as CL on Inv.ClientCode = CL.ClientCode		-- invoice client (billing client)
+left outer join tblCompany as CO on Inv.CompanyCode = CO.CompanyCode	-- invoice company (billing company)
+left outer join tblClient as CLI on C.ClientCode = CLI.ClientCode		-- case client
+left outer join tblCompany as COM on CLI.CompanyCode = COM.CompanyCode	-- case company
+left outer join tblEWCompanyType as EWCT on CO.EWCompanyTypeID = EWCT.EWCompanyTypeID
+left outer join tblDoctor as D on Inv.DrOpCode = D.DoctorCode
+left outer join tblExaminee as E on C.ChartNbr = E.ChartNbr
+left outer join tblCaseType as CT on C.CaseType = CT.Code
+left outer join tblServices as S on C.ServiceCode = S.ServiceCode
+left outer join tblEWBusLine as BL on CT.EWBusLineID = BL.EWBusLineID
+left outer join tblEWServiceType as ST on S.EWServiceTypeID = ST.EWServiceTypeID
+left outer join tblOffice as O on C.OfficeCode = O.OfficeCode
+left outer join tblEWFacility as EWF on Inv.EWFacilityID = EWF.EWFacilityID
+left outer join tblEWFacilityGroupSummary as EFGS on Inv.EWFacilityID = EFGS.EWFacilityID
+left outer join tblEWFacilityGroupSummary as MCFGS on C.EWReferralEWFacilityID = MCFGS.EWFacilityID
+left outer join tblDocument as DOC on Inv.DocumentCode = DOC.Document
+left outer join tblUser as M on C.MarketerCode = M.UserID
+left outer join tblEWParentCompany as PC on CO.ParentCompanyID = PC.ParentCompanyID
+left outer join tblEWBulkBilling as BB on CO.BulkBillingID = BB.BulkBillingID
+left outer join tblCaseAppt as CA on isnull(Inv.CaseApptID, C.CaseApptID) = CA.CaseApptID
+left outer join tblApptStatus as APS on isnull(Inv.ApptStatusID, C.ApptStatusID) = APS.ApptStatusID
+left outer join tblCanceledBy as CB on CA.CanceledByID = CB.CanceledByID
+left outer join tblEWFeeZone as FZ on isnull(CA.EWFeeZoneID, C.EWFeeZoneID) = FZ.EWFeeZoneID
+left outer join tblLanguage as LANG on C.LanguageID = LANG.LanguageID
+left outer join tblEWInputSource as EWIS on C.InputSourceID = EWIS.InputSourceID
+left outer join tblLocation as EL on CA.LocationCode = EL.LocationCode
+left outer join tblCustomerData as CD on C.CaseNbr = CD.TableKey AND CD.TableType = 'tblCase' 
+left outer join
+  (select
+     RelatedInvHeaderID, 
+     sum(DocumentTotalUS)-sum(cast(Round(TaxTotal*ExchangeRate, 2) as Money)) as Expense,
+     count(DocumentNbr) as VoucherCount,
+     min(DocumentDate) as VoucherDateMin,  
+     min(DocumentNbr) as VoucherNoMin,
+     max(DocumentDate) as VoucherDateMax,
+     max(DocumentNbr) as VoucherNoMax
+   from tblAcctHeader
+   where DocumentType='VO' and DocumentStatus='Final' 
+         and (DocumentDate >= @startDate and DocumentDate <= @endDate )
+   group by RelatedInvHeaderID
+  ) as VO on Inv.RelatedInvHeaderID = VO.RelatedInvHeaderID
+WHERE (Inv.DocumentType='IN')
+      AND (Inv.DocumentStatus='Final')
+      AND (Inv.DocumentDate >= @startDate) and (Inv.DocumentDate <= @endDate)
+      AND (inv.EWFacilityID in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xml.nodes( 'X' ) AS [T]( [N] )))
+      AND (((LEN(ISNULL(@companyCodeList, 0)) > 0 AND CO.ParentCompanyID in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xmlCompany.nodes( 'X' ) AS [T]( [N] ))))
+			OR (LEN(ISNULL(@companyCodeList, 0)) = 0 AND CO.ParentCompanyID > 0))
+
+ORDER BY EWF.GPFacility, Inv.DocumentNbr
+
+print 'Data retrieved'
+
+SET NOCOUNT OFF
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_Info_Progressive_MgtRpt_QueryData]...';
+
+
+GO
+ALTER PROCEDURE [dbo].[proc_Info_Progressive_MgtRpt_QueryData]
+	@startDate Date,
+	@endDate Date,
+	@ewFacilityIdList VarChar(255)
+AS
+DECLARE @xml XML
+DECLARE @delimiter CHAR(1) = ','
+SET @xml = CAST('<X>' + REPLACE(@ewFacilityIdList, @delimiter, '</X><X>') + '</X>' AS XML)
+
+print 'Executing main query ...';
+
+WITH OtherDetailCTE AS (
+  SELECT C.CaseNbr, AD.LongDesc
+    FROM tblCase as C
+		inner join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'
+		inner join tblAcctDetail as AD on AH.HeaderID = AD.HeaderID
+		inner join tblProduct as P on P.ProdCode = AD.ProdCode
+		inner join tblFRCategory as FRC on C.CaseType = FRC.CaseType and AD.ProdCode = FRC.ProductCode
+		inner join tblEWFlashCategory as EWFC on FRC.EWFlashCategoryID = EWFC.EWFlashCategoryID
+   WHERE ISNULL(EWFC.Mapping5, 'Other') = 'Other'
+)
+SELECT 
+  EWF.DBID,
+  EWF.EWFacilityID,
+  EWF.ShortName as EWFacility,
+  EFGS.RegionGroupName as Region,
+  EFGS.SubRegionGroupName as SubRegion,
+  EFGS.BusUnitGroupName as BusUnit,
+  C.Jurisdiction,
+  EWF.GPFacility + '-' + cast(AH.DocumentNbr as varchar(15)) as InvoiceNbr,
+  convert(datetime, AH.DocumentDate, 101) as InvoiceDate,
+  C.CaseNbr,
+  C.ExtCaseNbr,
+  CO.IntName as Company,
+  cast('' as varchar(1)) as Contracted,
+  cast('' as varchar(1)) as InNetwork,
+  L.City as ExamCity,
+  L.State as ExamState,
+  BL.Name AS BusinessLine,
+  C.ClaimNbr as ClaimNumber,
+  C.ClaimNbrExt as "FeatureNumber",
+  E.FirstName as ExamineeFirstName,
+  E.LastName as ExamineeLastName,
+  case 
+    when S.ShortDesc = 'EMCR' then 'EMC Peer Review' 
+    when S.Description like '%clarification%' then 'Clarification'
+    when S.EWServiceTypeID in (2,3,4,5) then 'Peer Review'
+    when S.EWServiceTypeID in (8,9) then 'Addendum'
+    else ST.Name
+  end as ServiceType,
+  S.Description as Service,
+  case
+    when AH.ApptStatusID is null then isnull(CA.SpecialtyCode, C.DoctorSpecialty)
+    else AHCA.SpecialtyCode
+  end as DoctorSpecialty,
+  C.DateOfInjury as InjuryDate,
+  case
+    when AH.ApptStatusID is not null then AHAS.Name
+    when C.[Status] = 9 then 'Canceled'
+    when C.RptSentDate is not null then 'Report Sent'
+    when isnull(CA.ApptTime, C.ApptTime) is not null then 'Appt Letter Sent'
+    else 'Pending'
+  end as [Status],
+  case when C.[Status] in (8, 9) then 'Closed' else 'Open' end as OpenClosedStatus,
+  case
+    when AH.ApptStatusID is null then isnull(CA.DateReceived, C.DateReceived)
+    else AHCA.DateReceived
+  end as DateReceived,
+  case
+    when AH.ApptStatusID is null then convert(datetime, isnull(CA.ApptTime, C.ApptTime), 101)
+    else convert(datetime, AHCA.ApptTime, 101)
+  end as ExamDate,
+  case
+    when AH.ApptStatusID is null then isnull(C.RptSentDate, AH.Finalized)
+    else cast(null as datetime)
+  end as RptSentDate,
+ C.TATAwaitingScheduling,
+ C.TATCalculationGroupID,
+ C.TATEnteredToAcknowledged,
+ C.TATEnteredToMRRReceived,
+ C.TATEnteredToScheduled,
+ C.TATExamToClientNotified,
+ C.TATExamToRptReceived,
+ C.TATQACompleteToRptSent,
+ C.TATReport,
+ C.TATRptReceivedToQAComplete,
+ C.TATRptSentToInvoiced,
+ C.TATScheduledToExam,
+ C.TATServiceLifeCycle,
+ convert(varchar(12), null) as "InjuryToExam",
+ convert(varchar(12), null) as "InjuryToReportSent",
+ convert(varchar(8), null) as "Hours",
+  case S.EWServiceTypeID
+    when 2 then C.DateMedsRecd
+    when 3 then C.DateMedsRecd
+    when 4 then C.DateMedsRecd
+    when 5 then C.DateMedsRecd
+  end as DateMedsReceived,
+  case when C.DefenseAttorneyCode is null and C.PlaintiffAttorneyCode is null then 'No' else 'Yes' end as Attorney,
+  case
+    when AH.ApptStatusID is null then D.FirstName
+    else AHD.FirstName
+  end as DoctorFirstName,
+  case
+    when AH.ApptStatusID is null then D.LastName
+    else AHD.LastName
+  end as DoctorLastName,
+  case 
+	when cb.ExtName = 'Attorney' then 'Attorney'
+	when (cb.ExtName = 'Examinee' or ca.ApptStatusID = 102) then 'Patient'
+	when cb.ExtName = 'Client' then 'Adjuster'
+	when cb.ExtName = 'Doctor' then 'Doctor'	
+  end as "CanceledBy",
+  
+  case when AH.DocumentNbr is null then 'No' else 'Yes' end as Invoiced,
+  [FeeAmount],
+  [No Show],
+  [Late Canceled],
+  [Interpret],
+  [Trans],
+  [Diag],
+  [BillReview],
+  [PeerReview],
+  [Addendum],
+  [Legal],
+  [Processing],
+  [Nurse],
+  [PhoneConf],
+  [MSA],
+  [Clinical],
+  [Tech],
+  [Medicare],
+  [OPO],
+  [Rehab],
+  [AddReview],
+  [AdminFee],
+  [FacFee],
+  [Other],
+  stuff((select '; '+LongDesc from OtherDetailCTE
+         where OtherDetailCTE.CaseNbr=C.CaseNbr
+         for XML path(''), type, root).value('root[1]', 'varchar(max)'), 1, 2, '') as OtherDetail,
+  AH.DocumentTotal,
+  CL.FirstName as ClientFirstName,
+  CL.LastName as ClientLastName,
+  Q.StatusDesc as QueueStatus,
+  CAS.Name as ApptStatus,
+  AHAS.Name as InvApptStatus,
+  CONVERT(VARCHAR(4096), NULL) AS SLAExceptions,
+  AH.HeaderID,
+  CONVERT(DATETIME, NULL) AS "FirstNoShow",
+  CONVERT(MONEY, NULL) AS FirstNoShowAmount,
+  CONVERT(DATETIME, NULL) AS "SecondNoShow",
+  CONVERT(MONEY, NULL) AS SecondNoShowAmount,
+  CONVERT(DATETIME, NULL) AS "ThirdNoShow",
+  CONVERT(MONEY, NULL) AS ThirdNoShowAmount,
+  CONVERT(DATETIME, NULL) AS "ReportRetrievalDate",
+  AHCA.DateAdded as ScheduledDate,
+  CONVERT(VARCHAR(64), NULL) as FeeQuoteAmount  
+INTO ##tmpProgessiveMgtRpt
+FROM tblCase as C
+left outer join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'
+left outer join
+(
+  select Pvt.*
+  from (
+    select
+      AD.HeaderID,
+      isnull(case when EWFC.Mapping5 = 'FeeAmount' and AH.ApptStatusID in (51,102) then 'Late Canceled'
+                  when EWFC.Mapping5 = 'FeeAmount' and AH.ApptStatusID = 101 then 'No Show'
+                  else EWFC.Mapping5 end, 'Other') as FeeColumn,
+      AD.ExtendedAmount	
+    from tblCase as C
+    inner join tblAcctHeader as AH on C.CaseNbr = AH.CaseNbr and AH.DocumentStatus = 'Final' and AH.DocumentType = 'IN'
+    inner join tblAcctDetail as AD on AH.HeaderID = AD.HeaderID
+    inner join tblProduct as P on P.ProdCode = AD.ProdCode
+    inner join tblCaseType as CT on C.CaseType = CT.Code
+    inner join tblFRCategory as FRC on C.CaseType = FRC.CaseType and AD.ProdCode = FRC.ProductCode
+    inner join tblEWFlashCategory as EWFC on FRC.EWFlashCategoryID = EWFC.EWFlashCategoryID
+    left outer join tblApptStatus as A on A.ApptStatusID = AH.ApptStatusID
+  ) as tmp
+  pivot
+  (
+    sum(ExtendedAmount) --aggregrate function that give the value for the columns from FeeColumn
+    for FeeColumn in (  --list out the values in FeeColumn that need to be a column
+      [FeeAmount],
+      [No Show],
+      [Late Canceled],
+      [Interpret],
+      [Trans],
+      [Diag],
+      [BillReview],
+      [PeerReview],
+      [Addendum],
+      [Legal],
+      [Processing],
+      [Nurse],
+      [PhoneConf],
+      [MSA],
+      [Clinical],
+      [Tech],
+      [Medicare],
+      [OPO],
+      [Rehab],
+      [AddReview],
+      [AdminFee],
+      [FacFee],
+      [Other])
+  ) as Pvt
+) as FT on FT.HeaderID = AH.HeaderID
+	left outer join tblExaminee as E on C.ChartNbr = E.ChartNbr
+	left outer join tblClient as CL on C.ClientCode = CL.ClientCode
+	left outer join tblCompany as CO on CL.CompanyCode = CO.CompanyCode
+	left outer join tblCaseAppt as CA on C.CaseApptID = CA.CaseApptID
+	left outer join tblApptStatus as CAS on isnull(CA.ApptStatusID, C.ApptStatusID) = CAS.ApptStatusID
+	left outer join tblLocation as L on isnull(CA.LocationCode, C.DoctorLocation) = L.LocationCode
+	left outer join tblDoctor as D on isnull(CA.DoctorCode, C.DoctorCode) = D.DoctorCode
+	left outer join tblCaseAppt as AHCA on AH.CaseApptID = AHCA.CaseApptID
+	left outer join tblApptStatus as AHAS on AHCA.ApptStatusID = AHAS.ApptStatusID
+	left outer join tblDoctor as AHD on AHCA.DoctorCode = AHD.DoctorCode
+	left outer join tblServices as S on C.ServiceCode = S.ServiceCode
+	left outer join tblEWServiceType as ST on S.EWServiceTypeID = ST.EWServiceTypeID
+	left outer join tblCaseType as CT on C.CaseType = CT.Code
+	left outer join tblEWBusLine as BL on CT.EWBusLineID = BL.EWBusLineID
+	left outer join tblOffice as O on C.OfficeCode = O.OfficeCode
+	left outer join tblEWFacility as EWF on O.EWFacilityID = EWF.EWFacilityID
+	left outer join tblEWFacilityGroupSummary as EFGS on O.EWFacilityID = EFGS.EWFacilityID
+	left outer join tblQueues as Q on C.Status = Q.StatusCode
+	left outer join tblCanceledBy as cb on isnull(ca.CanceledByID, c.CanceledByID) = cb.CanceledByID
+WHERE (C.DateAdded >= @startDate and C.DateAdded <= @endDate)
+      and (CO.ParentCompanyID = 39)
+      and (O.EWFacilityID in (SELECT [N].value( '.', 'varchar(50)' ) AS value FROM @xml.nodes( 'X' ) AS [T]( [N] )))
+      and (not (C.[Status] = 9 and AH.HeaderID is null))
+      and (not (C.[Status] = 8 and AH.HeaderID is null and D.DoctorCode is null))
+      and (not (S.EWServiceTypeID in (6, 999)))
+ORDER BY EFGS.BusUnitSeqNo, C.Jurisdiction, S.Description, C.DateAdded, C.CaseNbr,
+         CASE
+           WHEN AH.ApptStatusID is null then convert(datetime, isnull(CA.ApptTime, C.ApptTime), 101)
+           ELSE convert(datetime, AHCA.ApptTime, 101)
+         END
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_Doctor_GetDaySheetData]...';
+
+
+GO
+ALTER PROC proc_Doctor_GetDaySheetData
+	@fromDate datetime,
+	@toDate datetime,
+	@office int,
+	@casetype int, 
+	@doctor int,
+	@location int,
+	@alloffices int,
+	@userid varchar(15)
+as
+begin
+	
+	----------------------------------------------------------------------------------------
+	--Paramter preparation
+	----------------------------------------------------------------------------------------
+	if @alloffices is null or @alloffices < 0
+	begin
+		set @alloffices = -1;
+	end
+
+	if @userid is null 
+	begin
+		set @userid = '';
+	end
+
+	if object_id('tempdb..#appts') is not null drop table #appts;   
+
+	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
+
+	----------------------------------------------------------------------------------------
+	--Primary dataset using tblDoctorSchedule the old way into temp table
+	----------------------------------------------------------------------------------------
+	select 
+			tblCaseAppt.CaseNbr,
+			tblCaseAppt.CaseApptID,		
+			ISNULL(tblCaseApptPanel.DoctorCode, tblCaseAppt.DoctorCode) AS DoctorCode,
+			tblCaseAppt.LocationCode,		
+			CAST(CAST(tblCaseAppt.ApptTime AS DATE) AS DATETIME) as ApptDate,
+			tblCaseAppt.ApptTime as ApptDateTime,
+			stuff(replace(right(convert(varchar(19), tblCaseAppt.ApptTime, 0), 7), ' ', '0'), 6, 0, ' ') as ApptTime		
+
+		into #appts		
+
+		FROM tblCaseAppt with (nolock)
+		LEFT OUTER JOIN tblCaseApptPanel WITH (NOLOCK) ON tblCaseApptPanel.CaseApptID = tblCaseAppt.CaseApptID
+
+		WHERE 					
+			(tblCaseAppt.ApptTime >= @fromDate and tblCaseAppt.ApptTime < DATEADD(day,1,@toDate))			
+			and tblCaseAppt.ApptStatusID IN (10,
+
+			--This is for backward compatiblity
+			--to include all the no show/show/unable to exam appts.
+			--Suppose they should not be needed on the day sheet report since that is for the doctor office
+			--to know the upcoming appts.
+			100,101,102
+			------------------------------------
+
+			)
+			
+	;
+
+	SELECT #appts.*,
+			tblLocation.Location,
+			(rtrim(tblLocation.Addr1 + ' ' + isnull(tblLocation.Addr2, '')) +  ', ' + tblLocation.City + ' ' + tblLocation.State + ' ' + tblLocation.Zip) as DoctorAddress,				
+			ISNULL(tblDoctor.FirstName, '') + ' ' + ISNULL(tblDoctor.LastName, '') + ', ' + ISNULL(tblDoctor.Credentials, '') as DoctorName,		
+			(case 
+				when tblDoctor.UseLocEmailForDaySheet = 1 AND ltrim(rtrim(isnull(tblLocation.Email, ''))) <> '' then tblLocation.Email
+				when ltrim(rtrim(isnull(tblDoctor.DaysheetEmailAddr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetEmailAddr)) 
+				when ltrim(rtrim(tblDoctor.EmailAddr)) <> '' then ltrim(rtrim(tblDoctor.EmailAddr)) 
+				else null end) as DoctorEmail,		
+			tblLocation.Phone as LocationPhone,
+			(case 
+				when ltrim(rtrim(isnull(tblDoctor.DaysheetFaxNbr, ''))) <> '' then ltrim(rtrim(tblDoctor.DaysheetFaxNbr)) 
+				when ltrim(rtrim(isnull(tblLocation.Fax, ''))) <> '' then ltrim(rtrim(tblLocation.Fax)) 
+				else null end) as LocationFax,
+			tblLocation.ContactLast,
+			tblLocation.ContactFirst,
+			tblLocation.ExtName as LocationExtName,
+			tblLocationOffice.OfficeCode as LocationOffice, 
+			tblDoctorOffice.OfficeCode as DoctorOffice,
+			tblCase.OfficeCode, 
+			tblCase.ExtCaseNbr
+
+		into #daysheetdata		
+		FROM #appts
+		INNER JOIN tblCase WITH (NOLOCK) ON tblCase.CaseApptID = #appts.CaseApptID
+		inner join tblDoctor with (nolock) on #appts.DoctorCode = tblDoctor.DoctorCode	
+		inner join tblLocation with (nolock) on #appts.LocationCode = tblLocation.LocationCode 
+			inner join tblDoctorOffice with (nolock) on tblDoctor.DoctorCode = tblDoctorOffice.DoctorCode
+			inner join tblLocationOffice with (nolock) on tblLocationOffice.OfficeCode = tblDoctorOffice.OfficeCode AND tblLocationOffice.LocationCode = tblLocation.LocationCode	
+		WHERE tblDoctor.DoctorCode = (COALESCE(NULLIF(@doctor, '-1'), tblDoctor.DoctorCode))
+			and tblLocation.LocationCode = (COALESCE(NULLIF(@location, '-1'), tblLocation.LocationCode))
+
+			--This is for backward compatiblity
+			--the old report include all the show/noShow appts, except those canceled case
+			--That was done by design, but simply due to the old data structure that it could not tell
+			AND tblCase.Status<>9
+			------------------------------------
+	;
+
+	----------------------------------------------------------------------------------------
+	--Filter the temp table from above base on Office selection in CTE
+	----------------------------------------------------------------------------------------
+	with
+	ddata as (
+
+		select 
+			distinct 
+			CaseApptID, OfficeCode, DoctorCode, LocationCode, Location, DoctorAddress, CaseNbr, ExtCaseNbr, ApptDate, ApptDateTime, ApptTime,  
+			DoctorName, DoctorEmail, LocationPhone, LocationFax, ContactLast, ContactFirst, LocationExtName
+		from #daysheetdata
+		where 
+		(1=1 and 
+				--// favorites
+				(
+					1 = (case when @alloffices = 0 then 1 else 0 end) 
+					and	OfficeCode in (select distinct OfficeCode from tblUserOffice where UserID = @userid)
+					and LocationOffice in (select distinct OfficeCode from tblUserOffice where UserID = @userid) 
+					and DoctorOffice in (select distinct OfficeCode from tblUserOffice where UserID = @userid)
+				)
+
+				or
+
+				----// default
+				(
+					2 = (case when @alloffices = -1 then 2 else 0 end) 
+					and	OfficeCode = @office
+					and LocationOffice = @office 
+					and DoctorOffice = @office
+				)
+
+				or
+			
+				----// all offices
+				(
+					3 = (case when @alloffices = 1 then 3 else 0 end) 						
+				)
+		)
+
+	)
+
+	----------------------------------------------------------------------------------------
+	--Execute the actual query by joining the CTE (from temp table) to other tables for all the column outputs
+	----------------------------------------------------------------------------------------
+	select 
+		d.*,
+		tblOffice.ShortDesc as OfficeName,
+		tblExaminee.FirstName + ' ' + tblExaminee.LastName as Examinee,
+		tblCaseType.Description as CaseType,
+		tblCaseType.ExternalDesc as CaseTypeShort,
+		tblServices.Description as [Service],
+		tblServices.ShortDesc as [ServiceShort],
+		tblCase.DoctorSpecialty as Specialty,
+		(tblServices.ShortDesc + ' / ' + tblCase.DoctorSpecialty) as ServiceSpecialty,		
+		(case when tblCase.PhotoRqd is not null and tblCase.PhotoRqd = 1 then convert(bit, 1) else convert(bit, 0) end) as PhotoRequired,
+		(case when tblCase.InterpreterRequired = 1 then 'Interpreter' else '' end) as Interpreter,
+		(case when tblCase.LanguageID > 0 then tblLanguage.Description else '' end) as [InterpreterLanguage],
+		(case when (select top 1 [Type] from tblRecordHistory with (nolock) where [Type] = 'F' and CaseNbr = tblCase.CaseNbr) = 'F' then 'Films' else '' end) as Comments,
+		tblEWFacility.Logo as LogoURL
+	from ddata d
+			inner join tblCase with (nolock) on tblCase.CaseNbr = d.CaseNbr
+			inner join tblClient with (nolock) on tblCase.ClientCode = tblClient.ClientCode
+			inner join tblCompany with (nolock) on tblClient.CompanyCode = tblCompany.CompanyCode
+			inner join tblOffice with (nolock) on tblCase.OfficeCode = tblOffice.OfficeCode
+			inner join tblEWFacility with (nolock) on tblOffice.EWFacilityID = tblEWFacility.EWFacilityID
+			inner join tblServices with (nolock) on tblCase.ServiceCode = tblServices.ServiceCode 
+			inner join tblExaminee with (nolock) on tblCase.ChartNbr = tblExaminee.ChartNbr
+			inner join tblCaseType with (nolock) on tblCase.CaseType = tblCaseType.Code		
+			left outer join tblLanguage with (nolock) on tblLanguage.LanguageID = tblcase.LanguageID
+	;
+
+	----------------------------------------------------------------------------------------
+	--Cleanup
+	----------------------------------------------------------------------------------------
+	if object_id('tempdb..#daysheetdata') is not null drop table #daysheetdata;   
+	if object_id('tempdb..#appts') is not null drop table #appts;   
+
+end
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_IMEException]...';
+
+
+GO
+ALTER PROCEDURE proc_IMEException
+    @ExceptionID INT ,
+    @OfficeCode INT ,
+    @CaseTypeCode INT ,
+    @ServiceCode INT ,
+    @StatusCode INT ,
+    @EnterLeave INT ,
+    @CaseNbr INT, 
+	@SLARuleDetailID INT
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+    DECLARE @Err INT;
+
+	-- DEV NOTE: Changed this to be a SELECT DISTINCT when the SLA tables were added to this.
+	--	the problem is with tblSLARuleDetail because that will have multiple items for each SLA Rule.
+	--	Just need to keep this point in mind when making any future changes to this stored procedure.
+
+    SELECT  DISTINCT 
+		ED.ExceptionDefID, 
+		ED.Description, 
+		ED.Entity, 
+		ED.IMECentricCode,
+		ED.ExceptionID, 
+		ED.CaseTypeCode, 
+		ED.ServiceCode, 
+		ED.StatusCodeValue, 
+		ED.DisplayMessage, 
+		ED.RequireComment, 
+		ED.EmailMessage,
+		ED.EditEMail, 
+		ED.GenerateDocument, 
+		CAST(ED.Message AS VARCHAR(MAX)) AS Message, 
+		ED.EmailScheduler, 
+		ED.EmailQA, 
+		ED.EmailOther, 
+		ED.EmailSubject, 
+		CAST(ED.EmailText AS VARCHAR(MAX)) AS EmailText, 
+		ED.Document1, 
+		ED.Document2, 
+		ED.Status,
+		ED.DateAdded, 
+		ED.UserIDAdded, 
+		ED.DateEdited, 
+		ED.UserIDEdited, 
+		ED.UseBillingEntity, 
+		ED.AllOffice, 
+		ED.CreateCHAlert,
+		ED.CHEventDesc,
+		ED.ChOtherInfo,
+		ED.AllEWServiceType, 
+		ED.AllCaseType, 
+		ED.AllService, 
+		ED.AllSLARuleDetail,
+		ED.BillingEntity,
+		ISNULL(C.CaseNbr, -1) AS CaseNbr ,
+		CL.ClientCode ,
+		CO.ParentCompanyID ,
+		CL.CompanyCode ,
+		C.DoctorCode ,
+		C.PlaintiffAttorneyCode ,
+		C.DefenseAttorneyCode ,
+		C.DefParaLegal ,
+		BCL.ClientCode AS BillClientCode ,
+		BCO.ParentCompanyID AS BillParentCompanyID ,
+		BCL.CompanyCode AS BillCompanyCode
+    FROM    tblExceptionDefinition AS ED
+            LEFT OUTER JOIN tblCase AS C ON C.CaseNbr = @CaseNbr
+            LEFT OUTER JOIN tblClient AS CL ON CL.ClientCode = C.ClientCode
+            LEFT OUTER JOIN tblCompany AS CO ON CL.CompanyCode = CO.CompanyCode
+            LEFT OUTER JOIN tblClient AS BCL ON BCL.ClientCode = ISNULL(C.BillClientCode, C.ClientCode)
+            LEFT OUTER JOIN tblCompany AS BCO ON BCO.CompanyCode = BCL.CompanyCode
+			LEFT OUTER JOIN tblEmployer AS ER ON ER.EmployerID = C.EmployerID
+			LEFT OUTER JOIN tblEWParentEmployer AS PE ON PE.EWParentEmployerID = ER.EWParentEmployerID
+			LEFT OUTER JOIN tblSLARule AS  SLA ON SLA.SLARuleID = C.SLARuleID 
+			LEFT OUTER JOIN tblSLARuleDetail AS SLADET ON SLADET.SLARuleID = SLA.SLARuleID 
+    WHERE   ED.Status = 'Active' AND ED.ExceptionID = @ExceptionID
+			AND
+			(
+				( ED.Entity = 'CA' 
+					AND C.CaseNbr IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+				)
+				OR
+				( ED.Entity = 'CS'
+	                OR ( ED.Entity = 'PC'
+	                    AND ( CO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND (ISNULL(ED.BillingEntity, 0) = 1 OR ISNULL(ED.BillingEntity, 0) = 3)
+	                        
+	                    OR  BCO.ParentCompanyID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND (ISNULL(ED.BillingEntity, 0) = 2 OR ISNULL(ED.BillingEntity, 0) = 3)
+	                        )
+	                    )
+	                OR ( ED.Entity = 'CO'
+	                    AND ( CL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND (ISNULL(ED.BillingEntity, 0) = 1 OR ISNULL(ED.BillingEntity, 0) = 3)
+	                        
+	                    OR  BCL.CompanyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND (ISNULL(ED.BillingEntity, 0) = 2 OR ISNULL(ED.BillingEntity, 0) = 3)
+	                        )
+	                    )
+	                OR ( ED.Entity = 'CL'
+	                    AND ( CL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                            AND (ISNULL(ED.BillingEntity, 0) = 1 OR ISNULL(ED.BillingEntity, 0) = 3)
+	                       
+	                    OR  BCL.ClientCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        AND (ISNULL(ED.BillingEntity, 0) = 2 OR ISNULL(ED.BillingEntity, 0) = 3)
+	                        )
+	                    )
+	                OR ( ED.Entity = 'DR'
+	        			AND ( C.DoctorCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	                OR ( ED.Entity = 'AT'
+	                    AND ( C.PlaintiffAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                    
+						OR C.DefenseAttorneyCode IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID)
+	                        )
+	                    )
+	                OR ( ED.Entity = 'PE'
+	                    AND ( ER.EWParentEmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	                OR ( ED.Entity = 'ER'
+	                    AND ( C.EmployerID IN (SELECT IMECentricCode FROM tblExceptionDefEntity WHERE ExceptionDefID=ED.ExceptionDefID) )
+	                    )
+	            )
+			)
+            AND ( ED.AllOffice = 1
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = C.OfficeCode )
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefOffice WHERE OfficeCode = @OfficeCode )
+                )
+            AND ( ED.AllCaseType = 1
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = C.CaseType )
+				    OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefCaseType WHERE CaseTypeCode = @CaseTypeCode )
+                )
+            AND 
+				( ED.AllService = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefService WHERE ServiceCode = @ServiceCode )
+				)
+			AND
+				( ED.AllEWServiceType = 1
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = C.ServiceCode )
+					OR ED.ExceptionDefID IN (SELECT ExceptionDefID FROM tblExceptionDefEWServiceType AS tEWS
+										INNER JOIN tblServices AS tS ON tEWS.EWServiceTypeID = tS.EWServiceTypeID 
+										WHERE tS.ServiceCode = @ServiceCode )
+				)
+            AND ( ( ED.StatusCode = -1
+                    AND ( ED.ExceptionID <> 18
+                            OR ISNULL(ED.StatusCodeValue, 1) = @EnterLeave
+                        )
+                    )
+                    OR ( ED.StatusCode = @StatusCode
+                        AND ED.StatusCodeValue = @EnterLeave
+                        )
+                )
+			AND 
+				( ED.AllSLARuleDetail = 1
+					OR SLADET.SLARuleDetailID IN (SELECT SLARuleDetailID 
+					                                FROM tblExceptionDefSLARuleDetail 
+												   WHERE SLARuleDetailID = @SLARuleDetailID 
+												     AND ExceptionDefID = ED.ExceptionDefID)
+				)
+
+    SET @Err = @@Error;
+
+    RETURN @Err;
+END;
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+PRINT N'Altering [dbo].[proc_Info_Progressive_MgtRpt_PatchData]...';
+
+
+GO
+ALTER PROCEDURE [dbo].[proc_Info_Progressive_MgtRpt_PatchData]
+AS
+
+print 'Retrieve the SLA reason'
+ UPDATE T SET  
+  T.SLAExceptions=(STUFF((SELECT ', ' + RTRIM(StartDate.Descrip) + ' to '+ RTRIM(EndDate.Descrip) + ': ' + CAST(RTRIM(SE.Descrip) + IIF(LEN(CSRD.Explanation) = 0, '', ': ') + RTRIM(ISNULL(CSRD.Explanation,'')) AS VARCHAR(4096))
+ FROM tblCaseSLARuleDetail AS CSRD
+	 INNER JOIN tblSLAException AS SE ON SE.SLAExceptionID = CSRD.SLAExceptionID
+	 INNER JOIN tblSLARuleDetail AS SRD ON SRD.SLARuleDetailID = CSRD.SLARuleDetailID
+	 INNER JOIN tblSLARule AS SR ON SR.SLARuleID = SRD.SLARuleID
+	 LEFT OUTER JOIN tblTATCalculationMethod AS CalcMeth ON CalcMeth.TATCalculationMethodID = SRD.TATCalculationMethodID
+	 LEFT OUTER JOIN tblDataField AS StartDate ON StartDate.DataFieldID = CalcMeth.StartDateFieldID
+	 LEFT OUTER JOIN tblDataField AS EndDate ON EndDate.DataFieldID = CalcMeth.EndDateFieldID 
+	 LEFT OUTER JOIN tblDataField AS TATDate ON TATDate.DataFieldID = CalcMeth.TATDataFieldID
+  WHERE T.CaseNbr = CSRD.CaseNbr
+  FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'varchar(4096)'),1,2,''))
+  FROM ##tmpProgessiveMgtRpt as T
+
+
+print 'Retrieve the most recent Report Date Viewed from the portal for each case ...'
+UPDATE pmr SET pmr.ReportRetrievalDate = docs.DateViewed
+  FROM ##tmpProgessiveMgtRpt as pmr
+	INNER JOIN (
+SELECT *
+		FROM (SELECT ROW_NUMBER() OVER (PARTITION BY cd.CaseNbr ORDER BY cd.SeqNo DESC) as ROWNUM, cd.CaseNbr, cd.SeqNo, pow.DateViewed
+				FROM tblCaseDocuments as cd
+					LEFT OUTER JOIN tblPublishOnWeb as pow on cd.SeqNo = pow.TableKey and pow.TableType = 'tblCaseDocuments'
+				WHERE (cd.CaseNbr IN (Select pr.CaseNbr FROM ##tmpProgessiveMgtRpt as pr))
+				  AND (cd.Type = 'Report') 
+				) as tbl
+		WHERE tbl.ROWNUM = 1) AS docs ON pmr.CaseNbr = docs.CaseNbr
+
+print 'Get first no show appt date and time'
+UPDATE pmr SET pmr.FirstNoShow = apt.ApptTime, pmr.FirstNoShowAmount = apt.TotalBilled
+  FROM ##tmpProgessiveMgtRpt as pmr
+	INNER JOIN (
+		SELECT SUM(ah.DocumentTotalUS) as TotalBilled, ah.CaseApptID, ApptTime, CaseNbr
+				FROM (SELECT ROW_NUMBER() OVER (PARTITION BY ca.CaseNbr ORDER BY ca.CaseApptID ASC) as ROWNUM, ca.ApptTime, ca.CaseApptID
+						FROM tblCaseAppt as ca				
+						WHERE ca.CaseNbr IN (select CaseNbr from ##tmpProgessiveMgtRpt) and (ca.ApptStatusID = 101)
+						) as tbl
+				  LEFT OUTER JOIN tblAcctHeader as AH on tbl.CaseApptID = ah.CaseApptID AND AH.DocumentType = 'IN'
+				WHERE tbl.ROWNUM = 1
+		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
+
+
+print 'Get second no show appt date and time'
+UPDATE pmr SET pmr.SecondNoShow = apt.ApptTime, pmr.SecondNoShowAmount = apt.TotalBilled
+  FROM ##tmpProgessiveMgtRpt as pmr
+	INNER JOIN (
+		SELECT SUM(ah.DocumentTotalUS) as TotalBilled, ah.CaseApptID, ApptTime, CaseNbr
+				FROM (SELECT ROW_NUMBER() OVER (PARTITION BY ca.CaseNbr ORDER BY ca.CaseApptID ASC) as ROWNUM, ca.ApptTime, ca.CaseApptID
+						FROM tblCaseAppt as ca				
+						WHERE ca.CaseNbr IN (select CaseNbr from ##tmpProgessiveMgtRpt) and (ca.ApptStatusID = 101)
+						) as tbl
+				  LEFT OUTER JOIN tblAcctHeader as AH on tbl.CaseApptID = ah.CaseApptID AND AH.DocumentType = 'IN'
+				WHERE tbl.ROWNUM = 2
+		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
+
+print 'Get third no show appt date and time'
+UPDATE pmr SET pmr.ThirdNoShow = apt.ApptTime, pmr.ThirdNoShowAmount = apt.TotalBilled
+    FROM ##tmpProgessiveMgtRpt as pmr
+	INNER JOIN (
+		SELECT SUM(ah.DocumentTotalUS) as TotalBilled, ah.CaseApptID, ApptTime, CaseNbr
+				FROM (SELECT ROW_NUMBER() OVER (PARTITION BY ca.CaseNbr ORDER BY ca.CaseApptID ASC) as ROWNUM, ca.ApptTime, ca.CaseApptID
+						FROM tblCaseAppt as ca				
+						WHERE ca.CaseNbr IN (select CaseNbr from ##tmpProgessiveMgtRpt) and (ca.ApptStatusID = 101)
+						) as tbl
+				  LEFT OUTER JOIN tblAcctHeader as AH on tbl.CaseApptID = ah.CaseApptID AND AH.DocumentType = 'IN'
+				WHERE tbl.ROWNUM = 3
+		GROUP BY ah.CaseApptID, ApptTime, CaseNbr) AS apt ON pmr.CaseNbr = apt.CaseNbr
+
+print 'Get Most recent FeeQuote for Case'
+UPDATE pmr SET pmr.FeeQuoteAmount = CASE (ISNULL(pmr.InvApptStatus, pmr.ApptStatus))
+									WHEN 'Late Canceled' THEN tbl.LateCancelAmt
+									WHEN 'Canceled' THEN tbl.NoShowAmt
+									WHEN 'No Show' THEN tbl.NoShowAmt
+									WHEN 'Show' THEN 
+										CASE
+											WHEN tbl.ApprovedAmt IS NOT NULL THEN tbl.ApprovedAmt
+											ELSE ISNULL(tbl.FeeAmtTo, tbl.FeeAmtFrom)
+										END
+									END
+  FROM ##tmpProgessiveMgtRpt  as pmr
+	INNER JOIN (SELECT ROW_NUMBER() OVER (PARTITION BY AQ.CaseNbr ORDER BY AQ.AcctQuoteID DESC) as ROWNUM,
+					AQ.CaseNbr,
+					CONVERT(VARCHAR(12), AQ.LateCancelAmt) AS LateCancelAmt,
+					CONVERT(VARCHAR(12), AQ.NoShowAmt) AS NoShowAmt,		
+					CONVERT(VARCHAR(12), AQ.FeeAmtFrom) AS FeeAmtFrom,
+					CONVERT(VARCHAR(12), AQ.FeeAmtTo) AS FeeAmtTo,
+					CONVERT(VARCHAR(12), AQ.ApprovedAmt) AS ApprovedAmt
+	              FROM tblAcctQuote as AQ 
+			      WHERE AQ.QuoteType = 'IN') as tbl ON tbl.CaseNbr = pmr.CaseNbr
+				  WHERE tbl.ROWNUM = 1
+
+
+print 'Return final result set'
+SELECT *
+  FROM ##tmpProgessiveMgtRpt 
+
+print 'clean up'
+IF OBJECT_ID('tempdb..##tmpProgessiveMgtRpt') IS NOT NULL DROP TABLE ##tmpProgessiveMgtRpt
+GO
+IF @@ERROR <> 0
+   AND @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK;
+    END
+
+IF @@TRANCOUNT = 0
+    BEGIN
+        INSERT  INTO #tmpErrors (Error)
+        VALUES                 (1);
+        BEGIN TRANSACTION;
+    END
+
+
+GO
+
+IF EXISTS (SELECT * FROM #tmpErrors) ROLLBACK TRANSACTION
+GO
+IF @@TRANCOUNT>0 BEGIN
+PRINT N'The transacted portion of the database update succeeded.'
+COMMIT TRANSACTION
+END
+ELSE PRINT N'The transacted portion of the database update failed.'
+GO
+DROP TABLE #tmpErrors
+GO
+PRINT N'Update complete.';
+
+
+GO
