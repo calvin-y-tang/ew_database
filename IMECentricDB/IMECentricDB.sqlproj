@@ -1170,6 +1170,7 @@
     <Build Include="Tables\tblFeeScheduleTiers.sql" />
     <Build Include="Tables\tblCaseHistoryOverrides.sql" />
     <Build Include="Stored Procedures\proc_Info_CaseHistoryReport.sql" />
+    <None Include="Data\Single_IMEC_NextRelease_CA.sql" />
     <Build Include="Tables\tblLogChangeTracking.sql" />
   </ItemGroup>
   <ItemGroup>

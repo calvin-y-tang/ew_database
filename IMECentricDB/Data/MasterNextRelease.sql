@@ -4,7 +4,11 @@
 USE [IMECentricMaster]  -- DO NOT REMOVE
 GO
 
--- Sprint 147
+-- Sprint 146
+
+-- IMEC-14832 Update emails sent for ERP errors.
+UPDATE ISExtIntegration WHERE [Type] = 'ERP'
+SET NotifyEmail = "doug.troy@examworks.com;william.cecil@examworks.com;EWISLogs@examworks.com";
 
 -- // =============================================================================================
 -- // IMEC-14796 Allstar Report EWIS process

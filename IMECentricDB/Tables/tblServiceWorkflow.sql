@@ -26,6 +26,7 @@
 	[DoctorRptDueDateType]	INT	CONSTRAINT [DF_tblServiceWorkflow_DoctorRptDueDateType]  DEFAULT 1 NOT NULL,
 	[ForecastDateType]		INT	CONSTRAINT [DF_tblServiceWorkflow_ForecastDateType]  DEFAULT 1 NOT NULL,
     [WcCaseTypeRqd]         BIT          CONSTRAINT [DF_tblServiceWorkflow_WcCaseTypeRqd] DEFAULT ((0)) NULL, 
+    [DobRqd]                BIT          CONSTRAINT [DF_tblServiceWorkflow_DobRqd] DEFAULT ((0)) NULL, 
     CONSTRAINT [PK_tblServiceWorkflow] PRIMARY KEY CLUSTERED ([ServiceWorkflowID] ASC)
 );
 
