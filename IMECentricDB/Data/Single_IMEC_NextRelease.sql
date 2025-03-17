@@ -105,5 +105,11 @@ BEGIN
 	END				
 END
 GO
+USE [IMECentricEW]
+GO
+DELETE from tblLogChangeTracking Where ColumnName = 'MarketerCode' and OldValue = NewValue and TableName IN ('tblCompany', 'tblClient', 'tblCase')
+GO
+
+
 
 
