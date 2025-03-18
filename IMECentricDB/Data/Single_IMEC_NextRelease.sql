@@ -108,6 +108,7 @@ GO
 
 -----IMEC-14925.2 Fix Marketer Row Cleanup
 -- Define variables for pagination
+USE [IMECentricEW]
 DECLARE @BatchSize INT = 4000; -- Limit to less than 5k to prevent table locking
 DECLARE @RowsAffected INT;
 DECLARE @TotalRowsAffected INT = 0;
@@ -118,14 +119,14 @@ BEGIN
     WITH CTE AS (
         SELECT TOP (@BatchSize) 
             LogChangeTrackingID
-        FROM TempLogChangeTracking
+        FROM tblLogChangeTracking
         WHERE ColumnName = 'MarketerCode'
           AND (OldValue = NewValue OR (NewValue IS NULL AND OldValue IS NULL))
           AND TableName IN ('tblCompany', 'tblClient', 'tblCase')
         ORDER BY LogChangeTrackingID
     )
     
-    DELETE FROM TempLogChangeTracking
+    DELETE FROM tblLogChangeTracking
     WHERE LogChangeTrackingID IN (SELECT LogChangeTrackingID FROM CTE);
 
     -- Check the number of rows affected
