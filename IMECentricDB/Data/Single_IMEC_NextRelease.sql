@@ -105,11 +105,43 @@ BEGIN
 	END				
 END
 GO
-USE [IMECentricEW]
-GO
-DELETE from tblLogChangeTracking Where ColumnName = 'MarketerCode' and (OldValue = NewValue OR (NewValue IS NULL AND NewValue IS NULL)) and TableName IN ('tblCompany', 'tblClient', 'tblCase')
-GO
 
+-----IMEC-14925.2 Fix Marketer Row Cleanup
+-- Define variables for pagination
+USE [IMECentricEW]
+DECLARE @BatchSize INT = 4000; -- Limit to less than 5k to prevent table locking
+DECLARE @RowsAffected INT;
+DECLARE @TotalRowsAffected INT = 0;
+
+-- Repeat the deletion process until no more rows are affected
+WHILE 1 = 1
+BEGIN
+    WITH CTE AS (
+        SELECT TOP (@BatchSize) 
+            LogChangeTrackingID
+        FROM tblLogChangeTracking
+        WHERE ColumnName = 'MarketerCode'
+          AND (OldValue = NewValue OR (NewValue IS NULL AND OldValue IS NULL))
+          AND TableName IN ('tblCompany', 'tblClient', 'tblCase')
+        ORDER BY LogChangeTrackingID
+    )
+    
+    DELETE FROM tblLogChangeTracking
+    WHERE LogChangeTrackingID IN (SELECT LogChangeTrackingID FROM CTE);
+
+    -- Check the number of rows affected
+    SET @RowsAffected = @@ROWCOUNT;
+	SET @TotalRowsAffected = @TotalRowsAffected + @RowsAffected;
+	
+    -- Print the number of rows affected
+	PRINT concat(N'Processed: ', @RowsAffected, ' rows') 
+	PRINT concat(N'for a total of: ', @TotalRowsAffected, ' rows') 
+
+    -- Exit the loop if no more rows are deleted
+    IF @RowsAffected < @BatchSize BREAK;
+END
+
+PRINT N'Done'
 
 
 
